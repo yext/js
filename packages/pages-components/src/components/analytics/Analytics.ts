@@ -1,5 +1,5 @@
 import { MouseEvent } from "react";
-import { TemplateProps } from "../../common/src/template/types.js";
+import { TemplateProps } from "./types.js";
 import { getRuntime, isProduction } from "../../util/index.js";
 import { AnalyticsMethods } from "./interfaces.js";
 import {

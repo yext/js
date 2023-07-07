@@ -2,7 +2,7 @@
   "name": "@yext/pages-components",
   "private": true,
   "version": "0.0.0",
-  "description": "A components library for React components to use in Yext Pages development",
+  "description": "A React component library that supports Yext Pages development",
   "author": "sumo@yext.com",
   "license": "BSD-3-Clause",
   "keywords": [
@@ -30,7 +30,8 @@
     "fmt": "prettier --write --cache \"src/**/**.{ts,tsx,js,jsx}\"",
     "lint": "eslint --cache --fix src/**",
     "storybook": "storybook dev -p 6006 -h localhost",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "jest"
   },
   "peerDependencies": {
     "react": "^17.0.2",
@@ -46,7 +47,7 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.5.2",
+    "@types/jest": "^27.5.2",
     "@types/node": "^20.3.3",
     "@types/react": "^17.0.49",
     "@types/react-dom": "^17.0.17",
@@ -62,7 +63,12 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
     "vite-plugin-dts": "^3.1.0",
-    "vite-tsconfig-paths": "^4.2.0"
+    "vite-tsconfig-paths": "^4.2.0",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
+    "ts-jest": "^28.0.8",
+    "ts-jest-mock-import-meta": "^1.0.0",
+    "identity-obj-proxy": "^3.0.0"
   },
   "dependencies": {
     "@yext/analytics": "^0.3.0",
@@ -72,5 +78,51 @@
     "classnames": "^2.3.2",
     "picocolors": "^1.0.0",
     "cross-fetch": "^4.0.0"
+  },
+  "jest": {
+    "rootDir": ".",
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.{ts,tsx,js}"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": {
+          "allowSyntheticDefaultImports": true,
+          "esModuleInterop": true,
+          "allowJs": true,
+          "target": "ESNext",
+          "jsx": "react-jsx"
+        },
+        "diagnostics": {
+          "ignoreCodes": [
+            1343
+          ]
+        },
+        "astTransformers": {
+          "before": [
+            {
+              "path": "ts-jest-mock-import-meta",
+              "options": {
+                "metaObjectReplacement": {
+                  "url": "JEST"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "verbose": true,
+    "testMatch": [
+      "<rootDir>/src/**/*.test.{ts,tsx,js}"
+    ],
+    "transform": {
+      "\\.[jt]sx?$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "^(.+)\\.js$": "$1",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css)$": "identity-obj-proxy"
+    }
   }
 }

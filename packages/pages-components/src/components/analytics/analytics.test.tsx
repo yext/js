@@ -3,7 +3,7 @@
  */
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { TemplateProps } from "../../common/src/template/types.js";
+import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
 import { useAnalytics } from "./hooks.js";
