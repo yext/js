@@ -65,7 +65,7 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
-    "@yext/analytics": "^0.6.1",
+    "@yext/analytics": "^0.3.0",
     "@yext/components-tsx-geo": "^1.0.3",
     "@yext/components-tsx-maps": "^1.0.11",
     "browser-or-node": "^2.1.1",
