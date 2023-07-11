@@ -65,7 +65,6 @@
     "storybook": "^7.0.26",
     "ts-jest": "^28.0.8",
     "ts-jest-mock-import-meta": "^1.0.0",
-    "turbo": "^1.10.7",
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
     "vite-plugin-dts": "^3.1.0",
