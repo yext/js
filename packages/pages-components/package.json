@@ -58,17 +58,18 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^28.1.3",
+    "jest-environment-jsdom": "^28.1.3",
     "prop-types": "^15.8.1",
     "storybook": "^7.0.26",
+    "ts-jest": "^28.0.8",
+    "ts-jest-mock-import-meta": "^1.0.0",
+    "turbo": "^1.10.7",
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
     "vite-plugin-dts": "^3.1.0",
-    "vite-tsconfig-paths": "^4.2.0",
-    "jest": "^28.1.3",
-    "jest-environment-jsdom": "^28.1.3",
-    "ts-jest": "^28.0.8",
-    "ts-jest-mock-import-meta": "^1.0.0",
-    "identity-obj-proxy": "^3.0.0"
+    "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
     "@yext/analytics": "^0.3.0",
@@ -76,8 +77,8 @@
     "@yext/components-tsx-maps": "^1.0.11",
     "browser-or-node": "^2.1.1",
     "classnames": "^2.3.2",
-    "picocolors": "^1.0.0",
-    "cross-fetch": "^4.0.0"
+    "cross-fetch": "^4.0.0",
+    "picocolors": "^1.0.0"
   },
   "jest": {
     "rootDir": ".",
