@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      package:
+        description: The name of the package to build
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "./packages/${{ inputs.package }}"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: npm i
+
+      - name: Build
+        run: npm run build
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Create build-output artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: "./packages/${{ inputs.package }}/dist"
