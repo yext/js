@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "target": "ESNext",
+    "types": ["vite/client", "jest", "node"],
+    "skipDefaultLibCheck": true,
+  },
+  "include": ["src"],
+  "exclude": ["node_modules/**/*"],
+}
+
