@@ -18,7 +18,7 @@ jobs:
         run: npm i --location=global generate-license-file
 
       - name:  Global install turbo
-        run: npm uninstall --location=global --arch=x64 --platform=linux turbo
+        run: npm install --location=global --arch=x64 --platform=linux turbo
 
       - name: Generate package licenses
         run : |
