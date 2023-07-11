@@ -78,3 +78,5 @@ out
 .pnp.*
 
 .turbo
+
+packages/*-components/dist

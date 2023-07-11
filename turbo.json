@@ -10,6 +10,7 @@
     },
     "test": {
       "cache": false
-    }
+    },
+    "generate-notices": {}
   }
 }
