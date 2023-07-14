@@ -77,7 +77,6 @@ const baseProps: TemplateProps = {
     businessId: 0,
     siteId: 0,
   },
-  __meta: { mode: "development" },
 };
 
 const currentProcess = global.process;
