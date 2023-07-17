@@ -24,14 +24,9 @@ jobs:
         run: pnpm add -g turbo
 
       - name: Install packages
-        run: npm i --ignore-scripts
+        run: pnpm i --ignore-scripts
 
       - name: Generate package licenses
-        run : turbo run generate-notices
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Generate root level licenses
         run : pnpm run generate-notices
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

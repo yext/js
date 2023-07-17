@@ -6,7 +6,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
+    "test": "turbo run test",
+    "generate-notices": "turbo run generate-notices && generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
     "ci-publish": "tsx scripts/publishCI.ts"
   },
   "devDependencies": {
