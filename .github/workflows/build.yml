@@ -23,14 +23,17 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
       - name: Install deps
-        run: npm i
+        run: pnpm i
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Build Storybook
-        run: npm run build-storybook
+        run: pnpm run build-storybook
 
       - name: Create build-output artifact
         uses: actions/upload-artifact@v3

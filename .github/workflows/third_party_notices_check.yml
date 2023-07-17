@@ -14,14 +14,17 @@ jobs:
           node-version: 18.x
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+
       - name: Global install generate-license-file
         run: npm i --location=global generate-license-file
 
       - name:  Global install turbo
-        run: npm install --location=global --arch=x64 --platform=linux turbo
+        run: pnpm install --location=global --arch=x64 --platform=linux turbo
 
       - name: Install packages
-        run: npm i --ignore-scripts --install-strategy nested
+        run: npm i --ignore-scripts
 
       - name: Generate package licenses
         run : turbo run generate-notices
@@ -29,7 +32,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Generate root level licenses
-        run : npm run generate-notices
+        run : pnpm run generate-notices
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
