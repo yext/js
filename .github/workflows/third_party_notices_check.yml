@@ -18,10 +18,10 @@ jobs:
         uses: pnpm/action-setup@v2.2.4
 
       - name: Global install generate-license-file
-        run: npm i --location=global generate-license-file
+        run: pnpm add -g generate-license-file
 
       - name:  Global install turbo
-        run: pnpm install --location=global --arch=x64 --platform=linux turbo
+        run: pnpm add -g turbo
 
       - name: Install packages
         run: npm i --ignore-scripts
