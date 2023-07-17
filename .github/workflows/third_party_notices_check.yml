@@ -23,7 +23,6 @@ jobs:
       - name: Generate package licenses
         run : |
           npm i --ignore-scripts
-          npm rebuild
           turbo run generate-notices
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -31,7 +30,6 @@ jobs:
       - name: Generate root level licenses
         run : |
           npm i --ignore-scripts
-          npm rebuild
           npm run generate-notices
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
