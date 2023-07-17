@@ -31,7 +31,8 @@
     "lint": "eslint --cache --fix src/**",
     "storybook": "storybook dev -p 6006 -h localhost",
     "build-storybook": "storybook build",
-    "test": "jest"
+    "test": "jest",
+    "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite"
   },
   "peerDependencies": {
     "react": "^17.0.2 || ^18.2.0",
