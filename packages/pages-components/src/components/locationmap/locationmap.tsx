@@ -1,3 +1,4 @@
+import React from "react";
 import { LocationMapProps } from "./types.js";
 import { GoogleMaps } from "@yext/components-tsx-maps";
 import { Map } from "../map/map.js";
