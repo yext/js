@@ -1,5 +1,5 @@
 {
-  "name": "@yext/pages-components",
+  "name": "@yext/sites-components",
   "private": true,
   "version": "0.0.0",
   "description": "A React component library that supports Yext Pages development",
@@ -17,8 +17,8 @@
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/pages-components.js",
-      "require": "./dist/pages-components.umd.js"
+      "import": "./dist/sites-components.js",
+      "require": "./dist/sites-components.umd.js"
     }
   },
   "engines": {

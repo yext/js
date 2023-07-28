@@ -13,7 +13,7 @@ import type {
   PinStoreType,
   ClustererContextType,
   ClusterTemplateProps,
-} from "./types";
+} from "./types.js";
 import type { Map } from "@yext/components-tsx-maps";
 import {
   Unit,

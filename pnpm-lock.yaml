@@ -54,7 +54,7 @@ importers:
         specifier: ^1.10.8
         version: 1.10.8
 
-  packages/pages-components:
+  packages/sites-components:
     dependencies:
       '@yext/analytics':
         specifier: ^0.3.0
