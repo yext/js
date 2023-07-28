@@ -13,7 +13,7 @@ export default defineConfig(() => (
     build: {
       lib: {
         entry: 'src/index.ts', 
-        name: 'pages-components',
+        name: 'sites-components',
         formats: ['es', 'umd'],
       },
       rollupOptions: {
