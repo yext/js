@@ -256,7 +256,11 @@ export class HoursManipulator {
    *   date, null if none
    */
   getHours(date: Date): DayType | HolidayType | null {
-    return this.getHolidayHours(date) || this.getNormalHours(date);
+    const holidayHours = this.getHolidayHours(date);
+    if (!holidayHours || holidayHours.isRegularHours) {
+      return this.getNormalHours(date);
+    }
+    return holidayHours;
   }
 
   /**

@@ -19,6 +19,7 @@ export interface HolidayType {
   date: string;
   isClosed?: boolean;
   openIntervals: IntervalType[];
+  isRegularHours: boolean;
 }
 
 export interface IntervalType {
