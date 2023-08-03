@@ -1,7 +1,6 @@
 {
   "name": "@yext/sites-components",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0-rc.0",
   "description": "A React component library that supports Yext Pages development",
   "author": "sumo@yext.com",
   "license": "BSD-3-Clause",
