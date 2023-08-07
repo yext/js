@@ -95,6 +95,7 @@ describe("HoursManipulator", () => {
           end: "12:00",
         },
       ],
+      isRegularHours: false,
     });
   });
 
