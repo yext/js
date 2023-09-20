@@ -32,7 +32,8 @@
     "storybook": "storybook dev -p 6006 -h localhost",
     "build-storybook": "storybook build",
     "test": "jest",
-    "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite"
+    "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
+    "prepare": "pnpm build"
   },
   "peerDependencies": {
     "react": "^17.0.2 || ^18.2.0",
