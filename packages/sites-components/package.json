@@ -8,6 +8,7 @@
     "Yext",
     "React"
   ],
+  "sideEffects": "false",
   "type": "module",
   "files": [
     "dist",
