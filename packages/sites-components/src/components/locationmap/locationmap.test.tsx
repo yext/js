@@ -4,7 +4,7 @@
 import * as React from "react";
 import { render, waitFor, screen } from "@testing-library/react";
 import { LocationMap } from ".";
-import { MapboxMaps } from "@yext/components-tsx-maps";
+import { MapboxMaps } from "../../map/providers/mapbox";
 
 describe("LocationMap", () => {
   it("renders with Google Maps", async () => {

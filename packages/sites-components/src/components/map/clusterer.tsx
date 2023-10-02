@@ -5,22 +5,22 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import { MapContext } from "./map.js";
-import { Marker } from "./marker.js";
+import { MapContext } from "./map";
+import { Marker } from "./marker";
 import type {
   MapContextType,
   ClustererProps,
   PinStoreType,
   ClustererContextType,
   ClusterTemplateProps,
-} from "./types.js";
-import type { Map } from "@yext/components-tsx-maps";
+} from "./types";
+import type { Map } from "../../map/map";
 import {
   Unit,
   Projection,
-  Coordinate,
-  GeoBounds,
-} from "@yext/components-tsx-geo";
+} from "../../map/constants";
+import { Coordinate } from "../../map/coordinate";
+import { GeoBounds } from "../../map/geoBounds";
 
 const defaultClusterTemplate = ({ count }: ClusterTemplateProps) => {
   return (

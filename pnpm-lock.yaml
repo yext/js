@@ -59,12 +59,6 @@ importers:
       '@yext/analytics':
         specifier: ^0.3.0
         version: 0.3.0
-      '@yext/components-tsx-geo':
-        specifier: ^1.0.3
-        version: 1.0.3
-      '@yext/components-tsx-maps':
-        specifier: ^1.0.11
-        version: 1.0.11
       browser-or-node:
         specifier: ^2.1.1
         version: 2.1.1
@@ -5107,17 +5101,6 @@ packages:
       cross-fetch: 3.1.8
     transitivePeerDependencies:
       - encoding
-    dev: false
-
-  /@yext/components-tsx-geo@1.0.3:
-    resolution: {integrity: sha512-dcxvyEBo4b0yKuiummdDh6J+FP6lXK2wsBYyNxBGeLXYrjUZYXarQn6knHyRNClVHNEZ0jjKKW7QN7JwFd+LlQ==}
-    dev: false
-
-  /@yext/components-tsx-maps@1.0.11:
-    resolution: {integrity: sha512-OgUOA2DoduzKy8XMq/iDekmsUJPqZhvAY64xCFDG6PSCnziURa4uKAD5ZcpZnghOwgNaQQeUchx4MflAxjOxZQ==}
-    dependencies:
-      '@yext/components-tsx-geo': 1.0.3
-      typescript: 4.9.5
     dev: false
 
   /abab@2.0.6:
@@ -10852,12 +10835,6 @@ packages:
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: true
-
-  /typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: false
 
   /typescript@5.0.2:
     resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}

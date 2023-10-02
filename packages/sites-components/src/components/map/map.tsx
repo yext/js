@@ -6,13 +6,14 @@ import React, {
   useState,
 } from "react";
 import classnames from "classnames";
+import { GoogleMaps } from "../../map/providers/google";
 import {
-  GoogleMaps,
   Map as MapType,
   MapOptions,
-} from "@yext/components-tsx-maps";
-import { Coordinate, GeoBounds } from "@yext/components-tsx-geo";
-import type { MapProps, MapContextType } from "./types.js";
+} from "../../map/map";
+import { GeoBounds } from "../../map/geoBounds";
+import { Coordinate } from "../../map/coordinate";
+import type { MapProps, MapContextType } from "./types";
 
 export const MapContext = createContext<MapContextType | null>(null);
 

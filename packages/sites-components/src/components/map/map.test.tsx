@@ -3,7 +3,7 @@
  */
 import * as React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import { MapboxMaps } from "@yext/components-tsx-maps";
+import { MapboxMaps } from "../../map/providers/mapbox";
 import { Clusterer, Map, Marker, useMapContext } from ".";
 
 describe("Map", () => {
