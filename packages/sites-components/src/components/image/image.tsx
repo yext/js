@@ -50,7 +50,14 @@ export const Image = ({
   );
 
   const imgWidth = Math.abs(imageData.width);
+  if (!imgWidth) {
+    console.warn(`Invalid image width.`);
+  }
   const imgHeight = Math.abs(imageData.height);
+  if (!imgHeight) {
+    console.warn(`Invalid image height.`);
+  }
+
   const imgUUID = getImageUUID(imageData.url);
 
   // The image is invalid, only try to load the placeholder
