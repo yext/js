@@ -8,6 +8,20 @@
 
 * **sites-components:**  add warning if no height or width (#14) (1fbcdae8)
 
+##### Other Changes
+
+*  sites-components@1.0.0-rc.5 (506df68b)
+
+#### 1.0.0-rc.5 (2023-10-09)
+
+##### New Features
+
+* **sites-components:**  inline dependencies (#13) (6462ba13)
+
+##### Bug Fixes
+
+* **sites-components:**  add warning if no height or width (#14) (1fbcdae8)
+
 #### 1.0.0-rc.4 (2023-09-20)
 
 ##### Bug Fixes
