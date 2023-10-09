@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Map, Marker, Coordinate as CoordinateType } from ".";
-import { MAP_MULTIPLE_LOCATIONS } from "./sampleData.js";
-import { Map as MapType } from "@yext/components-tsx-maps";
+import { MAP_MULTIPLE_LOCATIONS } from "./sampleData";
+import { Map as MapType } from "../../map/map";
 
 const meta: Meta<typeof Map> = {
   title: "components/Map",

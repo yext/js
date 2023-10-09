@@ -1,9 +1,7 @@
-import type {
-  Map as MapType,
-  MapProvider,
-  MapPin,
-} from "@yext/components-tsx-maps";
-import type { GeoBounds } from "@yext/components-tsx-geo";
+import type { Map as MapType } from "../../map/map";
+import type { MapProvider } from "../../map/mapProvider";
+import type { MapPin } from "../../map/mapPin";
+import type { GeoBounds } from "../../map/geoBounds";
 import React from "react";
 
 export interface Coordinate {
