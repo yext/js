@@ -84,8 +84,8 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    const inProduction = productionDomains ?
-      isProduction(...productionDomains) :
+    const inProduction = this.productionDomains ?
+      isProduction(...this.productionDomains) :
       isProduction(
         this.templateData?.document?.siteInternalHostName,
         this.templateData?.document?.siteDomain)
