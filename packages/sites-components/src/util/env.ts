@@ -6,14 +6,15 @@ import { getRuntime } from "./runtime.js";
  * in production (opposed to dev or staging) and not during server side
  * rendering.
  *
- * @param domain The production domain of the site
+ * @param domains The production domains of the site
  *
  * @public
  */
-export const isProduction = (domain: string): boolean => {
+export const isProduction = (...domains: string[]): boolean => {
   const runtime = getRuntime();
 
   return (
-    runtime.name === "browser" && domain?.includes(window?.location?.hostname)
+    runtime.name === "browser" && domains.some(
+      domain => domain?.includes(window?.location?.hostname))
   );
 };
