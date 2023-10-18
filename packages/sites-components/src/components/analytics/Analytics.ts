@@ -84,11 +84,9 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    const inProduction = this.productionDomains ?
-      isProduction(...this.productionDomains) :
-      isProduction(
-        this.templateData?.document?.siteInternalHostName,
-        this.templateData?.document?.siteDomain)
+    const inProduction = this.productionDomains
+      ? isProduction(...this.productionDomains)
+      : isProduction('localhost', 'preview.pagescdn.com')
 
     this._analyticsReporter = providePagesAnalytics({
       businessId: this.templateData.document.businessId as number,
