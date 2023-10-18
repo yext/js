@@ -16,12 +16,12 @@ export const isProduction = (...domains: string[]): boolean => {
     return false;
   }
 
-  const currentHostname = window?.location?.hostname;
+  const currentHostname: string = window?.location?.hostname;
   
   if (domains.length === 0) {
     return (
-      !currentHostname.equals("localhost") &&
-      !currentHostname.includes("preview.pagescdn.com");
+      !(currentHostname === "localhost") &&
+      !currentHostname.includes("preview.pagescdn.com")
     )
   }
 
