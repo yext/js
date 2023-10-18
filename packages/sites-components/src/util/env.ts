@@ -12,9 +12,20 @@ import { getRuntime } from "./runtime.js";
  */
 export const isProduction = (...domains: string[]): boolean => {
   const runtime = getRuntime();
+  if (runtime.name !== "browser") {
+    return false;
+  }
+
+  const currentHostname = window?.location?.hostname;
+  
+  if (domains.length === 0) {
+    return (
+      !currentHostname.equals("localhost") &&
+      !currentHostname.includes("preview.pagescdn.com");
+    )
+  }
 
   return (
-    runtime.name === "browser" && domains.some(
-      domain => domain?.includes(window?.location?.hostname))
+    domains.some(domain => domain?.includes(currentHostname))
   );
 };

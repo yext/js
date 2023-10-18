@@ -86,7 +86,7 @@ export class Analytics implements AnalyticsMethods {
 
     const inProduction = this.productionDomains
       ? isProduction(...this.productionDomains)
-      : isProduction('localhost', 'preview.pagescdn.com')
+      : isProduction()
 
     this._analyticsReporter = providePagesAnalytics({
       businessId: this.templateData.document.businessId as number,
