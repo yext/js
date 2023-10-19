@@ -97,6 +97,12 @@ export interface AnalyticsProviderProps {
    * scheme (e.g. https://foo.com).
    */
   pageDomain?: string;
+
+  /**
+   * isStaging() will evaluate to false if the the event is fired from any of 
+   * provided domains in productionDomains.
+   */
+  productionDomains?: string[];
 }
 
 /**

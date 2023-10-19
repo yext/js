@@ -23,6 +23,7 @@ export function AnalyticsProvider(
     enableDebugging,
     templateData,
     pageDomain,
+    productionDomains,
   } = props;
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
@@ -31,7 +32,8 @@ export function AnalyticsProvider(
     analyticsRef.current = new Analytics(
       templateData,
       requireOptIn,
-      pageDomain
+      pageDomain,
+      productionDomains
     );
   }
 
