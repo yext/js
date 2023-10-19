@@ -45,7 +45,7 @@ export class Analytics implements AnalyticsMethods {
     private templateData: TemplateProps,
     requireOptIn?: boolean | undefined,
     private pageDomain?: string,
-    private productionDomains?: string[] | undefined
+    private productionDomains?: string[] = []
   ) {
     this._optedIn = !requireOptIn;
     this.makeReporter();
@@ -84,9 +84,7 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    const inProduction = this.productionDomains
-      ? isProduction(...this.productionDomains)
-      : isProduction()
+    const inProduction = isProduction(...this.productionDomains)
 
     this._analyticsReporter = providePagesAnalytics({
       businessId: this.templateData.document.businessId as number,
