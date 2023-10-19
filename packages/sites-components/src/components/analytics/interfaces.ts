@@ -102,7 +102,7 @@ export interface AnalyticsProviderProps {
    * isStaging() will evaluate to false if the the event is fired from any of 
    * provided domains in productionDomains.
    */
-  productionDomains?: string[] | undefined;
+  productionDomains?: string[];
 }
 
 /**

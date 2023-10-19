@@ -45,7 +45,7 @@ export class Analytics implements AnalyticsMethods {
     private templateData: TemplateProps,
     requireOptIn?: boolean | undefined,
     private pageDomain?: string,
-    private productionDomains?: string[] = []
+    private productionDomains: string[] = []
   ) {
     this._optedIn = !requireOptIn;
     this.makeReporter();
