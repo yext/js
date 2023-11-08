@@ -8,4 +8,5 @@ const meta: Meta<typeof LegacyRichText> = {
 };
 export default meta;
 
-export const Primary: StoryFn<typeof LegacyRichText> = () => <LegacyRichText markdown="Some ++underline++, ~~strikethrough~~, sub~script~, and super^script^ text!"/>;
+const markdown = "Some ++underline++, ~~strikethrough~~, sub~script~, and super^script^ text!";
+export const Primary: StoryFn<typeof LegacyRichText> = () => <LegacyRichText markdown={markdown}/>;
