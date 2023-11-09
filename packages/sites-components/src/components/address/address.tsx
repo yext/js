@@ -65,10 +65,12 @@ const AddressLine = ({
     const unabbreviated = getUnabbreviated(field, address);
     if (unabbreviated) {
       addressDOM.push(
+        <>
+        {" "}
         <abbr key={field} title={unabbreviated}>
-          {" "}
           {value}
         </abbr>
+        </>
       );
       continue;
     }
