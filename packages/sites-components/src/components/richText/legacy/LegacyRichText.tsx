@@ -24,6 +24,10 @@ const yextRemarkRehypeHandlers: Record<string, Handler> = {
   superscript: superscriptHandler
 };
 
+/**
+ * A Component for rendering the legacy rich text field. This field's value
+ * is stored as "Yext" Markdown.
+ */
 export default function LegacyRichText(props: {markdown: string}) {
   return (
     <Markdown 
