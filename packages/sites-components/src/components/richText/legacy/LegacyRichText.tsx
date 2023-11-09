@@ -1,5 +1,4 @@
-import React from "react";
-import Markdown from 'react-markdown'
+import React, { lazy } from "react";
 import remarkYext from './remark-yext/remarkYext.js'
 import {
   emphasisHandler,
@@ -10,6 +9,8 @@ import {
   underlineHandler
 } from './remark-yext/handlers.js';
 import { Handler } from "mdast-util-to-hast";
+
+const Markdown = lazy(() => import('react-markdown'));
 
 /**
  * Handlers for converting Yext Markdown-specific MDAST nodes to HAST nodes.
