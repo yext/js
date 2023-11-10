@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import remarkYext from './remark-yext/remarkYext.js'
 import {
   emphasisHandler,
@@ -9,8 +9,6 @@ import {
   underlineHandler
 } from './remark-yext/handlers.js';
 import { Handler } from "mdast-util-to-hast";
-
-const Markdown = lazy(() => import('react-markdown'));
 
 /**
  * Handlers for converting Yext Markdown-specific MDAST nodes to HAST nodes.
@@ -30,13 +28,18 @@ const yextRemarkRehypeHandlers: Record<string, Handler> = {
  * is stored as "Yext" Markdown.
  */
 export default function LegacyRichText(props: {markdown: string}) {
-  return (
-    <Markdown 
-      remarkPlugins={[remarkYext]} 
-      remarkRehypeOptions={{
-         handlers: yextRemarkRehypeHandlers
-       }}
-    >
-    {props.markdown}
-  </Markdown>);
+  const [RenderedMarkdown, setRenderedMarkdown] = useState<ReactElement>();
+
+  useEffect(() => {
+    const loadComponent = async () => (await import("react-markdown")).default;
+    loadComponent().then(renderMarkdown => {
+      const renderedMarkdown = renderMarkdown({ children: props.markdown, remarkPlugins: [remarkYext],
+        remarkRehypeOptions: {
+           handlers: yextRemarkRehypeHandlers
+         } });
+      setRenderedMarkdown(renderedMarkdown);
+    });
+  }, []);
+
+  return RenderedMarkdown ? RenderedMarkdown : null;
 }
