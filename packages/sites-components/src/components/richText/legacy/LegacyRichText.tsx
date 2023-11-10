@@ -9,6 +9,8 @@ import {
   underlineHandler
 } from './remark-yext/handlers.js';
 import { Handler } from "mdast-util-to-hast";
+import { Root } from "mdast";
+import { Processor } from "unified";
 
 /**
  * Handlers for converting Yext Markdown-specific MDAST nodes to HAST nodes.
@@ -27,19 +29,35 @@ const yextRemarkRehypeHandlers: Record<string, Handler> = {
  * A Component for rendering the legacy rich text field. This field's value
  * is stored as "Yext" Markdown.
  */
-export default function LegacyRichText(props: {markdown: string}) {
+export const LegacyRichText = (props: {markdown: string}) => {
   const [RenderedMarkdown, setRenderedMarkdown] = useState<ReactElement>();
 
+  let ReactMarkdown: ((arg0: { children: string; remarkPlugins: ((this: Processor<void, Root, void, void>) => void)[]; remarkRehypeOptions: { handlers: Record<string, Handler>; }; }) => any);
   useEffect(() => {
-    const loadComponent = async () => (await import("react-markdown")).default;
-    loadComponent().then(renderMarkdown => {
-      const renderedMarkdown = renderMarkdown({ children: props.markdown, remarkPlugins: [remarkYext],
+    const renderMarkdown = async () => {
+      if (!ReactMarkdown) {
+        try {
+          ReactMarkdown = (await import("react-markdown")).default;
+        } catch (err) {
+          console.error("Failed to import React Markdown, cannot properly render LegacyRichText.");
+        }
+      }
+
+      const renderedMarkdown = ReactMarkdown({
+        children: props.markdown, 
+        remarkPlugins: [remarkYext],
         remarkRehypeOptions: {
            handlers: yextRemarkRehypeHandlers
-         } });
+         }
+      });
+
       setRenderedMarkdown(renderedMarkdown);
-    });
-  }, []);
+    }
+
+    renderMarkdown();
+  }, [props.markdown]);
 
   return RenderedMarkdown ? RenderedMarkdown : null;
 }
+
+export default LegacyRichText;
