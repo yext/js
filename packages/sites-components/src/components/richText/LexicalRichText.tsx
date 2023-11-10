@@ -6,6 +6,7 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LexicalRichTextProps } from "./types.js";
 import { generateConfig } from "./methods.js";
+import styles from "./lexical.module.css";
 
 /**
  * Renders a read-only view of a Lexical Rich Text field. Styling for the various
@@ -20,12 +21,16 @@ export function LexicalRichText({
     <LexicalComposer
       initialConfig={generateConfig(serializedAST, nodeClassNames)}
     >
-      <RichTextPlugin
-        contentEditable={<ContentEditable className="editor-input" />}
-        ErrorBoundary={LexicalErrorBoundary}
-        placeholder={<div></div>}
-      />
-      <ListPlugin />
+      <div className={`${styles["editor-inner"]} ${styles["no-border"]}`}>
+        <div className={styles["editor-inner"]}>
+          <RichTextPlugin
+            contentEditable={<ContentEditable className="editor-input" />}
+            ErrorBoundary={LexicalErrorBoundary}
+            placeholder={<div></div>}
+          />
+          <ListPlugin />
+        </div>
+      </div>
     </LexicalComposer>
   );
 }
