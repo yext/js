@@ -59,5 +59,3 @@ export const LegacyRichText = (props: {markdown: string}) => {
 
   return RenderedMarkdown ? RenderedMarkdown : null;
 }
-
-export default LegacyRichText;

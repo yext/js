@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import LegacyRichText from "./LegacyRichText.js";
+import { LegacyRichText } from "./LegacyRichText.js";
 
 const meta: Meta<typeof LegacyRichText> = {
   title: 'components/LegacyRichText',
