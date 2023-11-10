@@ -5,3 +5,4 @@ export * from "./image/index.js";
 export * from "./link/index.js";
 export * from "./map/index.js";
 export * from "./locationmap/index.js";
+export * from "./richText/index.js";
