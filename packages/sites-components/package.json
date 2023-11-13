@@ -19,7 +19,8 @@
     ".": {
       "import": "./dist/sites-components.js",
       "require": "./dist/sites-components.umd.js"
-    }
+    },
+    "./style.css": "./dist/style.css"
   },
   "engines": {
     "node": "^17 || ^18 || ^19"
