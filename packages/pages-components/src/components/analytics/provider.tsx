@@ -4,6 +4,7 @@ import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
 import { AnalyticsMethods, AnalyticsProviderProps } from "./interfaces.js";
 import { AnalyticsContext } from "./context.js";
+import { AnalyticsDebugger } from "./debugger.js";
 
 /**
  * The main Analytics component for you to use. Sets up the proper react context
@@ -51,9 +52,13 @@ export function AnalyticsProvider(
   analytics.setDebugEnabled(enableDebugging ?? enableDebuggingDefault);
 
   return (
+    <>
     <AnalyticsContext.Provider value={analytics}>
       {children}
     </AnalyticsContext.Provider>
+    {/* TODO(jhood): Create portal this */}
+    <AnalyticsDebugger enableDebugging={enableDebugging ?? enableDebuggingDefault} />
+    </>
   );
 }
 

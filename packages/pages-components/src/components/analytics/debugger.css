@@ -1,0 +1,168 @@
+.xYextDebug {
+  [data-ya-track] {
+      outline: 1px dashed blue;
+      scroll-margin: 32px;
+  }
+
+  [data-ya-track].analytics-event-highlight {
+      animation-name: pulse;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      outline: 2px dashed black;
+      padding: 8px 16px;
+  }
+
+  [data-ya-scope] {
+      outline: 1px dashed green;
+      position: relative;
+  }
+
+  [data-ya-scope]::after {
+      content: attr(data-ya-scope);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: black;
+      display: block;
+      position: absolute;
+
+      padding: 10px;
+      outline: 1px solid #178acd;
+      background: rgba(0, 0, 0, 0.45);
+      color: white;
+      z-index: 2147483647;
+  }
+
+  @keyframes pulse {
+      0%
+      {
+          background: transparent;
+      }
+
+      50%
+      {
+          background: rgba(0, 0, 0, 0.15);
+      }
+
+      100%
+      {
+          background: transparent;
+      }
+  }
+
+
+  .analytics-debugger {
+      position: fixed;
+      height: 80%;
+      top: 10%;
+      bottom: 10%;
+      right: 0;
+      transition: right 300ms ease-out;
+      color: white;
+      display: flex !important;
+      z-index: 99999;
+  }
+
+  /* Toggles */
+  .analytics-debugger-toggles {
+      width: 100px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      background: rgba(0, 0, 0, 0.75);
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid white;
+  }
+
+  .analytics-debugger-toggle {
+      outline: none;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+  }
+
+  .analytics-debugger-toggle.is-active {
+      background: #178acd;
+  }
+
+  .analytics-debugger-toggle:not(:last-child) {
+      border-bottom: 1px solid white;
+  }
+
+  .analytics-debugger-toggle:first-child {
+      border-top-left-radius: 4px;
+  }
+
+  .analytics-debugger-toggle:last-child {
+      border-bottom-left-radius: 4px;
+  }
+
+  .analytics-debugger-toggle:hover {
+      background: #178acd;
+  }
+
+  /* Tabs */
+  .analytics-debugger-tabs {
+      width: 250px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      background: rgba(0, 0, 0, 0.75);
+  }
+
+  .analytics-debugger-tab {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+  }
+
+  .analytics-debugger-tab-title {
+      background: #178acd;
+      color: white;
+      padding: 20px;
+      border-bottom: 1px solid white;
+      border-top-left-radius: 4px;
+  }
+
+  /* Items */
+  .analytics-debugger-list {
+      overflow-y: scroll;
+      flex-grow: 1;
+  }
+
+  .analytics-debugger-listItem {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .analytics-debugger-listItem:not(:last-child) {
+      border-bottom: 1px solid white;
+  }
+
+  .analytics-debugger-button {
+      padding: 10px 20px;
+      text-align: left;
+      width: 100%;
+  }
+
+  .analytics-debugger-button.is-active {
+      background: #178acd;
+  }
+
+  .analytics-debugger-button:hover:not(.is-active) {
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+  }
+
+  .analytics-debugger-tooltip {
+      background: #178acd;
+      color: white;
+      position: absolute;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 99998;
+  }
+}

@@ -45,6 +45,9 @@ export function useAnalytics(): AnalyticsMethods | null {
     ): (e: MouseEvent<HTMLAnchorElement>) => Promise<void> {
       return ctx.trackClick(concatScopes(scope, eventName), conversionData);
     },
+    getDebugEnabled(): boolean {
+      return ctx.getDebugEnabled();
+    },
     setDebugEnabled(enabled: boolean): void {
       return ctx.setDebugEnabled(enabled);
     },
