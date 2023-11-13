@@ -2,7 +2,7 @@ import { EditorThemeClasses } from "lexical";
 import styles from "./default-styling.module.css";
 
 /**
- * Tailwind styling for the different Tokens that can occur within a Code Block.
+ * CSS class suffixes for the different Tokens that can occur within a Code Block.
  * Token Types come from the PrismJS library, which Lexical uses to power Code Blocks.
  * The Types include Comment, Variable, Operator, etc.
  */
