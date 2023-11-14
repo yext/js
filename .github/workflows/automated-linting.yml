@@ -39,4 +39,4 @@ jobs:
         run: echo "Linting/Prettier changes were made. Changes pushed."; exit 1;
       - name: Fail job on linting error
         if: steps.eslint.outcome == 'failure'
-        run: echo "The linter found errors that must be manually addressed. See step, Running linter"; exit 1;
+        run: echo "The linter found errors that must be manually addressed. See step, Running linter."; exit 1;
