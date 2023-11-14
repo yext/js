@@ -21,6 +21,6 @@ export function $createImageNode({
   );
 }
 
-export function $isImageNode(node: unknown) {
+export function $isImageNode(node: unknown): node is ImageNode {
   return node instanceof ImageNode;
 }

@@ -42,10 +42,12 @@ const INSERT_IMAGE_COMMAND = createCommand<SerializedImageNode>(
  */
 export function ImagePlugin() {
   const [editor] = useLexicalComposerContext();
+
   useEffect(() => {
     if (!editor.hasNodes([ImageNode])) {
       throw new Error("ImagePlugin: ImageNode not registered on editor");
     }
+
     return mergeRegister(
       editor.registerCommand(
         INSERT_IMAGE_COMMAND,
@@ -82,10 +84,11 @@ export function ImagePlugin() {
       )
     );
   }, [editor]);
+
   return null;
 }
 
-function onDragStart(event: DragEvent) {
+function onDragStart(event: DragEvent): boolean {
   const TRANSPARENT_IMAGE =
     "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
   const img = document.createElement("img");
@@ -117,7 +120,7 @@ function onDragStart(event: DragEvent) {
   return true;
 }
 
-function onDragover(event: DragEvent) {
+function onDragover(event: DragEvent): boolean {
   const node = getImageNodeInSelection();
   if (!node) {
     return false;
@@ -128,7 +131,7 @@ function onDragover(event: DragEvent) {
   return true;
 }
 
-function onDrop(event: DragEvent, editor: LexicalEditor) {
+function onDrop(event: DragEvent, editor: LexicalEditor): boolean {
   const node = getImageNodeInSelection();
   if (!node) {
     return false;
@@ -151,7 +154,7 @@ function onDrop(event: DragEvent, editor: LexicalEditor) {
   return true;
 }
 
-function getImageNodeInSelection() {
+function getImageNodeInSelection(): ImageNode | null {
   const selection = $getSelection();
   if (!$isNodeSelection(selection)) {
     return null;
@@ -173,7 +176,7 @@ function getDragImageData(event: DragEvent) {
   return data;
 }
 
-function canDropImage(event: DragEvent) {
+function canDropImage(event: DragEvent): boolean {
   const target = event.target;
   return !!(
     target &&
@@ -183,7 +186,7 @@ function canDropImage(event: DragEvent) {
   );
 }
 
-function getDragSelection(event: DragEvent) {
+function getDragSelection(event: DragEvent): Range | null {
   let range;
   const target = event.target;
   const targetWindow =

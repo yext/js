@@ -6,10 +6,13 @@ import {
   $isElementNode,
   $isRangeSelection,
   RangeSelection,
+  ElementNode,
 } from "lexical";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 
-function getElementNodesInSelection(selection: RangeSelection) {
+function getElementNodesInSelection(
+  selection: RangeSelection
+): Set<ElementNode> {
   const nodesInSelection = selection.getNodes();
   if (nodesInSelection.length === 0) {
     return new Set([
@@ -24,7 +27,7 @@ function getElementNodesInSelection(selection: RangeSelection) {
 
 const HIGH_PRIORITY = 3;
 
-function isIndentPermitted(maxDepth: number) {
+function isIndentPermitted(maxDepth: number): boolean {
   const selection = $getSelection();
   if (!$isRangeSelection(selection)) {
     return false;
