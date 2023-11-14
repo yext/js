@@ -36,7 +36,13 @@ jobs:
           default_author: github_actions
       - name: Fail job if push changes
         if: steps.push-changes.outputs.pushed == 'true'
-        run: echo "Linting/Prettier changes were made. Changes pushed."; exit 1;
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Linting/Prettier changes were made. A new commit with autofixes was pushed.')
       - name: Fail job on linting error
         if: steps.eslint.outcome == 'failure'
-        run: echo "The linter found errors that must be manually addressed. See step, Running linter."; exit 1;
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('The linter found errors that must be manually addressed. See step: Running linter.')
