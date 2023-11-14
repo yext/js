@@ -12,7 +12,6 @@ jobs:
     secrets: inherit
 
   call_build:
-    needs: automated-linting
     uses: ./.github/workflows/build.yml
     with:
       package: "sites-components"
