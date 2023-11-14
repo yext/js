@@ -1,12 +1,25 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { getRuntime } from "../../util";
 import c from "classnames";
 import "./debugger.css";
 
 /**
- * Scope clicked:
- * - Show tooltip for all events within scope
+ * - DONE: Show tooltip for all events within scope when scope button is clicked
+ * - DONE: Show tooltip for single event when event button is clicked
+ * 
+ * - Only want to add debugger once if there are multuple providers
+ *      - One solution for this would be to export the AnalyticsDebugger as an external component that can be added as a child once to a provider.
+ *      - 
+ * - Tooltip overlap / offscreen fix
+ * - DONE: createPortal to body
  */
+
+declare global {
+    interface Window {
+        debuggerActive: boolean;
+    }
+}
 
 interface AnalyticsDebuggerProps {
     enableDebugging: boolean;
@@ -25,18 +38,37 @@ type Tooltip = {
     key: string;
 }
 
-const data: EventData = {};
-
 export function AnalyticsDebugger(props: AnalyticsDebuggerProps) {
     const { enableDebugging } = props;
+
+    if (!enableDebugging || getRuntime().name !== "browser") {
+        return null;
+    }
+
+    return createPortal(<AnalyticsDebuggerInternal />, document.body);
+}
+
+// Track scope / event elements.
+const data: EventData = {};
+
+export function AnalyticsDebuggerInternal() {
+    // Track whether the Events, Scope, or no tab is opened.
     const [activeTab, setActiveTab] = useState<Tabs>();
 
     // Track the event elements that need to have a tooltip added.
     const [toolTips, setToolTips] = useState<Tooltip[]>([]);
 
+    // If a user renders multiple AnalyticsProviders then we only want to show one debugger.
+    const [isFirst, setIsFirst] = useState(false);
+
     useEffect(() => {
-        if (!enableDebugging || getRuntime().name !== "browser") {
-            return;
+        // Scope styles to only when dugging is enabled.
+        document.documentElement.classList.add('xYextDebug');
+
+        // Check if this is the first debugger rendered.
+        if (!window.hasOwnProperty("debuggerActive")) {
+            window.debuggerActive = true;
+            setIsFirst(true);
         }
 
         const scopes: NodeListOf<HTMLElement> = document.querySelectorAll('[data-ya-scope]');
@@ -44,21 +76,20 @@ export function AnalyticsDebugger(props: AnalyticsDebuggerProps) {
             const scopeName = scope.dataset.yaScope;
             const events: NodeListOf<HTMLElement> = scope.querySelectorAll('[data-ya-track]');
 
-            events.forEach((event, idx) => {
-                const eventName = event.dataset.yaTrack;
+            events.forEach((eventEl, idx) => {
+                const eventName = eventEl.dataset.yaTrack;
 
                 // Show tooltip when element is hovered.
-                event.addEventListener('mouseenter', () => {
-                    console.log("mouse over")
+                eventEl.addEventListener('mouseenter', () => {
                     setToolTips([{
-                        eventEl: event,
+                        eventEl,
                         eventName: `${scopeName}_${eventName}`,
                         key: `${scopeName}_${eventName}_${idx}`,
                     }]);
                 });
 
                 // Remove tooltip.
-                event.addEventListener('mouseleave', () => {
+                eventEl.addEventListener('mouseleave', () => {
                     setToolTips([]);
                 });
             });
@@ -71,14 +102,7 @@ export function AnalyticsDebugger(props: AnalyticsDebuggerProps) {
                 };
             }
         });
-    }, [enableDebugging]);
-
-    if (!enableDebugging || getRuntime().name !== "browser") {
-        return null;
-    }
-
-    document.documentElement.classList.add('xYextDebug');
-
+    }, []);
 
     const handleToggle = (tabName: Tabs) => {
         if (activeTab === tabName) {
@@ -88,38 +112,37 @@ export function AnalyticsDebugger(props: AnalyticsDebuggerProps) {
         }
     }
 
-    {/* TOOD(jhood): Might need to createPortal this to the body el. That way we avoid creating multiple */}
+    if (!isFirst) {
+        return null;
+    }
+
     return (
         <>
-        <div className="analytics-debugger">
-            <div className="analytics-debugger-toggles">
-                <button
-                    className={c("analytics-debugger-toggle", {"is-active": activeTab === "Events"})}
-                    onClick={() => handleToggle("Events")}
-                >
-                    Events
-                </button>
-                <button
-                    className={c("analytics-debugger-toggle", {"is-active": activeTab === "Scopes"})}
-                    onClick={() => handleToggle("Scopes")}
-                >
-                    Scopes
-                </button>
-            </div>
-            {activeTab && (
-                <div className="analytics-debugger-tabs">
-                    {activeTab === "Events"
-                        ? <EventsTab data={data} setToolTips={setToolTips} />
-                        : <ScopesTab data={data} setToolTips={setToolTips} />
-                    }
+            <div className="analytics-debugger">
+                <div className="analytics-debugger-toggles">
+                    <button
+                        className={c("analytics-debugger-toggle", {"is-active": activeTab === "Events"})}
+                        onClick={() => handleToggle("Events")}
+                    >
+                        Events
+                    </button>
+                    <button
+                        className={c("analytics-debugger-toggle", {"is-active": activeTab === "Scopes"})}
+                        onClick={() => handleToggle("Scopes")}
+                    >
+                        Scopes
+                    </button>
                 </div>
-            )}
-        </div>
-        {/*
-            These keys are not unique when being passed the same eventname. Ex: if two links have the same event name
-            the tooltip won't be rerendered.
-        */}
-        {toolTips.map((tooltip) => <ToolTip tooltip={tooltip} key={tooltip.key} />)}
+                {activeTab && (
+                    <div className="analytics-debugger-tabs">
+                        {activeTab === "Events"
+                            ? <EventsTab data={data} setToolTips={setToolTips} />
+                            : <ScopesTab data={data} setToolTips={setToolTips} />
+                        }
+                    </div>
+                )}
+            </div>
+            {toolTips.map((tooltip) => <ToolTip tooltip={tooltip} key={tooltip.key} />)}
         </>
     );
 }
@@ -135,7 +158,7 @@ function ToolTip(props: ToolTipProps) {
     const top = tooltip.eventEl.getBoundingClientRect().top + window.scrollY;
     const left = tooltip.eventEl.getBoundingClientRect().left + window.scrollX;
 
-    const [yOffset, setYOffset] = useState(30);
+    const [yOffset, setYOffset] = useState(0);
     const [xOffset, setXOffset] = useState(0);
 
     useEffect(() => {
@@ -173,30 +196,22 @@ function EventsTab(props: TabProps) {
     } = props;
 
     const [activeEventEl, setActiveEventEl] = useState<HTMLElement>();
-    const [activeButton, setActiveButton] = useState<HTMLElement>();
+    const [activeButton, setActiveButton] = useState("");
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, scopeName: string, eventEl: HTMLElement, key: string) => {
-        const fullEventName = `${scopeName}_${eventEl.dataset.yaTrack}`;
-
+    const handleClick = (eventEl: HTMLElement, eventName: string, key: string) => {
         eventEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
         if (activeEventEl) {
             activeEventEl.classList.remove('analytics-event-highlight')
         }
 
-        if (activeButton) {
-            activeButton.classList.remove('is-active');
-        }
-
-        setActiveButton(e.currentTarget)
-        e.currentTarget.classList.add('is-active');
-
         setActiveEventEl(eventEl);
         eventEl.classList.add('analytics-event-highlight');
 
+        setActiveButton(key);
         setToolTips([{
             eventEl,
-            eventName: fullEventName,
-            key
+            eventName,
+            key,
         }]);
     }
 
@@ -204,13 +219,21 @@ function EventsTab(props: TabProps) {
         <div className="analytics-debugger-tab">
             <h2 className="analytics-debugger-tab-title">Event Names</h2>
             <ul className="analytics-debugger-list">
-                {Object.entries(data).map(([scopeName, value]) => value.events.map((event, idx) => (
-                    <li className="analytics-debugger-listItem" key={`${scopeName}_${event.dataset.yaTrack}_${idx}`}>
-                        <button className="analytics-debugger-button" onClick={(e) => handleClick(e, scopeName, event,`${scopeName}_${event.dataset.yaTrack}_${idx}`)}>
-                            {`${scopeName}_${event.dataset.yaTrack}`}
-                        </button>
-                    </li>
-                )))};
+                {Object.entries(data).map(([scopeName, value]) => value.events.map((eventEl, idx) => {
+                    const eventName = `${scopeName}_${eventEl.dataset.yaTrack}`;
+                    const key = `${eventName}_${idx}`;
+
+                    return (
+                        <li className="analytics-debugger-listItem" key={key}>
+                            <button
+                                className={c("analytics-debugger-button", { "is-active": key === activeButton })}
+                                onClick={() => handleClick(eventEl, eventName, key)}
+                            >
+                                {eventName}
+                            </button>
+                        </li>
+                    )
+                }))}
             </ul>
         </div>
     );
@@ -222,13 +245,18 @@ function ScopesTab(props: TabProps) {
         setToolTips,
     } = props;
 
-    const handleClick = (scopeName: string, node: EventNode) => {
+    const [activeButton, setActiveButton] = useState("");
+
+    const handleClick = (scopeName: string) => {
+        const node = data[scopeName];
         node.scope.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-        setToolTips(node.events.map((event, idx) => ({
-            eventEl: event,
-            eventName: `${scopeName}_${event.dataset.yaTrack}`,
-            key: `${scopeName}_${event.dataset.yaTrack}_${idx}`,
+        setActiveButton(scopeName);
+
+        setToolTips(node.events.map((eventEl, idx) => ({
+            eventEl,
+            eventName: `${scopeName}_${eventEl.dataset.yaTrack}`,
+            key: `${scopeName}_${eventEl.dataset.yaTrack}_${idx}`,
         })));
     }
 
@@ -238,7 +266,10 @@ function ScopesTab(props: TabProps) {
             <ul className="analytics-debugger-list">
                 {Object.keys(data).map((scopeName, idx) => (
                     <li className="analytics-debugger-listItem" key={scopeName + idx}>
-                        <button className="analytics-debugger-button" onClick={() => handleClick(scopeName, data[scopeName])}>
+                        <button
+                            className={c("analytics-debugger-button", { "is-active": scopeName === activeButton })}
+                            onClick={() => handleClick(scopeName)}
+                        >
                             {scopeName}
                         </button>
                     </li>

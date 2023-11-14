@@ -9,6 +9,7 @@ export const LinkTypes = {
   URL: "URL",
   Email: "Email",
   Phone: "Phone",
+  Other: "Other", // TODO(check this)
 } as const;
 
 /**

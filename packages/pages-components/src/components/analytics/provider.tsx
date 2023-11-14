@@ -56,7 +56,6 @@ export function AnalyticsProvider(
     <AnalyticsContext.Provider value={analytics}>
       {children}
     </AnalyticsContext.Provider>
-    {/* TODO(jhood): Create portal this */}
     <AnalyticsDebugger enableDebugging={enableDebugging ?? enableDebuggingDefault} />
     </>
   );
