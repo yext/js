@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "ignorePatterns": ["**/dist", ".eslintrc.json", "*.d.ts"],
+  "ignorePatterns": ["**/dist", ".eslintrc.json"],
   "extends": ["@yext/eslint-config/typescript-react"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
