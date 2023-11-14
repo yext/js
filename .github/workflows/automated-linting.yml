@@ -48,4 +48,4 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('The linter found errors that must be manually fixed. See step: Running linter.')
+            core.setFailed('ESLint found errors that must be manually fixed. See step: Running linter.')
