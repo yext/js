@@ -28,8 +28,6 @@
   "scripts": {
     "dev": "pnpm run storybook",
     "build": "tsc && vite build",
-    "fmt": "prettier --write --cache \"src/**/**.{ts,tsx,js,jsx}\"",
-    "lint": "eslint --cache --fix src/**",
     "storybook": "storybook dev -p 6006 -h localhost",
     "build-storybook": "storybook build",
     "test": "jest",
