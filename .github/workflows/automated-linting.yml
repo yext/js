@@ -18,7 +18,8 @@ jobs:
       - run: pnpm i --ignore-scripts
       - run: pnpm run lint
         id: lint
-        continue-on-error: true        
+        continue-on-error: true   
+      - run: echo steps.lint.outcome     
       - run: pnpm run prettier
       - name: Automated Linting
         id: automated-linting
