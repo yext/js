@@ -1,4 +1,4 @@
-name: Sites-Components
+name: main
 on: pull_request
 
 
@@ -9,6 +9,10 @@ concurrency:
 jobs:
   automated-linting:
     uses: ./.github/workflows/automated-linting.yml
+    secrets: inherit
+  
+  update-notices:
+    uses: ./.github/workflows/third_party_notices_check.yml
     secrets: inherit
 
   call_build:
