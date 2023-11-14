@@ -16,7 +16,9 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
       - run: pnpm i --ignore-scripts
-      - run: pnpm run autofix
+      - run: pnpm run lint
+        continue-on-error: true        
+      - run: pnpm run prettier
       - name: Automated Linting
         id: automated-linting
         uses: EndBug/add-and-commit@v9
