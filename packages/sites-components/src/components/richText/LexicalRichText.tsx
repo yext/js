@@ -4,6 +4,9 @@ import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
+import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
+import { CodeHighlightPlugin } from "./plugins/index.js";
 import { LexicalRichTextProps } from "./types.js";
 import { generateConfig } from "./methods.js";
 import styles from "./lexical.module.css";
@@ -28,7 +31,10 @@ export function LexicalRichText({
             ErrorBoundary={LexicalErrorBoundary}
             placeholder={<div></div>}
           />
+          <CodeHighlightPlugin />
           <ListPlugin />
+          <LinkPlugin />
+          <TablePlugin />
         </div>
       </div>
     </LexicalComposer>
