@@ -1,7 +1,7 @@
-import { Coordinate } from '../coordinate';
-import { MapProviderOptions } from '../mapProvider';
-import { ProviderMap } from '../providerMap';
-import { ProviderPin } from '../providerPin';
+import { Coordinate } from "../coordinate";
+import { MapProviderOptions } from "../mapProvider";
+import { ProviderMap } from "../providerMap";
+import { ProviderPin } from "../providerPin";
 
 // Map Class
 
@@ -59,9 +59,7 @@ const AppleMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(AppleMap)
   .withPinClass(ApplePin)
-  .withProviderName('Apple')
+  .withProviderName("Apple")
   .build();
 
-export {
-  AppleMaps
-};
+export { AppleMaps };

@@ -1,9 +1,9 @@
 /** @module @yext/components-maps */
 
-import { Coordinate } from '../coordinate';
-import { MapProviderOptions } from '../mapProvider';
-import { ProviderMap } from '../providerMap';
-import { ProviderPin } from '../providerPin';
+import { Coordinate } from "../coordinate";
+import { MapProviderOptions } from "../mapProvider";
+import { ProviderMap } from "../providerMap";
+import { ProviderPin } from "../providerPin";
 
 // Map Class
 
@@ -20,11 +20,11 @@ class LeafletMap extends ProviderMap {
     this._initMap(options);
 
     if (options.controlEnabled) {
-      this.map.zoomControl.setPosition('topright');
+      this.map.zoomControl.setPosition("topright");
     }
 
-    this.map.on('movestart', () => this._panStartHandler());
-    this.map.on('moveend', () => this._panHandler());
+    this.map.on("movestart", () => this._panStartHandler());
+    this.map.on("moveend", () => this._panHandler());
   }
 
   /**
@@ -82,14 +82,17 @@ class LeafletMap extends ProviderMap {
       zoom: 0,
       zoomControl: options.controlEnabled,
       zoomSnap: 0,
-      ...options.providerOptions
+      ...options.providerOptions,
     });
 
     const params = options.providerOptions;
-    const tileLayerSrc = params.tileLayerSrc || 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}';
+    const tileLayerSrc =
+      params.tileLayerSrc ||
+      "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}";
     const tileLayerConfig = params.tileLayerOptions || {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      id: 'mapbox/streets-v11',
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      id: "mapbox/streets-v11",
     };
 
     tileLayerConfig.accessToken = this.constructor.apiKey;
@@ -113,9 +116,9 @@ class LeafletPin extends ProviderPin {
 
     this.pin = new L.marker();
 
-    this.pin.on('click', () => this._clickHandler());
-    this.pin.on('mouseover', () => this._hoverHandler(true));
-    this.pin.on('mouseout', () => this._hoverHandler(false));
+    this.pin.on("click", () => this._clickHandler());
+    this.pin.on("mouseover", () => this._hoverHandler(true));
+    this.pin.on("mouseout", () => this._hoverHandler(false));
     // GENERATOR TODO focus handler (after HTML pin support)
   }
 
@@ -147,42 +150,42 @@ class LeafletPin extends ProviderPin {
     const anchorX = pinProperties.getAnchorX();
     const anchorY = pinProperties.getAnchorY();
 
-    this.pin.setIcon(new L.icon({
-      iconUrl: this._icons[pinProperties.getIcon()],
-      iconSize: [width, height],
-      iconAnchor: [anchorX * width, anchorY * height],
-      className: pinProperties.getClass()
-    }));
+    this.pin.setIcon(
+      new L.icon({
+        iconUrl: this._icons[pinProperties.getIcon()],
+        iconSize: [width, height],
+        iconAnchor: [anchorX * width, anchorY * height],
+        className: pinProperties.getClass(),
+      })
+    );
     this.pin.setZIndexOffset(pinProperties.getZIndex());
   }
 }
 
 // Load Function
 
- /**
-  * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
-  * on {@link module:@yext/components-maps~LeafletMaps LeafletMaps}.
-  * @alias module:@yext/components-maps~loadLeafletMaps
-  * @param {function} resolve Callback with no arguments called when the load finishes successfully
-  * @param {function} reject Callback with no arguments called when the load fails
-  * @param {string} apiKey Provider API key
-  * @param {Object} options Additional provider-specific options
-  * @param {string} [options.version='1.7.1'] API version
-  * @see module:@yext/components-maps~ProviderLoadFunction
-  */
-function load(resolve, reject, apiKey, {
-  version = '1.7.1'
-} = {}) {
+/**
+ * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
+ * on {@link module:@yext/components-maps~LeafletMaps LeafletMaps}.
+ * @alias module:@yext/components-maps~loadLeafletMaps
+ * @param {function} resolve Callback with no arguments called when the load finishes successfully
+ * @param {function} reject Callback with no arguments called when the load fails
+ * @param {string} apiKey Provider API key
+ * @param {Object} options Additional provider-specific options
+ * @param {string} [options.version='1.7.1'] API version
+ * @see module:@yext/components-maps~ProviderLoadFunction
+ */
+function load(resolve, reject, apiKey, { version = "1.7.1" } = {}) {
   const baseUrl = `https://unpkg.com/leaflet@${version}/dist/leaflet`;
 
   LeafletMap.apiKey = apiKey;
 
-  const mapStyle = document.createElement('link');
-  mapStyle.rel = 'stylesheet';
-  mapStyle.href = baseUrl + '.css';
+  const mapStyle = document.createElement("link");
+  mapStyle.rel = "stylesheet";
+  mapStyle.href = baseUrl + ".css";
 
-  const mapScript = document.createElement('script');
-  mapScript.src = baseUrl + '.js';
+  const mapScript = document.createElement("script");
+  mapScript.src = baseUrl + ".js";
   mapScript.onload = () => resolve();
 
   document.head.appendChild(mapStyle);
@@ -198,9 +201,7 @@ const LeafletMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(LeafletMap)
   .withPinClass(LeafletPin)
-  .withProviderName('Leaflet')
+  .withProviderName("Leaflet")
   .build();
 
-export {
-  LeafletMaps
-};
+export { LeafletMaps };

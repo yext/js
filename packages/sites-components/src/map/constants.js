@@ -9,10 +9,10 @@
  * @readonly
  */
 const Unit = Object.freeze({
-  DEGREE: Symbol('deg'),
-  KILOMETER: Symbol('km'),
-  MILE: Symbol('mi'),
-  RADIAN: Symbol('r')
+  DEGREE: Symbol("deg"),
+  KILOMETER: Symbol("km"),
+  MILE: Symbol("mi"),
+  RADIAN: Symbol("r"),
 });
 
 /**
@@ -22,8 +22,8 @@ const Unit = Object.freeze({
  * @readonly
  */
 const Projection = Object.freeze({
-  MERCATOR: Symbol('mercator'),
-  SPHERICAL: Symbol('spherical')
+  MERCATOR: Symbol("mercator"),
+  SPHERICAL: Symbol("spherical"),
 });
 
 /**
@@ -37,9 +37,4 @@ const EARTH_RADIUS_MILES = 3959;
  */
 const EARTH_RADIUS_KILOMETERS = 6371;
 
-export {
-  Unit,
-  Projection,
-  EARTH_RADIUS_MILES,
-  EARTH_RADIUS_KILOMETERS
-};
+export { Unit, Projection, EARTH_RADIUS_MILES, EARTH_RADIUS_KILOMETERS };

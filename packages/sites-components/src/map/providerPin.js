@@ -1,8 +1,8 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Type, assertType, assertInstance } from './util/assertions';
-import { MapProvider } from './mapProvider';
+import { Type, assertType, assertInstance } from "./util/assertions";
+import { MapProvider } from "./mapProvider";
 
 /**
  * {@link module:@yext/components-maps~ProviderPin ProviderPin} options class
@@ -17,8 +17,8 @@ class ProviderPinOptions {
     this.providerPinClass = provider.getPinClass();
 
     this.clickHandler = () => {};
-    this.focusHandler = focused => {};
-    this.hoverHandler = hovered => {};
+    this.focusHandler = (focused) => {};
+    this.hoverHandler = (hovered) => {};
     this.icons = {};
   }
 
@@ -105,7 +105,7 @@ class ProviderPin {
    * @param {module:@yext/components-tsx-geo~Coordinate} coordinate The position of the pin
    */
   setCoordinate(coordinate) {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -116,7 +116,7 @@ class ProviderPin {
    *   not shown on any map
    */
   setMap(newMap, currentMap) {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -125,19 +125,19 @@ class ProviderPin {
    * @see module:@yext/components-maps~PinProperties
    */
   setProperties(pinProperties) {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 }
 
 const htmlPinBaseStyle = Object.freeze({
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'contain',
-  left: '0',
-  outline: 'none',
-  pointerEvents: 'auto',
-  position: 'absolute',
-  top: '0'
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "contain",
+  left: "0",
+  outline: "none",
+  pointerEvents: "auto",
+  position: "absolute",
+  top: "0",
 });
 
 /**
@@ -163,15 +163,15 @@ class HTMLProviderPin extends ProviderPin {
   constructor(options) {
     super(options);
 
-    this._pinEl = document.createElement('button');
+    this._pinEl = document.createElement("button");
     Object.assign(this._pinEl.style, this.constructor.baseStyle);
 
-    this._pinAlt = document.createElement('span');
-    this._pinAlt.classList.add('sr-only');
+    this._pinAlt = document.createElement("span");
+    this._pinAlt.classList.add("sr-only");
     this._pinEl.appendChild(this._pinAlt);
 
-    this._wrapper = document.createElement('div');
-    this._wrapper.style.pointerEvents = 'none';
+    this._wrapper = document.createElement("div");
+    this._wrapper.style.pointerEvents = "none";
     this._wrapper.appendChild(this._pinEl);
 
     this.addListeners();
@@ -181,24 +181,24 @@ class HTMLProviderPin extends ProviderPin {
    * Adds click, hover, and focus event listeners to the wrapper element
    */
   addListeners() {
-    this._wrapper.addEventListener('click', () => this._clickHandler());
-    this._wrapper.addEventListener('focusin', () => this._focusHandler(true));
-    this._wrapper.addEventListener('focusout', () => this._focusHandler(false));
-    this._wrapper.addEventListener('mouseover', () => this._hoverHandler(true));
-    this._wrapper.addEventListener('mouseout', () => this._hoverHandler(false));
+    this._wrapper.addEventListener("click", () => this._clickHandler());
+    this._wrapper.addEventListener("focusin", () => this._focusHandler(true));
+    this._wrapper.addEventListener("focusout", () => this._focusHandler(false));
+    this._wrapper.addEventListener("mouseover", () => this._hoverHandler(true));
+    this._wrapper.addEventListener("mouseout", () => this._hoverHandler(false));
   }
 
   /**
    * @returns {HTMLElement} HTML button element for pin element
    */
-   getPinElement() {
+  getPinElement() {
     return this._pinEl;
   }
 
   /**
    * @returns {HTMLElement} HTML button element for wrapper element
    */
-   getWrapperElement() {
+  getWrapperElement() {
     return this._wrapper;
   }
 
@@ -213,14 +213,14 @@ class HTMLProviderPin extends ProviderPin {
     const element = pinProperties.getElement() || this._pinEl;
     const zIndex = pinProperties.getZIndex();
 
-    element.style.pointerEvents = 'auto';
+    element.style.pointerEvents = "auto";
 
     if (this._wrapper) {
       this._wrapper.style.zIndex = zIndex;
-      this._wrapper.setAttribute('class', className);
+      this._wrapper.setAttribute("class", className);
 
       if (element != this._wrapper.children[0]) {
-        this._wrapper.children[0].style.pointerEvents = '';
+        this._wrapper.children[0].style.pointerEvents = "";
         this._wrapper.removeChild(this._wrapper.children[0]);
         this._wrapper.appendChild(element);
       }
@@ -240,18 +240,14 @@ class HTMLProviderPin extends ProviderPin {
     const width = pinProperties.getWidth();
 
     Object.assign(this._pinEl.style, {
-      backgroundImage: icon ? `url("${icon}")` : '',
-      height: height + 'px',
+      backgroundImage: icon ? `url("${icon}")` : "",
+      height: height + "px",
       transform: `translate(${-100 * anchorX}%, ${-100 * anchorY}%)`,
-      width: width + 'px'
+      width: width + "px",
     });
 
     this._pinAlt.innerText = srText;
   }
 }
 
-export {
-  ProviderPinOptions,
-  ProviderPin,
-  HTMLProviderPin
-};
+export { ProviderPinOptions, ProviderPin, HTMLProviderPin };

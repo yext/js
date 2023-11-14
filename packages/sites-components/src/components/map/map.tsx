@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import classnames from "classnames";
 import { GoogleMaps } from "../../map/providers/google";
-import {
-  Map as MapType,
-  MapOptions,
-} from "../../map/map";
+import { Map as MapType, MapOptions } from "../../map/map";
 import { GeoBounds } from "../../map/geoBounds";
 import { Coordinate } from "../../map/coordinate";
 import type { MapProps, MapContextType } from "./types";

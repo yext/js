@@ -2,11 +2,11 @@
 
 /** @module @yext/components-maps */
 
-import { Coordinate } from '../coordinate';
-import { LoadScript } from '../performance/loadContent';
-import { MapProviderOptions } from '../mapProvider';
-import { ProviderMap } from '../providerMap';
-import { HTMLProviderPin } from '../providerPin';
+import { Coordinate } from "../coordinate";
+import { LoadScript } from "../performance/loadContent";
+import { MapProviderOptions } from "../mapProvider";
+import { ProviderMap } from "../providerMap";
+import { HTMLProviderPin } from "../providerPin";
 
 // Map Class
 
@@ -18,19 +18,19 @@ function initPinOverlayClass() {
     constructor() {
       super({ beneathLabels: false });
 
-      this._container = document.createElement('div');
+      this._container = document.createElement("div");
       this._map = null;
       this._pins = new Set();
       this._viewChangeEventHandler = null;
 
-      this._container.style.position = 'absolute';
-      this._container.style.left = '0';
-      this._container.style.top = '0';
+      this._container.style.position = "absolute";
+      this._container.style.left = "0";
+      this._container.style.top = "0";
     }
 
     addPin(pin) {
       this._pins.add(pin);
-      pin._wrapper.style.position = 'absolute';
+      pin._wrapper.style.position = "absolute";
       this._container.appendChild(pin._wrapper);
 
       if (this._map) {
@@ -44,7 +44,11 @@ function initPinOverlayClass() {
     }
 
     onLoad() {
-      this._viewChangeEventHandler = Microsoft.Maps.Events.addHandler(this._map, 'viewchange', () => this.updatePinPositions());
+      this._viewChangeEventHandler = Microsoft.Maps.Events.addHandler(
+        this._map,
+        "viewchange",
+        () => this.updatePinPositions()
+      );
       this.updatePinPositions();
     }
 
@@ -63,13 +67,16 @@ function initPinOverlayClass() {
         return;
       }
 
-      const topLeft = this._map.tryLocationToPixel(pin._location, Microsoft.Maps.PixelReference.control);
-      pin._wrapper.style.left = topLeft.x + 'px';
-      pin._wrapper.style.top = topLeft.y + 'px';
+      const topLeft = this._map.tryLocationToPixel(
+        pin._location,
+        Microsoft.Maps.PixelReference.control
+      );
+      pin._wrapper.style.left = topLeft.x + "px";
+      pin._wrapper.style.top = topLeft.y + "px";
     }
 
     updatePinPositions() {
-      this._pins.forEach(pin => this.updatePinPosition(pin));
+      this._pins.forEach((pin) => this.updatePinPosition(pin));
     }
   }
 
@@ -94,14 +101,18 @@ class BingMap extends ProviderMap {
       showMapTypeSelector: false,
       showScalebar: false,
       showTrafficButton: false,
-      ...options.providerOptions
+      ...options.providerOptions,
     });
 
     this.pinOverlay = new PinOverlay(this.map);
     this.map.layers.insert(this.pinOverlay);
 
-    Microsoft.Maps.Events.addHandler(this.map, 'viewchangestart', () => this._panStartHandler());
-    Microsoft.Maps.Events.addHandler(this.map, 'viewchangeend', () => this._panHandler());
+    Microsoft.Maps.Events.addHandler(this.map, "viewchangestart", () =>
+      this._panStartHandler()
+    );
+    Microsoft.Maps.Events.addHandler(this.map, "viewchangeend", () =>
+      this._panHandler()
+    );
   }
 
   /**
@@ -122,7 +133,10 @@ class BingMap extends ProviderMap {
    * @inheritdoc
    */
   setCenter(coordinate, animated) {
-    const center = new Microsoft.Maps.Location(coordinate.latitude, coordinate.longitude);
+    const center = new Microsoft.Maps.Location(
+      coordinate.latitude,
+      coordinate.longitude
+    );
     this.map.setView({ center });
     this.pinOverlay.updatePinPositions();
   }
@@ -167,7 +181,10 @@ class BingPin extends HTMLProviderPin {
    * @inheritdoc
    */
   setCoordinate(coordinate) {
-    this._location = new Microsoft.Maps.Location(coordinate.latitude, coordinate.longitude);
+    this._location = new Microsoft.Maps.Location(
+      coordinate.latitude,
+      coordinate.longitude
+    );
 
     if (this._map) {
       this._map.getProviderMap().pinOverlay.updatePinPosition(this);
@@ -193,8 +210,8 @@ class BingPin extends HTMLProviderPin {
 // Load Function
 
 // Random token obtained from `echo BingMapsCallbackYext | md5 | cut -c -8`
-const globalCallback = 'BingMapsCallback_593d7d33';
-const baseUrl = 'https://www.bing.com/api/maps/mapcontrol';
+const globalCallback = "BingMapsCallback_593d7d33";
+const baseUrl = "https://www.bing.com/api/maps/mapcontrol";
 
 /**
  * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
@@ -207,9 +224,7 @@ const baseUrl = 'https://www.bing.com/api/maps/mapcontrol';
  * @param {Object<string,string>} [options.params={}] Additional API params
  * @see module:@yext/components-maps~ProviderLoadFunction
  */
-function load(resolve, reject, apiKey, {
-  params = {}
-} = {}) {
+function load(resolve, reject, apiKey, { params = {} } = {}) {
   window[globalCallback] = () => {
     initPinOverlayClass();
     resolve();
@@ -218,10 +233,16 @@ function load(resolve, reject, apiKey, {
   const apiParams = {
     callback: globalCallback,
     key: apiKey,
-    ...params
+    ...params,
   };
 
-  LoadScript(baseUrl + '?' + Object.entries(apiParams).map(([key, value]) => key + '=' + value).join('&'));
+  LoadScript(
+    baseUrl +
+      "?" +
+      Object.entries(apiParams)
+        .map(([key, value]) => key + "=" + value)
+        .join("&")
+  );
 }
 
 // Exports
@@ -233,9 +254,7 @@ const BingMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(BingMap)
   .withPinClass(BingPin)
-  .withProviderName('Bing')
+  .withProviderName("Bing")
   .build();
 
-export {
-  BingMaps
-};
+export { BingMaps };

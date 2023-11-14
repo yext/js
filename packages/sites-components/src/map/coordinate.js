@@ -1,4 +1,9 @@
-import { Unit, Projection, EARTH_RADIUS_MILES, EARTH_RADIUS_KILOMETERS } from './constants';
+import {
+  Unit,
+  Projection,
+  EARTH_RADIUS_MILES,
+  EARTH_RADIUS_KILOMETERS,
+} from "./constants";
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees latitude
@@ -7,7 +12,7 @@ import { Unit, Projection, EARTH_RADIUS_MILES, EARTH_RADIUS_KILOMETERS } from '.
  * @constant {string[]}
  * @default
  */
-const LATITUDE_ALIASES = ['latitude', 'lat'];
+const LATITUDE_ALIASES = ["latitude", "lat"];
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees longitude
@@ -16,7 +21,7 @@ const LATITUDE_ALIASES = ['latitude', 'lat'];
  * @constant {string[]}
  * @default
  */
-const LONGITUDE_ALIASES = ['longitude', 'lon', 'lng', 'long'];
+const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
 
 /**
  * Find a truthy or 0 value in an object, searching the given keys
@@ -43,15 +48,17 @@ function findValue(object, keys) {
  */
 function forceNumber(value) {
   switch (typeof value) {
-    case 'string':
-    case 'number':
+    case "string":
+    case "number":
       const parsed = Number.parseFloat(value);
       if (Number.isNaN(parsed)) {
         throw new Error(`'${value}' must be convertible to a Number'`);
       }
       return parsed;
     default:
-      throw new Error(`typeof '${value}' must be a number or a string that can be converted to a number, is '${typeof value}'`);
+      throw new Error(
+        `typeof '${value}' must be a number or a string that can be converted to a number, is '${typeof value}'`
+      );
   }
 }
 
@@ -62,7 +69,7 @@ function forceNumber(value) {
  * @returns {number} Radians
  */
 function degreesToRadians(degrees) {
-  return degrees * Math.PI / 180;
+  return (degrees * Math.PI) / 180;
 }
 
 /**
@@ -72,7 +79,7 @@ function degreesToRadians(degrees) {
  * @returns {number} Degrees
  */
 function radiansToDegrees(radians) {
-  return radians / Math.PI * 180;
+  return (radians / Math.PI) * 180;
 }
 
 /**
@@ -89,7 +96,11 @@ function haversineDistance(source, dest) {
   const deltaLat = lat2Rads - lat1Rads;
   const deltaLon = degreesToRadians(dest.longitude - source.longitude);
 
-  const a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(lat1Rads) * Math.cos(lat2Rads) * Math.pow(Math.sin(deltaLon / 2), 2);
+  const a =
+    Math.pow(Math.sin(deltaLat / 2), 2) +
+    Math.cos(lat1Rads) *
+      Math.cos(lat2Rads) *
+      Math.pow(Math.sin(deltaLon / 2), 2);
   return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -104,8 +115,8 @@ function haversineDistance(source, dest) {
  * @returns {number} Distance in radians of longitude
  */
 function mercatorLatDistanceInRadians(latitudeA, latitudeB) {
-  const aTan = Math.tan(Math.PI / 360 * (latitudeA + 90));
-  const bTan = Math.tan(Math.PI / 360 * (latitudeB + 90));
+  const aTan = Math.tan((Math.PI / 360) * (latitudeA + 90));
+  const bTan = Math.tan((Math.PI / 360) * (latitudeB + 90));
 
   return Math.log(bTan / aTan);
 }
@@ -121,10 +132,10 @@ function mercatorLatDistanceInRadians(latitudeA, latitudeB) {
  * @returns {number} The destination latitude in degrees
  */
 function mercatorLatAddRadians(startingLat, radians) {
-  const aTan = Math.tan(Math.PI / 360 * (startingLat + 90));
+  const aTan = Math.tan((Math.PI / 360) * (startingLat + 90));
   const bTan = aTan * Math.pow(Math.E, radians);
 
-  return Math.atan(bTan) * 360 / Math.PI - 90;
+  return (Math.atan(bTan) * 360) / Math.PI - 90;
 }
 
 /**
@@ -144,12 +155,12 @@ class Coordinate {
   constructor(latitudeOrObject, longitude) {
     let latitude = latitudeOrObject;
 
-    if (typeof latitudeOrObject == 'object') {
+    if (typeof latitudeOrObject == "object") {
       latitude = findValue(latitudeOrObject, LATITUDE_ALIASES);
       longitude = findValue(latitudeOrObject, LONGITUDE_ALIASES);
 
-      latitude = typeof latitude == 'function' ? latitude() : latitude;
-      longitude = typeof longitude == 'function' ? longitude() : longitude;
+      latitude = typeof latitude == "function" ? latitude() : latitude;
+      longitude = typeof longitude == "function" ? longitude() : longitude;
     }
 
     this.latitude = latitude;
@@ -180,7 +191,7 @@ class Coordinate {
    * @type {number}
    */
   get normalLon() {
-    return ((this._lon + 180) % 360 + 360) % 360 - 180;
+    return ((((this._lon + 180) % 360) + 360) % 360) - 180;
   }
 
   set latitude(newLat) {
@@ -199,9 +210,14 @@ class Coordinate {
    * @param {module:@yext/components-geo~Projection} [projection=Projection.SPHERICAL] The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    */
   add(latDist, lonDist, unit = Unit.DEGREE, projection = Projection.SPHERICAL) {
-    if (projection == Projection.MERCATOR && (unit == Unit.DEGREE || unit == Unit.RADIAN)) {
-      const latDistRad = unit == Unit.DEGREE ? degreesToRadians(latDist) : latDist;
-      const lonDistDeg = unit == Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
+    if (
+      projection == Projection.MERCATOR &&
+      (unit == Unit.DEGREE || unit == Unit.RADIAN)
+    ) {
+      const latDistRad =
+        unit == Unit.DEGREE ? degreesToRadians(latDist) : latDist;
+      const lonDistDeg =
+        unit == Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
 
       this.latitude = mercatorLatAddRadians(this.latitude, latDistRad);
       this.longitude += lonDistDeg;
@@ -213,11 +229,17 @@ class Coordinate {
           break;
         case Unit.KILOMETER:
           this.latitude += radiansToDegrees(latDist) * EARTH_RADIUS_KILOMETERS;
-          this.longitude += radiansToDegrees(lonDist) * EARTH_RADIUS_KILOMETERS * Math.cos(degreesToRadians(this.latitude));
+          this.longitude +=
+            radiansToDegrees(lonDist) *
+            EARTH_RADIUS_KILOMETERS *
+            Math.cos(degreesToRadians(this.latitude));
           break;
         case Unit.MILE:
           this.latitude += radiansToDegrees(latDist) * EARTH_RADIUS_MILES;
-          this.longitude += radiansToDegrees(lonDist) * EARTH_RADIUS_MILES * Math.cos(degreesToRadians(this.latitude));
+          this.longitude +=
+            radiansToDegrees(lonDist) *
+            EARTH_RADIUS_MILES *
+            Math.cos(degreesToRadians(this.latitude));
           break;
         case Unit.RADIAN:
           this.latitude += radiansToDegrees(latDist);
@@ -235,10 +257,18 @@ class Coordinate {
    * @returns {number} Distance in the requested unit
    */
   distanceTo(coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL) {
-    if (projection == Projection.MERCATOR && (unit == Unit.DEGREE || unit == Unit.RADIAN)) {
-      const latDist = mercatorLatDistanceInRadians(this.latitude, coordinate.latitude);
+    if (
+      projection == Projection.MERCATOR &&
+      (unit == Unit.DEGREE || unit == Unit.RADIAN)
+    ) {
+      const latDist = mercatorLatDistanceInRadians(
+        this.latitude,
+        coordinate.latitude
+      );
       const absoluteLonDist = Math.abs(coordinate.normalLon - this.normalLon);
-      const lonDist = degreesToRadians(Math.min(absoluteLonDist, 360 - absoluteLonDist));
+      const lonDist = degreesToRadians(
+        Math.min(absoluteLonDist, 360 - absoluteLonDist)
+      );
 
       const radianDist = Math.sqrt(Math.pow(latDist, 2) + Math.pow(lonDist, 2));
 
@@ -270,7 +300,11 @@ class Coordinate {
    * @returns {boolean}
    */
   equals(coordinate) {
-    return coordinate && coordinate.latitude === this.latitude && coordinate.longitude === this.longitude;
+    return (
+      coordinate &&
+      coordinate.latitude === this.latitude &&
+      coordinate.longitude === this.longitude
+    );
   }
 
   /**
@@ -283,6 +317,4 @@ class Coordinate {
   }
 }
 
-export {
-  Coordinate
-};
+export { Coordinate };

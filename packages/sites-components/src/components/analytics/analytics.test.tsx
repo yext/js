@@ -140,15 +140,15 @@ describe("Analytics", () => {
     const App = () => {
       return (
         <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
-          <AnalyticsScopeProvider name={"header"}>
-            <AnalyticsScopeProvider name={"menu"}>
+          <AnalyticsScopeProvider name="header">
+            <AnalyticsScopeProvider name="menu">
               <Link href="https://yext.com">one</Link>
             </AnalyticsScopeProvider>
-            <AnalyticsScopeProvider name={"drop down"}>
+            <AnalyticsScopeProvider name="drop down">
               <Link cta={{ link: "https://yext.com" }}>two</Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>
-          <Link href="https://yext.com" eventName={"fooclick"}>
+          <Link href="https://yext.com" eventName="fooclick">
             three
           </Link>
         </AnalyticsProvider>

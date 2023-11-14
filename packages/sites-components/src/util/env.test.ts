@@ -109,8 +109,7 @@ describe("isProduction", () => {
     runtimeSpy.mockRestore();
   });
 
-  it("returns true when browser and prod domain and multiple allowed prod domains",
-  async () => {
+  it("returns true when browser and prod domain and multiple allowed prod domains", async () => {
     const runtimeSpy = jest.spyOn(runTime, "getRuntime") as jest.MockInstance<
       any,
       any
@@ -135,8 +134,7 @@ describe("isProduction", () => {
     runtimeSpy.mockRestore();
   });
 
-  it("returns true when browser and prod domain and no prod domains specified",
-  async () => {
+  it("returns true when browser and prod domain and no prod domains specified", async () => {
     const runtimeSpy = jest.spyOn(runTime, "getRuntime") as jest.MockInstance<
       any,
       any
@@ -161,8 +159,7 @@ describe("isProduction", () => {
     runtimeSpy.mockRestore();
   });
 
-  it("returns false when browser and localhost and no prod domains specified",
-  async () => {
+  it("returns false when browser and localhost and no prod domains specified", async () => {
     const runtimeSpy = jest.spyOn(runTime, "getRuntime") as jest.MockInstance<
       any,
       any
@@ -187,8 +184,7 @@ describe("isProduction", () => {
     runtimeSpy.mockRestore();
   });
 
-  it("returns false when browser and preview domain and no prod domains specified",
-  async () => {
+  it("returns false when browser and preview domain and no prod domains specified", async () => {
     const runtimeSpy = jest.spyOn(runTime, "getRuntime") as jest.MockInstance<
       any,
       any

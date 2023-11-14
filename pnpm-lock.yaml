@@ -5533,7 +5533,7 @@ packages:
     resolution: {integrity: sha512-oD2Vg33/sttaGBSiO3xY2HQlvTooX+Ob9hYp1QBkLMIhYcXqciNVpj27U8p4b7R7Tu5uOFo1BScuPF0cngQBHA==}
     dependencies:
       '@typescript-eslint/experimental-utils': 5.62.0(eslint@8.44.0)(typescript@5.0.4)
-      '@typescript-eslint/typescript-estree': 5.61.0(typescript@5.0.4)
+      '@typescript-eslint/typescript-estree': 5.62.0(typescript@5.0.4)
       eslint-import-resolver-typescript: 2.7.1(eslint-plugin-import@2.27.5)(eslint@8.44.0)
       eslint-module-utils: 2.8.0(@typescript-eslint/parser@5.61.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.44.0)
     transitivePeerDependencies:
@@ -8624,15 +8624,6 @@ packages:
   /isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /isomorphic-unfetch@3.1.0:
-    resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
-    dependencies:
-      node-fetch: 2.6.12
-      unfetch: 4.2.0
-    transitivePeerDependencies:
-      - encoding
     dev: true
 
   /isomorphic.js@0.2.5:

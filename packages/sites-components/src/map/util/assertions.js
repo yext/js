@@ -4,17 +4,17 @@
 /**
  * @enum {string}
  */
- const Type = {
-  UNDEFINED: 'undefined',
-  NULL: 'object', // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
-  BOOLEAN: 'boolean',
-  NUMBER: 'number',
-  BIGINT: 'bigint',
-  STRING: 'string',
-  SYMBOL: 'symbol',
-  FUNCTION: 'function',
-  OBJECT: 'object'
-}
+const Type = {
+  UNDEFINED: "undefined",
+  NULL: "object", // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
+  BOOLEAN: "boolean",
+  NUMBER: "number",
+  BIGINT: "bigint",
+  STRING: "string",
+  SYMBOL: "symbol",
+  FUNCTION: "function",
+  OBJECT: "object",
+};
 
 /**
  * Assert that a value is a certain type. Returns nothing, but throws if the type does not match.
@@ -22,12 +22,14 @@
  * @param {string} type Value type
  */
 function assertType(object, type) {
-  if (typeof type != 'string') {
-    throw new Error('Assertion error: \'type\' must be a string');
+  if (typeof type != "string") {
+    throw new Error("Assertion error: 'type' must be a string");
   }
 
   if (typeof object !== type) {
-    throw new Error(`Expected an object of type '${type}' but received '${typeof object}'`)
+    throw new Error(
+      `Expected an object of type '${type}' but received '${typeof object}'`
+    );
   }
 }
 
@@ -42,17 +44,17 @@ function assertInstance(object, instanceClass) {
 
   try {
     isInstance = object instanceof instanceClass;
-  } catch(err) {
-    throw new Error('Assertion error: \'instanceClass\' is not a valid constructor');
+  } catch (err) {
+    throw new Error(
+      "Assertion error: 'instanceClass' is not a valid constructor"
+    );
   }
 
   if (!isInstance) {
-    throw new Error(`Expected an instance of '${instanceClass.name}' but received '${object.constructor.name}'`);
+    throw new Error(
+      `Expected an instance of '${instanceClass.name}' but received '${object.constructor.name}'`
+    );
   }
 }
 
-export {
-  Type,
-  assertType,
-  assertInstance
-}
+export { Type, assertType, assertInstance };

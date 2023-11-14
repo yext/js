@@ -1,13 +1,13 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Unit, Projection } from '../map/constants';
-import { Coordinate } from '../map/coordinate';
-import { GeoBounds } from '../map/geoBounds';
-import { Type, assertType, assertInstance } from './util/assertions';
-import { MapPinOptions } from './mapPin';
-import { MapProvider } from './mapProvider';
-import { ProviderMapOptions } from './providerMap';
+import { Unit, Projection } from "../map/constants";
+import { Coordinate } from "../map/coordinate";
+import { GeoBounds } from "../map/geoBounds";
+import { Type, assertType, assertInstance } from "./util/assertions";
+import { MapPinOptions } from "./mapPin";
+import { MapProvider } from "./mapProvider";
+import { ProviderMapOptions } from "./providerMap";
 
 /**
  * @callback PaddingFunction
@@ -44,7 +44,9 @@ const MAX_PADDING = 0.98;
  * @returns {number} The padding value as a fraction of basis
  */
 function normalizePadding(value, basis) {
-  return Math.max(typeof value == Type.FUNCTION ? value() : value || 0, 0) / basis;
+  return (
+    Math.max(typeof value == Type.FUNCTION ? value() : value || 0, 0) / basis
+  );
 }
 
 /**
@@ -59,9 +61,14 @@ class MapOptions {
     this.defaultCenter = new Coordinate(39.83, -98.58); // Center of the USA
     this.defaultZoom = 4;
     this.legendPins = [];
-    this.padding = { bottom: () => 50, left: () => 50, right: () => 50, top: () => 50 };
+    this.padding = {
+      bottom: () => 50,
+      left: () => 50,
+      right: () => 50,
+      top: () => 50,
+    };
     this.panHandler = (previousBounds, currentBounds) => {};
-    this.panStartHandler = currentBounds => {};
+    this.panStartHandler = (currentBounds) => {};
     this.provider = null;
     this.providerOptions = {};
     this.singlePinZoom = 14;
@@ -82,7 +89,7 @@ class MapOptions {
    *   when calling {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates} with an empty array
    * @returns {module:@yext/components-maps~MapOptions}
    */
-   withDefaultCenter(defaultCenter) {
+  withDefaultCenter(defaultCenter) {
     this.defaultCenter = new Coordinate(defaultCenter);
     return this;
   }
@@ -92,7 +99,7 @@ class MapOptions {
    *   with an empty array
    * @returns {module:@yext/components-maps~MapOptions}
    */
-   withDefaultZoom(defaultZoom) {
+  withDefaultZoom(defaultZoom) {
     this.defaultZoom = defaultZoom;
     return this;
   }
@@ -220,7 +227,9 @@ class Map {
     assertInstance(options.wrapper, HTMLElement);
 
     if (!options.provider.loaded) {
-      throw new Error(`MapProvider '${options.provider.getProviderName()}' is not loaded. The MapProvider must be loaded before calling Map constructor.`);
+      throw new Error(
+        `MapProvider '${options.provider.getProviderName()}' is not loaded. The MapProvider must be loaded before calling Map constructor.`
+      );
     }
 
     this._defaultCenter = options.defaultCenter;
@@ -271,7 +280,12 @@ class Map {
    */
   fitCoordinates(coordinates, animated = false, maxZoom = this._singlePinZoom) {
     if (coordinates.length) {
-      this.setBounds(GeoBounds.fit(coordinates), animated, this._padding, maxZoom);
+      this.setBounds(
+        GeoBounds.fit(coordinates),
+        animated,
+        this._padding,
+        maxZoom
+      );
     } else {
       this.setZoomCenter(this._defaultZoom, this._defaultCenter, animated);
     }
@@ -295,10 +309,20 @@ class Map {
       const height = pixelHeight * degreesPerPixel;
 
       this._cachedBounds = new GeoBounds(center, center);
-      this._cachedBounds.ne.add(height / 2, width / 2, Unit.DEGREE, Projection.MERCATOR);
-      this._cachedBounds.sw.add(-height / 2, -width / 2, Unit.DEGREE, Projection.MERCATOR);
+      this._cachedBounds.ne.add(
+        height / 2,
+        width / 2,
+        Unit.DEGREE,
+        Projection.MERCATOR
+      );
+      this._cachedBounds.sw.add(
+        -height / 2,
+        -width / 2,
+        Unit.DEGREE,
+        Projection.MERCATOR
+      );
 
-      this.moving().then(() => this._cachedBounds = null);
+      this.moving().then(() => (this._cachedBounds = null));
     }
 
     return new GeoBounds(this._cachedBounds.sw, this._cachedBounds.ne);
@@ -376,10 +400,13 @@ class Map {
       const previousBounds = this._currentBounds;
       this._currentBounds = this.getBounds();
 
-      this._panHandler(previousBounds, new GeoBounds(
-        new Coordinate(this._currentBounds.sw),
-        new Coordinate(this._currentBounds.ne)
-      ));
+      this._panHandler(
+        previousBounds,
+        new GeoBounds(
+          new Coordinate(this._currentBounds.sw),
+          new Coordinate(this._currentBounds.ne)
+        )
+      );
 
       this._panHandlerRunning = false;
     });
@@ -400,10 +427,12 @@ class Map {
     this._panStartHandlerRunning = true;
 
     requestAnimationFrame(() => {
-      this._panStartHandler(new GeoBounds(
-        new Coordinate(this._currentBounds.sw),
-        new Coordinate(this._currentBounds.ne)
-      ));
+      this._panStartHandler(
+        new GeoBounds(
+          new Coordinate(this._currentBounds.sw),
+          new Coordinate(this._currentBounds.ne)
+        )
+      );
 
       this._panStartHandlerRunning = false;
     });
@@ -472,24 +501,28 @@ class Map {
 
     // Fit the bounds within the area of the map like object-fit:contain then extend the bounds
     // to fill the remaining area within the padding.
-    let newHeight = Math.max(height, width * paddingInnerHeight / paddingInnerWidth) / (1 - verticalPadding);
-    let newWidth = Math.max(width, height * paddingInnerWidth / paddingInnerHeight) / (1 - horizontalPadding);
+    let newHeight =
+      Math.max(height, (width * paddingInnerHeight) / paddingInnerWidth) /
+      (1 - verticalPadding);
+    let newWidth =
+      Math.max(width, (height * paddingInnerWidth) / paddingInnerHeight) /
+      (1 - horizontalPadding);
 
     // Calculate the zoom based on the pixel width of the map and the degree width of the bounds.
-    let zoom = Math.log2(pixelWidth * 360 / newWidth) - 8;
+    let zoom = Math.log2((pixelWidth * 360) / newWidth) - 8;
 
     // If the calculated zoom is greater the max zoom, use the max zoom and calculate the map bounds
     // width and height based on the max zoom.
     if (zoom > maxZoom) {
       zoom = maxZoom;
-      newWidth = pixelWidth * 360 / 2 ** (zoom + 8);
-      newHeight = newWidth * pixelHeight / pixelWidth;
+      newWidth = (pixelWidth * 360) / 2 ** (zoom + 8);
+      newHeight = (newWidth * pixelHeight) / pixelWidth;
     }
 
     // Move the center to the center of the area within the padding.
     const center = bounds.getCenter(Projection.MERCATOR);
-    const deltaLat = (paddingTop - paddingBottom) / 2 * newHeight;
-    const deltaLon = (paddingRight - paddingLeft) / 2 * newWidth;
+    const deltaLat = ((paddingTop - paddingBottom) / 2) * newHeight;
+    const deltaLon = ((paddingRight - paddingLeft) / 2) * newWidth;
 
     center.add(deltaLat, deltaLon, Unit.DEGREE, Projection.MERCATOR);
 
@@ -525,7 +558,7 @@ class Map {
     bottom = this._padding.bottom,
     left = this._padding.left,
     right = this._padding.right,
-    top = this._padding.top
+    top = this._padding.top,
   }) {
     this._padding = { bottom, left, right, top };
     return this;
@@ -575,7 +608,9 @@ class Map {
    */
   _setIdle() {
     this._resolveMoving();
-    this._movingPromise = new Promise(resolve => this._resolveMoving = resolve);
+    this._movingPromise = new Promise(
+      (resolve) => (this._resolveMoving = resolve)
+    );
     this._resolveIdle();
   }
 
@@ -585,12 +620,9 @@ class Map {
    */
   _setMoving() {
     this._resolveIdle();
-    this._idlePromise = new Promise(resolve => this._resolveIdle = resolve);
+    this._idlePromise = new Promise((resolve) => (this._resolveIdle = resolve));
     this._resolveMoving();
   }
 }
 
-export {
-  MapOptions,
-  Map
-};
+export { MapOptions, Map };
