@@ -1,6 +1,7 @@
-const {useLexicalComposerContext} = /** @type {useLexicalComposerContextJS} */ (require('@lexical/react/LexicalComposerContext'));
-const {$wrapNodeInElement, mergeRegister} = /** @type {LexicalUtilsJS} */ (require('@lexical/utils'));
-const {
+import { useEffect } from "react";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $wrapNodeInElement, mergeRegister } from "@lexical/utils";
+import {
   $createRangeSelection,
   $getSelection,
   $isNodeSelection,
@@ -15,33 +16,40 @@ const {
   DRAGSTART_COMMAND,
   DROP_COMMAND,
   createCommand,
-} = /** @type {LexicalJS} */ (require('lexical'));
+  LexicalEditor,
+} from "lexical";
 import {
   $createImageNode,
   $isImageNode,
   ImageNode,
-} from '/src/com/yext/knowledgeapplications/js/field/rich-text-v2/nodes/ImageNode';
-const CAN_USE_DOM = typeof window !== 'undefined'
-  && typeof window.document !== 'undefined'
-  && typeof window.document.createElement !== 'undefined';
-const getDOMSelection = targetWindow => CAN_USE_DOM
-  ? (targetWindow || window).getSelection() : null;
-export const INSERT_IMAGE_COMMAND = createCommand('INSERT_IMAGE_COMMAND');
+  SerializedImageNode,
+} from "../imageNode/index.js";
+
+const CAN_USE_DOM =
+  typeof window !== "undefined" &&
+  typeof window.document !== "undefined" &&
+  typeof window.document.createElement !== "undefined";
+const getDOMSelection = (targetWindow: (Window & typeof globalThis) | null) =>
+  CAN_USE_DOM ? (targetWindow || window).getSelection() : null;
+const INSERT_IMAGE_COMMAND = createCommand<SerializedImageNode>(
+  "INSERT_IMAGE_COMMAND"
+);
+
 /**
  * Image Plugin used by Lexical Composer
  *
  * @author Ruihao Zhu (rzhu@yext.com)
  */
-export default function ImagePlugin() {
+export function ImagePlugin() {
   const [editor] = useLexicalComposerContext();
-  React.useEffect(() => {
+  useEffect(() => {
     if (!editor.hasNodes([ImageNode])) {
-      throw new Error('ImagePlugin: ImageNode not registered on editor');
+      throw new Error("ImagePlugin: ImageNode not registered on editor");
     }
     return mergeRegister(
       editor.registerCommand(
         INSERT_IMAGE_COMMAND,
-        payload => {
+        (payload) => {
           const imageNode = $createImageNode(payload);
           $insertNodes([imageNode]);
           if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
@@ -49,37 +57,38 @@ export default function ImagePlugin() {
           }
           return true;
         },
-        COMMAND_PRIORITY_EDITOR,
+        COMMAND_PRIORITY_EDITOR
       ),
       editor.registerCommand(
         DRAGSTART_COMMAND,
-        event => {
+        (event) => {
           return onDragStart(event);
         },
-        COMMAND_PRIORITY_HIGH,
+        COMMAND_PRIORITY_HIGH
       ),
       editor.registerCommand(
         DRAGOVER_COMMAND,
-        event => {
+        (event) => {
           return onDragover(event);
         },
-        COMMAND_PRIORITY_LOW,
+        COMMAND_PRIORITY_LOW
       ),
       editor.registerCommand(
         DROP_COMMAND,
-        event => {
+        (event) => {
           return onDrop(event, editor);
         },
-        COMMAND_PRIORITY_HIGH,
-      ),
+        COMMAND_PRIORITY_HIGH
+      )
     );
   }, [editor]);
   return null;
 }
-function onDragStart(event) {
+
+function onDragStart(event: DragEvent) {
   const TRANSPARENT_IMAGE =
-    'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-  const img = document.createElement('img');
+    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+  const img = document.createElement("img");
   img.src = TRANSPARENT_IMAGE;
   const node = getImageNodeInSelection();
   if (!node) {
@@ -89,10 +98,10 @@ function onDragStart(event) {
   if (!dataTransfer) {
     return false;
   }
-  dataTransfer.setData('text/plain', '_');
+  dataTransfer.setData("text/plain", "_");
   dataTransfer.setDragImage(img, 0, 0);
   dataTransfer.setData(
-    'application/x-lexical-drag',
+    "application/x-lexical-drag",
     JSON.stringify({
       data: {
         altText: node.__altText,
@@ -102,12 +111,13 @@ function onDragStart(event) {
         src: node.__src,
         width: node.__width,
       },
-      type: 'image',
-    }),
+      type: "image",
+    })
   );
   return true;
 }
-function onDragover(event) {
+
+function onDragover(event: DragEvent) {
   const node = getImageNodeInSelection();
   if (!node) {
     return false;
@@ -117,7 +127,8 @@ function onDragover(event) {
   }
   return true;
 }
-function onDrop(event, editor) {
+
+function onDrop(event: DragEvent, editor: LexicalEditor) {
   const node = getImageNodeInSelection();
   if (!node) {
     return false;
@@ -139,6 +150,7 @@ function onDrop(event, editor) {
   }
   return true;
 }
+
 function getImageNodeInSelection() {
   const selection = $getSelection();
   if (!$isNodeSelection(selection)) {
@@ -148,39 +160,46 @@ function getImageNodeInSelection() {
   const node = nodes[0];
   return $isImageNode(node) ? node : null;
 }
-function getDragImageData(event) {
-  const dragData = event.dataTransfer?.getData('application/x-lexical-drag');
+
+function getDragImageData(event: DragEvent) {
+  const dragData = event.dataTransfer?.getData("application/x-lexical-drag");
   if (!dragData) {
     return null;
   }
-  const {type, data} = JSON.parse(dragData);
-  if (type !== 'image') {
+  const { type, data } = JSON.parse(dragData);
+  if (type !== "image") {
     return null;
   }
   return data;
 }
-function canDropImage(event) {
+
+function canDropImage(event: DragEvent) {
   const target = event.target;
   return !!(
-    target
-    && target instanceof HTMLElement
-    && !target.closest('code, span.yext-default-richtextv2-theme__image')
-    && target.parentElement
+    target &&
+    target instanceof HTMLElement &&
+    !target.closest("code, span.yext-default-richtextv2-theme__image") &&
+    target.parentElement
   );
 }
-function getDragSelection(event) {
+
+function getDragSelection(event: DragEvent) {
   let range;
   const target = event.target;
   const targetWindow =
-    target == null
+    target === null || !(target instanceof Node)
       ? null
       : target.nodeType === 9
-        ? (target).defaultView
-    : (target).ownerDocument.defaultView;
+      ? (target as Document).defaultView
+      : (target as HTMLElement).ownerDocument.defaultView;
   const domSelection = getDOMSelection(targetWindow);
   if (document.caretRangeFromPoint) {
     range = document.caretRangeFromPoint(event.clientX, event.clientY);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
   } else if (event.rangeParent && domSelection !== null) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     domSelection.collapse(event.rangeParent, event.rangeOffset || 0);
     range = domSelection.getRangeAt(0);
   } else {

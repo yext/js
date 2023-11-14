@@ -1,5 +1,6 @@
+import { $applyNodeReplacement } from "lexical";
+import { ImageNode } from "./ImageNode.js";
 
-/** @return {ImageNode} */
 export function $createImageNode({
   altText,
   height,
@@ -7,20 +8,19 @@ export function $createImageNode({
   src,
   width,
   key,
-  originalSrc,
-}) {
+}: {
+  src: string;
+  altText: string;
+  maxWidth?: number;
+  width?: number | "inherit";
+  height?: number | "inherit";
+  key?: string;
+}): ImageNode {
   return $applyNodeReplacement(
-    new ImageNode(
-      src,
-      altText,
-      maxWidth,
-      width,
-      height,
-      key,
-      originalSrc,
-    ),
+    new ImageNode(src, altText, maxWidth, width, height, key)
   );
 }
-export function $isImageNode(node) {
+
+export function $isImageNode(node: unknown) {
   return node instanceof ImageNode;
 }

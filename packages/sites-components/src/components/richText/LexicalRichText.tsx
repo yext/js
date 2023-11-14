@@ -6,7 +6,11 @@ import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
-import { CodeHighlightPlugin } from "./plugins/index.js";
+import {
+  CodeHighlightPlugin,
+  ImagePlugin,
+  ListMaxIndentLevelPlugin,
+} from "./plugins/index.js";
 import { LexicalRichTextProps } from "./types.js";
 import { generateConfig } from "./methods.js";
 import styles from "./lexical.module.css";
@@ -35,6 +39,8 @@ export function LexicalRichText({
           <ListPlugin />
           <LinkPlugin />
           <TablePlugin />
+          <ImagePlugin />
+          <ListMaxIndentLevelPlugin maxDepth={7} />
         </div>
       </div>
     </LexicalComposer>
