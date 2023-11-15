@@ -1,4 +1,4 @@
-@layer components {
+.xYextDebug {
     [data-ya-track] {
         outline: 1px dashed blue;
         scroll-margin: 32px;
@@ -166,4 +166,3 @@
         z-index: 99998;
     }
 }
-

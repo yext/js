@@ -56,7 +56,7 @@ export function AnalyticsProvider(
     <AnalyticsContext.Provider value={analytics}>
       {children}
     </AnalyticsContext.Provider>
-    <AnalyticsDebugger enableDebugging={enableDebugging ?? enableDebuggingDefault} />
+    {(enableDebugging ?? enableDebuggingDefault) ? <AnalyticsDebugger /> : null}
     </>
   );
 }

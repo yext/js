@@ -4,48 +4,30 @@ import { getRuntime } from "../../util";
 import c from "classnames";
 import "./debugger.css";
 
-/**
- * - DONE: Show tooltip for all events within scope when scope button is clicked
- * - DONE: Show tooltip for single event when event button is clicked
- * 
- * - Only want to add debugger once if there are multuple providers
- *      - One solution for this would be to export the AnalyticsDebugger as an external component that can be added as a child once to a provider.
- *      - 
- * - Tooltip overlap / offscreen fix
- * - DONE: createPortal to body
- */
-
 declare global {
-    interface Window {
-        debuggerActive: boolean;
-    }
+    interface Window { debuggerInitialized: boolean; }
 }
 
-interface AnalyticsDebuggerProps {
-    enableDebugging: boolean;
+export function AnalyticsDebugger() {
+    // If multiple AnalyticsProviders are rendered, ensure that only one debugger is created.
+    if (getRuntime().name !== "browser" || window.hasOwnProperty("debuggerInitialized")) {
+        return null;
+    }
+
+    window.debuggerInitialized = true;
+    return createPortal(<AnalyticsDebuggerInternal />, document.body);
 }
 
 type EventNode = {
     scope: HTMLElement;
     events: HTMLElement[];
 };
-
 type EventData = Record<string,EventNode>;
-type Tabs = "Events"|"Scopes";
+type Tabs = "Events" | "Scopes";
 type Tooltip = {
     eventEl: HTMLElement;
     eventName: string;
     key: string;
-}
-
-export function AnalyticsDebugger(props: AnalyticsDebuggerProps) {
-    const { enableDebugging } = props;
-
-    if (!enableDebugging || getRuntime().name !== "browser") {
-        return null;
-    }
-
-    return createPortal(<AnalyticsDebuggerInternal />, document.body);
 }
 
 // Track scope / event elements.
@@ -58,18 +40,8 @@ export function AnalyticsDebuggerInternal() {
     // Track the event elements that need to have a tooltip added.
     const [toolTips, setToolTips] = useState<Tooltip[]>([]);
 
-    // If a user renders multiple AnalyticsProviders then we only want to show one debugger.
-    const [isFirst, setIsFirst] = useState(false);
-
     useEffect(() => {
-        // Scope styles to only when dugging is enabled.
         document.documentElement.classList.add('xYextDebug');
-
-        // Check if this is the first debugger rendered.
-        if (!window.hasOwnProperty("debuggerActive")) {
-            window.debuggerActive = true;
-            setIsFirst(true);
-        }
 
         const scopes: NodeListOf<HTMLElement> = document.querySelectorAll('[data-ya-scope]');
         scopes.forEach(scope => {
@@ -79,7 +51,7 @@ export function AnalyticsDebuggerInternal() {
             events.forEach((eventEl, idx) => {
                 const eventName = eventEl.dataset.yaTrack;
 
-                // Show tooltip when element is hovered.
+                // Add tooltip when element is hovered.
                 eventEl.addEventListener('mouseenter', () => {
                     setToolTips([{
                         eventEl,
@@ -94,12 +66,15 @@ export function AnalyticsDebuggerInternal() {
                 });
             });
 
-            // TODO(this can have duplicates if the same scope is used more than once)
             if (scopeName) {
-                data[scopeName] = {
-                    scope,
-                    events: Array.from(events),
-                };
+                if (!data.hasOwnProperty(scopeName)) {
+                    data[scopeName] = {
+                        scope,
+                        events: Array.from(events),
+                    };
+                } else {
+                    data[scopeName].events = [...data[scopeName].events, ...Array.from(events)];
+                }
             }
         });
     }, []);
@@ -110,10 +85,6 @@ export function AnalyticsDebuggerInternal() {
         } else {
             setActiveTab(tabName);
         }
-    }
-
-    if (!isFirst) {
-        return null;
     }
 
     return (
@@ -155,25 +126,40 @@ function ToolTip(props: ToolTipProps) {
     const { tooltip } = props;
 
     const ref = useRef<HTMLDivElement>(null);
-    const top = tooltip.eventEl.getBoundingClientRect().top + window.scrollY;
-    const left = tooltip.eventEl.getBoundingClientRect().left + window.scrollX;
-
-    const [yOffset, setYOffset] = useState(0);
-    const [xOffset, setXOffset] = useState(0);
+    const [initialPosition, setInitialPosition] = useState(false);
+    const [top, setTop] = useState(tooltip.eventEl.getBoundingClientRect().top + window.scrollY);
+    const [left, setLeft] = useState(tooltip.eventEl.getBoundingClientRect().left);
 
     useEffect(() => {
         if (!ref.current) {
             return;
         }
 
-        setYOffset(ref.current?.clientHeight);
-        setXOffset(ref.current?.clientWidth);
+        // Set the initial tooltip position to the top-left corner of the event element.
+        if (!initialPosition) {
+            setTop(top => ref.current ? top - ref.current.clientHeight : top);
+            setLeft(left => ref.current ? left - ref.current.clientWidth : left);
+            setInitialPosition(true);
+            return;
+        }
+
+        // After the initial position is set, check that the tooltip is within the window bounds.
+        if (isOutsideWindowBounds(
+            ref.current.getBoundingClientRect().left,
+            ref.current.getBoundingClientRect().top,
+            ref.current.getBoundingClientRect().right,
+            ref.current.getBoundingClientRect().bottom,
+        )) {
+            // Move to bottom-right corner if out of bounds.
+            setTop(tooltip.eventEl.getBoundingClientRect().bottom + window.scrollY);
+            setLeft(tooltip.eventEl.getBoundingClientRect().right);
+        }
     }, [ref.current]);
 
     return (
         <div
             style={{
-                inset: ref.current ? `${top - yOffset}px auto auto ${left - xOffset}px` : 'initial',
+                inset: `${top}px auto auto ${left}px`,
                 visibility: ref.current ? 'visible' : 'hidden',
             }}
             className="analytics-debugger-tooltip" key={tooltip.key}
@@ -183,6 +169,12 @@ function ToolTip(props: ToolTipProps) {
         </div>
     );
 }
+
+const isOutsideWindowBounds = (x1: number, y1: number, x2: number, y2: number) => {
+    return (x1 < 0 || x2 > window.innerWidth) ||
+      (y1 < 0 || y2 > document.body.getBoundingClientRect().height);
+};
+
 
 type TabProps = {
     data: EventData
