@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getRuntime } from "../../util";
+import type { DebuggerTabs, EventData, TabProps, Tooltip, TooltipProps } from "./types";
 import c from "classnames";
+// TODO: Need to setup css build step. This isn't being added to the elements when rendered.
 import "./debugger.css";
 
 declare global {
@@ -18,27 +20,24 @@ export function AnalyticsDebugger() {
     return createPortal(<AnalyticsDebuggerInternal />, document.body);
 }
 
-type EventNode = {
-    scope: HTMLElement;
-    events: HTMLElement[];
-};
-type EventData = Record<string,EventNode>;
-type Tabs = "Events" | "Scopes";
-type Tooltip = {
-    eventEl: HTMLElement;
-    eventName: string;
-    key: string;
-}
-
 // Track scope / event elements.
 const data: EventData = {};
 
 export function AnalyticsDebuggerInternal() {
     // Track whether the Events, Scope, or no tab is opened.
-    const [activeTab, setActiveTab] = useState<Tabs>();
-
+    const [activeTab, setActiveTab] = useState<DebuggerTabs>();
     // Track the event elements that need to have a tooltip added.
-    const [toolTips, setToolTips] = useState<Tooltip[]>([]);
+    const [tooltips, setTooltips] = useState<Tooltip[]>([]);
+    // Indicate when effect has finished querying the DOM.
+    const [dataLoaded, setDataLoaded] = useState(false);
+
+    const handleTabToggle = (tabName: DebuggerTabs) => {
+        if (activeTab === tabName) {
+            setActiveTab(undefined);
+        } else {
+            setActiveTab(tabName);
+        }
+    }
 
     useEffect(() => {
         document.documentElement.classList.add('xYextDebug');
@@ -53,7 +52,7 @@ export function AnalyticsDebuggerInternal() {
 
                 // Add tooltip when element is hovered.
                 eventEl.addEventListener('mouseenter', () => {
-                    setToolTips([{
+                    setTooltips([{
                         eventEl,
                         eventName: `${scopeName}_${eventName}`,
                         key: `${scopeName}_${eventName}_${idx}`,
@@ -62,7 +61,7 @@ export function AnalyticsDebuggerInternal() {
 
                 // Remove tooltip.
                 eventEl.addEventListener('mouseleave', () => {
-                    setToolTips([]);
+                    setTooltips([]);
                 });
             });
 
@@ -77,14 +76,13 @@ export function AnalyticsDebuggerInternal() {
                 }
             }
         });
+
+        setDataLoaded(true);
     }, []);
 
-    const handleToggle = (tabName: Tabs) => {
-        if (activeTab === tabName) {
-            setActiveTab(undefined);
-        } else {
-            setActiveTab(tabName);
-        }
+    // Wait for all DOM nodes to be queried before rendering.
+    if (!dataLoaded) {
+        return null;
     }
 
     return (
@@ -93,13 +91,13 @@ export function AnalyticsDebuggerInternal() {
                 <div className="analytics-debugger-toggles">
                     <button
                         className={c("analytics-debugger-toggle", {"is-active": activeTab === "Events"})}
-                        onClick={() => handleToggle("Events")}
+                        onClick={() => handleTabToggle("Events")}
                     >
                         Events
                     </button>
                     <button
                         className={c("analytics-debugger-toggle", {"is-active": activeTab === "Scopes"})}
-                        onClick={() => handleToggle("Scopes")}
+                        onClick={() => handleTabToggle("Scopes")}
                     >
                         Scopes
                     </button>
@@ -107,22 +105,18 @@ export function AnalyticsDebuggerInternal() {
                 {activeTab && (
                     <div className="analytics-debugger-tabs">
                         {activeTab === "Events"
-                            ? <EventsTab data={data} setToolTips={setToolTips} />
-                            : <ScopesTab data={data} setToolTips={setToolTips} />
+                            ? <EventsTab data={data} setTooltips={setTooltips} />
+                            : <ScopesTab data={data} setTooltips={setTooltips} />
                         }
                     </div>
                 )}
             </div>
-            {toolTips.map((tooltip) => <ToolTip tooltip={tooltip} key={tooltip.key} />)}
+            {tooltips.map((tooltip) => <Tooltip tooltip={tooltip} key={tooltip.key} />)}
         </>
     );
 }
 
-type ToolTipProps = {
-    tooltip: Tooltip;
-}
-
-function ToolTip(props: ToolTipProps) {
+function Tooltip(props: TooltipProps) {
     const { tooltip } = props;
 
     const ref = useRef<HTMLDivElement>(null);
@@ -144,6 +138,7 @@ function ToolTip(props: ToolTipProps) {
         }
 
         // After the initial position is set, check that the tooltip is within the window bounds.
+        // TODO: Also need to check that tooltips are not overlapping each other.
         if (isOutsideWindowBounds(
             ref.current.getBoundingClientRect().left,
             ref.current.getBoundingClientRect().top,
@@ -175,16 +170,10 @@ const isOutsideWindowBounds = (x1: number, y1: number, x2: number, y2: number) =
       (y1 < 0 || y2 > document.body.getBoundingClientRect().height);
 };
 
-
-type TabProps = {
-    data: EventData
-    setToolTips: React.Dispatch<React.SetStateAction<Tooltip[]>>;
-}
-
 function EventsTab(props: TabProps) {
     const {
         data,
-        setToolTips,
+        setTooltips,
     } = props;
 
     const [activeEventEl, setActiveEventEl] = useState<HTMLElement>();
@@ -200,7 +189,7 @@ function EventsTab(props: TabProps) {
         eventEl.classList.add('analytics-event-highlight');
 
         setActiveButton(key);
-        setToolTips([{
+        setTooltips([{
             eventEl,
             eventName,
             key,
@@ -224,7 +213,7 @@ function EventsTab(props: TabProps) {
                                 {eventName}
                             </button>
                         </li>
-                    )
+                    );
                 }))}
             </ul>
         </div>
@@ -234,7 +223,7 @@ function EventsTab(props: TabProps) {
 function ScopesTab(props: TabProps) {
     const {
         data,
-        setToolTips,
+        setTooltips,
     } = props;
 
     const [activeButton, setActiveButton] = useState("");
@@ -245,7 +234,7 @@ function ScopesTab(props: TabProps) {
 
         setActiveButton(scopeName);
 
-        setToolTips(node.events.map((eventEl, idx) => ({
+        setTooltips(node.events.map((eventEl, idx) => ({
             eventEl,
             eventName: `${scopeName}_${eventEl.dataset.yaTrack}`,
             key: `${scopeName}_${eventEl.dataset.yaTrack}_${idx}`,
