@@ -4,6 +4,10 @@ import styles from "./default-styling.module.css";
 /**
  * Default styling to apply to the different types of Lexical Rich Text
  * Elements.
+ * 
+ * This is copied from and should be kept in sync with
+ * src/com/yext/knowledgeapplications/js/field/rich-text-v2/themes/theme.js
+ * in alpha.
  */
 const DefaultNodeStyling: EditorThemeClasses = {
   characterLimit: styles["yext-default-richtextv2-theme__characterLimit"],
