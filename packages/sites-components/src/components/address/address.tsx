@@ -62,7 +62,7 @@ const AddressLine = ({
       continue;
     }
 
-    // Include unabbreviated tooltip if available
+    // Include unabbreviated title if available
     const unabbreviated = getUnabbreviated(field, address);
     if (unabbreviated) {
       addressDOM.push(
@@ -76,7 +76,7 @@ const AddressLine = ({
       continue;
     }
 
-    addressDOM.push(<span key={field}> {value}</span>);
+    addressDOM.push(<span key={field}>{" " + value}</span>);
   }
 
   return <div className="address-line">{addressDOM}</div>;
