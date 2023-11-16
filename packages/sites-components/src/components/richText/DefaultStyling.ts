@@ -1,78 +1,105 @@
 import { EditorThemeClasses } from "lexical";
-
-/**
- * Tailwind styling for the different Tokens that can occur within a Code Block.
- * Token Types come from the PrismJS library, which Lexical uses to power Code Blocks.
- * The Types include Comment, Variable, Operator, etc.
- */
-const stylesToTokenTypes = {
-  "text-sky-700": ["atrule", "attr", "keyword"],
-  "text-pink-800": [
-    "boolean",
-    "constant",
-    "deleted",
-    "number",
-    "property",
-    "symbol",
-    "tag",
-  ],
-  "text-slate-500": ["cdata", "comment", "doctype", "prolog"],
-  "text-rose-500": ["class", "function"],
-  "text-lime-600": ["builtin", "char", "inserted", "selector", "string"],
-  "text-amber-500": ["important", "namespace", "regex", "variable"],
-  "text-yellow-700": ["entity", "operator", "url"],
-  "text-neutral-400": ["punctuation"],
-};
+import styles from "./default-styling.module.css";
 
 /**
  * Default styling to apply to the different types of Lexical Rich Text
  * Elements.
+ * 
+ * This is copied from and should be kept in sync with
+ * src/com/yext/knowledgeapplications/js/field/rich-text-v2/themes/theme.js
+ * in alpha.
  */
 const DefaultNodeStyling: EditorThemeClasses = {
-  paragraph: "m-0 mb-2 relative",
-  link: "text-blue-500",
+  characterLimit: styles["yext-default-richtextv2-theme__characterLimit"],
+  code: styles["yext-default-richtextv2-theme__code"],
+  codeHighlight: {
+    atrule: styles["yext-default-richtextv2-theme__tokenAttr"],
+    attr: styles["yext-default-richtextv2-theme__tokenAttr"],
+    boolean: styles["yext-default-richtextv2-theme__tokenProperty"],
+    builtin: styles["yext-default-richtextv2-theme__tokenSelector"],
+    cdata: styles["yext-default-richtextv2-theme__tokenComment"],
+    char: styles["yext-default-richtextv2-theme__tokenSelector"],
+    class: styles["yext-default-richtextv2-theme__tokenFunction"],
+    "class-name": styles["yext-default-richtextv2-theme__tokenFunction"],
+    comment: styles["yext-default-richtextv2-theme__tokenComment"],
+    constant: styles["yext-default-richtextv2-theme__tokenProperty"],
+    deleted: styles["yext-default-richtextv2-theme__tokenProperty"],
+    doctype: styles["yext-default-richtextv2-theme__tokenComment"],
+    entity: styles["yext-default-richtextv2-theme__tokenOperator"],
+    function: styles["yext-default-richtextv2-theme__tokenFunction"],
+    important: styles["yext-default-richtextv2-theme__tokenVariable"],
+    inserted: styles["yext-default-richtextv2-theme__tokenSelector"],
+    keyword: styles["yext-default-richtextv2-theme__tokenAttr"],
+    namespace: styles["yext-default-richtextv2-theme__tokenVariable"],
+    number: styles["yext-default-richtextv2-theme__tokenProperty"],
+    operator: styles["yext-default-richtextv2-theme__tokenOperator"],
+    prolog: styles["yext-default-richtextv2-theme__tokenComment"],
+    property: styles["yext-default-richtextv2-theme__tokenProperty"],
+    punctuation: styles["yext-default-richtextv2-theme__tokenPunctuation"],
+    regex: styles["yext-default-richtextv2-theme__tokenVariable"],
+    selector: styles["yext-default-richtextv2-theme__tokenSelector"],
+    string: styles["yext-default-richtextv2-theme__tokenSelector"],
+    symbol: styles["yext-default-richtextv2-theme__tokenProperty"],
+    tag: styles["yext-default-richtextv2-theme__tokenProperty"],
+    url: styles["yext-default-richtextv2-theme__tokenOperator"],
+    variable: styles["yext-default-richtextv2-theme__tokenVariable"],
+  },
+  embedBlock: {
+    base: styles["yext-default-richtextv2-theme__embedBlock"],
+    focus: styles["yext-default-richtextv2-theme__embedBlockFocus"],
+  },
+  hashtag: styles["yext-default-richtextv2-theme__hashtag"],
   heading: {
-    h1: "text-2xl font-normal m-0 mb-3 p-0",
-    h2: "text-sm text-gray-600 font-bold m-0 mt-2 p-0 uppercase",
-    h3: "text-xs m-0 uppercase font-bold",
+    h1: styles["yext-default-richtextv2-theme__h1"],
+    h2: styles["yext-default-richtextv2-theme__h2"],
+    h3: styles["yext-default-richtextv2-theme__h3"],
+    h4: styles["yext-default-richtextv2-theme__h4"],
+    h5: styles["yext-default-richtextv2-theme__h5"],
+    h6: styles["yext-default-richtextv2-theme__h6"],
   },
-  text: {
-    code: "bg-slate-200 p-0.5",
-    underline: "underline",
-    strikethrough: "line-through",
-    underlineStrikethrough: "[text-decoration:underline_line-through]",
-  },
+  image: styles["yext-default-richtextv2-theme__image"],
+  link: styles["yext-default-richtextv2-theme__link"],
   list: {
-    ul: "p-0 m-0 ml-4 list-disc",
-    ol: "p-0 m-0 ml-4, list-decimal",
-    listitem: "mx-8 my-0",
+    listitem: styles["yext-default-richtextv2-theme__listItem"],
+    listitemChecked: styles["yext-default-richtextv2-theme__listItemChecked"],
+    listitemUnchecked:
+      styles["yext-default-richtextv2-theme__listItemUnchecked"],
     nested: {
-      listitem: "list-none",
+      listitem: styles["yext-default-richtextv2-theme__nestedListItem"],
     },
     olDepth: [
-      "p-0 m-0 ml-4 list-decimal list-inside",
-      "p-0 m-0 ml-4 list-upper_alpha list-inside",
-      "p-0 m-0 ml-4 list-lower_alpha list-inside",
-      "p-0 m-0 ml-4 list-upper_roman list-inside",
-      "p-0 m-0 ml-4 list-lower_roman list-inside",
+      styles["yext-default-richtextv2-theme__ol1"],
+      styles["yext-default-richtextv2-theme__ol2"],
+      styles["yext-default-richtextv2-theme__ol3"],
+      styles["yext-default-richtextv2-theme__ol4"],
+      styles["yext-default-richtextv2-theme__ol5"],
     ],
     ulDepth: [
-      "p-0 m-0 ml-4 list-disc list-inside",
-      "p-0 m-0 ml-4 list-square list-inside",
-      "p-0 m-0 ml-4 list-circle list-inside",
+      styles["yext-default-richtextv2-theme__ul1"],
+      styles["yext-default-richtextv2-theme__ul2"],
+      styles["yext-default-richtextv2-theme__ul3"],
     ],
   },
-  ltr: "text-left",
-  code: "bg-gray-100 block text-xs m-0 mt-2 mb-2 overflow-x-auto relative p-2",
-  codeHighlight: Object.fromEntries(
-    Object.entries(stylesToTokenTypes).flatMap(([style, tokenTypes]) =>
-      tokenTypes.map((type) => [type, style])
-    )
-  ),
-  quote: "m-0 ml-5 text-sm text-gray-500 border-l-4 pl-4",
-  table: "w-11/12 max-w-full overflow-y-scroll my-7",
-  tableCellHeader: "bg-gray-200 text-start",
-  tableCell: "p-2 align-top relative border border-gray-400",
+  ltr: styles["yext-default-richtextv2-theme__ltr"],
+  mark: styles["yext-default-richtextv2-theme__mark"],
+  markOverlap: styles["yext-default-richtextv2-theme__markOverlap"],
+  paragraph: styles["yext-default-richtextv2-theme__paragraph"],
+  quote: styles["yext-default-richtextv2-theme__quote"],
+  rtl: styles["yext-default-richtextv2-theme__rtl"],
+  table: styles["yext-default-richtextv2-theme__table"],
+  tableCell: styles["yext-default-richtextv2-theme__tableCell"],
+  tableCellHeader: styles["yext-default-richtextv2-theme__tableCellHeader"],
+  text: {
+    bold: styles["yext-default-richtextv2-theme__textBold"],
+    code: styles["yext-default-richtextv2-theme__textCode"],
+    italic: styles["yext-default-richtextv2-theme__textItalic"],
+    strikethrough: styles["yext-default-richtextv2-theme__textStrikethrough"],
+    subscript: styles["yext-default-richtextv2-theme__textSubscript"],
+    superscript: styles["yext-default-richtextv2-theme__textSuperscript"],
+    underline: styles["yext-default-richtextv2-theme__textUnderline"],
+    underlineStrikethrough:
+      styles["yext-default-richtextv2-theme__textUnderlineStrikethrough"],
+  },
 };
 
 export default DefaultNodeStyling;

@@ -1,0 +1,12 @@
+/**
+* Display-only styles copied from lexical-field.module.scss in alpha. This file
+* must be kept in sync with lexical-field.module.scss.
+*/
+
+.editor-inner {
+  position: relative;
+}
+
+.no-border {
+  border: none;
+}
