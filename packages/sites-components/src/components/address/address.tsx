@@ -2,6 +2,7 @@ import * as React from "react";
 import { AddressProps, AddressLineProps } from "./types.js";
 import { localeAddressFormat } from "./i18n.js";
 import { getUnabbreviated } from "./methods.js";
+import "./address.css";
 
 /**
  * Renders an HTML address based from the Yext Knowledge Graph. Example of using the component to render
@@ -61,20 +62,22 @@ const AddressLine = ({
       continue;
     }
 
-    // Include unabbreviated tooltip if available
+    // Include unabbreviated title if available
     const unabbreviated = getUnabbreviated(field, address);
     if (unabbreviated) {
       addressDOM.push(
+        <>
+        {" "}
         <abbr key={field} title={unabbreviated}>
-          {" "}
           {value}
         </abbr>
+        </>
       );
       continue;
     }
 
-    addressDOM.push(<span key={field}> {value}</span>);
+    addressDOM.push(<span key={field}>{" " + value}</span>);
   }
 
-  return <div>{addressDOM}</div>;
+  return <div className="address-line">{addressDOM}</div>;
 };
