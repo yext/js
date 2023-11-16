@@ -14,7 +14,6 @@ jobs:
   update-notices:
     uses: ./.github/workflows/third_party_notices_check.yml
     secrets: 
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       BOT_REPO_SCOPED_TOKEN: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
 
   call_build:

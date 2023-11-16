@@ -2,8 +2,6 @@ name: Update Third Party Notices
 on:
   workflow_call:
     secrets:
-      NPM_TOKEN:
-        required: true
       BOT_REPO_SCOPED_TOKEN:
         required: true
 
@@ -35,8 +33,6 @@ jobs:
 
       - name: Generate package licenses
         run : pnpm run generate-notices
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Update THIRD-PARTY-NOTICES
         id: push-changes
