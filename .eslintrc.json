@@ -6,7 +6,7 @@
   },
   "ignorePatterns": ["**/dist", ".eslintrc.json"],
   "extends": [
-    "@yext/eslint-config/typescript-react", 
+    "@yext/eslint-config/typescript-react",
     "plugin:storybook/recommended"
   ],
   "parser": "@typescript-eslint/parser",
