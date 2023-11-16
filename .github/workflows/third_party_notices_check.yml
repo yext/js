@@ -6,7 +6,6 @@ on:
         required: true
       BOT_REPO_SCOPED_TOKEN:
         required: true
-      
 
 jobs:
   license-check:
