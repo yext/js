@@ -1,13 +1,9 @@
 import React from "react";
-import {
-  $applyNodeReplacement,
-  EditorConfig,
-  DecoratorNode,
-  NodeKey,
-} from "lexical";
+import { EditorConfig, DecoratorNode, NodeKey } from "lexical";
 
 import LexicalImage from "./LexicalImage.js";
 import { SerializedImageNode } from "./types.js";
+import { $createImageNode } from "./methods.js";
 
 /**
  * Defines a Lexical Dev {@link DecoratorNode} that supports images in Rich Text. Rendering
@@ -82,13 +78,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
    * Static constructor for creating an {@link ImageNode} from a JSON serialized Node.
    */
   static importJSON(serializedNode: SerializedImageNode): ImageNode {
-    const { altText, height, width, maxWidth, src } = serializedNode;
-
-    const node: ImageNode = $applyNodeReplacement(
-      new ImageNode(src, altText, maxWidth, width, height)
-    );
-
-    return node;
+    return $createImageNode(serializedNode);
   }
 
   /**
