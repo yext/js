@@ -8,6 +8,7 @@ import { HashtagNode } from "@lexical/hashtag";
 import { EditorThemeClasses } from "lexical";
 import DefaultNodeStyling from "./DefaultStyling.js";
 import { ImageNode } from "./imageNode/index.js";
+import { HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
 
 /**
  * Configuration for the Lexical Editor that powers the {@link LexicalComposer}. There is
@@ -39,6 +40,7 @@ export function generateConfig(
       TableRowNode,
       AutoLinkNode,
       LinkNode,
+      HorizontalRuleNode,
     ],
   };
 }
