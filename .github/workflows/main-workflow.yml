@@ -16,6 +16,9 @@ jobs:
     secrets: 
       BOT_REPO_SCOPED_TOKEN: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
 
+  call_wcag:
+    uses: ./.github/workflows/wcag_test.yml
+
   call_build:
     uses: ./.github/workflows/build.yml
     with:
