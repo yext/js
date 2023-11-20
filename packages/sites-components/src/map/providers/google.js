@@ -1,18 +1,18 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from '../coordinate';
-import { LoadScript } from '../performance/loadContent';
-import { MapProviderOptions } from '../mapProvider';
-import { ProviderMap } from '../providerMap';
-import { HTMLProviderPin } from '../providerPin';
+import { Coordinate } from "../coordinate";
+import { LoadScript } from "../performance/loadContent";
+import { MapProviderOptions } from "../mapProvider";
+import { ProviderMap } from "../providerMap";
+import { HTMLProviderPin } from "../providerPin";
 
 /**
  * @enum {string}
  */
 const Library = {
-  GEOCODER: 'geocoder',
-  PLACES: 'places'
+  GEOCODER: "geocoder",
+  PLACES: "places",
 };
 
 // Map Class
@@ -30,26 +30,26 @@ class GoogleMap extends ProviderMap {
     this.map = new google.maps.Map(options.wrapper, {
       disableDefaultUI: !options.controlEnabled,
       fullscreenControl: false,
-      gestureHandling: options.controlEnabled ? 'auto' : 'none',
+      gestureHandling: options.controlEnabled ? "auto" : "none",
       mapTypeControl: false,
       rotateControl: false,
       scaleControl: false,
       streetViewControl: false,
       zoomControl: options.controlEnabled,
       zoomControlOptions: {
-        position: google.maps.ControlPosition.RIGHT_TOP
+        position: google.maps.ControlPosition.RIGHT_TOP,
       },
-      ...options.providerOptions
+      ...options.providerOptions,
     });
 
     this._moving = false;
-    google.maps.event.addListener(this.map, 'bounds_changed', () => {
+    google.maps.event.addListener(this.map, "bounds_changed", () => {
       if (!this._moving) {
         this._moving = true;
         this._panStartHandler();
       }
     });
-    google.maps.event.addListener(this.map, 'idle', () => {
+    google.maps.event.addListener(this.map, "idle", () => {
       this._moving = false;
       this._panHandler();
     });
@@ -73,10 +73,13 @@ class GoogleMap extends ProviderMap {
    * @inheritdoc
    */
   setCenter(coordinate, animated) {
-    const latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
+    const latLng = new google.maps.LatLng(
+      coordinate.latitude,
+      coordinate.longitude
+    );
 
     if (animated) {
-      this.map.panTo(latLng)
+      this.map.panTo(latLng);
     } else {
       this.map.setCenter(latLng);
     }
@@ -111,18 +114,20 @@ class GooglePin extends HTMLProviderPin {
   constructor(options) {
     super(options);
 
-    this._wrapper.style.position = 'absolute';
+    this._wrapper.style.position = "absolute";
     google.maps.OverlayView.preventMapHitsAndGesturesFrom(this._wrapper);
 
     const that = this;
 
     class CustomMarker extends google.maps.OverlayView {
       draw() {
-        const position = this.getProjection()?.fromLatLngToDivPixel(that._latLng);
+        const position = this.getProjection()?.fromLatLngToDivPixel(
+          that._latLng
+        );
 
         if (position) {
-          that._wrapper.style.left = position.x + 'px';
-          that._wrapper.style.top = position.y + 'px';
+          that._wrapper.style.left = position.x + "px";
+          that._wrapper.style.top = position.y + "px";
         }
       }
 
@@ -142,7 +147,10 @@ class GooglePin extends HTMLProviderPin {
    * @inheritdoc
    */
   setCoordinate(coordinate) {
-    this._latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
+    this._latLng = new google.maps.LatLng(
+      coordinate.latitude,
+      coordinate.longitude
+    );
     this.pin.draw();
   }
 
@@ -157,33 +165,38 @@ class GooglePin extends HTMLProviderPin {
 // Load Function
 
 // Random token obtained from `echo GoogleMapsCallbackYext | md5 | cut -c -8`
-const globalCallback = 'GoogleMapsCallback_b7d77ff2';
-const baseUrl = 'https://maps.googleapis.com/maps/api/js';
+const globalCallback = "GoogleMapsCallback_b7d77ff2";
+const baseUrl = "https://maps.googleapis.com/maps/api/js";
 
- /**
-  * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
-  * on {@link module:@yext/components-maps~GoogleMaps GoogleMaps}.
-  * @alias module:@yext/components-maps~loadGoogleMaps
-  * @param {function} resolve Callback with no arguments called when the load finishes successfully
-  * @param {function} reject Callback with no arguments called when the load fails
-  * @param {string} apiKey Provider API key
-  * @param {Object} options Additional provider-specific options
-  * @param {boolean} [options.autocomplete=false] Whether to include Google's autocomplete API
-  * @param {string} [options.channel=window.location.hostname] API key usage channel
-  * @param {string} [options.client] Google API enterprise client
-  * @param {string} [options.language] Language of the map
-  * @param {module:Maps/Providers/Google.Library[]} [options.libraries=[]] Additional Google libraries to load
-  * @param {Object<string,string>} [options.params={}] Additional API params
-  * @see module:@yext/components-maps~ProviderLoadFunction
-  */
-function load(resolve, reject, apiKey, {
-  autocomplete = false,
-  channel = window.location.hostname,
-  client,
-  language,
-  libraries = [],
-  params = {}
-} = {}) {
+/**
+ * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
+ * on {@link module:@yext/components-maps~GoogleMaps GoogleMaps}.
+ * @alias module:@yext/components-maps~loadGoogleMaps
+ * @param {function} resolve Callback with no arguments called when the load finishes successfully
+ * @param {function} reject Callback with no arguments called when the load fails
+ * @param {string} apiKey Provider API key
+ * @param {Object} options Additional provider-specific options
+ * @param {boolean} [options.autocomplete=false] Whether to include Google's autocomplete API
+ * @param {string} [options.channel=window.location.hostname] API key usage channel
+ * @param {string} [options.client] Google API enterprise client
+ * @param {string} [options.language] Language of the map
+ * @param {module:Maps/Providers/Google.Library[]} [options.libraries=[]] Additional Google libraries to load
+ * @param {Object<string,string>} [options.params={}] Additional API params
+ * @see module:@yext/components-maps~ProviderLoadFunction
+ */
+function load(
+  resolve,
+  reject,
+  apiKey,
+  {
+    autocomplete = false,
+    channel = window.location.hostname,
+    client,
+    language,
+    libraries = [],
+    params = {},
+  } = {}
+) {
   window[globalCallback] = resolve;
 
   if (autocomplete) {
@@ -194,8 +207,8 @@ function load(resolve, reject, apiKey, {
     callback: globalCallback,
     channel,
     language,
-    libraries: libraries.join(','),
-    ...params
+    libraries: libraries.join(","),
+    ...params,
   };
 
   if (apiKey) {
@@ -206,7 +219,13 @@ function load(resolve, reject, apiKey, {
     apiParams.client = client;
   }
 
-  LoadScript(baseUrl + '?' + Object.entries(apiParams).map(([key, value]) => key + '=' + value).join('&'));
+  LoadScript(
+    baseUrl +
+      "?" +
+      Object.entries(apiParams)
+        .map(([key, value]) => key + "=" + value)
+        .join("&")
+  );
 }
 
 // Exports
@@ -218,10 +237,7 @@ const GoogleMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(GoogleMap)
   .withPinClass(GooglePin)
-  .withProviderName('Google')
+  .withProviderName("Google")
   .build();
 
-export {
-  GoogleMaps,
-  Library
-};
+export { GoogleMaps, Library };

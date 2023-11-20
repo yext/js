@@ -4,10 +4,10 @@
     "es2021": true,
     "node": true
   },
+  "ignorePatterns": ["**/dist", "!.storybook"],
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "@yext/eslint-config/typescript-react",
+    "plugin:storybook/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -17,12 +17,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "import"],
+  "plugins": ["import"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-extra-semi": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
     "import/extensions": ["error", "ignorePackages"]
   },
   "settings": {

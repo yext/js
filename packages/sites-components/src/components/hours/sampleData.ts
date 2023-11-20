@@ -67,7 +67,7 @@ export const HOURS_WITH_HOLIDAY: HoursType = {
     {
       date: "2022-08-11",
       openIntervals: [{ start: "9:00", end: "12:00" }],
-      isRegularHours: false
+      isRegularHours: false,
     },
   ],
 };

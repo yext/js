@@ -1,8 +1,8 @@
 /** @module @yext/components-maps */
 
-import { Type, assertType, assertInstance } from './util/assertions.js';
-import { ProviderMapOptions, ProviderMap } from './providerMap.js';
-import { ProviderPinOptions, ProviderPin } from './providerPin.js';
+import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { ProviderMapOptions, ProviderMap } from "./providerMap.js";
+import { ProviderPinOptions, ProviderPin } from "./providerPin.js";
 
 /**
  * @callback ProviderLoadFunction
@@ -20,7 +20,7 @@ class MapProviderOptions {
     this.loadFunction = (resolve, reject, apiKey, options) => resolve();
     this.mapClass = ProviderMap;
     this.pinClass = ProviderPin;
-    this.providerName = '';
+    this.providerName = "";
   }
 
   /**
@@ -96,7 +96,7 @@ class MapProvider {
       this._rejectLoad = reject;
     });
 
-    this._apiKey = '';
+    this._apiKey = "";
     this._loadInvoked = false;
     this._loaded = false;
     this._options = {};
@@ -174,7 +174,4 @@ class MapProvider {
   }
 }
 
-export {
-  MapProviderOptions,
-  MapProvider
-}
+export { MapProviderOptions, MapProvider };

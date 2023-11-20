@@ -1,8 +1,8 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Type, assertType, assertInstance } from './util/assertions';
-import { MapProvider } from './mapProvider';
+import { Type, assertType, assertInstance } from "./util/assertions";
+import { MapProvider } from "./mapProvider";
 
 /**
  * {@link module:@yext/components-maps~ProviderMap ProviderMap} options class
@@ -102,7 +102,7 @@ class ProviderMap {
    * @returns {module:@yext/components-tsx-geo~Coordinate} The current center of the map
    */
   getCenter() {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -110,7 +110,7 @@ class ProviderMap {
    * @returns {number} The current zoom level of the map
    */
   getZoom() {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -118,7 +118,7 @@ class ProviderMap {
    * @param {boolean} animated Whether to transition smoothly to the new center
    */
   setCenter(coordinate, animated) {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -127,7 +127,7 @@ class ProviderMap {
    * @param {boolean} animated Whether to transition smoothly to the new zoom
    */
   setZoom(zoom, animated) {
-    throw new Error('not implemented');
+    throw new Error("not implemented");
   }
 
   /**
@@ -145,7 +145,4 @@ class ProviderMap {
   }
 }
 
-export {
-  ProviderMapOptions,
-  ProviderMap
-};
+export { ProviderMapOptions, ProviderMap };

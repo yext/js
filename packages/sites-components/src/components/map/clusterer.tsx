@@ -15,10 +15,7 @@ import type {
   ClusterTemplateProps,
 } from "./types";
 import type { Map } from "../../map/map";
-import {
-  Unit,
-  Projection,
-} from "../../map/constants";
+import { Unit, Projection } from "../../map/constants";
 import { Coordinate } from "../../map/coordinate";
 import { GeoBounds } from "../../map/geoBounds";
 

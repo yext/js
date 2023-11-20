@@ -133,7 +133,7 @@ export const Map_With_Single_Interactive_Marker = () => {
     <Map clientKey="gme-yextinc">
       <Marker
         coordinate={{ latitude: 38.8954, longitude: -77.0698 }}
-        id={"123"}
+        id="123"
         onClick={(id: string) => setClicked(id)}
         onFocus={(focused: boolean, id: string) =>
           setFocused(focused ? id : "")

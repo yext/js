@@ -77,7 +77,7 @@ export const Map_With_Hover_State = () => {
 
   return (
     <LocationMap
-      clientKey={"gme-yextinc"}
+      clientKey="gme-yextinc"
       coordinate={{ latitude: 40.74237, longitude: -73.99211 }}
       onHover={handleHover}
     >

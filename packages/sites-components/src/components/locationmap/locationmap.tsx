@@ -19,7 +19,7 @@ export const LocationMap = ({
     <Map bounds={[coordinate]} {...mapProps}>
       <Marker
         coordinate={coordinate}
-        id={"location-map-marker"}
+        id="location-map-marker"
         onClick={onClick}
         onHover={onHover}
         onFocus={onFocus}

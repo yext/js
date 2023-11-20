@@ -1,12 +1,12 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from '../map/coordinate';
-import { Type, assertType, assertInstance } from './util/assertions';
-import { Map } from './map';
-import { MapProvider } from './mapProvider';
-import { PinProperties } from './pinProperties';
-import { ProviderPinOptions } from './providerPin';
+import { Coordinate } from "../map/coordinate";
+import { Type, assertType, assertInstance } from "./util/assertions";
+import { Map } from "./map";
+import { MapProvider } from "./mapProvider";
+import { PinProperties } from "./pinProperties";
+import { ProviderPinOptions } from "./providerPin";
 
 /**
  * @callback PinPropertiesForStatus
@@ -40,9 +40,9 @@ class MapPinOptions {
     this.coordinate = new Coordinate(0, 0);
     this.hideOffscreen = false;
     this.icons = {};
-    this.propertiesForStatus = status => new PinProperties();
+    this.propertiesForStatus = (status) => new PinProperties();
     this.provider = null;
-    this.type = '';
+    this.type = "";
   }
 
   /**
@@ -129,7 +129,9 @@ class MapPin {
     assertInstance(options.provider, MapProvider);
 
     if (!options.provider.loaded) {
-      throw new Error(`MapProvider '${options.provider.getProviderName()}' is not loaded. The MapProvider must be loaded before calling MapPin constructor.`);
+      throw new Error(
+        `MapProvider '${options.provider.getProviderName()}' is not loaded. The MapProvider must be loaded before calling MapPin constructor.`
+      );
     }
 
     this._coordinate = options.coordinate;
@@ -139,8 +141,8 @@ class MapPin {
     this._type = options.type;
 
     this._clickHandler = () => {};
-    this._focusHandler = focused => this._hoverHandler(focused);
-    this._hoverHandler = hovered => {};
+    this._focusHandler = (focused) => this._hoverHandler(focused);
+    this._hoverHandler = (hovered) => {};
 
     this._hidden = false;
     this._cancelHiddenUpdater = () => {};
@@ -150,8 +152,8 @@ class MapPin {
     this._pin = new ProviderPinOptions(options.provider)
       .withIcons({ ...this._icons })
       .withClickHandler(() => this._clickHandler())
-      .withFocusHandler(focused => this._focusHandler(focused))
-      .withHoverHandler(hovered => this._hoverHandler(hovered))
+      .withFocusHandler((focused) => this._focusHandler(focused))
+      .withHoverHandler((hovered) => this._hoverHandler(hovered))
       .build();
 
     this._pin.setCoordinate(options.coordinate);
@@ -270,11 +272,11 @@ class MapPin {
 
     if (map && this._hideOffscreen) {
       let hiddenUpdaterCancelled = false;
-      const hiddenUpdaterCancelledPromise = new Promise(resolve => {
+      const hiddenUpdaterCancelledPromise = new Promise((resolve) => {
         this._cancelHiddenUpdater = () => {
           hiddenUpdaterCancelled = true;
           resolve();
-        }
+        };
       });
 
       (async () => {
@@ -319,8 +321,4 @@ class MapPin {
   }
 }
 
-export {
-  MapPinOptions,
-  MapPin,
-  PinProperties
-};
+export { MapPinOptions, MapPin, PinProperties };

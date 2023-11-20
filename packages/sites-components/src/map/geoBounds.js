@@ -1,7 +1,7 @@
 /** @module @yext/components-geo */
 
-import { Unit, Projection } from './constants';
-import { Coordinate } from './coordinate';
+import { Unit, Projection } from "./constants";
+import { Coordinate } from "./coordinate";
 
 /**
  * This class represents a bounded coordinate region of a sphere.
@@ -18,23 +18,25 @@ class GeoBounds {
    */
   static fit(coordinates) {
     // North/South bounds are the northernmost and southernmost points
-    const latitudes = coordinates.map(coordinate => coordinate.latitude);
+    const latitudes = coordinates.map((coordinate) => coordinate.latitude);
     const north = Math.max(...latitudes);
     const south = Math.min(...latitudes);
 
     // East/West bounds need to be chosen to minimize the area that fits all pins
     // Choose them by finding the largest area with no pins
     const longitudes = coordinates
-      .map(coordinate => coordinate.normalLon)
+      .map((coordinate) => coordinate.normalLon)
       .sort((i, j) => i - j);
 
     const splitIndex = longitudes
       .map((longitude, i) => {
-        const next = i < longitudes.length - 1 ? longitudes[i + 1] : longitudes[0] + 360;
+        const next =
+          i < longitudes.length - 1 ? longitudes[i + 1] : longitudes[0] + 360;
         return { distance: next - longitude, index: i };
       })
-      .reduce((max, distance) => distance.distance > max.distance ? distance : max)
-      .index;
+      .reduce((max, distance) =>
+        distance.distance > max.distance ? distance : max
+      ).index;
 
     const east = longitudes[splitIndex];
     const west = longitudes[(splitIndex + 1) % longitudes.length];
@@ -83,11 +85,16 @@ class GeoBounds {
    * @returns {boolean}
    */
   contains(coordinate) {
-    const withinLatitude = this._sw.latitude <= coordinate.latitude && coordinate.latitude <= this._ne.latitude;
+    const withinLatitude =
+      this._sw.latitude <= coordinate.latitude &&
+      coordinate.latitude <= this._ne.latitude;
     const longitudeSpansGlobe = this._ne.longitude - this._sw.longitude >= 360;
-    const withinNormalLon = this._sw.normalLon <= this._ne.normalLon ?
-      (this._sw.normalLon <= coordinate.normalLon && coordinate.normalLon <= this._ne.normalLon) :
-      (this._sw.normalLon <= coordinate.normalLon || coordinate.normalLon <= this._ne.normalLon);
+    const withinNormalLon =
+      this._sw.normalLon <= this._ne.normalLon
+        ? this._sw.normalLon <= coordinate.normalLon &&
+          coordinate.normalLon <= this._ne.normalLon
+        : this._sw.normalLon <= coordinate.normalLon ||
+          coordinate.normalLon <= this._ne.normalLon;
 
     return withinLatitude && (longitudeSpansGlobe || withinNormalLon);
   }
@@ -101,8 +108,10 @@ class GeoBounds {
     this._sw.latitude = Math.min(this._sw.latitude, coordinate.latitude);
 
     if (!this.contains(coordinate)) {
-      const eastDist = ((coordinate.longitude - this._ne.longitude) % 360 + 360) % 360;
-      const westDist = ((this._sw.longitude - coordinate.longitude) % 360 + 360) % 360;
+      const eastDist =
+        (((coordinate.longitude - this._ne.longitude) % 360) + 360) % 360;
+      const westDist =
+        (((this._sw.longitude - coordinate.longitude) % 360) + 360) % 360;
 
       if (eastDist < westDist) {
         this._ne.longitude += eastDist;
@@ -122,7 +131,9 @@ class GeoBounds {
   getCenter(projection = Projection.SPHERICAL) {
     const nw = new Coordinate(this._ne.latitude, this._sw.longitude);
     const latDist = this._sw.distanceTo(nw, Unit.DEGREE, projection);
-    const newLon = (nw.longitude + this._ne.longitude) / 2 + (this._ne.longitude < nw.longitude ? 180 : 0);
+    const newLon =
+      (nw.longitude + this._ne.longitude) / 2 +
+      (this._ne.longitude < nw.longitude ? 180 : 0);
 
     nw.add(-latDist / 2, 0, Unit.DEGREE, projection);
     nw.longitude = newLon;
@@ -131,6 +142,4 @@ class GeoBounds {
   }
 }
 
-export {
-  GeoBounds
-};
+export { GeoBounds };

@@ -12,13 +12,13 @@ class PinProperties {
     this._anchorX = 0.5;
     this._anchorY = 1;
     this._height = 39;
-    this._icon = 'default';
-    this._srText = 'map pin';
+    this._icon = "default";
+    this._srText = "map pin";
     this._width = 33;
     this._zIndex = 0;
 
     // Properties supported only by HTML pins
-    this._class = '';
+    this._class = "";
     this._element = null;
   }
 
@@ -182,6 +182,4 @@ class PinProperties {
   }
 }
 
-export {
-  PinProperties
-};
+export { PinProperties };

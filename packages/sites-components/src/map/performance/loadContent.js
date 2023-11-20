@@ -4,8 +4,8 @@
  * @param {string} src
  * @param {function} [cb] Function that runs on script load
  */
- function LoadScript(src, cb = () => {}) {
-  const script = document.createElement('script');
+function LoadScript(src, cb = () => {}) {
+  const script = document.createElement("script");
 
   script.async = true;
   script.onload = cb;
