@@ -23,7 +23,7 @@ jobs:
         # As of this comment, there are many linting errors in sites-components.
         # This is a temporary fix to allow the workflow continue providing
         # autofixes while these errors are being addressed.
-        continue-on-error: true  
+        continue-on-error: true
       - run: pnpm run prettier
         name: Running prettier
 
@@ -49,4 +49,3 @@ jobs:
         with:
           script: |
             core.setFailed('ESLint found errors that must be manually fixed. See step: Running linter.')
-          

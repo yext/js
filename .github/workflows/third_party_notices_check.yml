@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
@@ -25,14 +25,14 @@ jobs:
       - name: Global install generate-license-file
         run: pnpm add -g generate-license-file
 
-      - name:  Global install turbo
+      - name: Global install turbo
         run: pnpm add -g turbo
 
       - name: Install packages
         run: pnpm i --ignore-scripts
 
       - name: Generate package licenses
-        run : pnpm run generate-notices
+        run: pnpm run generate-notices
 
       - name: Update THIRD-PARTY-NOTICES
         id: push-changes
@@ -41,7 +41,7 @@ jobs:
           message: "Automated update to THIRD-PARTY-NOTICES from github action's 3rd party notices check"
           push: true
           default_author: github_actions
-      
+
       - name: Fail job if push changes
         if: steps.push-changes.outputs.pushed == 'true'
         uses: actions/github-script@v3
