@@ -108,7 +108,7 @@ export const Map = ({
     provider
       .load(apiKey, {
         ...providerOptions,
-        ...(clientKey && { client: clientKey })
+        ...(clientKey && { client: clientKey }),
       })
       .then(() => setLoaded(true));
   }, []);
