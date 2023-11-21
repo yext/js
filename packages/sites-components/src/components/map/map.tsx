@@ -38,7 +38,7 @@ export const Map = ({
   panStartHandler,
   panHandler,
   provider,
-  providerOptions,
+  providerOptions = {},
   singleZoom,
 }: MapProps) => {
   const wrapper = useRef(null);
@@ -105,9 +105,11 @@ export const Map = ({
       return;
     }
 
-    const useClientKey = provider.getProviderName() === "Google" && clientKey;
     provider
-      .load(apiKey, useClientKey ? { client: clientKey } : {})
+      .load(apiKey, {
+        ...providerOptions,
+        ...(clientKey && { client: clientKey })
+      })
       .then(() => setLoaded(true));
   }, []);
 

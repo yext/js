@@ -193,6 +193,7 @@ function load(
     channel = window.location.hostname,
     client,
     language,
+    region,
     libraries = [],
     params = {},
   } = {}
@@ -206,7 +207,6 @@ function load(
   const apiParams = {
     callback: globalCallback,
     channel,
-    language,
     libraries: libraries.join(","),
     ...params,
   };
@@ -217,6 +217,14 @@ function load(
 
   if (client) {
     apiParams.client = client;
+  }
+
+  if (language) {
+    apiParams.language = language;
+  }
+
+  if (region) {
+    apiParams.region = region;
   }
 
   LoadScript(
