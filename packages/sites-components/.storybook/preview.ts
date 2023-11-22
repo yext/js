@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react";
+import { runOnly } from "./wcagConfig";
 
 const preview: Preview = {
   parameters: {
@@ -7,6 +8,11 @@ const preview: Preview = {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/,
+      },
+    },
+    a11y: {
+      options: {
+        runOnly,
       },
     },
   },
