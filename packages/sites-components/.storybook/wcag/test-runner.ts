@@ -8,10 +8,10 @@ import { TestRunnerConfig } from "@storybook/test-runner";
  * to learn more about the test-runner hooks API.
  */
 const renderFunctions: TestRunnerConfig = {
-  async preRender(page: Page) {
+  async preVisit(page: Page) {
     await injectAxe(page);
   },
-  async postRender(page: Page) {
+  async postVisit(page: Page) {
     await checkA11y(page, "#storybook-root", {
       axeOptions: { runOnly },
       detailedReport: true,
