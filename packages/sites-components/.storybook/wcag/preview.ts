@@ -10,8 +10,7 @@ const preview: Preview = {
         runOnly,
       },
     },
-  }
+  },
 };
 
 export default preview;
-
