@@ -1,7 +1,7 @@
 import { AddressType } from "./types.js";
 
 export const ADDRESS: AddressType = {
-  city: "Birminghams",
+  city: "Birmingham",
   countryCode: "US",
   line1: "1716 University Boulevard",
   localizedCountryName: "United States",
