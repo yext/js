@@ -34,8 +34,7 @@
     "wcag": "test-storybook -c .storybook/wcag",
     "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
     "prepare": "pnpm build",
-    "test-snapshots": "test-storybook -c .storybook/snapshots",
-    "update-snapshots": "pnpm run test-snapshots -u"
+    "update-snapshots": "test-storybook -c .storybook/snapshots -u"
   },
   "peerDependencies": {
     "react": "^17.0.2 || ^18.2.0",
