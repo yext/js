@@ -6,15 +6,23 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  automated-linting:
+  automated_linting:
     uses: ./.github/workflows/automated-linting.yml
-    secrets: 
+    secrets:
       BOT_REPO_SCOPED_TOKEN: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
-  
-  update-notices:
+
+  update_snapshots:
+    uses: ./.github/workflows/snapshots.yml
+    secrets:
+      BOT_REPO_SCOPED_TOKEN: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
+
+  update_notices:
     uses: ./.github/workflows/third_party_notices_check.yml
-    secrets: 
+    secrets:
       BOT_REPO_SCOPED_TOKEN: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
+
+  call_wcag:
+    uses: ./.github/workflows/wcag_test.yml
 
   call_build:
     uses: ./.github/workflows/build.yml
@@ -26,4 +34,3 @@ jobs:
     uses: ./.github/workflows/unit_test.yml
     with:
       package: "sites-components"
-      
