@@ -1,7 +1,7 @@
-import { codes } from 'micromark-util-symbol/codes.js';
-import { Extension, Construct } from 'micromark-util-types';
-import { resolveAllSuperscript } from './resolver.js';
-import { tokenizeSuperscript } from './tokenizer.js';
+import { codes } from "micromark-util-symbol/codes.js";
+import { Extension, Construct } from "micromark-util-types";
+import { resolveAllSuperscript } from "./resolver.js";
+import { tokenizeSuperscript } from "./tokenizer.js";
 
 /**
  * A micromark syntax extension to support superscript.
@@ -9,11 +9,11 @@ import { tokenizeSuperscript } from './tokenizer.js';
 export function yextSuperscript(): Extension {
   const tokenizer: Construct = {
     tokenize: tokenizeSuperscript,
-    resolveAll: resolveAllSuperscript
+    resolveAll: resolveAllSuperscript,
   };
 
   return {
     text: { [codes.caret]: tokenizer },
-    insideSpan: { null: [tokenizer] }
+    insideSpan: { null: [tokenizer] },
   };
 }

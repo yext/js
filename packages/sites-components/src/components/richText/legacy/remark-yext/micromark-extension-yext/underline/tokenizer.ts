@@ -1,14 +1,19 @@
-import { ok as assert } from 'uvu/assert';
-import { classifyCharacter } from 'micromark-util-classify-character';
-import { codes } from 'micromark-util-symbol/codes.js';
-import { constants } from 'micromark-util-symbol/constants.js';
-import { Effects, State, TokenizeContext, Code } from 'micromark-util-types';
+import { ok as assert } from "uvu/assert";
+import { classifyCharacter } from "micromark-util-classify-character";
+import { codes } from "micromark-util-symbol/codes.js";
+import { constants } from "micromark-util-symbol/constants.js";
+import { Effects, State, TokenizeContext, Code } from "micromark-util-types";
 
 /**
  * Sets up a state machine to handle a stream of character codes
  * that begins with a plus sign.
  */
-export function tokenizeUnderline(this: TokenizeContext, effects: Effects, ok: State, nok: State): State {
+export function tokenizeUnderline(
+  this: TokenizeContext,
+  effects: Effects,
+  ok: State,
+  nok: State
+): State {
   const previous = this.previous;
   const before = classifyCharacter(previous);
   let size = 0;
@@ -16,8 +21,8 @@ export function tokenizeUnderline(this: TokenizeContext, effects: Effects, ok: S
   return start;
 
   function start(code: Code): State | void {
-    assert(code === codes.plusSign, 'expected `+`');
-    effects.enter('underlineSequenceTemporary');
+    assert(code === codes.plusSign, "expected `+`");
+    effects.enter("underlineSequenceTemporary");
     return sequence(code);
   }
 
@@ -32,7 +37,7 @@ export function tokenizeUnderline(this: TokenizeContext, effects: Effects, ok: S
     if (size < 2) {
       return nok(code);
     }
-    const token = effects.exit('underlineSequenceTemporary');
+    const token = effects.exit("underlineSequenceTemporary");
     const after = classifyCharacter(code);
 
     token._open =

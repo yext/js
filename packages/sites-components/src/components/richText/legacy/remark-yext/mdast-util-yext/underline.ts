@@ -1,13 +1,13 @@
-import { CompileContext, Extension, Token } from 'mdast-util-from-markdown';
-import { Underline } from './mdast-node-types.js';
+import { CompileContext, Extension, Token } from "mdast-util-from-markdown";
+import { Underline } from "./mdast-node-types.js";
 
 /**
  * A fromMarkdown mdast extension to support underline.
  */
 export const underlineFromMarkdown: Extension = {
-  canContainEols: ['underline'],
+  canContainEols: ["underline"],
   enter: { underline: enterUnderline },
-  exit: { underline: exitUnderline }
+  exit: { underline: exitUnderline },
 };
 
 /**
@@ -15,7 +15,7 @@ export const underlineFromMarkdown: Extension = {
  * adding an Underline mdast node to the tree.
  */
 function enterUnderline(this: CompileContext, token: Token) {
-  this.enter<Underline>({ type: 'underline', children: [] }, token);
+  this.enter<Underline>({ type: "underline", children: [] }, token);
 }
 
 /**

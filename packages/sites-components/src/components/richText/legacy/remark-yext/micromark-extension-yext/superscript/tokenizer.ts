@@ -1,17 +1,21 @@
-import { ok as assert } from 'uvu/assert';
-import { codes } from 'micromark-util-symbol/codes.js';
-import { Effects, State, TokenizeContext, Code } from 'micromark-util-types';
+import { ok as assert } from "uvu/assert";
+import { codes } from "micromark-util-symbol/codes.js";
+import { Effects, State, TokenizeContext, Code } from "micromark-util-types";
 
 /**
  * Sets up a state machine to handle a stream of character codes
  * that begins with a caret.
  */
-export function tokenizeSuperscript(this: TokenizeContext, effects: Effects, ok: State): State {
+export function tokenizeSuperscript(
+  this: TokenizeContext,
+  effects: Effects,
+  ok: State
+): State {
   return start;
 
   function start(code: Code): State | void {
-    assert(code === codes.caret, 'expected `^`');
-    effects.enter('superscriptSequenceTemporary');
+    assert(code === codes.caret, "expected `^`");
+    effects.enter("superscriptSequenceTemporary");
     return sequence(code);
   }
 
@@ -21,7 +25,7 @@ export function tokenizeSuperscript(this: TokenizeContext, effects: Effects, ok:
       return sequence;
     }
 
-    const token = effects.exit('superscriptSequenceTemporary');
+    const token = effects.exit("superscriptSequenceTemporary");
 
     // Unlike other syntax (bold, underline, subscript, etc.), superscript
     // allows any token to open or close regardless of surrounding characters

@@ -1,23 +1,38 @@
-import { Event, TokenizeContext } from 'micromark-util-types';
-import { addEvents, canClose, canOpen, removeUnmatchedSequences } from '../resolver-utils.js';
+import { Event, TokenizeContext } from "micromark-util-types";
+import {
+  addEvents,
+  canClose,
+  canOpen,
+  removeUnmatchedSequences,
+} from "../resolver-utils.js";
 
 /**
  * Handles and cleans events coming from tokenizeSuperscript.
  */
-export function resolveAllSuperscript(events: Event[], context: TokenizeContext): Event[] {
+export function resolveAllSuperscript(
+  events: Event[],
+  context: TokenizeContext
+): Event[] {
   let index = -1;
 
   // Walk through all events.
   while (++index < events.length) {
     // Find a token that can close.
-    if (canClose(events[index], 'superscript')) {
+    if (canClose(events[index], "superscript")) {
       let open = index;
 
       // Now walk back to find an opener.
       while (open--) {
         // Find a token that can open the closer.
-        if (canOpen(events[open], 'superscript')) {
-          const nextIndex = addEvents(events, open, index, context, 'superscript', 1);
+        if (canOpen(events[open], "superscript")) {
+          const nextIndex = addEvents(
+            events,
+            open,
+            index,
+            context,
+            "superscript",
+            1
+          );
           index = nextIndex;
           break;
         }
@@ -25,6 +40,6 @@ export function resolveAllSuperscript(events: Event[], context: TokenizeContext)
     }
   }
 
-  removeUnmatchedSequences(events, 'superscript');
+  removeUnmatchedSequences(events, "superscript");
   return events;
 }

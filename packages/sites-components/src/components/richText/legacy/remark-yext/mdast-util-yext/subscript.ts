@@ -1,13 +1,13 @@
-import { CompileContext, Extension, Token } from 'mdast-util-from-markdown';
-import { Subscript } from './mdast-node-types.js';
+import { CompileContext, Extension, Token } from "mdast-util-from-markdown";
+import { Subscript } from "./mdast-node-types.js";
 
 /**
  * A fromMarkdown mdast extension to support subscript.
  */
 export const subscriptFromMarkdown: Extension = {
-  canContainEols: ['subscript'],
+  canContainEols: ["subscript"],
   enter: { subscript: enterSubscript },
-  exit: { subscript: exitSubscript }
+  exit: { subscript: exitSubscript },
 };
 
 /**
@@ -15,7 +15,7 @@ export const subscriptFromMarkdown: Extension = {
  * adding a Subscript mdast node to the tree.
  */
 function enterSubscript(this: CompileContext, token: Token) {
-  this.enter<Subscript>({ type: 'subscript', children: [] }, token);
+  this.enter<Subscript>({ type: "subscript", children: [] }, token);
 }
 
 /**

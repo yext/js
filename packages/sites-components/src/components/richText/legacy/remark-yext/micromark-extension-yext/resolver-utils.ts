@@ -1,14 +1,14 @@
-import { push, splice } from 'micromark-util-chunked';
-import { resolveAll } from 'micromark-util-resolve-all';
-import { types } from 'micromark-util-symbol/types';
-import { Event, TokenizeContext, Point, Token } from 'micromark-util-types';
+import { push, splice } from "micromark-util-chunked";
+import { resolveAll } from "micromark-util-resolve-all";
+import { types } from "micromark-util-symbol/types";
+import { Event, TokenizeContext, Point, Token } from "micromark-util-types";
 
 /**
  * Whether the event can be a closing token for the given type of sequence.
  */
 export function canClose(event: Event, sequenceType: string): boolean {
   return !!(
-    event[0] === 'enter' &&
+    event[0] === "enter" &&
     event[1].type === `${sequenceType}SequenceTemporary` &&
     event[1]._close
   );
@@ -19,7 +19,7 @@ export function canClose(event: Event, sequenceType: string): boolean {
  */
 export function canOpen(event: Event, sequenceType: string): boolean {
   return !!(
-    event[0] === 'exit' &&
+    event[0] === "exit" &&
     event[1].type === `${sequenceType}SequenceTemporary` &&
     event[1]._open
   );
@@ -38,12 +38,12 @@ export function addEvents(
   sequenceType: string,
   markersUsed: number
 ): number {
-  const [
-    openingSequence,
-    closingSequence,
-    text,
-    group
-  ] = createTokens(events[openIndex], events[closeIndex], sequenceType, markersUsed);
+  const [openingSequence, closingSequence, text, group] = createTokens(
+    events[openIndex],
+    events[closeIndex],
+    sequenceType,
+    markersUsed
+  );
 
   events[openIndex][1].end = Object.assign({}, openingSequence.start);
   events[closeIndex][1].start = Object.assign({}, closingSequence.end);
@@ -53,17 +53,17 @@ export function addEvents(
   // If there are more markers in the opening, add them before.
   if (events[openIndex][1].end.offset - events[openIndex][1].start.offset) {
     nextEvents = push(nextEvents, [
-      ['enter', events[openIndex][1], context],
-      ['exit', events[openIndex][1], context]
+      ["enter", events[openIndex][1], context],
+      ["exit", events[openIndex][1], context],
     ]);
   }
 
   // Opening.
   nextEvents = push(nextEvents, [
-    ['enter', group, context],
-    ['enter', openingSequence, context],
-    ['exit', openingSequence, context],
-    ['enter', text, context]
+    ["enter", group, context],
+    ["enter", openingSequence, context],
+    ["exit", openingSequence, context],
+    ["enter", text, context],
   ]);
 
   // Between.
@@ -78,10 +78,10 @@ export function addEvents(
 
   // Closing.
   nextEvents = push(nextEvents, [
-    ['exit', text, context],
-    ['enter', closingSequence, context],
-    ['exit', closingSequence, context],
-    ['exit', group, context]
+    ["exit", text, context],
+    ["enter", closingSequence, context],
+    ["exit", closingSequence, context],
+    ["exit", group, context],
   ]);
 
   let offset = 0;
@@ -90,8 +90,8 @@ export function addEvents(
   if (events[closeIndex][1].end.offset - events[closeIndex][1].start.offset) {
     offset = 2;
     nextEvents = push(nextEvents, [
-      ['enter', events[closeIndex][1], context],
-      ['exit', events[closeIndex][1], context]
+      ["enter", events[closeIndex][1], context],
+      ["exit", events[closeIndex][1], context],
     ]);
   }
 
@@ -106,7 +106,12 @@ export function addEvents(
  * opening marker(s), a token for the text inside the sequence, a token
  * for the closing marker(s), and a parent token for the whole group.
  */
-function createTokens(opener: Event, closer: Event, sequenceType: string, markersUsed: number): Token[] {
+function createTokens(
+  opener: Event,
+  closer: Event,
+  sequenceType: string,
+  markersUsed: number
+): Token[] {
   const start: Point = Object.assign({}, opener[1].end);
   const end: Point = Object.assign({}, closer[1].start);
   movePoint(start, -markersUsed);
@@ -115,30 +120,25 @@ function createTokens(opener: Event, closer: Event, sequenceType: string, marker
   const openingSequence: Token = {
     type: `${sequenceType}Sequence`,
     start,
-    end: Object.assign({}, opener[1].end)
+    end: Object.assign({}, opener[1].end),
   };
   const closingSequence: Token = {
     type: `${sequenceType}Sequence`,
     start: Object.assign({}, closer[1].start),
-    end
+    end,
   };
   const text: Token = {
     type: `${sequenceType}Text`,
     start: Object.assign({}, opener[1].end),
-    end: Object.assign({}, closer[1].start)
+    end: Object.assign({}, closer[1].start),
   };
   const group: Token = {
     type: `${sequenceType}`,
     start: Object.assign({}, openingSequence.start),
-    end: Object.assign({}, closingSequence.end)
+    end: Object.assign({}, closingSequence.end),
   };
 
-  return [
-    openingSequence,
-    closingSequence,
-    text,
-    group
-  ];
+  return [openingSequence, closingSequence, text, group];
 }
 
 /**
@@ -157,8 +157,11 @@ function movePoint(point: Point, offset: number): void {
  * Remove any unmatched temporary sequences of the given sequence type from the
  * events.
  */
-export function removeUnmatchedSequences(events: Event[], sequenceType: string) {
-  events.forEach(event => {
+export function removeUnmatchedSequences(
+  events: Event[],
+  sequenceType: string
+) {
+  events.forEach((event) => {
     if (event[1].type === `${sequenceType}SequenceTemporary`) {
       event[1].type = types.data;
     }

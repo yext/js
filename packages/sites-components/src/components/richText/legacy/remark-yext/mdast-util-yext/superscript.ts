@@ -1,13 +1,13 @@
-import { CompileContext, Extension, Token } from 'mdast-util-from-markdown';
-import { Superscript } from './mdast-node-types.js';
+import { CompileContext, Extension, Token } from "mdast-util-from-markdown";
+import { Superscript } from "./mdast-node-types.js";
 
 /**
  * A fromMarkdown mdast extension to support superscript.
  */
 export const superscriptFromMarkdown: Extension = {
-  canContainEols: ['superscript'],
+  canContainEols: ["superscript"],
   enter: { superscript: enterSuperscript },
-  exit: { superscript: exitSuperscript }
+  exit: { superscript: exitSuperscript },
 };
 
 /**
@@ -15,7 +15,7 @@ export const superscriptFromMarkdown: Extension = {
  * adding a Superscript mdast node to the tree.
  */
 function enterSuperscript(this: CompileContext, token: Token) {
-  this.enter<Superscript>({ type: 'superscript', children: [] }, token);
+  this.enter<Superscript>({ type: "superscript", children: [] }, token);
 }
 
 /**

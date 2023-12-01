@@ -1,13 +1,13 @@
-import { CompileContext, Extension, Token } from 'mdast-util-from-markdown';
-import { Strikethrough } from './mdast-node-types.js';
+import { CompileContext, Extension, Token } from "mdast-util-from-markdown";
+import { Strikethrough } from "./mdast-node-types.js";
 
 /**
  * A fromMarkdown mdast extension to support strikethrough.
  */
 export const strikethroughFromMarkdown: Extension = {
-  canContainEols: ['strikethrough'],
+  canContainEols: ["strikethrough"],
   enter: { strikethrough: enterStrikethrough },
-  exit: { strikethrough: exitStrikethrough }
+  exit: { strikethrough: exitStrikethrough },
 };
 
 /**
@@ -15,7 +15,7 @@ export const strikethroughFromMarkdown: Extension = {
  * adding a Strikethrough mdast node to the tree.
  */
 function enterStrikethrough(this: CompileContext, token: Token) {
-  this.enter<Strikethrough>({ type: 'strikethrough', children: [] }, token);
+  this.enter<Strikethrough>({ type: "strikethrough", children: [] }, token);
 }
 
 /**
