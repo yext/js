@@ -14,16 +14,24 @@
     "dist",
     "THIRD-PARTY-NOTICES"
   ],
-  "types": "dist/index.d.ts",
+  "main": "./dist/sites-components.cjs",
+  "module": "./dist/sites-components.js",
   "exports": {
     ".": {
-      "import": "./dist/sites-components.js",
-      "require": "./dist/sites-components.umd.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/sites-components.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/sites-components.cjs"
+      }
     },
     "./style.css": "./dist/style.css"
   },
+  "types": "dist/index.d.ts",
   "engines": {
-    "node": "^17 || ^18 || ^19"
+    "node": "^17 || ^18 || ^20"
   },
   "scripts": {
     "dev": "pnpm run storybook",
@@ -78,7 +86,7 @@
     "ts-jest-mock-import-meta": "^1.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.0",
-    "vite-plugin-dts": "^3.1.0",
+    "vite-plugin-dts": "^3.6.4",
     "vite-tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
