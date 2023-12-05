@@ -1,9 +1,9 @@
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../coordinate";
-import { MapProviderOptions } from "../mapProvider";
-import { ProviderMap } from "../providerMap";
-import { LeafletMaps } from "./leaflet";
+import { Coordinate } from "../coordinate.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap } from "../providerMap.js";
+import { LeafletMaps } from "./leaflet.js";
 
 const LeafletMap = LeafletMaps.getMapClass();
 const LeafletPin = LeafletMaps.getPinClass();

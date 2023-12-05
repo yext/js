@@ -1,12 +1,12 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../map/coordinate";
-import { Type, assertType, assertInstance } from "./util/assertions";
-import { Map } from "./map";
-import { MapProvider } from "./mapProvider";
-import { PinProperties } from "./pinProperties";
-import { ProviderPinOptions } from "./providerPin";
+import { Coordinate } from "../map/coordinate.js";
+import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { Map } from "./map.js";
+import { MapProvider } from "./mapProvider.js";
+import { PinProperties } from "./pinProperties.js";
+import { ProviderPinOptions } from "./providerPin.js";
 
 /**
  * @callback PinPropertiesForStatus

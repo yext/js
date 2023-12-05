@@ -1,3 +1,4 @@
+import { expect, describe, it } from "vitest";
 import { HoursManipulator } from "./hoursManipulator.js";
 import { HOURS_WITH_HOLIDAY, HOURS_WITH_REOPEN_DATE } from "./sampleData.js";
 

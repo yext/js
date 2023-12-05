@@ -5,19 +5,18 @@ import React, {
   useState,
   Fragment,
 } from "react";
-import { MapContext } from "./map";
-import { Marker } from "./marker";
+import { MapContext } from "./map.js";
+import { Marker } from "./marker.js";
 import type {
   MapContextType,
   ClustererProps,
   PinStoreType,
   ClustererContextType,
   ClusterTemplateProps,
-} from "./types";
-import type { Map } from "../../map/map";
-import { Unit, Projection } from "../../map/constants";
-import { Coordinate } from "../../map/coordinate";
-import { GeoBounds } from "../../map/geoBounds";
+} from "./types.js";
+import { Unit, Projection } from "../../map/constants.js";
+import { Coordinate } from "../../map/coordinate.js";
+import { GeoBounds } from "../../map/geoBounds.js";
 
 const defaultClusterTemplate = ({ count }: ClusterTemplateProps) => {
   return (
@@ -80,7 +79,7 @@ export const Clusterer = ({
 
   // Recalculate the clusters when either the pin store is updated or the map zoom level changes.
   useEffect(() => {
-    setClusters(_generateClusters(pinStore, map, clusterRadius));
+    setClusters(_generateClusters(pinStore, map.getZoom(), clusterRadius));
   }, [pinStore, map.getZoom()]);
 
   // When the clusters are updated, remove any pins in a cluster of more than 1 pin from the map.
@@ -157,23 +156,22 @@ export const Clusterer = ({
 
 /**
  * Generate groups of pins such that each pin is in exactly one cluster, each pin is at most
- * @param clusterRadius pixels from the center of the cluster, and each cluster
+ * @param clusterRadius - pixels from the center of the cluster, and each cluster
  * has at least one pin.
  */
 const _generateClusters = (
   pins: PinStoreType[],
-  map: Map,
+  zoom: number,
   clusterRadius: number
 ) => {
-  const clusterRadiusRadians =
-    (clusterRadius * Math.PI) / 2 ** (map.getZoom() + 7);
+  const clusterRadiusRadians = (clusterRadius * Math.PI) / 2 ** (zoom + 7);
   const pinsInRadius = pins.map((_, index) => [index]);
   const pinClusters = [];
 
   // Calculate the distances of each pin to each other pin
   pins.forEach((pin, index) => {
     for (let otherIndex = index; otherIndex < pins.length; otherIndex++) {
-      if (otherIndex != index) {
+      if (otherIndex !== index) {
         const distance = new Coordinate(pin.pin.getCoordinate()).distanceTo(
           new Coordinate(pins[otherIndex].pin.getCoordinate()),
           Unit.RADIAN,

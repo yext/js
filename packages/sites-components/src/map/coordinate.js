@@ -3,7 +3,7 @@ import {
   Projection,
   EARTH_RADIUS_MILES,
   EARTH_RADIUS_KILOMETERS,
-} from "./constants";
+} from "./constants.js";
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees latitude

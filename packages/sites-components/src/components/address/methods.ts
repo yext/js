@@ -9,10 +9,10 @@ import {
 /**
  * Get the unabbreviated version of a field if available
  *
- * getUnabbreviated('countryCode', address) ==> 'United States'
+ * getUnabbreviated('countryCode', address) ==\> 'United States'
  *
- * @param field an address field name
- * @param address a Yext address
+ * @param field - an address field name
+ * @param address - a Yext address
  * @returns the unabbreviated version of the field
  */
 export const getUnabbreviated = (
@@ -32,12 +32,12 @@ export const getUnabbreviated = (
 /**
  * Get a third-party maps url for a Yext location
  *
- * @param {AddressType} address - Yext address
- * @param {ListingType[]} listings - List of available Yext Listings
- * @param {string} googlePlaceId - Google Place ID
- * @param {GetDirectionsConfig} config - Options for determining URL
+ * @param address - Yext address
+ * @param listings - List of available Yext Listings
+ * @param googlePlaceId - Google Place ID
+ * @param config - Options for determining URL
  *
- * @returns {string} - Maps service url
+ * @returns Maps service url
  */
 export const getDirections = (
   address?: AddressType,
@@ -95,13 +95,11 @@ export const getDirections = (
     default: {
       const gmbListing = listings.find(
         (listing) =>
-          listing &&
-          listing.publisher &&
-          listing.publisher.toUpperCase() ===
-            ListingPublisherOption.GOOGLEMYBUSINESS
+          listing?.publisher?.toUpperCase() ===
+          ListingPublisherOption.GOOGLEMYBUSINESS
       );
 
-      if (gmbListing && gmbListing.listingUrl) {
+      if (gmbListing?.listingUrl) {
         return gmbListing.listingUrl;
       }
 
@@ -125,10 +123,10 @@ export const getDirections = (
 /**
  * Get Apple Maps location query
  *
- * @param {string} query - Stringified address query
- * @param {boolean} route
+ * @param query - Stringified address query
+ * @param route - Use address route
  *
- * @returns {string} - Apple maps url
+ * @returns Apple maps url
  */
 const getDirectionsApple = (query: string, route?: boolean): string => {
   return route
@@ -139,10 +137,10 @@ const getDirectionsApple = (query: string, route?: boolean): string => {
 /**
  * Get Bing Maps location query
  *
- * @param {string} query - Stringified address query
- * @param {string} route
+ * @param query - Stringified address query
+ * @param route - Use address route
  *
- * @returns {string} - Bing maps url
+ * @returns Bing maps url
  */
 const getDirectionsBing = (query: string, route?: boolean): string => {
   return route
@@ -155,10 +153,10 @@ const getDirectionsBing = (query: string, route?: boolean): string => {
  * Note (3/20/22): Google Place IDs must be refreshed
  * https://developers.google.com/maps/documentation/places/web-service/place-id#save-id
  *
- * @param {string} placeId - Stringified address query
- * @param {string} query - Stringified address query
- * @param {boolean} route - Enable driving directions
- * @returns {string} - Google maps url
+ * @param placeId - Stringified address query
+ * @param query - Stringified address query
+ * @param route - Enable driving directions
+ * @returns Google maps url
  */
 const getDirectionsGooglePlaceID = (
   placeId: string,
@@ -171,7 +169,7 @@ const getDirectionsGooglePlaceID = (
   }
 
   if (queryParam) {
-    `https://maps.google.com/maps/search/?api=1${queryParam}&query_place_id=${placeId}`;
+    return `https://maps.google.com/maps/search/?api=1${queryParam}&query_place_id=${placeId}`;
   }
 
   // Fallback to URL with route, as query is not required.
@@ -181,9 +179,9 @@ const getDirectionsGooglePlaceID = (
 /**
  * Get a Google Maps search query
  *
- * @param {string} query - Stringified address query
- * @param {boolean} route - Enable driving directions
- * @returns {string} - Google maps url
+ * @param query - Stringified address query
+ * @param route - Enable driving directions
+ * @returns Google maps url
  */
 const getDirectionsGoogle = (query: string, route?: boolean): string => {
   return route
@@ -194,8 +192,8 @@ const getDirectionsGoogle = (query: string, route?: boolean): string => {
 /**
  * Convert an array of values like address parts to a url readable string
  *
- * @param {string} substrings - ordered list to encode as csv
- * @returns {string} - url friendly string
+ * @param substrings - ordered list to encode as csv
+ * @returns url friendly string
  */
 const encodeArray = (substrings: (string | undefined)[] = []): string => {
   if (!substrings.length) return "";

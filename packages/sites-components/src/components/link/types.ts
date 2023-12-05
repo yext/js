@@ -5,7 +5,7 @@ import { ConversionDetails } from "@yext/analytics";
  *
  * @public
  */
-export const LinkType = {
+export const LinkTypes = {
   URL: "URL",
   Email: "Email",
   Phone: "Phone",
@@ -16,7 +16,7 @@ export const LinkType = {
  *
  * @public
  */
-export type LinkType = (typeof LinkType)[keyof typeof LinkType];
+export type LinkType = (typeof LinkTypes)[keyof typeof LinkTypes];
 
 /**
  * Type for CTA field

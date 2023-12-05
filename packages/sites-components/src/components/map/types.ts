@@ -1,7 +1,7 @@
-import type { Map as MapType } from "../../map/map";
-import type { MapProvider } from "../../map/mapProvider";
-import type { MapPin } from "../../map/mapPin";
-import type { GeoBounds } from "../../map/geoBounds";
+import type { Map as MapType } from "../../map/map.js";
+import type { MapProvider } from "../../map/mapProvider.js";
+import type { MapPin } from "../../map/mapPin.js";
+import type { GeoBounds } from "../../map/geoBounds.js";
 import React from "react";
 
 export interface Coordinate {

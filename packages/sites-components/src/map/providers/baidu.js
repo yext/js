@@ -2,10 +2,10 @@
 
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../coordinate";
-import { MapProviderOptions } from "../mapProvider";
-import { ProviderMap } from "../providerMap";
-import { HTMLProviderPin } from "../providerPin";
+import { Coordinate } from "../coordinate.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap } from "../providerMap.js";
+import { HTMLProviderPin } from "../providerPin.js";
 
 // Baidu zoom formula: equatorWidth = 2^zoom * 152.87572479248047
 // Our standard zoom formula: equatorWidth = 2^zoom * 256

@@ -23,25 +23,25 @@ import "./address.css";
 export const Address = ({
   address,
   lines,
-  separator,
+  separator = ",",
   ...props
 }: AddressProps) => {
   const renderedLines = (lines || localeAddressFormat(address.countryCode)).map(
     (line) => (
       <AddressLine
+        key={line.toString()}
         address={address}
         line={line}
         separator={separator}
-        key={line.toString()}
       />
     )
   );
 
-  return <div {...props}>{renderedLines}</div>;
-};
-
-Address.defaultProps = {
-  separator: ",",
+  return (
+    <div {...props} key={address.toString()}>
+      {renderedLines}
+    </div>
+  );
 };
 
 const AddressLine = ({
@@ -66,12 +66,10 @@ const AddressLine = ({
     const unabbreviated = getUnabbreviated(field, address);
     if (unabbreviated) {
       addressDOM.push(
-        <>
+        <React.Fragment key={field}>
           {" "}
-          <abbr key={field} title={unabbreviated}>
-            {value}
-          </abbr>
-        </>
+          <abbr title={unabbreviated}>{value}</abbr>
+        </React.Fragment>
       );
       continue;
     }

@@ -34,7 +34,7 @@ class Runtime {
   }
 
   getNodeMajorVersion(): number {
-    if (this.name != "node") {
+    if (this.name !== "node") {
       throw new Error("Not running in Node.");
     }
 

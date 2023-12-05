@@ -3,9 +3,8 @@ import { LinkProps, HREFLinkProps, CTA } from "./types.js";
 /**
  * Get the link from a CTA
  *
- * @param {CTA} cta
- *
- * @returns {string}
+ * @param cta - CTA
+ * @returns a valid href tag
  */
 const getHref = (cta: CTA): string => {
   if (cta.linkType === "Email" || (!cta.linkType && isEmail(cta.link))) {

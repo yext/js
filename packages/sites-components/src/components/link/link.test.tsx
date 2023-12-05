@@ -1,7 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-import React from "react";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import { Link } from "./link.js";
 
@@ -22,12 +19,12 @@ describe("Link", () => {
     );
   });
 
-  it("renders component when given full cta prop and no children", () => {
+  it("renders component when given full cta prop, no children, and just a link", () => {
     render(<Link cta={{ link: "https://yext.com" }} />);
   });
 });
 
-jest.mock("../../components/analytics", () => {
+vi.mock("../../components/analytics", () => {
   const trackClick = () => {
     return () => {
       throw new Error("Error");
@@ -42,7 +39,7 @@ jest.mock("../../components/analytics", () => {
 
 describe("Link Component Handles Analytics Failures", () => {
   it("registers console.error", () => {
-    const errorMock = jest.spyOn(console, "error").mockImplementation();
+    const errorMock = vi.spyOn(console, "error").mockImplementation(() => null);
 
     render(<Link cta={{ link: "https://yext.com" }} />);
     const link = screen.getByRole("link");
@@ -53,7 +50,7 @@ describe("Link Component Handles Analytics Failures", () => {
   });
 
   it("still invokes onClick", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     render(<Link cta={{ link: "https://yext.com" }} onClick={onClick} />);
     const link = screen.getByRole("link");
 

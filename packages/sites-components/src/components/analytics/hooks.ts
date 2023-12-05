@@ -34,6 +34,7 @@ export function useAnalytics(): AnalyticsMethods | null {
     };
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const scope = useScope();
 
   // TODO: this is ugly, I imagine there is a more elegant way of doing this

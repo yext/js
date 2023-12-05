@@ -1,10 +1,10 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../coordinate";
-import { MapProviderOptions } from "../mapProvider";
-import { ProviderMap } from "../providerMap";
-import { HTMLProviderPin } from "../providerPin";
+import { Coordinate } from "../coordinate.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap } from "../providerMap.js";
+import { HTMLProviderPin } from "../providerPin.js";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
 

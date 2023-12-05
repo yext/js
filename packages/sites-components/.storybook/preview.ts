@@ -1,5 +1,5 @@
 import type { Preview } from "@storybook/react";
-import { runOnly } from "./wcagConfig";
+import { runOnly } from "./wcagConfig.js";
 
 const preview: Preview = {
   parameters: {

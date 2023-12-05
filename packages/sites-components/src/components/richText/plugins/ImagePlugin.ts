@@ -38,7 +38,7 @@ const INSERT_IMAGE_COMMAND = createCommand<SerializedImageNode>(
 /**
  * Image Plugin used by Lexical Composer
  *
- * @author Ruihao Zhu (rzhu@yext.com)
+ * author - Ruihao Zhu (rzhu\@yext.com)
  */
 export function ImagePlugin() {
   const [editor] = useLexicalComposerContext();
@@ -51,7 +51,7 @@ export function ImagePlugin() {
     return mergeRegister(
       editor.registerCommand(
         INSERT_IMAGE_COMMAND,
-        (payload) => {
+        (payload: any) => {
           const imageNode = $createImageNode(payload);
           $insertNodes([imageNode]);
           if ($isRootOrShadowRoot(imageNode.getParentOrThrow())) {
@@ -63,21 +63,21 @@ export function ImagePlugin() {
       ),
       editor.registerCommand(
         DRAGSTART_COMMAND,
-        (event) => {
+        (event: any) => {
           return onDragStart(event);
         },
         COMMAND_PRIORITY_HIGH
       ),
       editor.registerCommand(
         DRAGOVER_COMMAND,
-        (event) => {
+        (event: any) => {
           return onDragover(event);
         },
         COMMAND_PRIORITY_LOW
       ),
       editor.registerCommand(
         DROP_COMMAND,
-        (event) => {
+        (event: any) => {
           return onDrop(event, editor);
         },
         COMMAND_PRIORITY_HIGH
@@ -193,8 +193,8 @@ function getDragSelection(event: DragEvent): Range | null {
     target === null || !(target instanceof Node)
       ? null
       : target.nodeType === 9
-      ? (target as Document).defaultView
-      : (target as HTMLElement).ownerDocument.defaultView;
+        ? (target as Document).defaultView
+        : (target as HTMLElement).ownerDocument.defaultView;
   const domSelection = getDOMSelection(targetWindow);
   if (document.caretRangeFromPoint) {
     range = document.caretRangeFromPoint(event.clientX, event.clientY);

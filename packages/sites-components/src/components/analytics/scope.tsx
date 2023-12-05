@@ -26,10 +26,12 @@ export function AnalyticsScopeProvider(
   props: PropsWithChildren<AnalyticsScopeProps>
 ): JSX.Element {
   const parentScope = useScope();
-  const combinedScope = concatScopes(parentScope, props.name);
+  const [combinedScope] = React.useState({
+    name: concatScopes(parentScope, props.name),
+  });
 
   return (
-    <ScopeContext.Provider value={{ name: combinedScope }}>
+    <ScopeContext.Provider value={combinedScope}>
       {props.children}
     </ScopeContext.Provider>
   );

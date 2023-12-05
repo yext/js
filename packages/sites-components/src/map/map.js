@@ -1,13 +1,13 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Unit, Projection } from "../map/constants";
-import { Coordinate } from "../map/coordinate";
-import { GeoBounds } from "../map/geoBounds";
-import { Type, assertType, assertInstance } from "./util/assertions";
-import { MapPinOptions } from "./mapPin";
-import { MapProvider } from "./mapProvider";
-import { ProviderMapOptions } from "./providerMap";
+import { Unit, Projection } from "../map/constants.js";
+import { Coordinate } from "../map/coordinate.js";
+import { GeoBounds } from "../map/geoBounds.js";
+import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { MapPinOptions } from "./mapPin.js";
+import { MapProvider } from "./mapProvider.js";
+import { ProviderMapOptions } from "./providerMap.js";
 
 /**
  * @callback PaddingFunction

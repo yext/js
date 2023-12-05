@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Meta } from "@storybook/react";
-import { LocationMap } from ".";
+import { LocationMap } from "./index.js";
 import { getDirections } from "../address/methods.js";
 import { MapProviderOption } from "../address/types.js";
 

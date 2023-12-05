@@ -1,7 +1,7 @@
-import { Coordinate } from "../coordinate";
-import { MapProviderOptions } from "../mapProvider";
-import { ProviderMap } from "../providerMap";
-import { ProviderPin } from "../providerPin";
+import { Coordinate } from "../coordinate.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap } from "../providerMap.js";
+import { ProviderPin } from "../providerPin.js";
 
 // Map Class
 

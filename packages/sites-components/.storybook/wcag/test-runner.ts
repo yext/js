@@ -1,6 +1,6 @@
 import { injectAxe, checkA11y } from "axe-playwright";
 import { Page } from "playwright-core";
-import { runOnly } from "../wcagConfig";
+import { runOnly } from "../wcagConfig.js";
 import { TestRunnerConfig } from "@storybook/test-runner";
 
 /**

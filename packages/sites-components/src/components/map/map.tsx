@@ -6,11 +6,11 @@ import React, {
   useState,
 } from "react";
 import classnames from "classnames";
-import { GoogleMaps } from "../../map/providers/google";
-import { Map as MapType, MapOptions } from "../../map/map";
-import { GeoBounds } from "../../map/geoBounds";
-import { Coordinate } from "../../map/coordinate";
-import type { MapProps, MapContextType } from "./types";
+import { GoogleMaps } from "../../map/providers/google.js";
+import { Map as MapType, MapOptions } from "../../map/map.js";
+import { GeoBounds } from "../../map/geoBounds.js";
+import { Coordinate } from "../../map/coordinate.js";
+import type { MapProps, MapContextType } from "./types.js";
 
 export const MapContext = createContext<MapContextType | null>(null);
 
