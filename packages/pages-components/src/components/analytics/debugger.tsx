@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getRuntime } from "../../util";
-import type { DebuggerTabs, EventData, TabProps, Tooltip, TooltipProps } from "./types";
+import type { DebuggerTabs, EventData, TabProps, Tooltip, TooltipHandlerProps, TooltipsRefItem } from "./types";
 import c from "classnames";
 import "./debugger.css";
 
@@ -114,64 +114,10 @@ export function AnalyticsDebuggerInternal() {
                     </div>
                 )}
             </div>
-            {tooltips.map((tooltip) => <Tooltip tooltip={tooltip} key={tooltip.key} />)}
+            <TooltipHandler tooltips={tooltips} />
         </>
     );
 }
-
-function Tooltip(props: TooltipProps) {
-    const { tooltip } = props;
-
-    const ref = useRef<HTMLDivElement>(null);
-    const [initialPosition, setInitialPosition] = useState(false);
-    const [top, setTop] = useState(tooltip.eventEl.getBoundingClientRect().top + window.scrollY);
-    const [left, setLeft] = useState(tooltip.eventEl.getBoundingClientRect().left);
-
-    useEffect(() => {
-        if (!ref.current) {
-            return;
-        }
-
-        // Set the initial tooltip position to the top-left corner of the event element.
-        if (!initialPosition) {
-            setTop(top => ref.current ? top - ref.current.clientHeight : top);
-            setLeft(left => ref.current ? left - ref.current.clientWidth : left);
-            setInitialPosition(true);
-            return;
-        }
-
-        // After the initial position is set, check that the tooltip is within the window bounds.
-        // TODO: Also need to check that tooltips are not overlapping each other.
-        if (isOutsideWindowBounds(
-            ref.current.getBoundingClientRect().left,
-            ref.current.getBoundingClientRect().top,
-            ref.current.getBoundingClientRect().right,
-            ref.current.getBoundingClientRect().bottom,
-        )) {
-            // Move to bottom-right corner if out of bounds.
-            setTop(tooltip.eventEl.getBoundingClientRect().bottom + window.scrollY);
-            setLeft(tooltip.eventEl.getBoundingClientRect().right);
-        }
-    }, [ref.current]);
-
-    return (
-        <div
-            style={{
-                inset: `${top}px auto auto ${left}px`,
-                visibility: ref.current ? 'visible' : 'hidden',
-            }}
-            className="analytics-debugger-tooltip" key={tooltip.key}
-            ref={ref}
-        >
-            <span>{tooltip.eventName}</span>
-        </div>
-    );
-}
-
-const isOutsideWindowBounds = (x1: number, y1: number, x2: number, y2: number) => {
-    return (x1 < 0 || x2 > window.innerWidth) ||
-      (y1 < 0 || y2 > document.body.getBoundingClientRect().height);
-};
 
 function EventsTab(props: TabProps) {
     const {
@@ -261,4 +207,176 @@ function ScopesTab(props: TabProps) {
             </ul>
         </div>
     );
+}
+
+function TooltipHandler(props: TooltipHandlerProps) {
+    const tooltipRefs = useRef<Record<string,TooltipsRefItem>>({});
+
+    useEffect(() => {
+        if (!tooltipRefs.current) return;
+
+        Object.keys(tooltipRefs.current).map(key => {
+            const otherTooltips = Object.values(tooltipRefs.current).map(v => v.el).filter(el => el !== tooltipRefs.current[key].el);
+            const item = tooltipRefs.current[key];
+            setTooltipPosition(item, otherTooltips);
+            item.el.style.visibility = "visible";
+        });
+    }, [props.tooltips]);
+
+    return (
+        <>
+            {props.tooltips.map((tooltip) => (
+                <div
+                    key={tooltip.key}
+                    style={{ visibility: 'hidden', }} // Hide element before final position is calculated.
+                    className="analytics-debugger-tooltip"
+                    ref={(el) => {
+                        if (el) {
+                            tooltipRefs.current[tooltip.key] = {
+                                el,
+                                tooltip,
+                            }
+                          } else {
+                            delete tooltipRefs.current[tooltip.key];
+                          }
+                    }}
+                >
+                    <span>{tooltip.eventName}</span>
+                </div>
+            ))}
+        </>
+    );
+}
+
+// Find tooltip position that is in the window bounds and doesn't overlap with other tooltips.
+function setTooltipPosition(item: TooltipsRefItem, instances: HTMLDivElement[]) {
+    for (let i = 0; i < 9; i++) {
+        // Get base position and position the tooltip.
+        let position = positionFinder(item.tooltip.eventEl.getBoundingClientRect(), item.el, i);
+        item.el.style.inset = `${position.top} auto auto ${position.left}`;
+
+        // Check if tooltip is in the window bounds.
+        let withinBounds = !inWindowBounds(
+            item.el.getBoundingClientRect().left,
+            item.el.getBoundingClientRect().top + window.scrollY,
+            item.el.getBoundingClientRect().right,
+            item.el.getBoundingClientRect().bottom + window.scrollY,
+        );
+        if (!withinBounds) continue;
+
+        // Check if tooltip overlaps with others.
+        let valid = true;
+        for (let j = 0; j < instances.length - 1; j++) {
+            const neighbor = instances[j];
+            if (isOverlapping(item.el, neighbor)) {
+                valid = false;
+            }
+        }
+        if (valid) break;
+    }
+}
+
+// Check if two tooltips are overlapping with each other.
+function isOverlapping(tooltip: HTMLDivElement, futureNeighbor: HTMLDivElement): boolean {
+    const y1 = tooltip.getBoundingClientRect().top + window.scrollY;
+    const x1 = tooltip.getBoundingClientRect().left;
+    const y2 = y1 + tooltip.clientHeight;
+    const x2 = x1 + tooltip.clientWidth;
+
+    const b1 = futureNeighbor.getBoundingClientRect().top + window.scrollY;
+    const a1 = futureNeighbor.getBoundingClientRect().left;
+    const b2 = b1 + futureNeighbor.clientHeight;
+    const a2 = a1 + futureNeighbor.clientWidth;
+
+    const check = (
+        x1: number,
+        y1: number,
+        a1: number,
+        b1: number,
+        x2: number,
+        y2: number,
+        a2: number,
+        b2: number
+    ) => {
+      return (a1 <= x2 && x2 <= a2 && b1 <= y2 && y2 <= b2) ||
+       (a1 <= x1 && x1 <= a2 && b1 <= y1 && y1 <= b2) ||
+       (a1 <= x1 && x1 <= a2 && b1 <= y2 && y2 <= b2) ||
+       (a1 <= x2 && x2 <= a2 && b1 <= y1 && y1 <= b2);
+    };
+
+    return check(x1, y1, a1, b1, x2, y2, a2, b2) || check(a1, b1, x1, y1, a2, b2, x2, y2);
+}
+
+// Check if a tooltip is within the window bounds.
+function inWindowBounds(x1: number, y1: number, x2: number, y2: number) {
+    return (x1 < 0 || x2 > window.innerWidth) ||
+      (y1 < 0 || y2 > document.body.getBoundingClientRect().height);
+};
+
+// Possible positions for a given tooltip around it's target element.
+function positionFinder (rect: DOMRect, tooltip: HTMLDivElement, index: number) {
+    let tooltipHeight = tooltip.clientHeight;
+    let tooltipWidth = tooltip.clientWidth;
+
+    let left;
+    let top;
+    switch (index) {
+      // case 'top-left'
+      case 0: {
+        top = (window.scrollY + rect.top - tooltipHeight) + 'px';
+        left = (rect.left - tooltipWidth) + 'px';
+        break;
+      }
+      // case 'top-inner-left'
+      case 1: {
+        top = (window.scrollY + rect.top - tooltipHeight) + 'px';
+        left = rect.left + 'px';
+        break;
+      }
+      // case 'top-right'
+      case 2: {
+        top = (window.scrollY + rect.top - tooltipHeight) + 'px';
+        left = rect.right + 'px';
+        break;
+      }
+      // case 'top-inner-right'
+      case 3: {
+        top = (window.scrollY + rect.top - tooltipHeight) + 'px';
+        left = (rect.right - tooltipWidth) + 'px';
+        break;
+      }
+      // case 'bottom-left'
+      case 4: {
+        top = (window.scrollY + rect.bottom) + 'px';
+        left = (rect.left - tooltipWidth) + 'px';
+        break;
+      }
+      // case 'bottom-inner-left'
+      case 5: {
+        top = (window.scrollY + rect.bottom) + 'px';
+        left = rect.left + 'px';
+        break;
+      }
+      // case 'bottom-inner-right'
+      case 6: {
+        top = (window.scrollY + rect.bottom) + 'px';
+        left = (rect.right - tooltipWidth) + 'px';
+        break;
+      }
+      // case 'bottom-right'
+      case 7: {
+        top = (window.scrollY + rect.bottom) + 'px';
+        left = rect.right + 'px';
+        break;
+      }
+      default: {
+        top = 0;
+        left = 0;
+      }
+    }
+
+    return {
+      top: top,
+      left: left
+    };
 }

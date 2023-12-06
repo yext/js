@@ -29,6 +29,15 @@ export type TabProps = {
   setTooltips: React.Dispatch<React.SetStateAction<Tooltip[]>>;
 }
 
+export type TooltipHandlerProps = {
+  tooltips: Tooltip[];
+}
+
 export type TooltipProps = {
+  tooltip: Tooltip;
+}
+
+export type TooltipsRefItem = {
+  el: HTMLDivElement;
   tooltip: Tooltip;
 }
