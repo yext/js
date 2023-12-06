@@ -232,8 +232,11 @@ importers:
         specifier: 23.0.1
         version: 23.0.1
       playwright-core:
-        specifier: ^1.40.1
-        version: 1.40.1
+        specifier: ^1.40.0
+        version: 1.40.0
+      postcss-nested:
+        specifier: ^6.0.1
+        version: 6.0.1(postcss@8.4.26)
       prop-types:
         specifier: ^15.8.1
         version: 15.8.1
