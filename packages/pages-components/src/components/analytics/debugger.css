@@ -1,38 +1,4 @@
 .xYextDebug {
-    [data-ya-track] {
-        outline: 1px dashed blue;
-        scroll-margin: 32px;
-    }
-  
-    [data-ya-track].analytics-event-highlight {
-        animation-name: pulse;
-        animation-duration: 2s;
-        animation-iteration-count: infinite;
-        outline: 2px dashed black;
-        padding: 8px 16px;
-    }
-  
-    [data-ya-scope] {
-        outline: 1px dashed green;
-        position: relative;
-    }
-  
-    [data-ya-scope]::after {
-        content: attr(data-ya-scope);
-        position: absolute;
-        top: 0;
-        left: 0;
-        color: black;
-        display: block;
-        position: absolute;
-  
-        padding: 10px;
-        outline: 1px solid #178acd;
-        background: rgba(0, 0, 0, 0.45);
-        color: white;
-        z-index: 2147483647;
-    }
-  
     @keyframes pulse {
         0%
         {
@@ -49,8 +15,41 @@
             background: transparent;
         }
     }
-  
-  
+
+    [data-ya-track] {
+        outline: 1px dashed blue;
+        scroll-margin: 32px;
+
+        &.analytics-event-highlight {
+            animation-name: pulse;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            outline: 2px dashed black;
+            padding: 8px 16px;
+        }
+    }
+
+    [data-ya-scope] {
+        outline: 1px dashed green;
+        position: relative;
+
+        &::after {
+            content: attr(data-ya-scope);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: black;
+            display: block;
+            position: absolute;
+    
+            padding: 10px;
+            outline: 1px solid #178acd;
+            background: rgba(0, 0, 0, 0.45);
+            color: white;
+            z-index: 2147483647;
+        }
+    }
+
     .analytics-debugger {
         position: fixed;
         height: 80%;
@@ -62,7 +61,7 @@
         display: flex !important;
         z-index: 99999;
     }
-  
+
     /* Toggles */
     .analytics-debugger-toggles {
         width: 100px;
@@ -74,34 +73,34 @@
         flex-direction: column;
         border-right: 1px solid white;
     }
-  
+
     .analytics-debugger-toggle {
         outline: none;
         text-align: center;
         padding: 10px;
         cursor: pointer;
+
+        &.is-active {
+            background: #178acd;
+        }
+
+        &:first-child {
+            border-top-left-radius: 4px;
+        }
+
+        &:last-child {
+            border-bottom-left-radius: 4px;
+        }
+
+        &:not(:last-child) {
+            border-bottom: 1px solid white;
+        }
+
+        &:hover {
+            background: #178acd;
+        }
     }
-  
-    .analytics-debugger-toggle.is-active {
-        background: #178acd;
-    }
-  
-    .analytics-debugger-toggle:not(:last-child) {
-        border-bottom: 1px solid white;
-    }
-  
-    .analytics-debugger-toggle:first-child {
-        border-top-left-radius: 4px;
-    }
-  
-    .analytics-debugger-toggle:last-child {
-        border-bottom-left-radius: 4px;
-    }
-  
-    .analytics-debugger-toggle:hover {
-        background: #178acd;
-    }
-  
+
     /* Tabs */
     .analytics-debugger-tabs {
         width: 250px;
@@ -109,13 +108,13 @@
         border-bottom-left-radius: 4px;
         background: rgba(0, 0, 0, 0.75);
     }
-  
+
     .analytics-debugger-tab {
         display: flex;
         flex-direction: column;
         height: 100%;
     }
-  
+
     .analytics-debugger-tab-title {
         background: #178acd;
         color: white;
@@ -129,33 +128,33 @@
         overflow-y: scroll;
         flex-grow: 1;
     }
-  
+
     .analytics-debugger-listItem {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         align-items: center;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid white;
+        }
     }
-  
-    .analytics-debugger-listItem:not(:last-child) {
-        border-bottom: 1px solid white;
-    }
-  
+
     .analytics-debugger-button {
         padding: 10px 20px;
         text-align: left;
         width: 100%;
+
+        &.is-active {
+            background: #178acd;
+        }
+
+        &:hover:not(.is-active) {
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+        }
     }
-  
-    .analytics-debugger-button.is-active {
-        background: #178acd;
-    }
-  
-    .analytics-debugger-button:hover:not(.is-active) {
-        background: rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-    }
-  
+
     .analytics-debugger-tooltip {
         background: #178acd;
         color: white;

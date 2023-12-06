@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { getRuntime } from "../../util";
 import type { DebuggerTabs, EventData, TabProps, Tooltip, TooltipProps } from "./types";
 import c from "classnames";
-// TODO: Need to setup css build step. This isn't being added to the elements when rendered.
 import "./debugger.css";
 
 declare global {
@@ -78,6 +77,10 @@ export function AnalyticsDebuggerInternal() {
         });
 
         setDataLoaded(true);
+
+        return () => {
+            document.documentElement.classList.remove('xYextDebug');
+        }
     }, []);
 
     // Wait for all DOM nodes to be queried before rendering.
