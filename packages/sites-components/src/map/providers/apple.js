@@ -1,4 +1,3 @@
-import { Coordinate } from "../coordinate.js";
 import { MapProviderOptions } from "../mapProvider.js";
 import { ProviderMap } from "../providerMap.js";
 import { ProviderPin } from "../providerPin.js";

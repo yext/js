@@ -211,13 +211,13 @@ class Coordinate {
    */
   add(latDist, lonDist, unit = Unit.DEGREE, projection = Projection.SPHERICAL) {
     if (
-      projection == Projection.MERCATOR &&
-      (unit == Unit.DEGREE || unit == Unit.RADIAN)
+      projection === Projection.MERCATOR &&
+      (unit === Unit.DEGREE || unit === Unit.RADIAN)
     ) {
       const latDistRad =
-        unit == Unit.DEGREE ? degreesToRadians(latDist) : latDist;
+        unit === Unit.DEGREE ? degreesToRadians(latDist) : latDist;
       const lonDistDeg =
-        unit == Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
+        unit === Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
 
       this.latitude = mercatorLatAddRadians(this.latitude, latDistRad);
       this.longitude += lonDistDeg;
@@ -245,6 +245,8 @@ class Coordinate {
           this.latitude += radiansToDegrees(latDist);
           this.longitude += radiansToDegrees(lonDist);
           break;
+        default:
+          throw new Error(`unit unhandled: ${unit}`);
       }
     }
   }
@@ -258,8 +260,8 @@ class Coordinate {
    */
   distanceTo(coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL) {
     if (
-      projection == Projection.MERCATOR &&
-      (unit == Unit.DEGREE || unit == Unit.RADIAN)
+      projection === Projection.MERCATOR &&
+      (unit === Unit.DEGREE || unit === Unit.RADIAN)
     ) {
       const latDist = mercatorLatDistanceInRadians(
         this.latitude,
@@ -277,6 +279,8 @@ class Coordinate {
           return radiansToDegrees(radianDist);
         case Unit.RADIAN:
           return radianDist;
+        default:
+          throw new Error(`unit unhandled: ${unit}`);
       }
     } else {
       const radianDist = haversineDistance(this, coordinate);
@@ -290,6 +294,8 @@ class Coordinate {
           return radianDist * EARTH_RADIUS_MILES;
         case Unit.RADIAN:
           return radianDist;
+        default:
+          throw new Error(`unit unhandled: ${unit}`);
       }
     }
   }

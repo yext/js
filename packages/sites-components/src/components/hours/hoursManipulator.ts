@@ -339,7 +339,7 @@ export function arrayShift(arr: Array<any>, n: number): Array<any> {
 
 /**
  * @param il1 - HoursIntervalManipulator[] one
- * @param il2 - HoursIntervalManipulato[] two
+ * @param il2 - HoursIntervalManipulator[] two
  * @returns whether the two intervals lists are equal
  */
 export function intervalsListsAreEqual(

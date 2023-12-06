@@ -41,7 +41,7 @@ async function gcj02ToBD09(coordinates) {
   return await new Promise((resolve, reject) => {
     gcj02ToBD09Requests.push({ coordinates, resolve, reject });
 
-    if (gcj02ToBD09Requests.length == 1) {
+    if (gcj02ToBD09Requests.length === 1) {
       gcj02ToBD09CallbackTimeout = setTimeout(sendRequests, 100);
     }
 

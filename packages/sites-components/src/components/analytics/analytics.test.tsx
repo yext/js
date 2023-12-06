@@ -41,11 +41,9 @@ beforeAll(() => {
       NODE_ENV: "development",
     },
   };
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   delete global.location;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   global.location = Object.defineProperties(
     {},
@@ -73,7 +71,6 @@ afterAll(() => {
   // restore window location so we don't side effect other tests.
   window.location = oldWindowLocation;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   delete global.fetch;
   global.process = currentProcess;
@@ -94,13 +91,12 @@ const baseProps: TemplateProps = {
 const currentProcess = global.process;
 
 afterEach(() => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   global.fetch.mockClear();
 });
 
 describe("Analytics", () => {
-  it("should fire a page view once", async () => {
+  it("should fire a page view once", () => {
     const App = () => {
       return (
         <AnalyticsProvider templateData={baseProps} requireOptIn={false} />
@@ -129,7 +125,6 @@ describe("Analytics", () => {
     );
 
     fireEvent.click(screen.getByRole("link"));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
     const generatedUrlStr = callstack[callstack.length - 1][0];
@@ -181,11 +176,9 @@ describe("Analytics", () => {
 
     expect.assertions(testClicks.length);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const user = userEvent.setup();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
 
@@ -223,13 +216,11 @@ describe("Analytics", () => {
       </AnalyticsProvider>
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const user = userEvent.setup();
     await user.click(screen.getByRole("button"));
 
     await vi.waitFor(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const mockCalls = global.fetch.mock.calls;
 
@@ -238,7 +229,6 @@ describe("Analytics", () => {
       expect(generatedClickUrl.searchParams.get("_yfpc")).toBeTruthy();
     });
     await vi.waitFor(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const mockCalls = global.fetch.mock.calls;
       const generatedConversionUrlStr = mockCalls[2][0];
@@ -246,7 +236,6 @@ describe("Analytics", () => {
       expect(generatedConversionUrl.searchParams.get("_yfpc")).toBeTruthy();
     });
     await vi.waitFor(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const mockCalls = global.fetch.mock.calls;
       const generatedConversionUrlStr = mockCalls[2][0];
@@ -256,7 +245,6 @@ describe("Analytics", () => {
       );
     });
     await vi.waitFor(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const mockCalls = global.fetch.mock.calls;
       const generatedConversionUrlStr = mockCalls[2][0];

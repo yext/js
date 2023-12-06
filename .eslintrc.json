@@ -18,14 +18,34 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["import", "require-extensions"],
+  "plugins": ["import"],
   "rules": {
     "import/extensions": ["error", "ignorePackages"],
-    "@typescript-eslint/no-explicit-any": "off",
-    "react-perf/jsx-no-new-object-as-prop": "off",
-    "react-perf/jsx-no-new-function-as-prop": "off",
-    "react-perf/jsx-no-new-array-as-prop": "off"
+    "@typescript-eslint/no-explicit-any": "off"
   },
+  "overrides": [
+    {
+      "files": ["*.test.tsx", "*.test.ts"],
+      "rules": {
+        "react-perf/jsx-no-new-object-as-prop": "off",
+        "react-perf/jsx-no-new-function-as-prop": "off",
+        "react-perf/jsx-no-new-array-as-prop": "off",
+        "@typescript-eslint/ban-ts-comment": "off"
+      }
+    },
+    {
+      "files": ["packages/sites-components/src/map/**/*.js"],
+      "rules": {
+        "tsdoc/syntax": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "no-undef": "off",
+        "@typescript-eslint/no-this-alias": "off",
+        "no-useless-constructor": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/adjacent-overload-signatures": "off"
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

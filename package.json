@@ -5,8 +5,8 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "eslint --cache --fix --ext .ts,.tsx .",
     "prettier": "prettier --write --cache .",
+    "lint": "eslint --cache --fix packages/ scripts/",
     "autofix": "npm run lint && npm run prettier",
     "test": "turbo run test",
     "generate-notices": "turbo run generate-notices && generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",

@@ -20,8 +20,8 @@ class ProviderMapOptions {
     this.wrapper = wrapper;
 
     this.controlEnabled = true;
-    this.panHandler = () => {};
-    this.panStartHandler = () => {};
+    this.panHandler = () => null;
+    this.panStartHandler = () => null;
     this.providerOptions = {};
   }
 

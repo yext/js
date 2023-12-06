@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, waitFor, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { LocationMap } from "./index.js";
 import { MapboxMaps } from "../../map/providers/mapbox.js";
 
@@ -13,9 +13,7 @@ describe("LocationMap", () => {
     );
 
     const title = "Open this area in Google Maps (opens a new window)";
-    await waitFor(async () => {
-      expect(await screen.findByTitle(title)).toBeTruthy();
-    });
+    expect(async () => await screen.findByTitle(title)).toBeTruthy();
   });
 
   it("renders with Mapbox", async () => {
@@ -28,9 +26,7 @@ describe("LocationMap", () => {
     );
 
     const role = "region";
-    await waitFor(async () => {
-      expect(await screen.findByRole(role)).toBeTruthy();
-    });
+    expect(async () => await screen.findByRole(role)).toBeTruthy();
   });
 
   it("renders with Link", () => {

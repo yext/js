@@ -16,9 +16,9 @@ class ProviderPinOptions {
 
     this.providerPinClass = provider.getPinClass();
 
-    this.clickHandler = () => {};
-    this.focusHandler = (focused) => {};
-    this.hoverHandler = (hovered) => {};
+    this.clickHandler = () => null;
+    this.focusHandler = (focused) => null;
+    this.hoverHandler = (hovered) => null;
     this.icons = {};
   }
 
@@ -219,7 +219,7 @@ class HTMLProviderPin extends ProviderPin {
       this._wrapper.style.zIndex = zIndex;
       this._wrapper.setAttribute("class", className);
 
-      if (element != this._wrapper.children[0]) {
+      if (element !== this._wrapper.children[0]) {
         this._wrapper.children[0].style.pointerEvents = "";
         this._wrapper.removeChild(this._wrapper.children[0]);
         this._wrapper.appendChild(element);

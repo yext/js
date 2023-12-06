@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MapboxMaps } from "../../map/providers/mapbox.js";
 import { Clusterer, Map, Marker, useMapContext } from "./index.js";
 
@@ -8,18 +8,14 @@ describe("Map", () => {
     render(<Map clientKey="gme-yextinc" />);
 
     const title = "Open this area in Google Maps (opens a new window)";
-    await waitFor(async () => {
-      expect(await screen.findByTitle(title)).toBeTruthy();
-    });
+    expect(async () => screen.findByTitle(title)).toBeTruthy();
   });
 
   it("renders with Mapbox", async () => {
     render(<Map provider={MapboxMaps} apiKey={process.env.MAPBOX_APIKEY} />);
 
     const role = "region";
-    await waitFor(async () => {
-      expect(await screen.findByRole(role)).toBeTruthy();
-    });
+    expect(async () => screen.findByRole(role)).toBeTruthy();
   });
 
   it("renders with Markers", async () => {
@@ -48,7 +44,6 @@ describe("Map", () => {
 
   it("userMapContext in non map child component", () => {
     vi.spyOn(console, "error");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     console.error.mockImplementation(() => null);
 
@@ -59,7 +54,6 @@ describe("Map", () => {
 
     expect(() => render(<MapSiblingComponent />)).toThrow();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     console.error.mockRestore();
   });

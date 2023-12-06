@@ -67,8 +67,8 @@ class MapOptions {
       right: () => 50,
       top: () => 50,
     };
-    this.panHandler = (previousBounds, currentBounds) => {};
-    this.panStartHandler = (currentBounds) => {};
+    this.panHandler = (previousBounds, currentBounds) => null;
+    this.panStartHandler = (currentBounds) => null;
     this.provider = null;
     this.providerOptions = {};
     this.singlePinZoom = 14;
@@ -244,8 +244,8 @@ class Map {
 
     this._cachedBounds = null; // Cached map bounds, invalidated on map move
 
-    this._resolveIdle = () => {};
-    this._resolveMoving = () => {};
+    this._resolveIdle = () => null;
+    this._resolveMoving = () => null;
     this._idlePromise = Promise.resolve();
     this._setIdle();
 

@@ -140,12 +140,12 @@ class MapPin {
     this._propertiesForStatus = options.propertiesForStatus;
     this._type = options.type;
 
-    this._clickHandler = () => {};
+    this._clickHandler = () => null;
     this._focusHandler = (focused) => this._hoverHandler(focused);
-    this._hoverHandler = (hovered) => {};
+    this._hoverHandler = (hovered) => null;
 
     this._hidden = false;
-    this._cancelHiddenUpdater = () => {};
+    this._cancelHiddenUpdater = () => null;
 
     this._map = null;
 
@@ -257,7 +257,7 @@ class MapPin {
    * @param {?Map} map
    */
   setMap(map) {
-    if (map == this._map) {
+    if (map === this._map) {
       return;
     }
 
