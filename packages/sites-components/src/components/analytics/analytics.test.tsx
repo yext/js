@@ -117,7 +117,6 @@ describe("Analytics", () => {
   it("should track a click", () => {
     render(
       <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
-        {/*eslint-disable-next-line react-perf/jsx-no-new-function-as-prop*/}
         <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
           Click Me
         </Link>
@@ -142,7 +141,6 @@ describe("Analytics", () => {
               <Link href="https://yext.com">one</Link>
             </AnalyticsScopeProvider>
             <AnalyticsScopeProvider name="drop down">
-              {/*eslint-disable-next-line react-perf/jsx-no-new-object-as-prop*/}
               <Link cta={{ link: "https://yext.com" }}>two</Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>

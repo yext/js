@@ -1,21 +1,15 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { MapboxMaps } from "../../map/providers/mapbox.js";
 import { Clusterer, Map, Marker, useMapContext } from "./index.js";
 
 describe("Map", () => {
   it("renders with Google Maps", async () => {
     render(<Map clientKey="gme-yextinc" />);
-
-    const title = "Open this area in Google Maps (opens a new window)";
-    expect(async () => screen.findByTitle(title)).toBeTruthy();
   });
 
   it("renders with Mapbox", async () => {
     render(<Map provider={MapboxMaps} apiKey={process.env.MAPBOX_APIKEY} />);
-
-    const role = "region";
-    expect(async () => screen.findByRole(role)).toBeTruthy();
   });
 
   it("renders with Markers", async () => {
