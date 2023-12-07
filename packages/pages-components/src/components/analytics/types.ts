@@ -12,9 +12,9 @@ export interface TemplateProps<T = Record<string, any>> {
 export type EventNode = {
   scope: HTMLElement;
   events: HTMLElement[];
-}
+};
 
-export type EventData = Record<string,EventNode>;
+export type EventData = Record<string, EventNode>;
 
 export type DebuggerTabs = "Events" | "Scopes";
 
@@ -22,22 +22,22 @@ export type Tooltip = {
   eventEl: HTMLElement;
   eventName: string;
   key: string;
-}
+};
 
 export type TabProps = {
   data: EventData;
   setTooltips: React.Dispatch<React.SetStateAction<Tooltip[]>>;
-}
+};
 
 export type TooltipHandlerProps = {
   tooltips: Tooltip[];
-}
+};
 
 export type TooltipProps = {
   tooltip: Tooltip;
-}
+};
 
 export type TooltipsRefItem = {
   el: HTMLDivElement;
   tooltip: Tooltip;
-}
+};

@@ -53,10 +53,10 @@ export function AnalyticsProvider(
 
   return (
     <>
-    <AnalyticsContext.Provider value={analytics}>
-      {children}
-    </AnalyticsContext.Provider>
-    {(enableDebugging ?? enableDebuggingDefault) ? <AnalyticsDebugger /> : null}
+      <AnalyticsContext.Provider value={analytics}>
+        {children}
+      </AnalyticsContext.Provider>
+      {enableDebugging ?? enableDebuggingDefault ? <AnalyticsDebugger /> : null}
     </>
   );
 }
