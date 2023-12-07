@@ -1,6 +1,10 @@
 import { expect, describe, it } from "vitest";
 import { HoursManipulator } from "./hoursManipulator.js";
-import { HOURS_OPEN_ONE_DAY, HOURS_WITH_HOLIDAY, HOURS_WITH_REOPEN_DATE } from "./sampleData.js";
+import {
+  HOURS_OPEN_ONE_DAY,
+  HOURS_WITH_HOLIDAY,
+  HOURS_WITH_REOPEN_DATE,
+} from "./sampleData.js";
 
 describe("HoursManipulator", () => {
   const hours = new HoursManipulator(HOURS_WITH_HOLIDAY);
@@ -115,5 +119,5 @@ describe("HoursManipulator", () => {
       start: new Date(2022, 6, 18, 9, 1),
       end: new Date(2022, 6, 18, 18, 1),
     });
-  })
+  });
 });

@@ -132,7 +132,7 @@ export const HOURS_OPEN_ONE_DAY = {
   sunday: {
     isClosed: true,
     openIntervals: [],
-  }
+  },
 };
 
 export function offsetDate(daysForward: number) {
