@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { getRuntime } from "../../util";
+import { getRuntime } from "../../util/index.js";
 import type { DebuggerTabs, EventData, TabProps, Tooltip, TooltipHandlerProps, TooltipsRefItem } from "./types";
 import c from "classnames";
 import "./debugger.css";
@@ -215,12 +215,11 @@ function TooltipHandler(props: TooltipHandlerProps) {
     useEffect(() => {
         if (!tooltipRefs.current) return;
 
-        Object.keys(tooltipRefs.current).map(key => {
-            const otherTooltips = Object.values(tooltipRefs.current).map(v => v.el).filter(el => el !== tooltipRefs.current[key].el);
-            const item = tooltipRefs.current[key];
+        for (const item of Object.values(tooltipRefs.current)) {
+            const otherTooltips = Object.values(tooltipRefs.current).map(val => val.el).filter(el => el !== item.el);            
             setTooltipPosition(item, otherTooltips);
             item.el.style.visibility = "visible";
-        });
+        }
     }, [props.tooltips]);
 
     return (
@@ -252,11 +251,11 @@ function TooltipHandler(props: TooltipHandlerProps) {
 function setTooltipPosition(item: TooltipsRefItem, instances: HTMLDivElement[]) {
     for (let i = 0; i < 9; i++) {
         // Get base position and position the tooltip.
-        let position = positionFinder(item.tooltip.eventEl.getBoundingClientRect(), item.el, i);
+        const position = positionFinder(item.tooltip.eventEl.getBoundingClientRect(), item.el, i);
         item.el.style.inset = `${position.top} auto auto ${position.left}`;
 
         // Check if tooltip is in the window bounds.
-        let withinBounds = !inWindowBounds(
+        const withinBounds = !inWindowBounds(
             item.el.getBoundingClientRect().left,
             item.el.getBoundingClientRect().top + window.scrollY,
             item.el.getBoundingClientRect().right,
@@ -310,13 +309,13 @@ function isOverlapping(tooltip: HTMLDivElement, futureNeighbor: HTMLDivElement):
 // Check if a tooltip is within the window bounds.
 function inWindowBounds(x1: number, y1: number, x2: number, y2: number) {
     return (x1 < 0 || x2 > window.innerWidth) ||
-      (y1 < 0 || y2 > document.body.getBoundingClientRect().height);
+      (y1 < 0 || y2 > document.documentElement.scrollHeight);
 };
 
 // Possible positions for a given tooltip around it's target element.
 function positionFinder (rect: DOMRect, tooltip: HTMLDivElement, index: number) {
-    let tooltipHeight = tooltip.clientHeight;
-    let tooltipWidth = tooltip.clientWidth;
+    const tooltipHeight = tooltip.clientHeight;
+    const tooltipWidth = tooltip.clientWidth;
 
     let left;
     let top;
