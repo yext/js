@@ -3,7 +3,7 @@ name: Publish Package
 on:
   push:
     tags:
-      - "sites-components*" # Push events to matching sites-components*, i.e. sites-components@1.0.0
+      - "pages-components*" # Push events to matching pages-components*, i.e. pages-components@1.0.0
 
 jobs:
   publish:

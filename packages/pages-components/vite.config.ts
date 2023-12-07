@@ -21,7 +21,7 @@ export default defineConfig(() => ({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: "sites-components",
+      name: "pages-components",
       formats: ["es", "cjs"] as LibraryFormats[], // typescript is unhappy without this forced type definition
     },
     rollupOptions: {

@@ -1,9 +1,9 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Unit, Projection } from "../map/constants.js";
-import { Coordinate } from "../map/coordinate.js";
-import { GeoBounds } from "../map/geoBounds.js";
+import { Unit, Projection } from "./constants.js";
+import { Coordinate } from "./coordinate.js";
+import { GeoBounds } from "./geoBounds.js";
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { MapPinOptions } from "./mapPin.js";
 import { MapProvider } from "./mapProvider.js";

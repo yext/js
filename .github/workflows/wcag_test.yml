@@ -13,12 +13,12 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
       - name: Install deps
-        working-directory: packages/sites-components
+        working-directory: packages/pages-components
         run: pnpm i --ignore-scripts concurrently@8 wait-on@7
       - name: Install playwright browsers
         run: pnpm dlx playwright install
       - name: Serve Storybook and run WCAG checks
-        working-directory: packages/sites-components
+        working-directory: packages/pages-components
         run: |
           pnpm exec concurrently -k -s first -n "SB,TEST" \
             "pnpm run storybook -- --quiet --ci" \

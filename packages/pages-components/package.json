@@ -1,5 +1,5 @@
 {
-  "name": "@yext/sites-components",
+  "name": "@yext/pages-components",
   "version": "1.0.0-rc.5",
   "description": "A React component library that supports Yext Pages development",
   "author": "sumo@yext.com",
@@ -14,17 +14,17 @@
     "dist",
     "THIRD-PARTY-NOTICES"
   ],
-  "main": "./dist/sites-components.cjs",
-  "module": "./dist/sites-components.js",
+  "main": "./dist/pages-components.cjs",
+  "module": "./dist/pages-components.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/sites-components.js"
+        "default": "./dist/pages-components.js"
       },
       "require": {
         "types": "./dist/index.d.cts",
-        "default": "./dist/sites-components.cjs"
+        "default": "./dist/pages-components.cjs"
       }
     },
     "./style.css": "./dist/style.css"
@@ -113,5 +113,10 @@
     "remark-rehype": "10.1.0",
     "unified": "10.1.2",
     "uvu": "0.5.6"
+  },
+  "overrides": {
+    "@storybook/react-vite": {
+      "vite": "^5.0.5"
+    }
   }
 }

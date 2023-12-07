@@ -34,7 +34,7 @@ class ProviderPinOptions {
   }
 
   /**
-   * @param {import('./mapPin').PinFocusHandler} focusHandler Function called when the pin becomes (un)focused
+   * @param {import('./mapPin.js').PinFocusHandler} focusHandler Function called when the pin becomes (un)focused
    * @returns {module:@yext/components-maps~ProviderPinOptions}
    */
   withFocusHandler(focusHandler) {

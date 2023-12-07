@@ -34,7 +34,7 @@
       }
     },
     {
-      "files": ["packages/sites-components/src/map/**/*.js"],
+      "files": ["packages/pages-components/src/map/**/*.js"],
       "rules": {
         "tsdoc/syntax": "off",
         "@typescript-eslint/ban-ts-comment": "off",

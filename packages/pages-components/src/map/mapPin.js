@@ -1,7 +1,7 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../map/coordinate.js";
+import { Coordinate } from "./coordinate.js";
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { Map } from "./map.js";
 import { MapProvider } from "./mapProvider.js";
