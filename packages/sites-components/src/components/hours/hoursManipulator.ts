@@ -159,8 +159,8 @@ export class HoursManipulator {
    * @returns The next interval that hasn't started as of the given moment
    */
   getIntervalAfter(date: Date): HoursIntervalManipulator | null {
-    // Look ahead up to 7 days for the next interval
-    const intervalsList = this.getIntervalsForNDays(7, date);
+    // Look ahead up to 8 days for the next interval
+    const intervalsList = this.getIntervalsForNDays(8, date);
 
     // Ensure the intervals are sorted by start time
     const sortFn = (

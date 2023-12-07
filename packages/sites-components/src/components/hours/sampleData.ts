@@ -104,6 +104,37 @@ export const HOURS_WITH_REOPEN_DATE = {
   reopenDate: "6-14-2022",
 };
 
+export const HOURS_OPEN_ONE_DAY = {
+  monday: {
+    isClosed: false,
+    openIntervals: [{ start: "9:01", end: "18:01" }],
+  },
+  tuesday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+  wednesday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+  thursday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+  friday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+  saturday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+  sunday: {
+    isClosed: true,
+    openIntervals: [],
+  },
+};
+
 export function offsetDate(daysForward: number) {
   const d = new Date();
 
