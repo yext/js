@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Hours } from ".";
+import { Hours } from "./index.js";
 import {
   HOURS,
   HOURS_WITH_HOLIDAY,

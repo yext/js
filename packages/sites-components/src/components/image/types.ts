@@ -50,7 +50,7 @@ export const ImageLayoutOption = {
    */
   INTRINSIC: "intrinsic",
   /**
-   * Shows the image in a fixed size. `width` or `height` must be passed in. If both "width` and
+   * Shows the image in a fixed size. `width` or `height` must be passed in. If both `width` and
    * `height` are passed in, but the aspect ratio does not match the aspect ratio of the image,
    * the image will be centered. This behavior can be adjusted using the `objectFit` and
    * `objectPosition` props of the `style` rpop.

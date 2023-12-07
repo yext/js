@@ -21,7 +21,7 @@ export function generateConfig(
   return {
     namespace: "",
     editable: false,
-    onError: (error) => {
+    onError: (error: any) => {
       throw error;
     },
     editorState: editorState,

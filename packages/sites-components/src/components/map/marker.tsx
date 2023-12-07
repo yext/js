@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { MapPin, MapPinOptions } from "../../map/mapPin";
-import { MapContext } from "./map";
-import { MapContextType, MarkerProps } from "./types";
-import { ClustererContext } from "./clusterer";
+import { MapPin, MapPinOptions } from "../../map/mapPin.js";
+import { MapContext } from "./map.js";
+import { MapContextType, MarkerProps } from "./types.js";
+import { ClustererContext } from "./clusterer.js";
 
 const defaultMarkerIcon = (
   <svg

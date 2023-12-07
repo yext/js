@@ -140,7 +140,7 @@ export const validateRequiredProps = (
     console.warn(`Invalid image height: ${imgHeight}.`);
   }
 
-  if (layout == ImageLayoutOption.FIXED) {
+  if (layout === ImageLayoutOption.FIXED) {
     if (!width && !height) {
       console.warn(
         "Using fixed layout but neither width nor height is passed as props."
@@ -166,7 +166,7 @@ export const validateRequiredProps = (
     );
   }
 
-  if (layout == ImageLayoutOption.ASPECT && !aspectRatio) {
+  if (layout === ImageLayoutOption.ASPECT && !aspectRatio) {
     console.warn(
       "Using aspect layout but aspectRatio is not passed as a prop."
     );

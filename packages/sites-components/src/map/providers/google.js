@@ -1,11 +1,11 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../coordinate";
-import { LoadScript } from "../performance/loadContent";
-import { MapProviderOptions } from "../mapProvider";
-import { ProviderMap } from "../providerMap";
-import { HTMLProviderPin } from "../providerPin";
+import { Coordinate } from "../coordinate.js";
+import { LoadScript } from "../performance/loadContent.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap } from "../providerMap.js";
+import { HTMLProviderPin } from "../providerPin.js";
 
 /**
  * @enum {string}

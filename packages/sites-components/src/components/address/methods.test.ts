@@ -1,3 +1,4 @@
+import { expect, describe, it } from "vitest";
 import { getDirections, getUnabbreviated } from "./methods.js";
 import {
   AddressType,

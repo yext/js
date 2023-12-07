@@ -1,8 +1,8 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Type, assertType, assertInstance } from "./util/assertions";
-import { MapProvider } from "./mapProvider";
+import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { MapProvider } from "./mapProvider.js";
 
 /**
  * {@link module:@yext/components-maps~ProviderMap ProviderMap} options class
@@ -20,8 +20,8 @@ class ProviderMapOptions {
     this.wrapper = wrapper;
 
     this.controlEnabled = true;
-    this.panHandler = () => {};
-    this.panStartHandler = () => {};
+    this.panHandler = () => null;
+    this.panStartHandler = () => null;
     this.providerOptions = {};
   }
 

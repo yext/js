@@ -1,10 +1,7 @@
-/**
- * @jest-environment jsdom
- */
-import * as React from "react";
-import { render, waitFor, screen } from "@testing-library/react";
-import { LocationMap } from ".";
-import { MapboxMaps } from "../../map/providers/mapbox";
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { LocationMap } from "./index.js";
+import { MapboxMaps } from "../../map/providers/mapbox.js";
 
 describe("LocationMap", () => {
   it("renders with Google Maps", async () => {
@@ -16,9 +13,7 @@ describe("LocationMap", () => {
     );
 
     const title = "Open this area in Google Maps (opens a new window)";
-    await waitFor(() => {
-      expect(screen.findByTitle(title)).toBeTruthy();
-    });
+    expect(async () => await screen.findByTitle(title)).toBeTruthy();
   });
 
   it("renders with Mapbox", async () => {
@@ -31,9 +26,7 @@ describe("LocationMap", () => {
     );
 
     const role = "region";
-    await waitFor(() => {
-      expect(screen.findByRole(role)).toBeTruthy();
-    });
+    expect(async () => await screen.findByRole(role)).toBeTruthy();
   });
 
   it("renders with Link", () => {

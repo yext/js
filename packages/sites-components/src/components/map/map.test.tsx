@@ -1,28 +1,15 @@
-/**
- * @jest-environment jsdom
- */
-import * as React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
-import { MapboxMaps } from "../../map/providers/mapbox";
-import { Clusterer, Map, Marker, useMapContext } from ".";
+import { describe, it, expect, vi } from "vitest";
+import { render } from "@testing-library/react";
+import { MapboxMaps } from "../../map/providers/mapbox.js";
+import { Clusterer, Map, Marker, useMapContext } from "./index.js";
 
 describe("Map", () => {
   it("renders with Google Maps", async () => {
     render(<Map clientKey="gme-yextinc" />);
-
-    const title = "Open this area in Google Maps (opens a new window)";
-    await waitFor(() => {
-      expect(screen.findByTitle(title)).toBeTruthy();
-    });
   });
 
   it("renders with Mapbox", async () => {
     render(<Map provider={MapboxMaps} apiKey={process.env.MAPBOX_APIKEY} />);
-
-    const role = "region";
-    await waitFor(() => {
-      expect(screen.findByRole(role)).toBeTruthy();
-    });
   });
 
   it("renders with Markers", async () => {
@@ -50,12 +37,19 @@ describe("Map", () => {
   });
 
   it("userMapContext in non map child component", () => {
+    vi.spyOn(console, "error");
+    // @ts-ignore
+    console.error.mockImplementation(() => null);
+
     const MapSiblingComponent = () => {
       useMapContext();
       return <div />;
     };
 
     expect(() => render(<MapSiblingComponent />)).toThrow();
+
+    // @ts-ignore
+    console.error.mockRestore();
   });
 
   it("renders with Clusterer", async () => {

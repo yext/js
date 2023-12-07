@@ -9,7 +9,7 @@ import { getRuntime } from "./runtime.js";
  * If no domains are provided, all hostnames are considered production
  * domains except for localhost and preview.pagescdn.com.
  *
- * @param domains The specified production domains of the site
+ * @param domains - The specified production domains of the site
  *
  * @public
  */

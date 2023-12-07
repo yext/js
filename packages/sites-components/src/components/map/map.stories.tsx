@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Map, Marker, Coordinate as CoordinateType } from ".";
-import { MAP_MULTIPLE_LOCATIONS } from "./sampleData";
-import { Map as MapType } from "../../map/map";
+import { Map, Marker, Coordinate as CoordinateType } from "./index.js";
+import { MAP_MULTIPLE_LOCATIONS } from "./sampleData.js";
+import { Map as MapType } from "../../map/map.js";
 
 const meta: Meta<typeof Map> = {
   title: "components/Map",
@@ -181,8 +181,8 @@ export const Map_With_Multiple_Interactive_Markers = () => {
             location.id === selectedId
               ? 1
               : location.id === focusedId || location.id === hoveredId
-              ? 2
-              : 0
+                ? 2
+                : 0
           }
         >
           <svg

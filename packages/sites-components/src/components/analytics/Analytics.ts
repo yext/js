@@ -202,6 +202,7 @@ export class Analytics implements AnalyticsMethods {
       if (
         linkUrl.protocol === "mailto:" ||
         linkUrl.protocol === "tel:" ||
+        // eslint-disable-next-line no-script-url
         linkUrl.protocol === "javascript:" ||
         linkUrl.hostname === window.location.hostname
       ) {

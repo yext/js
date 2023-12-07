@@ -1,6 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { LexicalRichText } from ".";
+import { LexicalRichText } from "./index.js";
 import { LEXICAL_RICH_TEXT_SERIALIZED_AST } from "./sampleData.js";
 
 const meta: Meta<typeof LexicalRichText> = {

@@ -1,7 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-import * as React from "react";
+import { describe, it, expect, vi } from "vitest";
 import {
   Image,
   validateRequiredProps,
@@ -80,7 +77,7 @@ describe("Image", () => {
   it("properly renders the placeholder before the image is loaded", () => {
     const placeholderText = "Placeholder";
     const placeholder = <div>{placeholderText}</div>;
-    const onLoad = jest.fn();
+    const onLoad = vi.fn();
 
     render(
       <Image
@@ -97,7 +94,7 @@ describe("Image", () => {
     const placeholderText = "Placeholder";
     const placeholder = <div>{placeholderText}</div>;
 
-    const logMock = jest.spyOn(console, "error").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
     const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
@@ -117,11 +114,11 @@ describe("Image", () => {
     expect(logMock.mock.calls.length).toBe(1);
     expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}.`);
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders nothing if image's UUID is invalid and a placeholder is not provided", () => {
-    const logMock = jest.spyOn(console, "error").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
     const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
@@ -139,7 +136,7 @@ describe("Image", () => {
     expect(logMock.mock.calls.length).toBe(1);
     expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}.`);
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("properly renders the srcset based on the correct prod env", () => {
@@ -154,7 +151,7 @@ describe("Image", () => {
 
   it("properly renders the srcset based on the correct sandbox env", () => {
     const sbxImage = Object.assign(image.image, {
-      url: "https://a.mktgcdn.com/p-sandbox/${imgUUID}/2x1.jpg",
+      url: `https://a.mktgcdn.com/p-sandbox/${imgUUID}/2x1.jpg`,
     });
 
     render(<Image image={sbxImage} />);
@@ -247,7 +244,7 @@ describe("getImageUUID", () => {
     expect(getImageUUID("https://a.mktgcdn.com/p/1300x872.jpg")).toBe("");
     expect(getImageUUID("")).toBe("");
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("getImageEnv", () => {
@@ -273,12 +270,12 @@ describe("getImageUUID", () => {
         )
       ).toBe("-dev");
 
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
   });
 
   it("properly logs error when image url is invalid", () => {
-    const logMock = jest.spyOn(console, "error").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
     let invalidUrl = "https://a.mktgcdn.com/p/1300x872.jpg";
@@ -294,7 +291,7 @@ describe("getImageUUID", () => {
     expect(logMock.mock.calls.length).toBe(2);
     expect(logMock.mock.calls[1][0]).toBe(`Invalid image url: ${invalidUrl}.`);
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 });
 
@@ -388,7 +385,7 @@ describe("handleLayout", () => {
 
 describe("validateRequiredProps", () => {
   it(`properly logs warning when layout is not ${ImageLayoutOption.FIXED} and width or height is provided`, () => {
-    const logMock = jest.spyOn(console, "warn").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "warn").mockImplementation(() => {
       /* do nothing */
     });
 
@@ -405,11 +402,11 @@ describe("validateRequiredProps", () => {
     expect(logMock.mock.calls[0][0]).toBe(
       "Width or height is passed in but layout is not fixed. These will have no impact. If you want to have a fixed height or width then set layout to fixed."
     );
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it(`properly logs warning when layout is ${ImageLayoutOption.FIXED} and neither width nor height is provided`, () => {
-    const logMock = jest.spyOn(console, "warn").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "warn").mockImplementation(() => {
       /* do nothing */
     });
 
@@ -428,11 +425,11 @@ describe("validateRequiredProps", () => {
     expect(logMock.mock.calls[0][0]).toBe(
       "Using fixed layout but neither width nor height is passed as props."
     );
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it(`properly logs warning when layout is ${ImageLayoutOption.FIXED} and width is a negative value`, () => {
-    const logMock = jest.spyOn(console, "warn").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "warn").mockImplementation(() => {
       /* do nothing */
     });
     const invalidWidth = -100;
@@ -452,11 +449,11 @@ describe("validateRequiredProps", () => {
     expect(logMock.mock.calls[0][0]).toBe(
       `Using fixed layout but width is invalid: ${invalidWidth}.`
     );
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it(`properly logs warning when layout is ${ImageLayoutOption.ASPECT} and aspectRatio is not provided`, () => {
-    const logMock = jest.spyOn(console, "warn").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "warn").mockImplementation(() => {
       /* do nothing */
     });
 
@@ -475,11 +472,11 @@ describe("validateRequiredProps", () => {
     expect(logMock.mock.calls[0][0]).toBe(
       "Using aspect layout but aspectRatio is not passed as a prop."
     );
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it(`properly logs warning when image.width is a negative value`, () => {
-    const logMock = jest.spyOn(console, "warn").mockImplementation(() => {
+    const logMock = vi.spyOn(console, "warn").mockImplementation(() => {
       /* do nothing */
     });
     const invalidImgWidth = -100;
@@ -499,7 +496,7 @@ describe("validateRequiredProps", () => {
     expect(logMock.mock.calls[0][0]).toBe(
       `Invalid image width: ${invalidImgWidth}.`
     );
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 });
 

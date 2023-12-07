@@ -20,15 +20,15 @@ export class HoursIntervalManipulator {
   start: Date;
 
   /**
-   * @param {Date} date the Date for the day on which the interval starts
-   * @param {interval} interval the Yext Streams interval data
+   * @param date - the Date for the day on which the interval starts
+   * @param interval - the Yext Streams interval data
    */
   constructor(date: Date, interval: IntervalType) {
     this.end = new Date(date);
     this.start = new Date(date);
 
     [interval.start, interval.end].forEach((time) => {
-      if (time.split(":").length != 2) {
+      if (time.split(":").length !== 2) {
         throw new Error(
           `expected interval start and end data to be in the format "HH:MM"`
         );
@@ -51,17 +51,17 @@ export class HoursIntervalManipulator {
   }
 
   /**
-   * @param {Date} date A moment in time
-   * @returns {boolean} True if the given moment is within the interval
+   * @param date - A moment in time
+   * @returns True if the given moment is within the interval
    */
   contains(date: Date): boolean {
     return this.start <= date && date < this.end;
   }
 
   /**
-   * @param {Object} opts intl.DateTimeFormatOptions
-   * @param {string} locale defaults to 'en-US'
-   * @returns {string} representation of this interval's start time
+   * @param opts - intl.DateTimeFormatOptions
+   * @param locale - defaults to 'en-US'
+   * @returns representation of this interval's start time
    */
   getStartTime(locale?: string, opts?: Intl.DateTimeFormatOptions): string {
     const timeOptions: Intl.DateTimeFormatOptions = {
@@ -74,9 +74,9 @@ export class HoursIntervalManipulator {
   }
 
   /**
-   * @param {Object} opts intl.DateTimeFormatOptions
-   * @param {string} locale defaults to 'en-US'
-   * @returns {string} representation of this interval's end time
+   * @param opts - intl.DateTimeFormatOptions
+   * @param locale - defaults to 'en-US'
+   * @returns representation of this interval's end time
    */
   getEndTime(locale?: string, opts?: Intl.DateTimeFormatOptions): string {
     const timeOptions: Intl.DateTimeFormatOptions = {
@@ -89,8 +89,8 @@ export class HoursIntervalManipulator {
   }
 
   /**
-   * @param {HoursIntervalManipulator} other
-   * @returns {boolean} if this interval and 'other' have the same start/end
+   * @param other - HoursIntervalManipulator
+   * @returns if this interval and 'other' have the same start/end
    */
   timeIsEqualTo(other: HoursIntervalManipulator): boolean {
     const startEqual = this.getStartTime() === other.getStartTime();
@@ -104,7 +104,7 @@ export class HoursManipulator {
   hours: HoursType;
 
   /**
-   * @param {Object} hours Hours object in the format returned by Yext Streams
+   * @param hours - Hours object in the format returned by Yext Streams
    */
   constructor(hours: HoursType) {
     this.holidayHoursByDate = Object.fromEntries(
@@ -114,8 +114,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date A moment in time
-   * @returns {HoursIntervalManipulator?} The first interval that contains the given moment, null if none
+   * @param date - A moment in time
+   * @returns The first interval that contains the given moment, null if none
    */
   getInterval(date: Date): HoursIntervalManipulator | null {
     if (this.isTemporarilyClosedAt(date)) {
@@ -148,15 +148,15 @@ export class HoursManipulator {
   }
 
   /**
-   * @returns {HoursIntervalManipulator?} The first interval that contains the current time, null if none
+   * @returns The first interval that contains the current time, null if none
    */
   getCurrentInterval(): HoursIntervalManipulator | null {
     return this.getInterval(new Date());
   }
 
   /**
-   * @param {Date} date A moment in time
-   * @returns {HoursIntervalManipulator?} The next interval that hasn't started as of the given moment
+   * @param date - A moment in time
+   * @returns The next interval that hasn't started as of the given moment
    */
   getIntervalAfter(date: Date): HoursIntervalManipulator | null {
     // Look ahead up to 7 days for the next interval
@@ -194,16 +194,16 @@ export class HoursManipulator {
   }
 
   /**
-   * @returns {HoursIntervalManipulator?} The next interval that hasn't started as of the current time
+   * @returns The next interval that hasn't started as of the current time
    */
   getNextInterval(): HoursIntervalManipulator | null {
     return this.getIntervalAfter(new Date());
   }
 
   /**
-   * @param {number} n number of days to check
-   * @param {Date} startDate first day to check
-   * @returns {HoursIntervalManipulator[]} list of intervals in range [startDate, startDate+7]
+   * @param n - number of days to check
+   * @param startDate - first day to check
+   * @returns list of intervals in range [startDate, startDate+7]
    */
   getIntervalsForNDays(n: number, startDate: Date): HoursIntervalManipulator[] {
     const intervalsList: HoursIntervalManipulator[] = [];
@@ -225,8 +225,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date The day to get the hours for
-   * @returns {Object?} The daily holiday hours object from the original Streams response for the
+   * @param date - The day to get the hours for
+   * @returns The daily holiday hours object from the original Streams response for the
    *   given date, null if none
    */
   getHolidayHours(date: Date): HolidayType | null {
@@ -238,8 +238,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date The day to get the hours for
-   * @returns {Object?} The daily normal hours object from the original Streams response for the
+   * @param date - The day to get the hours for
+   * @returns The daily normal hours object from the original Streams response for the
    *   given date, null if none
    */
   getNormalHours(date: Date): DayType | null {
@@ -251,8 +251,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date The day to get the hours for
-   * @returns {Object?} The daily hours object from the original Streams response for the given
+   * @param date - The day to get the hours for
+   * @returns The daily hours object from the original Streams response for the given
    *   date, null if none
    */
   getHours(date: Date): DayType | HolidayType | null {
@@ -264,8 +264,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date A day
-   * @returns {Boolean} True if the given day has holiday hours
+   * @param date - A day
+   * @returns True if the given day has holiday hours
    */
   isHoliday(date: Date): boolean {
     return !!this.getHolidayHours(date);
@@ -274,8 +274,8 @@ export class HoursManipulator {
   /**
    * Yext platform uses the field `hours.reopenDate` to indicate an entity is
    *  temporarily closed for more than one day.
-   * @param {Date} date
-   * @returns {Boolean} True if the given date is before 'reopenDate'
+   * @param targetDate - the date to check against
+   * @returns True if the given date is before 'reopenDate'
    */
   isTemporarilyClosedAt(targetDate: Date): boolean {
     if (!this.hours.reopenDate) {
@@ -290,8 +290,8 @@ export class HoursManipulator {
   }
 
   /**
-   * @param {Date} date A moment in time
-   * @returns {Boolean} True if the given moment falls within any interval
+   * @param date - A moment in time
+   * @returns True if the given moment falls within any interval
    */
   isOpenAt(date: Date): boolean {
     if (this.isTemporarilyClosedAt(date)) {
@@ -303,7 +303,7 @@ export class HoursManipulator {
   }
 
   /**
-   * @returns {Boolean} True if the current time falls within any interval
+   * @returns True if the current time falls within any interval
    */
   isOpenNow(): boolean {
     return this.isOpenAt(new Date());
@@ -311,7 +311,7 @@ export class HoursManipulator {
 
   /**
    * Convert ISO Date which have 1-based months, to Yext date string which have 0-based months
-   * @param date a moment in time
+   * @param date - a moment in time
    * @returns a Yext date string
    */
   transformDateToYext(date: Date): string {
@@ -325,9 +325,9 @@ export class HoursManipulator {
 }
 
 /**
- * @param {Array<any>} arr Any array
- * @param {number} n amount to shift
- * @returns {Array<any>} a new array shifted 'n' elements to the right, looping from the end back to the start
+ * @param arr - Any array
+ * @param n - amount to shift
+ * @returns a new array shifted 'n' elements to the right, looping from the end back to the start
  */
 export function arrayShift(arr: Array<any>, n: number): Array<any> {
   // Make a local copy of the array to mutate
@@ -338,15 +338,15 @@ export function arrayShift(arr: Array<any>, n: number): Array<any> {
 }
 
 /**
- * @param {HoursIntervalManipulator[]} il1
- * @param {HoursIntervalManipulator[]} il2
- * @returns {boolean} whether the two intervals lists are equal
+ * @param il1 - HoursIntervalManipulator[] one
+ * @param il2 - HoursIntervalManipulator[] two
+ * @returns whether the two intervals lists are equal
  */
 export function intervalsListsAreEqual(
   il1: HoursIntervalManipulator[],
   il2: HoursIntervalManipulator[]
 ): boolean {
-  if (il1.length != il2.length) {
+  if (il1.length !== il2.length) {
     return false;
   }
 

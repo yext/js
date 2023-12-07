@@ -1,5 +1,6 @@
+import { expect, test } from "vitest";
 import { getHref, isEmail, reverse } from "./methods.js";
-import { LinkType } from "./types.js";
+import { LinkTypes } from "./types.js";
 
 // getHref
 test("getHref: Url type", () => {
@@ -7,7 +8,7 @@ test("getHref: Url type", () => {
     getHref({
       label: "",
       link: "https://yext.com",
-      linkType: LinkType.URL,
+      linkType: LinkTypes.URL,
     })
   ).toEqual("https://yext.com");
 });
@@ -17,7 +18,7 @@ test("getHref: Email type", () => {
     getHref({
       label: "",
       link: "email@test.com",
-      linkType: LinkType.Email,
+      linkType: LinkTypes.Email,
     })
   ).toEqual("mailto:email@test.com");
 });
@@ -27,7 +28,7 @@ test("getHref: Telephone type", () => {
     getHref({
       label: "",
       link: "+11234567890",
-      linkType: LinkType.Phone,
+      linkType: LinkTypes.Phone,
     })
   ).toEqual("tel:+11234567890");
 });

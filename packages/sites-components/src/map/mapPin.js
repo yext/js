@@ -1,12 +1,12 @@
 // @ts-nocheck
 /** @module @yext/components-maps */
 
-import { Coordinate } from "../map/coordinate";
-import { Type, assertType, assertInstance } from "./util/assertions";
-import { Map } from "./map";
-import { MapProvider } from "./mapProvider";
-import { PinProperties } from "./pinProperties";
-import { ProviderPinOptions } from "./providerPin";
+import { Coordinate } from "../map/coordinate.js";
+import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { Map } from "./map.js";
+import { MapProvider } from "./mapProvider.js";
+import { PinProperties } from "./pinProperties.js";
+import { ProviderPinOptions } from "./providerPin.js";
 
 /**
  * @callback PinPropertiesForStatus
@@ -140,12 +140,12 @@ class MapPin {
     this._propertiesForStatus = options.propertiesForStatus;
     this._type = options.type;
 
-    this._clickHandler = () => {};
+    this._clickHandler = () => null;
     this._focusHandler = (focused) => this._hoverHandler(focused);
-    this._hoverHandler = (hovered) => {};
+    this._hoverHandler = (hovered) => null;
 
     this._hidden = false;
-    this._cancelHiddenUpdater = () => {};
+    this._cancelHiddenUpdater = () => null;
 
     this._map = null;
 
@@ -257,7 +257,7 @@ class MapPin {
    * @param {?Map} map
    */
   setMap(map) {
-    if (map == this._map) {
+    if (map === this._map) {
       return;
     }
 

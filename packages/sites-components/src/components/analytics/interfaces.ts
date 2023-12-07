@@ -31,7 +31,10 @@ export interface AnalyticsMethods {
   /**
    * trackClick will return an event handler that delays navigation to allow
    * a click event to send.  To use it you simply pass it to the onClick prop,
-   * like so: <a onClick={trackClick('my click')}>
+   * like so:
+   * ```ts
+   * <a onClick={trackClick('my click')}
+   * ```
    */
   trackClick(
     eventName: string,

@@ -62,6 +62,6 @@ function calculateMarkersUsed(opener: Event, closer: Event): number {
   if (openerLength < 3 || closerLength < 3) {
     return closerLength < openerLength ? closerLength : openerLength;
   } else {
-    return closerLength % 2 == 0 ? 2 : 1;
+    return closerLength % 2 === 0 ? 2 : 1;
   }
 }

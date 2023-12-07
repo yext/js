@@ -9,13 +9,14 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "./dist",
     "target": "ESNext",
-    "types": ["vite/client", "jest", "node"],
-    "skipDefaultLibCheck": true
+    "types": ["vite/client", "node", "vitest/globals"],
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src", "index.d.ts"],
   "exclude": ["node_modules/**/*"]
 }

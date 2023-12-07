@@ -1,7 +1,7 @@
 /** @module @yext/components-geo */
 
-import { Unit, Projection } from "./constants";
-import { Coordinate } from "./coordinate";
+import { Unit, Projection } from "./constants.js";
+import { Coordinate } from "./coordinate.js";
 
 /**
  * This class represents a bounded coordinate region of a sphere.

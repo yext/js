@@ -1,10 +1,8 @@
-/**
- * @jest-environment jsdom
- */
+import { describe, it, expect, vi, afterEach } from "vitest";
 import * as browserOrNode from "browser-or-node";
 import { getRuntime } from "./runtime.js";
 
-jest.mock("browser-or-node", () => ({
+vi.mock("browser-or-node", () => ({
   __esModule: true,
   isNode: false,
   isDeno: false,

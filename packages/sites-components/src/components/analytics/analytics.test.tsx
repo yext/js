@@ -1,8 +1,14 @@
-/**
- * @jest-environment jsdom
- */
-import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  afterAll,
+  afterEach,
+  Mock,
+} from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
@@ -10,7 +16,7 @@ import { AnalyticsProvider } from "./provider.js";
 import { useAnalytics } from "./hooks.js";
 import { AnalyticsScopeProvider } from "./scope.js";
 
-jest.mock("../../util/runtime.js", () => {
+vi.mock("../../util/runtime.js", () => {
   const runtime = {
     name: "browser",
     isServerSide: false,
@@ -23,7 +29,7 @@ jest.mock("../../util/runtime.js", () => {
 });
 
 // The following section of mocks just exists to supress an error that occurs
-// because jest does not implement a window.location.navigate.  See:
+// because Vitest does not implement a window.location.navigate.  See:
 // https://www.benmvp.com/blog/mocking-window-location-methods-jest-jsdom/
 // for details.
 const oldWindowLocation = global.location;
@@ -35,11 +41,9 @@ beforeAll(() => {
       NODE_ENV: "development",
     },
   };
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   delete global.location;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   global.location = Object.defineProperties(
     {},
@@ -47,25 +51,29 @@ beforeAll(() => {
       ...Object.getOwnPropertyDescriptors(oldWindowLocation),
       assign: {
         configurable: true,
-        value: jest.fn(),
+        value: vi.fn(),
       },
     }
   );
 
   // this mock allows us to inspect the fetch requests sent by the analytics
   // package and ensure they are generated correctly.
-  global.fetch = jest.fn().mockImplementation(
-    jest.fn(() => {
+  global.fetch = vi.fn().mockImplementation(
+    vi.fn(() => {
       return Promise.resolve({ status: 200 });
-    }) as jest.Mock
+    }) as Mock
   );
 
-  jest.spyOn(global, "fetch");
+  vi.spyOn(global, "fetch");
 });
 
 afterAll(() => {
   // restore window location so we don't side effect other tests.
   window.location = oldWindowLocation;
+
+  // @ts-ignore
+  delete global.fetch;
+  global.process = currentProcess;
 });
 
 const baseProps: TemplateProps = {
@@ -82,23 +90,9 @@ const baseProps: TemplateProps = {
 
 const currentProcess = global.process;
 
-beforeAll(() => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  global.process = undefined;
-});
-
 afterEach(() => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   global.fetch.mockClear();
-});
-
-afterAll(() => {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  delete global.fetch;
-  global.process = currentProcess;
 });
 
 describe("Analytics", () => {
@@ -110,11 +104,13 @@ describe("Analytics", () => {
     };
     const { rerender } = render(<App />);
     rerender(<App />);
+
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
   it("should not fire a page view when opt in is required", () => {
     render(<AnalyticsProvider templateData={baseProps} requireOptIn={true} />);
+
     expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 
@@ -128,11 +124,11 @@ describe("Analytics", () => {
     );
 
     fireEvent.click(screen.getByRole("link"));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
     const generatedUrlStr = callstack[callstack.length - 1][0];
     const generatedUrl = new URL(generatedUrlStr);
+
     expect(generatedUrl.searchParams.get("eventType")).toBe("link");
   });
 
@@ -178,9 +174,9 @@ describe("Analytics", () => {
 
     expect.assertions(testClicks.length);
 
+    // @ts-ignore
     const user = userEvent.setup();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
 
@@ -218,24 +214,39 @@ describe("Analytics", () => {
       </AnalyticsProvider>
     );
 
+    // @ts-ignore
     const user = userEvent.setup();
     await user.click(screen.getByRole("button"));
 
-    await waitFor(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    await vi.waitFor(() => {
       // @ts-ignore
       const mockCalls = global.fetch.mock.calls;
 
       const generatedClickUrlStr = mockCalls[1][0];
       const generatedClickUrl = new URL(generatedClickUrlStr);
       expect(generatedClickUrl.searchParams.get("_yfpc")).toBeTruthy();
-
+    });
+    await vi.waitFor(() => {
+      // @ts-ignore
+      const mockCalls = global.fetch.mock.calls;
       const generatedConversionUrlStr = mockCalls[2][0];
       const generatedConversionUrl = new URL(generatedConversionUrlStr);
       expect(generatedConversionUrl.searchParams.get("_yfpc")).toBeTruthy();
+    });
+    await vi.waitFor(() => {
+      // @ts-ignore
+      const mockCalls = global.fetch.mock.calls;
+      const generatedConversionUrlStr = mockCalls[2][0];
+      const generatedConversionUrl = new URL(generatedConversionUrlStr);
       expect(generatedConversionUrl.searchParams.get("cid")).toBe(
         expectedConversionData.cid
       );
+    });
+    await vi.waitFor(() => {
+      // @ts-ignore
+      const mockCalls = global.fetch.mock.calls;
+      const generatedConversionUrlStr = mockCalls[2][0];
+      const generatedConversionUrl = new URL(generatedConversionUrlStr);
       expect(generatedConversionUrl.searchParams.get("cv")).toBe(
         expectedConversionData.cv
       );

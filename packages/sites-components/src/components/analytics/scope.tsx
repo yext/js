@@ -1,15 +1,15 @@
-import React, { PropsWithChildren } from "react";
+import { createContext, useContext, useState, PropsWithChildren } from "react";
 import { concatScopes } from "./helpers.js";
 import { AnalyticsScopeProps } from "./interfaces.js";
 
-const ScopeContext = React.createContext({ name: "" });
+const ScopeContext = createContext({ name: "" });
 
 /**
  * The useScope hook will return the current scope from the Analytics Scope. For
  * use within the context of an AnalyticsScopeProvider for scoping analytics events.
  */
 export const useScope = () => {
-  const ctx = React.useContext(ScopeContext);
+  const ctx = useContext(ScopeContext);
   return ctx.name;
 };
 
@@ -26,10 +26,12 @@ export function AnalyticsScopeProvider(
   props: PropsWithChildren<AnalyticsScopeProps>
 ): JSX.Element {
   const parentScope = useScope();
-  const combinedScope = concatScopes(parentScope, props.name);
+  const [combinedScope] = useState({
+    name: concatScopes(parentScope, props.name),
+  });
 
   return (
-    <ScopeContext.Provider value={{ name: combinedScope }}>
+    <ScopeContext.Provider value={combinedScope}>
       {props.children}
     </ScopeContext.Provider>
   );

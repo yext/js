@@ -1,7 +1,4 @@
-/**
- * @jest-environment jsdom
- */
-import * as React from "react";
+import { describe, it, expect } from "vitest";
 import { Address } from "./address.js";
 import { AddressType } from "./types.js";
 import { render, screen } from "@testing-library/react";

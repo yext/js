@@ -11,12 +11,13 @@ import type { CTA, LinkProps } from "./types.js";
  * a link with and without sourcing from a knowledge graph field:
  *
  * @example
- * ```
+ * ```ts
  * import { Link } from "@yext/pages/components";
  *
  * <Link href="/search">Locator</Link>
  * <Link cta={document.c_exampleCTA} />
  * <Link cta={{link: "https://www.yext.com", label: "Click Here", linkType: "URL"}} />
+ * ```
  *
  * @public
  */

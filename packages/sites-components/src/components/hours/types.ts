@@ -39,11 +39,16 @@ export type DayOfWeekNames = {
 };
 
 export interface HoursTableProps {
+  /** Hours data from Yext Streams */
   hours: HoursType;
+  /** Label for each day of week, ordered starting from Sunday */
   dayOfWeekNames?: DayOfWeekNames;
+  /** Set the day of the first row of the table */
   startOfWeek?: keyof DayOfWeekNames | "today";
   timeOptions?: Intl.DateTimeFormatOptions;
-  collapseDays?: boolean; // Combine adjacent day rows with the same intervals.
+  /** Combine adjacent rows (days) with the same intervals */
+  collapseDays?: boolean;
+  /** Override rendering for the interval on each table row */
   intervalStringsBuilderFn?: (
     h: HoursTableDayData,
     t?: Intl.DateTimeFormatOptions

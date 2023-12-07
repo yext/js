@@ -23,9 +23,9 @@ const defaultDayOfWeekNames = [
 const defaultDayOfWeekSortIdx = [0, 1, 2, 3, 4, 5, 6];
 
 /**
- * @param {HoursTableProps} props
- * @param {Date} todayDate Date object for today
- * @returns {number[]} the SortIdx array for days of week
+ * @param props - HoursTableProps
+ * @param todayDate - Date object for today
+ * @returns the SortIdx array for days of week
  */
 function getSortIdx(props: HoursTableProps, todayDate: Date): number[] {
   let startIdx = 0;
@@ -46,9 +46,8 @@ function getSortIdx(props: HoursTableProps, todayDate: Date): number[] {
 }
 
 /**
- *
- * @param {HoursTableDayData[]} hoursDays
- * @returns {HoursTableDayData[]} where adjacent days with the same intervals are combined.
+ * @param hoursDays - an array of HoursTableDayData
+ * @returns where adjacent days with the same intervals are combined.
  */
 function collapseDays(hoursDays: HoursTableDayData[]): HoursTableDayData[] {
   const collapsedDays: HoursTableDayData[] = [];
@@ -107,7 +106,6 @@ function defaultIntervalStringsBuilder(
 }
 
 /**
- * @param {DayOfWeekNames} nameMap
  * @returns correctly ordered list of day of week names, using param values and
  * falling back to default values if empty.
  */
@@ -123,18 +121,11 @@ function dayOfWeekNamesToArray(nameMap: DayOfWeekNames): string[] {
   ];
 }
 
-/*
+/**
  * The HoursTable component uses HoursManipulator data to generate a table
  * listing the business hours of the entity.
- *
- * @param {HoursType} hours data from Yext Streams
- * @param {Intl.DateTimeFormatOptions} timeOptions
- * @param {String[]} dayOfWeekNames label for each day of week, ordered starting from Sunday
- * @param {String} startOfWeek set the day of the first row of the table
- * @param {Boolean} collapseDays combine adjacent rows (days) with the same intervals
- * @param {Function} intervalStringsBuilderFn override rendering for the interval on each table row
  */
-const Hours: React.FC<HoursTableProps> = (props) => {
+const Hours: React.FC<HoursTableProps> = (props: HoursTableProps) => {
   // Use two rendering passes to avoid SSR issues where server & client rendered content is different.
   // On the first pass, don't render any content in this component, only set `state.isClient`.
   // On the second pass (after the page has been loaded), render the content.
