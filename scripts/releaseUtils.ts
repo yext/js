@@ -21,7 +21,7 @@ if (isDryRun) {
   console.log();
 }
 
-export const packages = ["sites-components"];
+export const packages = ["pages-components"];
 
 export const versionIncrements: ReleaseType[] = ["patch", "minor", "major"];
 

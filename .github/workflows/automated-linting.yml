@@ -20,7 +20,7 @@ jobs:
       - run: pnpm run lint
         name: Running linter
         id: eslint
-        # As of this comment, there are many linting errors in sites-components.
+        # As of this comment, there are many linting errors in pages-components.
         # This is a temporary fix to allow the workflow continue providing
         # autofixes while these errors are being addressed.
         continue-on-error: true

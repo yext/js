@@ -24,4 +24,4 @@ jobs:
             doesn't start with an uppercase character.
           wip: true
           scopes: |
-            sites-components
+            pages-components
