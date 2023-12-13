@@ -1,14 +1,11 @@
 import react from "@vitejs/plugin-react";
 import { LibraryFormats, defineConfig } from "vite";
 import path from "node:path";
-import type { Plugin } from 'vite';
+import type { Plugin } from "vite";
 import { exec } from "node:child_process";
 
 export default defineConfig(() => ({
-  plugins: [
-    react(),
-    dts()
-  ],
+  plugins: [react(), dts()],
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
@@ -33,17 +30,16 @@ export default defineConfig(() => ({
 
 /** A custom plugin to generate TS types using tsup */
 const dts = (): Plugin => ({
-  name: 'dts',
+  name: "dts",
   buildEnd: (error) => {
     if (error) {
       return;
     }
 
-    exec('tsup src/index.ts --format esm,cjs --dts-only', (err) => {
+    exec("tsup src/index.ts --format esm,cjs --dts-only", (err) => {
       if (err) {
-        throw new Error('Failed to generate declaration files');
+        throw new Error("Failed to generate declaration files");
       }
     });
   },
 });
-
