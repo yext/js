@@ -1,44 +1,6 @@
 This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
-The following npm packages may be included in this product:
-
- - @lexical/code@0.9.2
- - @lexical/hashtag@0.9.2
- - @lexical/link@0.9.2
- - @lexical/list@0.9.2
- - @lexical/react@0.9.2
- - @lexical/rich-text@0.9.2
- - @lexical/table@0.9.2
- - @lexical/utils@0.9.2
- - lexical@0.9.2
-
-These packages each contain the following license and notice below:
-
-MIT License
-
-Copyright (c) Meta Platforms, Inc. and affiliates.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------------
-
 The following npm package may be included in this product:
 
  - @types/mdast@3.0.10
@@ -66,6 +28,176 @@ MIT License
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE
+
+-----------
+
+The following npm package may be included in this product:
+
+ - unified@11.0.4
+
+This package contains the following license and notice below:
+
+(The MIT License)
+
+Copyright (c) 2015 Titus Wormer <tituswormer@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - mdast-util-to-hast@12.3.0
+ - remark-rehype@10.1.0
+
+These packages each contain the following license and notice below:
+
+(The MIT License)
+
+Copyright (c) 2016 Titus Wormer <tituswormer@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - mdast-util-from-markdown@1.2.0
+
+This package contains the following license and notice below:
+
+(The MIT License)
+
+Copyright (c) 2020 Titus Wormer <tituswormer@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - picocolors@1.0.0
+
+This package contains the following license and notice below:
+
+ISC License
+
+Copyright (c) 2021 Alexey Raspopov, Kostiantyn Denysov, Anton Verinov
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - micromark-util-chunked@1.0.0
+ - micromark-util-classify-character@1.0.0
+ - micromark-util-combine-extensions@1.0.0
+ - micromark-util-resolve-all@1.0.0
+ - micromark-util-symbol@1.0.1
+ - micromark-util-types@1.0.2
+
+These packages each contain the following license and notice below:
+
+MIT
+
+-----------
+
+The following npm packages may be included in this product:
+
+ - @lexical/code@0.12.5
+ - @lexical/hashtag@0.12.5
+ - @lexical/link@0.12.5
+ - @lexical/list@0.12.5
+ - @lexical/react@0.12.5
+ - @lexical/rich-text@0.12.5
+ - @lexical/table@0.12.5
+ - @lexical/utils@0.12.5
+ - lexical@0.12.5
+
+These packages each contain the following license and notice below:
+
+MIT License
+
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 -----------
 
@@ -107,6 +239,66 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - react-markdown@8.0.7
+
+This package contains the following license and notice below:
+
+The MIT License (MIT)
+
+Copyright (c) 2015 Espen Hovlandsdal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+-----------
+
+The following npm package may be included in this product:
+
+ - cross-fetch@4.0.0
+
+This package contains the following license and notice below:
+
+The MIT License (MIT)
+
+Copyright (c) 2017 Leonardo Quixadá
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 -----------
 
@@ -167,1115 +359,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
------------
-
-The following npm package may be included in this product:
-
- - cross-fetch@4.0.0
-
-This package contains the following license and notice below:
-
-The MIT License (MIT)
-
-Copyright (c) 2017 Leonardo Quixadá
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------------
-
-The following npm package may be included in this product:
-
- - mdast-util-from-markdown@1.2.0
-
-This package contains the following license and notice below:
-
-(The MIT License)
-
-Copyright (c) 2020 Titus Wormer <tituswormer@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
------------
-
-The following npm packages may be included in this product:
-
- - mdast-util-to-hast@12.3.0
- - remark-rehype@10.1.0
-
-These packages each contain the following license and notice below:
-
-(The MIT License)
-
-Copyright (c) 2016 Titus Wormer <tituswormer@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-chunked@1.0.0
-
-This package contains the following license and notice below:
-
-# micromark-util-chunked
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility to splice and push with giant arrays.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`push(list, items)`](#pushlist-items)
-    *   [`splice(list, start, remove, items)`](#splicelist-start-remove-items)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-chunked
-```
-
-## Use
-
-```js
-import {push, splice} from 'micromark-util-chunked'
-
-// …
-
-nextEvents = push(nextEvents, [
-  ['enter', events[open][1], context],
-  ['exit', events[open][1], context]
-])
-
-// …
-
-splice(events, open - 1, index - open + 3, nextEvents)
-
-// …
-```
-
-## API
-
-This module exports the following identifiers: `push`, `splice`.
-There is no default export.
-
-### `push(list, items)`
-
-Append `items` (an array) at the end of `list` (another array).
-When `list` was empty, returns `items` instead.
-
-This prevents a potentially expensive operation when `list` is empty,
-and adds items in batches to prevent V8 from hanging.
-
-###### Parameters
-
-*   `list` (`unknown[]`) — List to operate on
-*   `items` (`unknown[]`) — Items to add to `list`
-
-###### Returns
-
-`list` or `items`
-
-### `splice(list, start, remove, items)`
-
-Like `Array#splice`, but smarter for giant arrays.
-
-`Array#splice` takes all items to be inserted as individual argument which
-causes a stack overflow in V8 when trying to insert 100k items for instance.
-
-Otherwise, this does not return the removed items, and takes `items` as an
-array instead of rest parameters.
-
-###### Parameters
-
-*   `list` (`unknown[]`) — List to operate on
-*   `start` (`number`) — Index to remove/insert at (can be negative)
-*   `remove` (`number`) — Number of items to remove
-*   `items` (`unknown[]`) — Items to inject into `list`
-
-###### Returns
-
-`void`
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-chunked.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-chunked
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-chunked.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-chunked
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-classify-character@1.0.0
-
-This package contains the following license and notice below:
-
-# micromark-util-classify-character
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility to classify whether a character is whitespace or punctuation.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`classifyCharacter(code)`](#classifycharactercode)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-classify-character
-```
-
-## Use
-
-```js
-/** @type {Tokenizer} */
-function tokenizeAttention(effects, ok) {
-  return start
-
-  // …
-
-  /** @type {State} */
-  function sequence(code) {
-    if (code === marker) {
-      // …
-    }
-
-    const token = effects.exit('attentionSequence')
-    const after = classifyCharacter(code)
-    const open =
-      !after || (after === constants.characterGroupPunctuation && before)
-    const close =
-      !before || (before === constants.characterGroupPunctuation && after)
-    // …
-  }
-
-  // …
-}
-```
-
-## API
-
-This module exports the following identifiers: `classifyCharacter`.
-There is no default export.
-
-### `classifyCharacter(code)`
-
-Classify whether a
-[character code](https://github.com/micromark/micromark#preprocess)
-represents whitespace, punctuation, or
-something else.
-Used for attention (emphasis, strong), whose sequences can open or close based
-on the class of surrounding characters.
-
-Note that eof (`null`) is seen as whitespace.
-
-###### Returns
-
-`constants.characterGroupWhitespace`, `constants.characterGroupPunctuation`,
-or `undefined.`
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-classify-character.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-classify-character
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-classify-character.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-classify-character
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-combine-extensions@1.0.0
-
-This package contains the following license and notice below:
-
-# micromark-util-combine-extensions
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility to combine [syntax][] or [html][] extensions.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`combineExtensions(extensions)`](#combineextensionsextensions)
-    *   [`combineHtmlExtensions(htmlExtensions)`](#combinehtmlextensionshtmlextensions)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-combine-extensions
-```
-
-## Use
-
-```js
-import {gfmAutolinkLiteral} from 'micromark-extension-gfm-autolink-literal'
-import {gfmStrikethrough} from 'micromark-extension-gfm-strikethrough'
-import {gfmTable} from 'micromark-extension-gfm-table'
-import {gfmTaskListItem} from 'micromark-extension-gfm-task-list-item'
-import {combineExtensions} from 'micromark-util-combine-extensions'
-
-const gfm = combineExtensions([gfmAutolinkLiteral, gfmStrikethrough(), gfmTable, gfmTaskListItem])
-```
-
-## API
-
-This module exports the following identifiers: `combineExtensions`,
-`combineHtmlExtensions`.
-There is no default export.
-
-### `combineExtensions(extensions)`
-
-Combine several syntax extensions into one.
-
-###### Parameters
-
-*   `extensions` (`Extension[]`) — List of syntax extensions
-
-###### Returns
-
-A single combined extension (`Extension`).
-
-### `combineHtmlExtensions(htmlExtensions)`
-
-Combine several html extensions into one.
-
-###### Parameters
-
-*   `htmlExtensions` (`HtmlExtension[]`) — List of html extensions
-
-###### Returns
-
-A single combined html extension (`HtmlExtension`).
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-combine-extensions.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-combine-extensions
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-combine-extensions.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-combine-extensions
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
-[syntax]: https://github.com/micromark/micromark#syntaxextension
-
-[html]: https://github.com/micromark/micromark#htmlextension
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-resolve-all@1.0.0
-
-This package contains the following license and notice below:
-
-# micromark-util-resolve-all
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility to resolve subtokens.
-
-[Resolvers][resolver] are functions that take events and manipulate them.
-This is needed for example because media (links, images) and attention (strong,
-italic) aren’t parsed left-to-right.
-Instead, their openings and closings are parsed, and when done, their openings
-and closings are matched, and left overs are turned into plain text.
-Because media and attention can’t overlap, we need to perform that operation
-when one closing matches an opening, too.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`resolveAll(constructs, events, context)`](#resolveallconstructs-events-context)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-resolve-all
-```
-
-## Use
-
-```js
-import {push} from 'micromark-util-chunked'
-import {resolveAll} from 'micromark-util-resolve-all'
-
-/**
- * @type {Resolver}
- */
-function resolveAllAttention(events, context) {
-  // …
-
-  // Walk through all events.
-  while (++index < events.length) {
-    // Find a token that can close.
-    if (
-      events[index][0] === 'enter' &&
-      events[index][1].type === 'attentionSequence' &&
-      events[index][1]._close
-    ) {
-      open = index
-
-      // Now walk back to find an opener.
-      while (open--) {
-        // Find a token that can open the closer.
-        if (
-          // …
-        ) {
-          // …
-
-          // Opening.
-          nextEvents = push(nextEvents, [
-            // …
-          ])
-
-          // Between.
-          nextEvents = push(
-            nextEvents,
-            resolveAll(
-              context.parser.constructs.insideSpan.null,
-              events.slice(open + 1, index),
-              context
-            )
-          )
-
-          // Closing.
-          nextEvents = push(nextEvents, [
-            // …
-          ])
-
-          // …
-        }
-      }
-    }
-  }
-
-  // …
-}
-```
-
-## API
-
-This module exports the following identifiers: `resolveAll`.
-There is no default export.
-
-### `resolveAll(constructs, events, context)`
-
-Call all `resolveAll`s in `constructs`.
-
-###### Parameters
-
-*   `constructs` (`Construct[]`) — List of constructs, optionally with
-    `resolveAll`s
-*   `events` (`Event[]`) — List of events
-*   `context` (`TokenizeContext`) — Context used by `tokenize`
-
-###### Returns
-
-`Events[]` — Changed events.
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-resolve-all.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-resolve-all
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-resolve-all.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-resolve-all
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
-[resolver]: https://github.com/micromark/micromark/blob/a571c09/packages/micromark-util-types/index.js#L219
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-symbol@1.0.1
-
-This package contains the following license and notice below:
-
-# micromark-util-symbol
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility with symbols.
-
-It’s useful to reference these by name instead of value while developing.
-[`micromark-build`][micromark-build] compiles them away for production code.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-symbol
-```
-
-## Use
-
-```js
-import {codes} from 'micromark-util-symbol/codes'
-import {constants} from 'micromark-util-symbol/constants'
-import {types} from 'micromark-util-symbol/types'
-import {values} from 'micromark-util-symbol/values'
-
-console.log(codes.atSign) // 64
-console.log(constants.characterReferenceNamedSizeMax) // 31
-console.log(types.definitionDestinationRaw) // 'definitionDestinationRaw'
-console.log(values.atSign) // '@'
-```
-
-## API
-
-This package has four entries in its export map: `micromark-util-symbol/codes`,
-`micromark-util-symbol/constants`, `micromark-util-symbol/types`,
-`micromark-util-symbol/values`.
-
-Each module exports an identifier with the same name (for example,
-`micromark-util-symbol/codes` has `codes`), which is an object mapping strings
-to other values.
-
-Take a peek at the code to learn more!
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-symbol.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-symbol
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-symbol.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-symbol
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
-[micromark-build]: https://github.com/micromark/micromark/tree/main/packages/micromark-build
-
------------
-
-The following npm package may be included in this product:
-
- - micromark-util-types@1.0.2
-
-This package contains the following license and notice below:
-
-# micromark-util-types
-
-[![Build][build-badge]][build]
-[![Coverage][coverage-badge]][coverage]
-[![Downloads][downloads-badge]][downloads]
-[![Size][bundle-size-badge]][bundle-size]
-[![Sponsors][sponsors-badge]][opencollective]
-[![Backers][backers-badge]][opencollective]
-[![Chat][chat-badge]][chat]
-
-micromark utility with a couple of typescript types.
-
-## Contents
-
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [License](#license)
-
-## Install
-
-[npm][]:
-
-```sh
-npm install micromark-util-types
-```
-
-## Use
-
-```js
-/**
- * @typedef {import('micromark-util-types').Point} Point
- */
-```
-
-## API
-
-This module exports no identifiers.
-There is no default export.
-
-See
-[the code](https://github.com/micromark/micromark/blob/main/packages/micromark-util-types/index.js)
-for all about the exposed types.
-
-## Security
-
-See [`security.md`][securitymd] in [`micromark/.github`][health] for how to
-submit a security report.
-
-## Contribute
-
-See [`contributing.md`][contributing] in [`micromark/.github`][health] for ways
-to get started.
-See [`support.md`][support] for ways to get help.
-
-This project has a [code of conduct][coc].
-By interacting with this repository, organisation, or community you agree to
-abide by its terms.
-
-## License
-
-[MIT][license] © [Titus Wormer][author]
-
-<!-- Definitions -->
-
-[build-badge]: https://github.com/micromark/micromark/workflows/main/badge.svg
-
-[build]: https://github.com/micromark/micromark/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/micromark/micromark.svg
-
-[coverage]: https://codecov.io/github/micromark/micromark
-
-[downloads-badge]: https://img.shields.io/npm/dm/micromark-util-encode.svg
-
-[downloads]: https://www.npmjs.com/package/micromark-util-encode
-
-[bundle-size-badge]: https://img.shields.io/bundlephobia/minzip/micromark-util-encode.svg
-
-[bundle-size]: https://bundlephobia.com/result?p=micromark-util-encode
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[opencollective]: https://opencollective.com/unified
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/micromark/micromark/discussions
-
-[license]: https://github.com/micromark/micromark/blob/main/license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/micromark/.github
-
-[securitymd]: https://github.com/micromark/.github/blob/HEAD/security.md
-
-[contributing]: https://github.com/micromark/.github/blob/HEAD/contributing.md
-
-[support]: https://github.com/micromark/.github/blob/HEAD/support.md
-
-[coc]: https://github.com/micromark/.github/blob/HEAD/code-of-conduct.md
-
------------
-
-The following npm package may be included in this product:
-
- - picocolors@1.0.0
-
-This package contains the following license and notice below:
-
-ISC License
-
-Copyright (c) 2021 Alexey Raspopov, Kostiantyn Denysov, Anton Verinov
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-
------------
-
-The following npm packages may be included in this product:
-
- - react-dom@18.2.0
- - react@18.2.0
-
-These packages each contain the following license and notice below:
-
-MIT License
-
-Copyright (c) Facebook, Inc. and its affiliates.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------------
-
-The following npm package may be included in this product:
-
- - react-markdown@8.0.7
-
-This package contains the following license and notice below:
-
-The MIT License (MIT)
-
-Copyright (c) 2015 Espen Hovlandsdal
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
------------
-
-The following npm package may be included in this product:
-
- - unified@10.1.2
-
-This package contains the following license and notice below:
-
-(The MIT License)
-
-Copyright (c) 2015 Titus Wormer <tituswormer@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
 
 -----------
 
