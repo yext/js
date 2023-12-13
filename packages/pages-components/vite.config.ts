@@ -1,23 +1,11 @@
 import react from "@vitejs/plugin-react";
 import { LibraryFormats, defineConfig } from "vite";
-import dts from "vite-plugin-dts";
 import path from "node:path";
-import { copyFileSync } from "node:fs";
+import type { Plugin } from "vite";
+import { exec } from "node:child_process";
 
 export default defineConfig(() => ({
-  plugins: [
-    react(),
-    dts({
-      insertTypesEntry: true,
-      afterBuild: () => {
-        // To pass publint (`npm x publint@latest`) and ensure the
-        // package is supported by all consumers, we must export types that are
-        // read as CJS. To do this, there must be duplicate types with the
-        // correct extension supplied in the package.json exports field.
-        copyFileSync("dist/index.d.ts", "dist/index.d.cts");
-      },
-    }),
-  ],
+  plugins: [react(), dts()],
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
@@ -39,3 +27,19 @@ export default defineConfig(() => ({
     environment: "jsdom",
   },
 }));
+
+/** A custom plugin to generate TS types using tsup */
+const dts = (): Plugin => ({
+  name: "dts",
+  buildEnd: (error) => {
+    if (error) {
+      return;
+    }
+
+    exec("tsup src/index.ts --format esm,cjs --dts-only", (err) => {
+      if (err) {
+        throw new Error("Failed to generate declaration files");
+      }
+    });
+  },
+});

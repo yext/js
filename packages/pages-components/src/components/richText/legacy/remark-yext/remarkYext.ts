@@ -8,8 +8,8 @@ import { ok as assert } from "uvu/assert";
  * Remark plugin to support Yext Markdown (underline, subscript, superscript,
  * and strikethrough).
  */
-export default function remarkYext(this: Processor<void, Root, void, void>) {
-  const data = this.data();
+export default function remarkYext(this: Processor<any, Root, any, any>) {
+  const data = this.data() as any;
 
   add("micromarkExtensions", yextSyntax());
   add("fromMarkdownExtensions", yextFromMarkdown());

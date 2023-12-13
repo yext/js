@@ -31,7 +31,12 @@ export function LexicalRichText({
       <div className={`${styles["editor-inner"]} ${styles["no-border"]}`}>
         <div className={styles["editor-inner"]}>
           <RichTextPlugin
-            contentEditable={<ContentEditable className="editor-input" />}
+            contentEditable={
+              <ContentEditable
+                className="editor-input"
+                ariaLabel="Lexical Rich Text"
+              />
+            }
             ErrorBoundary={LexicalErrorBoundary}
             placeholder={<div></div>}
           />
