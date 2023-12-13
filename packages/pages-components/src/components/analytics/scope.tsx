@@ -34,7 +34,7 @@ export function AnalyticsScopeProvider(
 
   if (debugEnabled) {
     return (
-      <section data-ya-scope={combinedScope}>
+      <section data-ya-scope={combinedScope.name}>
         <ScopeContext.Provider value={combinedScope}>
           {props.children}
         </ScopeContext.Provider>

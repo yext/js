@@ -8,7 +8,7 @@ import type {
   Tooltip,
   TooltipHandlerProps,
   TooltipsRefItem,
-} from "./types";
+} from "./types.js";
 import c from "classnames";
 import "./debugger.css";
 
