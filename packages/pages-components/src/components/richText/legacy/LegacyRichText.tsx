@@ -9,8 +9,6 @@ import {
   underlineHandler,
 } from "./remark-yext/handlers.js";
 import { Handler } from "mdast-util-to-hast";
-import { Root } from "mdast";
-import { Processor } from "unified";
 
 /**
  * Handlers for converting Yext Markdown-specific MDAST nodes to HAST nodes.
@@ -32,11 +30,7 @@ const yextRemarkRehypeHandlers: Record<string, Handler> = {
 export const LegacyRichText = (props: { markdown: string }) => {
   const [RenderedMarkdown, setRenderedMarkdown] = useState<ReactElement>();
 
-  let ReactMarkdown: (arg0: {
-    children: string;
-    remarkPlugins: ((this: Processor<void, Root, void, void>) => void)[];
-    remarkRehypeOptions: { handlers: Record<string, Handler> };
-  }) => any;
+  let ReactMarkdown: any;
   useEffect(() => {
     const renderMarkdown = async () => {
       if (!ReactMarkdown) {
