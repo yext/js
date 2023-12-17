@@ -1,4 +1,4 @@
-import { Action, ConversionDetails } from "@yext/analytics";
+import { Action } from "@yext/analytics";
 
 /**
  * Constants for available link types.
@@ -42,7 +42,7 @@ interface LinkConfig
   obfuscate?: boolean;
   eventName?: string; // deprecated, use action
 
-  action?: Action;
+  action?: Action; // will be required once eventName is removed
   scope?: string; // can be set directly or using the scope provider
   value?: { amount: number; currency?: string };
 }
