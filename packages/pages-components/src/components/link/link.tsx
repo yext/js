@@ -37,7 +37,22 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       setHumanInteraction(true);
       if (analytics !== null) {
         try {
-          await analytics.trackClick(trackEvent, props.conversionDetails)(e);
+          if (props.action) {
+            await analytics.track({
+              action: props.action,
+              eventName: trackEvent,
+              value: props.value,
+              scope: props.scope
+            });
+          } else {
+            // Keep this component backwards compatible with the previous analyics integration
+            await analytics.track({
+              action: eventName ? `C_${eventName}` : cta ? "CTA_CLICK" : `C_${link}`,
+              eventName: trackEvent,
+              value: props.value,
+              scope: props.scope
+            });
+        }
         } catch (exception) {
           console.error("Failed to report click Analytics Event");
         }
