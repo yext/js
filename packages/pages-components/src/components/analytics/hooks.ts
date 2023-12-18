@@ -1,8 +1,6 @@
-import { ConversionDetails, Visitor } from "@yext/analytics";
-import { MouseEvent, useContext } from "react";
+import { useContext } from "react";
 import { getRuntime } from "../../util/index.js";
 import { AnalyticsContext } from "./context.js";
-import { concatScopes } from "./helpers.js";
 import { AnalyticsMethods, TrackProps } from "./interfaces.js";
 import { useScope } from "./scope.js";
 

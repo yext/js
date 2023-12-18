@@ -13,7 +13,6 @@ import userEvent from "@testing-library/user-event";
 import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
-import { useAnalytics } from "./hooks.js";
 import { AnalyticsScopeProvider } from "./scope.js";
 
 vi.mock("../../util/runtime.js", () => {
@@ -99,8 +98,12 @@ describe("Analytics", () => {
   it("should fire a page view once", () => {
     const App = () => {
       return (
-        <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false} 
-        productionDomains={['localhost']}/>
+        <AnalyticsProvider
+          apiKey="key"
+          templateData={baseProps}
+          requireOptIn={false}
+          productionDomains={["localhost"]}
+        />
       );
     };
     const { rerender } = render(<App />);
@@ -110,14 +113,26 @@ describe("Analytics", () => {
   });
 
   it("should not fire a page view when opt in is required", () => {
-    render(<AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={true}  productionDomains={['localhost']}/>);
+    render(
+      <AnalyticsProvider
+        apiKey="key"
+        templateData={baseProps}
+        requireOptIn={true}
+        productionDomains={["localhost"]}
+      />
+    );
 
     expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 
   it("should track a click", () => {
     render(
-      <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']}>
+      <AnalyticsProvider
+        apiKey="key"
+        templateData={baseProps}
+        requireOptIn={false}
+        productionDomains={["localhost"]}
+      >
         <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
           Click Me
         </Link>
@@ -137,7 +152,12 @@ describe("Analytics", () => {
   it("should track a click with scoping", async () => {
     const App = () => {
       return (
-        <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']}>
+        <AnalyticsProvider
+          apiKey="key"
+          templateData={baseProps}
+          requireOptIn={false}
+          productionDomains={["localhost"]}
+        >
           <AnalyticsScopeProvider name="header">
             <AnalyticsScopeProvider name="menu">
               <Link href="https://yext.com">one</Link>
@@ -190,8 +210,13 @@ describe("Analytics", () => {
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
 
-    for (const { matcher, expectedAction, expectedLabel, expectedTag } of testClicks) {
-      await user.click(screen.getByText(matcher));    
+    for (const {
+      matcher,
+      expectedAction,
+      expectedLabel,
+      expectedTag,
+    } of testClicks) {
+      await user.click(screen.getByText(matcher));
       const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
       expect(payload.action).toBe(expectedAction);
@@ -202,7 +227,13 @@ describe("Analytics", () => {
 
   it("turns off session tracking", () => {
     render(
-      <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']} disableSessionTracking={true}>
+      <AnalyticsProvider
+        apiKey="key"
+        templateData={baseProps}
+        requireOptIn={false}
+        productionDomains={["localhost"]}
+        disableSessionTracking={true}
+      >
         <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
           Click Me
         </Link>

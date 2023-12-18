@@ -1,4 +1,3 @@
-import { MouseEvent } from "react";
 import { TemplateProps } from "./types.js";
 import { getRuntime, isProduction } from "../../util/index.js";
 import { AnalyticsMethods, TrackProps } from "./interfaces.js";
