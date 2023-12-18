@@ -18,30 +18,27 @@ export function AnalyticsProvider(
 ): JSX.Element {
   const {
     children,
-    requireOptIn,
-    enableTrackingCookie,
-    enableDebugging,
+    apiKey,
     templateData,
-    pageDomain,
+    requireOptIn,
     productionDomains,
+    disableSessionTracking,
+    enableDebugging,
   } = props;
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
 
   if (analyticsRef.current === null) {
     analyticsRef.current = new Analytics(
+      apiKey,
       templateData,
       requireOptIn,
-      pageDomain,
-      productionDomains
+      productionDomains,
+      disableSessionTracking
     );
   }
 
   const analytics = analyticsRef.current;
-
-  if (enableTrackingCookie) {
-    analytics.enableTrackingCookie();
-  }
 
   let enableDebuggingDefault = debuggingParamDetected();
   if (getRuntime().name === "node") {

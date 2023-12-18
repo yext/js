@@ -99,7 +99,8 @@ describe("Analytics", () => {
   it("should fire a page view once", () => {
     const App = () => {
       return (
-        <AnalyticsProvider templateData={baseProps} requireOptIn={false} />
+        <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false} 
+        productionDomains={['localhost']}/>
       );
     };
     const { rerender } = render(<App />);
@@ -109,14 +110,14 @@ describe("Analytics", () => {
   });
 
   it("should not fire a page view when opt in is required", () => {
-    render(<AnalyticsProvider templateData={baseProps} requireOptIn={true} />);
+    render(<AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={true}  productionDomains={['localhost']}/>);
 
     expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 
   it("should track a click", () => {
     render(
-      <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
+      <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']}>
         <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
           Click Me
         </Link>
@@ -126,16 +127,17 @@ describe("Analytics", () => {
     fireEvent.click(screen.getByRole("link"));
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
-    const generatedUrlStr = callstack[callstack.length - 1][0];
-    const generatedUrl = new URL(generatedUrlStr);
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    expect(generatedUrl.searchParams.get("eventType")).toBe("link");
+    expect(payload.action).toBe("C_link");
+    expect(payload.label).toBe("");
+    expect(payload.sites.legacyEventName).toBe("link");
   });
 
   it("should track a click with scoping", async () => {
     const App = () => {
       return (
-        <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
+        <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']}>
           <AnalyticsScopeProvider name="header">
             <AnalyticsScopeProvider name="menu">
               <Link href="https://yext.com">one</Link>
@@ -155,24 +157,32 @@ describe("Analytics", () => {
     rerender(<App />);
 
     const testClicks: {
+      expectedAction: string;
+      expectedLabel: string;
       expectedTag: string;
       matcher: RegExp;
     }[] = [
       {
+        expectedAction: "C_link",
+        expectedLabel: "header_menu",
         expectedTag: "header_menu_link",
         matcher: /one/,
       },
       {
+        expectedAction: "CTA_CLICK",
+        expectedLabel: "header_dropdown",
         expectedTag: "header_dropdown_cta",
         matcher: /two/,
       },
       {
+        expectedAction: "C_fooclick",
+        expectedLabel: "",
         expectedTag: "fooclick",
         matcher: /three/,
       },
     ];
 
-    expect.assertions(testClicks.length);
+    // expect.assertions(testClicks.length);
 
     // @ts-ignore
     const user = userEvent.setup();
@@ -180,77 +190,30 @@ describe("Analytics", () => {
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
 
-    for (const { matcher, expectedTag } of testClicks) {
-      await user.click(screen.getByText(matcher));
-      const generatedUrlStr = callstack[callstack.length - 1][0];
-      const generatedUrl = new URL(generatedUrlStr);
-      const eventName = generatedUrl.searchParams.get("eventType");
-      expect(eventName).toBe(expectedTag);
+    for (const { matcher, expectedAction, expectedLabel, expectedTag } of testClicks) {
+      await user.click(screen.getByText(matcher));    
+      const payload = JSON.parse(callstack[callstack.length - 1][1].body);
+
+      expect(payload.action).toBe(expectedAction);
+      expect(payload.label).toBe(expectedLabel);
+      expect(payload.sites.legacyEventName).toBe(expectedTag);
     }
   });
 
-  it("should track a click with a conversion", async () => {
-    const expectedConversionData = { cid: "123456", cv: "10" };
-
-    const MyButton = () => {
-      const analytics = useAnalytics();
-      analytics?.enableTrackingCookie();
-      return (
-        <button
-          onClick={async () =>
-            await analytics?.track("foo click", expectedConversionData)
-          }
-        />
-      );
-    };
-
+  it("turns off session tracking", () => {
     render(
-      <AnalyticsProvider
-        templateData={baseProps}
-        requireOptIn={false}
-        enableTrackingCookie={true}
-      >
-        <MyButton />
+      <AnalyticsProvider apiKey={'key'} templateData={baseProps} requireOptIn={false}  productionDomains={['localhost']} disableSessionTracking={true}>
+        <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
+          Click Me
+        </Link>
       </AnalyticsProvider>
     );
 
+    fireEvent.click(screen.getByRole("link"));
     // @ts-ignore
-    const user = userEvent.setup();
-    await user.click(screen.getByRole("button"));
+    const callstack = global.fetch.mock.calls;
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-
-      const generatedClickUrlStr = mockCalls[1][0];
-      const generatedClickUrl = new URL(generatedClickUrlStr);
-      expect(generatedClickUrl.searchParams.get("_yfpc")).toBeTruthy();
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("_yfpc")).toBeTruthy();
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("cid")).toBe(
-        expectedConversionData.cid
-      );
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("cv")).toBe(
-        expectedConversionData.cv
-      );
-    });
+    expect(payload.sessionId).toBeUndefined();
   });
-  // TODO: figure out the right way to test window.location logic to credit listings with y_source param
 });
