@@ -5,12 +5,12 @@
  * @param accountId The accountId for which to determine the partition.
  */
 export const getPartition = (accountId: number) => {
-    switch (Math.floor((accountId / 100000000) % 10)) {
-      case 0:
-        return "US";
-      case 1:
-        return "EU";
-      default:
-        return "";
-    }
-  };
+  switch (Math.floor((accountId / 100000000) % 10)) {
+    case 0:
+      return "US";
+    case 1:
+      return "EU";
+    default:
+      return "";
+  }
+};
