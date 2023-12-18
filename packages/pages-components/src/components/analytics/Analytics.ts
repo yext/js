@@ -157,7 +157,8 @@ export class Analytics implements AnalyticsMethods {
 
     await this._analyticsEventService?.report({
       action,
-      label: scope || "",
+      // Do we want to slugify the label? It's slugified for legacyEventName
+      label: slugify(scope) || "",
       sites: {
         // does this wipe siteUid/template?
         legacyEventName: concatScopes(scope || "", slugify(eventName) || ""),

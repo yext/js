@@ -40,7 +40,7 @@ export function useAnalytics(): AnalyticsMethods | null {
     setDebugEnabled(enabled: boolean): void {
       return ctx.setDebugEnabled(enabled);
     },
-    identify(visitor: Visitor): void {
+    identify(visitor: Record<string, string>): void {
       return ctx.identify(visitor);
     },
     optIn(): Promise<void> {
