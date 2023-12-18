@@ -40,7 +40,10 @@ interface LinkConfig
     HTMLAnchorElement
   > {
   obfuscate?: boolean;
-  eventName?: string; // deprecated, use action
+  /**
+   * @deprecated Use action instead
+   */
+  eventName?: string;
 
   action?: Action; // will be required once eventName is removed
   scope?: string; // can be set directly or using the scope provider

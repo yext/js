@@ -47,7 +47,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
           } else {
             // Keep this component backwards compatible with the previous analyics integration
             await analytics.track({
-              action: eventName ? `C_${eventName}` : cta ? "CTA_CLICK" : `C_${link}`,
+              // Do we want C_link as the correct action fallback?
+              action: eventName ? `C_${eventName}` : cta ? "CTA_CLICK" : `C_link`,
               eventName: trackEvent,
               value: props.value,
               scope: props.scope
