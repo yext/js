@@ -251,17 +251,19 @@ describe("Analytics", () => {
   it("overrides AnalyticsScopeProvider", () => {
     render(
       <AnalyticsProvider
-          apiKey="key"
-          templateData={baseProps}
-          requireOptIn={false}
-          productionDomains={["localhost"]}
-        >
-          <AnalyticsScopeProvider name="header">
-            <AnalyticsScopeProvider name="menu">
-              <Link href="https://yext.com" scope="custom scope">one</Link>
-            </AnalyticsScopeProvider>            
+        apiKey="key"
+        templateData={baseProps}
+        requireOptIn={false}
+        productionDomains={["localhost"]}
+      >
+        <AnalyticsScopeProvider name="header">
+          <AnalyticsScopeProvider name="menu">
+            <Link href="https://yext.com" scope="custom scope">
+              one
+            </Link>
           </AnalyticsScopeProvider>
-        </AnalyticsProvider>
+        </AnalyticsScopeProvider>
+      </AnalyticsProvider>
     );
 
     fireEvent.click(screen.getByRole("link"));
@@ -269,8 +271,8 @@ describe("Analytics", () => {
     const callstack = global.fetch.mock.calls;
     const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    expect(payload.action).toBe('C_link');
-    expect(payload.label).toBe('customscope');
-    expect(payload.sites.legacyEventName).toBe('customscope_link');
+    expect(payload.action).toBe("C_link");
+    expect(payload.label).toBe("customscope");
+    expect(payload.sites.legacyEventName).toBe("customscope_link");
   });
 });
