@@ -306,7 +306,7 @@ function setTooltipPosition(
 
     // Check if tooltip overlaps with others.
     let valid = true;
-    for (let j = 0; j < instances.length - 1; j++) {
+    for (let j = 0; j < instances.length; j++) {
       const neighbor = instances[j];
       if (isOverlapping(item.el, neighbor)) {
         valid = false;
