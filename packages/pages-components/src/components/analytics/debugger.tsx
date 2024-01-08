@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-export function AnalyticsDebugger() {
+export default function AnalyticsDebugger() {
   // If multiple AnalyticsProviders are rendered, ensure that only one debugger is created.
   if (
     getRuntime().name !== "browser" ||
