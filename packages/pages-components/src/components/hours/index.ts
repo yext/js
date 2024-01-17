@@ -1,3 +1,3 @@
-export { HoursTable as Hours } from "@yext/sites-react-components";
-export { HoursManipulator } from "./hoursManipulator.js";
-export * from "./types.js";
+export * from './hours.js';
+export * from './hoursStatus.js';
+export * from './hoursTable.js';
