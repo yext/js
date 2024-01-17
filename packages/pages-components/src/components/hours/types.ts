@@ -32,8 +32,6 @@ export interface HoursType extends WeekType {
   reopenDate?: string;
 }
 
-// HoursTable
-
 export type DayOfWeekNames = {
   [Property in keyof WeekType]?: string;
 };

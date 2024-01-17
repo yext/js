@@ -26,6 +26,9 @@ importers:
       '@yext/eslint-config':
         specifier: ^1.0.0
         version: 1.0.0(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.22.15)(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(@yext/eslint-plugin-export-star@1.2.0)(eslint-plugin-react-perf@3.3.1)(eslint-plugin-tsdoc@0.2.17)(eslint@8.55.0)(typescript@5.3.3)
+      '@yext/sites-react-components':
+        specifier: 0.1.19-beta.1
+        version: 0.1.19-beta.1(rollup@4.6.1)
       eslint:
         specifier: ^8.55.0
         version: 8.55.0
@@ -185,7 +188,7 @@ importers:
         version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@storybook/react-vite':
         specifier: ^7.6.4
-        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.8)
+        version: 7.6.4(react-dom@18.2.0)(react@18.2.0)(rollup@4.6.1)(typescript@5.3.3)(vite@5.0.8)
       '@storybook/test-runner':
         specifier: ^0.16.0
         version: 0.16.0(@types/node@20.10.4)
@@ -4857,7 +4860,7 @@ packages:
       '@babel/runtime': 7.23.2
     dev: true
 
-  /@rollup/pluginutils@5.1.0:
+  /@rollup/pluginutils@5.1.0(rollup@4.6.1):
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -4869,6 +4872,7 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 2.0.2
       picomatch: 2.3.1
+      rollup: 4.6.1
     dev: true
 
   /@rollup/rollup-android-arm-eabi@4.6.1:
@@ -5725,7 +5729,7 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@storybook/react-vite@7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)(vite@5.0.8):
+  /@storybook/react-vite@7.6.4(react-dom@18.2.0)(react@18.2.0)(rollup@4.6.1)(typescript@5.3.3)(vite@5.0.8):
     resolution: {integrity: sha512-1NYzCJRO6k/ZyoMzpu1FQiaUaiLNjAvTAB1x3HE7oY/tEIT8kGpzXGYH++LJVWvyP/5dSWlUnRSy2rJvySraiw==}
     engines: {node: '>=16'}
     peerDependencies:
@@ -5734,7 +5738,7 @@ packages:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0
     dependencies:
       '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.3.3)(vite@5.0.8)
-      '@rollup/pluginutils': 5.1.0
+      '@rollup/pluginutils': 5.1.0(rollup@4.6.1)
       '@storybook/builder-vite': 7.6.4(typescript@5.3.3)(vite@5.0.8)
       '@storybook/react': 7.6.4(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
       '@vitejs/plugin-react': 3.1.0(vite@5.0.8)
@@ -6758,6 +6762,17 @@ packages:
       - encoding
     dev: false
 
+  /@yext/components-tsx-geo@1.0.3:
+    resolution: {integrity: sha512-dcxvyEBo4b0yKuiummdDh6J+FP6lXK2wsBYyNxBGeLXYrjUZYXarQn6knHyRNClVHNEZ0jjKKW7QN7JwFd+LlQ==}
+    dev: true
+
+  /@yext/components-tsx-maps@1.0.11:
+    resolution: {integrity: sha512-OgUOA2DoduzKy8XMq/iDekmsUJPqZhvAY64xCFDG6PSCnziURa4uKAD5ZcpZnghOwgNaQQeUchx4MflAxjOxZQ==}
+    dependencies:
+      '@yext/components-tsx-geo': 1.0.3
+      typescript: 4.9.5
+    dev: true
+
   /@yext/eslint-config@1.0.0(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.22.15)(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(@yext/eslint-plugin-export-star@1.2.0)(eslint-plugin-react-perf@3.3.1)(eslint-plugin-tsdoc@0.2.17)(eslint@8.55.0)(typescript@5.3.3):
     resolution: {integrity: sha512-U0bCc63lIPab1jEXleyiEXpMWvPERWZuHXnZRHa0qJcBMPdgDzXJDaamx1vYGRfDebZh1w+ut8TE8/mj9/YcOQ==}
     requiresBuild: true
@@ -6802,6 +6817,19 @@ packages:
       - eslint-plugin-import
       - supports-color
       - typescript
+    dev: true
+
+  /@yext/sites-react-components@0.1.19-beta.1(rollup@4.6.1):
+    resolution: {integrity: sha512-LAV+sidWN+6gdm812T/S2m2AwVCbiOlqZBLuCxgVO4cxcVnUCqK9syKYKOHO+VY8hqiF9p+3YJml+6rHfltpFA==}
+    engines: {node: '>=17'}
+    dependencies:
+      '@yext/components-tsx-maps': 1.0.11
+      awesome-phonenumber: 2.73.0
+      classnames: 2.3.2
+      luxon: 3.4.4
+      rollup-plugin-import-css: 3.4.0(rollup@4.6.1)
+    transitivePeerDependencies:
+      - rollup
     dev: true
 
   /abbrev@1.1.1:
@@ -7186,6 +7214,11 @@ packages:
   /available-typed-arrays@1.0.5:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
+    dev: true
+
+  /awesome-phonenumber@2.73.0:
+    resolution: {integrity: sha512-zirkzWFUheNnnPY1QE05PQd+5drn+5kVy76gZ3WyXnLwzXOguw6sqksyZGO1qyNnYj3Y/SDITXnS/TCk/hJXpQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /axe-core@4.7.0:
@@ -7746,7 +7779,6 @@ packages:
 
   /classnames@2.3.2:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    dev: false
 
   /clean-stack@2.2.0:
     resolution: {integrity: sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==}
@@ -11666,6 +11698,11 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /luxon@3.4.4:
+    resolution: {integrity: sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==}
+    engines: {node: '>=12'}
+    dev: true
+
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
@@ -13693,6 +13730,16 @@ packages:
       glob: 7.2.3
     dev: true
 
+  /rollup-plugin-import-css@3.4.0(rollup@4.6.1):
+    resolution: {integrity: sha512-997dJi7M7yYFn7tZer/UVt72mh4GH/hHBv48j3V4jsGSg+1DdYUXn+QB9SMMCNKF99pSv6QXmIOLTyeuijIsgg==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      rollup: ^2.x.x || ^3.x.x || ^4.x.x
+    dependencies:
+      '@rollup/pluginutils': 5.1.0(rollup@4.6.1)
+      rollup: 4.6.1
+    dev: true
+
   /rollup@3.26.3:
     resolution: {integrity: sha512-7Tin0C8l86TkpcMtXvQu6saWH93nhG3dGQ1/+l5V2TDMceTxO7kDiK6GzbfLWNNxqJXm591PcEZUozZm51ogwQ==}
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
@@ -14809,6 +14856,12 @@ packages:
 
   /typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
+    dev: true
+
+  /typescript@4.9.5:
+    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
     dev: true
 
   /typescript@5.3.3:

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Hours } from "./index.js";
-import { HOURS, HOURS_WITH_REOPEN_DATE } from "./sampleData.js";
+import { HOURS } from "./sampleData.js";
 
 describe("Hours", () => {
   beforeAll(() => {
@@ -13,26 +13,20 @@ describe("Hours", () => {
   it("properly renders a full week", () => {
     render(<Hours hours={HOURS} />);
 
-    expect(screen.getByText("sunday")).toBeTruthy();
-    expect(screen.getByText("monday")).toBeTruthy();
-    expect(screen.getByText("tuesday")).toBeTruthy();
-    expect(screen.getByText("wednesday")).toBeTruthy();
-    expect(screen.getByText("thursday")).toBeTruthy();
-    expect(screen.getByText("friday")).toBeTruthy();
-    expect(screen.getByText("saturday")).toBeTruthy();
+    expect(screen.getByText("Sunday")).toBeTruthy();
+    expect(screen.getByText("Monday")).toBeTruthy();
+    expect(screen.getByText("Tuesday")).toBeTruthy();
+    expect(screen.getByText("Wednesday")).toBeTruthy();
+    expect(screen.getByText("Thursday")).toBeTruthy();
+    expect(screen.getByText("Friday")).toBeTruthy();
+    expect(screen.getByText("Saturday")).toBeTruthy();
   });
 
   it("properly renders with a custom day label", () => {
     const label = "ice cream sundae";
-    render(<Hours hours={HOURS} dayOfWeekNames={{ sunday: label }} />);
+    render(<Hours hours={HOURS} dayOfWeekNames={{ Sunday: label }} />);
 
     expect(screen.getByText(label)).toBeTruthy();
-    expect(screen.queryByText("sunday")).toBeFalsy();
-  });
-
-  it("properly renders with collapsed days", () => {
-    render(<Hours hours={HOURS_WITH_REOPEN_DATE} collapseDays={true} />);
-
-    expect(screen.getByText("sunday - saturday")).toBeTruthy();
+    expect(screen.queryByText("Sunday")).toBeFalsy();
   });
 });

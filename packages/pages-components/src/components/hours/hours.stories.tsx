@@ -1,4 +1,3 @@
-import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Hours } from "./index.js";
 import {
@@ -23,13 +22,13 @@ export const NormalHours: StoryFn<typeof Hours> = Template.bind({});
 NormalHours.args = {
   hours: HOURS,
   dayOfWeekNames: {
-    sunday: "Sun",
-    monday: "Mon",
-    tuesday: "Tues",
-    wednesday: "Wed",
-    thursday: "Thur",
-    friday: "Fri",
-    saturday: "Sat",
+    Sunday: "Sun",
+    Monday: "Mon",
+    Tuesday: "Tues",
+    Wednesday: "Wed",
+    Thursday: "Thur",
+    Friday: "Fri",
+    Saturday: "Sat",
   },
 };
 
