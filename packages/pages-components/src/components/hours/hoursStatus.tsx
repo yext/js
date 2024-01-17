@@ -32,7 +32,7 @@ export interface HoursStatusProps extends TemplateParams {
 }
 
 function isOpen24h(params: StatusParams): boolean {
-  return (params.currentInterval && params.currentInterval.is24h()) || false;
+  return params?.currentInterval?.is24h?.() || false;
 }
 
 function isIndefinitelyClosed(params: StatusParams): boolean {

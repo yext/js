@@ -19,8 +19,8 @@ import { DateTime, WeekdayNumbers } from "luxon";
 
 /**
  *
- * @param {HoursTableDayData[]} hoursDays
- * @returns {HoursTableDayData[]} where adjacent days with the same intervals are combined
+ * @param hoursDays - HoursTableDayData[]
+ * @returns HoursTableDayData[] where adjacent days with the same intervals are combined
  */
 export function collapseDays(
   hoursDays: HoursTableDayData[],
