@@ -3,34 +3,34 @@ import { Day, DayType, HolidayType, HoursType, IntervalType } from "./types.js";
 
 export function luxonDateToDay(d: DateTime): Day {
   const dayMap: Record<number, Day> = {
-    1: Day.Monday, 
+    1: Day.Monday,
     2: Day.Tuesday,
     3: Day.Wednesday,
     4: Day.Thursday,
     5: Day.Friday,
     6: Day.Saturday,
-    7: Day.Sunday
-  }
+    7: Day.Sunday,
+  };
 
   if (d.weekday in dayMap) {
-    return dayMap[d.weekday]
+    return dayMap[d.weekday];
   } else {
-    throw new Error(`Invalid DateTime.weekday property: ${d}, ${d.weekday}`)
+    throw new Error(`Invalid DateTime.weekday property: ${d}, ${d.weekday}`);
   }
 }
 
 export function defaultDayName(d: Day): string {
   const nameMap = {
-    [Day.Monday]: "Monday", 
+    [Day.Monday]: "Monday",
     [Day.Tuesday]: "Tuesday",
     [Day.Wednesday]: "Wednesday",
     [Day.Thursday]: "Thursday",
     [Day.Friday]: "Friday",
     [Day.Saturday]: "Saturday",
-    [Day.Sunday]: "Sunday"
-  }
+    [Day.Sunday]: "Sunday",
+  };
 
-  return nameMap[d]
+  return nameMap[d];
 }
 
 export class HoursInterval {
@@ -45,23 +45,31 @@ export class HoursInterval {
     this.end = date.setZone(zone);
     this.start = date.setZone(zone);
 
-    [interval.start, interval.end].forEach(time => {
-      if (time.split(':').length != 2) {
-        throw new Error(`expected interval start and end data to be in the format "HH:MM"`);
+    [interval.start, interval.end].forEach((time) => {
+      if (time.split(":").length != 2) {
+        throw new Error(
+          `expected interval start and end data to be in the format "HH:MM"`
+        );
       }
     });
 
-    const [startHour, startMinute] = interval.start.split(':');
-    const [endHour, endMinute] = interval.end.split(':');
-    this.end = this.end.set({hour: Number(endHour), minute: Number(endMinute)})
-    this.start = this.start.set({hour: Number(startHour), minute: Number(startMinute)})
+    const [startHour, startMinute] = interval.start.split(":");
+    const [endHour, endMinute] = interval.end.split(":");
+    this.end = this.end.set({
+      hour: Number(endHour),
+      minute: Number(endMinute),
+    });
+    this.start = this.start.set({
+      hour: Number(startHour),
+      minute: Number(startMinute),
+    });
 
     if (this.end < this.start) {
-      this.end = this.end.plus({days:  1});
+      this.end = this.end.plus({ days: 1 });
     }
 
     if (this.end.minute == 59) {
-      this.end = this.end.set({minute: 60});
+      this.end = this.end.set({ minute: 60 });
     }
   }
 
@@ -80,12 +88,12 @@ export class HoursInterval {
    */
   getStartTime(locale?: string, opts?: Intl.DateTimeFormatOptions): string {
     const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: 'numeric',
+      hour: "numeric",
+      minute: "numeric",
       ...opts,
     };
 
-    return this.start.setLocale(locale || 'en-US').toLocaleString(timeOptions);
+    return this.start.setLocale(locale || "en-US").toLocaleString(timeOptions);
   }
 
   /**
@@ -95,16 +103,16 @@ export class HoursInterval {
    */
   getEndTime(locale?: string, opts?: Intl.DateTimeFormatOptions): string {
     const timeOptions: Intl.DateTimeFormatOptions = {
-      hour: 'numeric',
-      minute: 'numeric',
+      hour: "numeric",
+      minute: "numeric",
       ...opts,
     };
 
-    return this.end.setLocale(locale || 'en-US').toLocaleString(timeOptions);
+    return this.end.setLocale(locale || "en-US").toLocaleString(timeOptions);
   }
 
   /**
-   * @param {HoursInterval} other 
+   * @param {HoursInterval} other
    * @returns {boolean} if this interval and 'other' have the same start/end
    */
   timeIsEqualTo(other: HoursInterval): boolean {
@@ -119,7 +127,8 @@ export class HoursInterval {
   is24h(): boolean {
     const startIs00 = this.start.minute === 0 && this.start.hour === 0;
     const endIs00 = this.end.minute === 0 && this.end.hour === 0;
-    const daysAreConsecutive = (this.end.day - this.start.day === 1) || (this.end.day === 1);
+    const daysAreConsecutive =
+      this.end.day - this.start.day === 1 || this.end.day === 1;
     return startIs00 && endIs00 && daysAreConsecutive;
   }
 }
@@ -133,7 +142,9 @@ export class Hours {
    * @param {Object} hours Hours object in the format returned by Yext Streams
    */
   constructor(hours: HoursType, timezone: string) {
-    this.holidayHoursByDate = Object.fromEntries((hours.holidayHours || []).map(hours => [hours.date, hours]));
+    this.holidayHoursByDate = Object.fromEntries(
+      (hours.holidayHours || []).map((hours) => [hours.date, hours])
+    );
     this.hours = hours;
     this.timezone = timezone;
   }
@@ -150,14 +161,18 @@ export class Hours {
     // Also need to check yesterday in case the interval crosses dates
     // (Assumes intervals will be no longer than 24 hours)
     let priorDate = date;
-    priorDate = priorDate.minus({days: 1});
+    priorDate = priorDate.minus({ days: 1 });
 
     for (const hoursDate of [priorDate, date]) {
       const hours = this.getHours(hoursDate);
 
       if (hours && !hours.isClosed) {
         for (const interval of hours.openIntervals || []) {
-          const hoursInterval = new HoursInterval(hoursDate, interval, this.timezone);
+          const hoursInterval = new HoursInterval(
+            hoursDate,
+            interval,
+            this.timezone
+          );
 
           if (hoursInterval.contains(date)) {
             return hoursInterval;
@@ -195,8 +210,8 @@ export class Hours {
     for (const [idx, hoursInterval] of sortedIntervals.entries()) {
       if (hoursInterval.contains(date)) {
         // If this is the last interval, can't return the next one
-        if (sortedIntervals.length > (idx+1)) {
-          return sortedIntervals[idx+1];
+        if (sortedIntervals.length > idx + 1) {
+          return sortedIntervals[idx + 1];
         }
       }
     }
@@ -221,11 +236,16 @@ export class Hours {
     const intervalsList: HoursInterval[] = [];
     for (let i = 0; i < n; i++) {
       let theDate = startDate;
-      theDate = theDate.plus({days: i});
+      theDate = theDate.plus({ days: i });
 
       const hours = this.getHours(theDate);
       if (hours && !hours.isClosed) {
-        intervalsList.push(...(hours.openIntervals.map((interval: IntervalType) => new HoursInterval(theDate, interval, this.timezone))));
+        intervalsList.push(
+          ...hours.openIntervals.map(
+            (interval: IntervalType) =>
+              new HoursInterval(theDate, interval, this.timezone)
+          )
+        );
       }
     }
 
@@ -242,7 +262,9 @@ export class Hours {
       return null;
     }
 
-    return this.holidayHoursByDate[(date.toISO() || '').replace(/T.*/, '')] || null;
+    return (
+      this.holidayHoursByDate[(date.toISO() || "").replace(/T.*/, "")] || null
+    );
   }
 
   /**
@@ -250,7 +272,7 @@ export class Hours {
    * @returns {Object?} The daily normal hours object from the original Streams response for the
    *   given date, null if none
    */
-   getNormalHours(date: DateTime): DayType | null {
+  getNormalHours(date: DateTime): DayType | null {
     if (this.isTemporarilyClosedAt(date)) {
       return null;
     }
@@ -298,10 +320,13 @@ export class Hours {
       return false;
     }
 
-    const reopenDateParts = this.hours.reopenDate.split('-');
+    const reopenDateParts = this.hours.reopenDate.split("-");
     if (reopenDateParts.length === 3) {
       const [year, month, date] = reopenDateParts;
-      const reopenDate = DateTime.fromObject({year: Number(year), month: Number(month), day: Number(date)}, {zone: this.timezone});
+      const reopenDate = DateTime.fromObject(
+        { year: Number(year), month: Number(month), day: Number(date) },
+        { zone: this.timezone }
+      );
       if (targetDate < reopenDate) {
         return true;
       }
@@ -338,22 +363,29 @@ export class Hours {
  */
 export function arrayShift(arr: Array<any>, n: number): Array<any> {
   // Make a local copy of the array to mutate
-  let myArr = [...arr];
+  const myArr = [...arr];
   // Handle the (invalid) case where n > arr.length
   n = n % myArr.length;
   return myArr.concat(myArr.splice(0, myArr.length - n));
 }
 
 /**
- * @param {HoursInterval[]} il1 
- * @param {HoursInterval[]} il2 
+ * @param {HoursInterval[]} il1
+ * @param {HoursInterval[]} il2
  * @returns {boolean} whether the two intervals lists are equal
  */
-export function intervalsListsAreEqual(il1: HoursInterval[], il2: HoursInterval[]): boolean {
-  if (il1.length != il2.length) { return false; }
+export function intervalsListsAreEqual(
+  il1: HoursInterval[],
+  il2: HoursInterval[]
+): boolean {
+  if (il1.length != il2.length) {
+    return false;
+  }
 
   for (const [idx, interval] of il1.entries()) {
-    if (!interval.timeIsEqualTo(il2[idx])) { return false; }
+    if (!interval.timeIsEqualTo(il2[idx])) {
+      return false;
+    }
   }
 
   return true;

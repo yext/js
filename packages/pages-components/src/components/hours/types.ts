@@ -16,7 +16,7 @@ export interface DayType {
 }
 
 export interface HolidayType extends DayType {
-  date: string
+  date: string;
   isRegularHours?: boolean;
 }
 
@@ -53,12 +53,12 @@ export interface HoursTableProps {
 }
 
 export interface HoursTableDayData {
-  dayName: string,
-  intervals: HoursInterval[],
-  isToday: boolean,
-  startDay: Day, // used for 'collapseDays' logic
-  endDay: Day, // used for 'collapseDays' logic
-};
+  dayName: string;
+  intervals: HoursInterval[];
+  isToday: boolean;
+  startDay: Day; // used for 'collapseDays' logic
+  endDay: Day; // used for 'collapseDays' logic
+}
 
 export enum Day {
   Monday = "MONDAY",

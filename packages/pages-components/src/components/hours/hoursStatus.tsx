@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import c from "classnames";
-import { Hours, HoursInterval } from './hours.js';
+import { Hours, HoursInterval } from "./hours.js";
 import { DateTime } from "luxon";
-import { HoursType } from './types.js';
+import { HoursType } from "./types.js";
 
 export interface StatusParams {
-  isOpen: boolean,
-  currentInterval: HoursInterval | null,
-  futureInterval: HoursInterval | null,
-  timeOptions?: Intl.DateTimeFormatOptions,
-  dayOptions?: Intl.DateTimeFormatOptions,
-};
+  isOpen: boolean;
+  currentInterval: HoursInterval | null;
+  futureInterval: HoursInterval | null;
+  timeOptions?: Intl.DateTimeFormatOptions;
+  dayOptions?: Intl.DateTimeFormatOptions;
+}
 
 export interface TemplateParams {
-  currentTemplate?: (s: StatusParams) => React.ReactNode,
-  separatorTemplate?: (s: StatusParams) => React.ReactNode,
-  futureTemplate?: (s: StatusParams) => React.ReactNode,
-  timeTemplate?: (s: StatusParams) => React.ReactNode,
-  dayOfWeekTemplate?: (s: StatusParams) => React.ReactNode,
+  currentTemplate?: (s: StatusParams) => React.ReactNode;
+  separatorTemplate?: (s: StatusParams) => React.ReactNode;
+  futureTemplate?: (s: StatusParams) => React.ReactNode;
+  timeTemplate?: (s: StatusParams) => React.ReactNode;
+  dayOfWeekTemplate?: (s: StatusParams) => React.ReactNode;
 }
 
 export interface StatusTemplateParams extends StatusParams, TemplateParams {}
 
 export interface HoursStatusProps extends TemplateParams {
-  hours: HoursType,
-  timezone: string,
-  timeOptions?: Intl.DateTimeFormatOptions,
-  dayOptions?: Intl.DateTimeFormatOptions,
-  statusTemplate?: (s: StatusParams) => React.ReactNode,
-  className?: string,
-};
+  hours: HoursType;
+  timezone: string;
+  timeOptions?: Intl.DateTimeFormatOptions;
+  dayOptions?: Intl.DateTimeFormatOptions;
+  statusTemplate?: (s: StatusParams) => React.ReactNode;
+  className?: string;
+}
 
 function isOpen24h(params: StatusParams): boolean {
   return (params.currentInterval && params.currentInterval.is24h()) || false;
@@ -43,11 +43,15 @@ function defaultCurrentTemplate(params: StatusParams): React.ReactNode {
   if (isOpen24h(params)) {
     return <span className="HoursStatus-current">Open 24 Hours</span>;
   }
-  if (isIndefinitelyClosed(params)){
+  if (isIndefinitelyClosed(params)) {
     return <span className="HoursStatus-current">Temporarily Closed</span>;
   }
-  return <span className="HoursStatus-current">{params.isOpen ? 'Open Now' : 'Closed'}</span>;
-};
+  return (
+    <span className="HoursStatus-current">
+      {params.isOpen ? "Open Now" : "Closed"}
+    </span>
+  );
+}
 
 function defaultSeparatorTemplate(params: StatusParams): React.ReactNode {
   if (isOpen24h(params) || isIndefinitelyClosed(params)) {
@@ -60,20 +64,24 @@ function defaultFutureTemplate(params: StatusParams): React.ReactNode {
   if (isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
-  return <span className="HoursStatus-future">{params.isOpen ? 'Closes at': 'Opens at'}</span>;
+  return (
+    <span className="HoursStatus-future">
+      {params.isOpen ? "Closes at" : "Opens at"}
+    </span>
+  );
 }
 
 function defaultTimeTemplate(params: StatusParams): React.ReactNode {
   if (isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
-  let time = '';
+  let time = "";
   if (params.isOpen) {
     const interval = params.currentInterval;
-    time += interval ? interval.getEndTime('en-US', params.timeOptions) : '';
+    time += interval ? interval.getEndTime("en-US", params.timeOptions) : "";
   } else {
     const interval = params.futureInterval;
-    time += interval ? interval.getStartTime('en-US', params.timeOptions) : '';
+    time += interval ? interval.getStartTime("en-US", params.timeOptions) : "";
   }
   return <span className="HoursStatus-time"> {time}</span>;
 }
@@ -83,30 +91,37 @@ function defaultDayOfWeekTemplate(params: StatusParams): React.ReactNode {
     return null;
   }
   const dayOptions: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
+    weekday: "long",
     ...(params.dayOptions ?? {}),
   };
 
-  let dayOfWeek = '';
+  let dayOfWeek = "";
   if (params.isOpen) {
     const interval = params.currentInterval;
-    dayOfWeek += interval?.end?.setLocale('en-US').toLocaleString(dayOptions) || '';
+    dayOfWeek +=
+      interval?.end?.setLocale("en-US").toLocaleString(dayOptions) || "";
   } else {
     const interval = params.futureInterval;
-    dayOfWeek += interval?.start?.setLocale('en-US').toLocaleString(dayOptions) || '';
+    dayOfWeek +=
+      interval?.start?.setLocale("en-US").toLocaleString(dayOptions) || "";
   }
   return <span className="HoursStatus-dayOfWeek"> {dayOfWeek}</span>;
 }
 
-function defaultStatusTemplate(params: StatusTemplateParams, props?: HoursStatusProps): React.ReactNode {
+function defaultStatusTemplate(
+  params: StatusTemplateParams,
+  props?: HoursStatusProps
+): React.ReactNode {
   const currentTemplate = params.currentTemplate || defaultCurrentTemplate;
-  const separatorTemplate = params.separatorTemplate || defaultSeparatorTemplate;
+  const separatorTemplate =
+    params.separatorTemplate || defaultSeparatorTemplate;
   const futureTemplate = params.futureTemplate || defaultFutureTemplate;
   const timeTemplate = params.timeTemplate || defaultTimeTemplate;
-  const dayOfWeekTemplate = params.dayOfWeekTemplate || defaultDayOfWeekTemplate;
+  const dayOfWeekTemplate =
+    params.dayOfWeekTemplate || defaultDayOfWeekTemplate;
 
   return (
-    <div className={c("HoursStatus", props?.className || '')}>
+    <div className={c("HoursStatus", props?.className || "")}>
       {currentTemplate(params)}
       {separatorTemplate(params)}
       {futureTemplate(params)}
@@ -119,7 +134,7 @@ function defaultStatusTemplate(params: StatusTemplateParams, props?: HoursStatus
 /*
  * The HoursStatus component uses Hours data to generate a status message
  *  describing the current Open/Closed status of the entity
- * 
+ *
  * @param {HoursType} hours data from Yext Streams
  * @param {Intl.DateTimeFormatOptions} timeOptions
  * @param {Intl.DateTimeFormatOptions} dayOptions
@@ -131,7 +146,7 @@ function defaultStatusTemplate(params: StatusTemplateParams, props?: HoursStatus
  * @param {Function} dayOfWeekTemplate override rendering for the "dayOfWeek" part of this component "Open Now - closes at 5:00PM [[Monday]]"
  */
 const HoursStatus: React.FC<HoursStatusProps> = (props) => {
-  const [hasStatusTimeout, setHasStatusTimeout] =  useState(false);
+  const [hasStatusTimeout, setHasStatusTimeout] = useState(false);
 
   // Use two rendering passes to avoid SSR issues where server & client rendered content are different
   // https://reactjs.org/docs/react-dom.html#hydrate
@@ -160,13 +175,9 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
     currentInterval,
     futureInterval,
     ...props,
-  }
+  };
 
-  return (
-    <>
-      {isClient && statusTemplateFn(statusParams, props)}
-    </>
-  );
+  return <>{isClient && statusTemplateFn(statusParams, props)}</>;
 };
 
 export {
@@ -179,4 +190,4 @@ export {
   isIndefinitelyClosed,
   isOpen24h,
   HoursStatus,
-}
+};

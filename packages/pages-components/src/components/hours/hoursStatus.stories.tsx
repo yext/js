@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { HoursStatus } from './hoursStatus.js';
-import { HoursData } from './hoursSampleData.js';
+import { HoursStatus } from "./hoursStatus.js";
+import { HoursData } from "./hoursSampleData.js";
 
 const meta: Meta<typeof HoursStatus> = {
   title: "components/HoursStatus",
@@ -18,18 +18,24 @@ DefaultComponent.args = {
   hours: HoursData,
 };
 
-
-export const TwentyFourHoursClock: StoryFn<typeof HoursStatus> = Template.bind({});
+export const TwentyFourHoursClock: StoryFn<typeof HoursStatus> = Template.bind(
+  {}
+);
 TwentyFourHoursClock.args = {
   hours: HoursData,
   timeOptions: { hour12: false },
 };
 
-export const CustomTemplateOverride: StoryFn<typeof HoursStatus>  = Template.bind({});
+export const CustomTemplateOverride: StoryFn<typeof HoursStatus> =
+  Template.bind({});
 CustomTemplateOverride.args = {
   hours: HoursData,
-  separatorTemplate: () => ' :: ',
+  separatorTemplate: () => " :: ",
   futureTemplate: (params) => {
-    return <span className="HoursStatus-future">{params.isOpen ? 'Will be closing at': 'Will be opening at'}</span>;
-  }
+    return (
+      <span className="HoursStatus-future">
+        {params.isOpen ? "Will be closing at" : "Will be opening at"}
+      </span>
+    );
+  },
 };

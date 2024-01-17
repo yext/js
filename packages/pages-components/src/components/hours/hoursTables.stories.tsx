@@ -1,7 +1,9 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { HoursTable } from './hoursTable.js';
-import { HoursData, HoursWithMultipleIntervalsData } from './hoursSampleData.js';
-
+import { HoursTable } from "./hoursTable.js";
+import {
+  HoursData,
+  HoursWithMultipleIntervalsData,
+} from "./hoursSampleData.js";
 
 const meta: Meta<typeof HoursTable> = {
   title: "components/Hours",
@@ -10,9 +12,7 @@ const meta: Meta<typeof HoursTable> = {
 
 export default meta;
 
-const Template: StoryFn<typeof HoursTable> = (args) => (
-  <HoursTable {...args} />
-);
+const Template: StoryFn<typeof HoursTable> = (args) => <HoursTable {...args} />;
 
 export const NormalHours: StoryFn<typeof HoursTable> = Template.bind({});
 
