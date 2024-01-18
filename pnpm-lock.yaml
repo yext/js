@@ -159,6 +159,9 @@ importers:
         specifier: 0.5.6
         version: 0.5.6
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.41.0
+        version: 1.41.0
       '@storybook/addon-a11y':
         specifier: ^7.6.10
         version: 7.6.10
@@ -4293,6 +4296,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@playwright/test@1.41.0:
+    resolution: {integrity: sha512-Grvzj841THwtpBOrfiHOeYTJQxDRnKofMSzCiV8XeyLWu3o89qftQ4BCKfkziJhSUQRd0utKhrddtIsiraIwmw==}
+    engines: {node: '>=16'}
+    hasBin: true
+    dependencies:
+      playwright: 1.41.0
+    dev: true
 
   /@radix-ui/number@1.0.1:
     resolution: {integrity: sha512-T5gIdVO2mmPW3NNhjNgEP3cqMXjXL9UbO0BzWcXfvdBs+BohbQxvd/K5hSVKmn9/lbTdsQVKbUcP5WLCwvUbBg==}

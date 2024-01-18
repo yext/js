@@ -70,6 +70,7 @@
     "generate-license-file": "^3.0.1",
     "jest-image-snapshot": "^6.4.0",
     "jsdom": "23.0.1",
+    "@playwright/test": "^1.41.0",
     "playwright-core": "^1.40.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
