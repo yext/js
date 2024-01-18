@@ -74,6 +74,32 @@ describe("Image", () => {
     );
   });
 
+  it("properly renders non-complex image field with EU url", () => {
+    const overrideSrc = "https://overridesrc/";
+    const overrideObjectFit = "none";
+    const euUrl = `https://a.eu.mktgcdn.com/f/0/${imgUUID}.jpg`;
+
+    render(
+      <Image
+        image={{
+          image: { ...image.image, url: euUrl },
+        }}
+        layout={ImageLayoutOption.FIXED}
+        width={width}
+        height={height}
+        style={{ objectFit: overrideObjectFit }}
+        imgOverrides={{ src: overrideSrc }}
+      />
+    );
+
+    expect(screen.getByRole("img").style.objectFit).toEqual(overrideObjectFit);
+    expect(screen.getByRole("img")).toHaveProperty("src", overrideSrc);
+    expect(screen.getByRole("img")).toHaveProperty(
+      "alt",
+      simpleImage.alternateText
+    );
+  });
+
   it("properly renders the placeholder before the image is loaded", () => {
     const placeholderText = "Placeholder";
     const placeholder = <div>{placeholderText}</div>;

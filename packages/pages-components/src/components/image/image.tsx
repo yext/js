@@ -5,6 +5,9 @@ import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
 const MKTGCDN_URL_REGEX =
   /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/(.*)/;
 
+const MKTGCDN_EU_URL_REGEX =
+  /(https?:\/\/a.eu.mktgcdn.com\/f(?<env>-qa)?\/[0-9]+\/)(?<uuid>.+)\.(.+)/;
+
 /**
  * Renders an image based from the Yext Knowledge Graph. Example of using the component to render
  * simple and complex image fields from Yext Knowledge Graph:
@@ -174,17 +177,22 @@ export const validateRequiredProps = (
 };
 
 /**
- * Returns the UUID of an image given its url. Logs an error if the image url is invalid.
+ * Returns the UUID of an image given its url. 
+ * Logs an error if the image url neither a valid US nor EU url.
  */
-export const getImageUUID = (url: string) => {
+export const getImageUUID = (url: string): string => {
   const matches = url.match(MKTGCDN_URL_REGEX);
-
-  if (!matches?.groups?.uuid) {
-    console.error(`Invalid image url: ${url}.`);
-    return "";
+  if (matches?.groups?.uuid) {
+    return matches.groups.uuid;
   }
 
-  return matches.groups.uuid;
+	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.uuid) {
+    return matchesEu.groups.uuid;
+  }
+
+	console.error(`Invalid image url: ${url}.`);
+  return "";
 };
 
 /**
