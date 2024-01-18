@@ -1,4 +1,4 @@
-import { HoursIntervalManipulator } from "./hoursManipulator.js";
+import { HoursInterval } from "./hours.js";
 
 export interface WeekType {
   monday?: DayType;
@@ -15,11 +15,9 @@ export interface DayType {
   openIntervals: IntervalType[];
 }
 
-export interface HolidayType {
+export interface HolidayType extends DayType {
   date: string;
-  isClosed?: boolean;
-  openIntervals: IntervalType[];
-  isRegularHours: boolean;
+  isRegularHours?: boolean;
 }
 
 export interface IntervalType {
@@ -31,8 +29,6 @@ export interface HoursType extends WeekType {
   holidayHours?: HolidayType[];
   reopenDate?: string;
 }
-
-// HoursTable
 
 export type DayOfWeekNames = {
   [Property in keyof WeekType]?: string;
@@ -57,10 +53,19 @@ export interface HoursTableProps {
 }
 
 export interface HoursTableDayData {
-  dayOfWeek: string;
-  intervals: HoursIntervalManipulator[];
-  sortIdx: number;
+  dayName: string;
+  intervals: HoursInterval[];
   isToday: boolean;
-  startDay?: string; // used for 'collapseDays' logic
-  endDay?: string; // used for 'collapseDays' logic
+  startDay: Day; // used for 'collapseDays' logic
+  endDay: Day; // used for 'collapseDays' logic
+}
+
+export enum Day {
+  Monday = "MONDAY",
+  Tuesday = "TUESDAY",
+  Wednesday = "WEDNESDAY",
+  Thursday = "THURSDAY",
+  Friday = "FRIDAY",
+  Saturday = "SATURDAY",
+  Sunday = "SUNDAY",
 }
