@@ -18,7 +18,7 @@ jobs:
       - name: Install playwright browsers
         working-directory: packages/pages-components
         run: |
-          yarn install
+          pnpm create playwright
           npx playwright install
       - name: Serve Storybook and run WCAG checks
         working-directory: packages/pages-components
