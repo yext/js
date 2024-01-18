@@ -1,2 +1,2 @@
-export * from "./hoursStatus.js";
-export * from "./hoursTable.js";
+export { HoursStatus } from "./hoursStatus.js";
+export { HoursTable } from "./hoursTable.js";
