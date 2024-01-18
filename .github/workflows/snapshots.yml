@@ -4,6 +4,8 @@ on:
     secrets:
       BOT_REPO_SCOPED_TOKEN:
         required: true
+env:
+  PLAYWRIGHT_BROWSERS_PATH: 0 # Places binaries to node_modules/@playwright/test
 
 jobs:
   test:
