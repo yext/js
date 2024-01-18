@@ -16,8 +16,9 @@ jobs:
         working-directory: packages/pages-components
         run: pnpm i --ignore-scripts concurrently@8 wait-on@7
       - name: Install playwright browsers
+        working-directory: packages/pages-components
         run: |
-          pnpm create playwright
+          yarn install
           npx playwright install
       - name: Serve Storybook and run WCAG checks
         working-directory: packages/pages-components
