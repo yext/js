@@ -177,7 +177,7 @@ export const validateRequiredProps = (
 };
 
 /**
- * Returns the UUID of an image given its url. 
+ * Returns the UUID of an image given its url.
  * Logs an error if the image url neither a valid US nor EU url.
  */
 export const getImageUUID = (url: string): string => {
@@ -186,12 +186,12 @@ export const getImageUUID = (url: string): string => {
     return matches.groups.uuid;
   }
 
-	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
   if (matchesEu?.groups?.uuid) {
     return matchesEu.groups.uuid;
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "";
 };
 
