@@ -198,7 +198,7 @@ export const getImageUUID = (url: string): string => {
 /**
  * Returns the environment suffix for a url's bucket, if present.
  */
-export const getImageEnv = (url: string): string | undefined => {
+export const getImageEnv = (url: string): string => {
   const matches = url.match(MKTGCDN_URL_REGEX);
   if (matches?.groups?.uuid) {
     return matches.groups.env;
@@ -240,8 +240,8 @@ export const getImageBusinessId = (url: string): string => {
     return matchesEu.groups.businessId;
   }
 
-  console.error(`Invalid image url: ${url}.`);
-  return "0";
+	console.error(`Invalid image url: ${url}.`);
+  return "";
 };
 
 /**
