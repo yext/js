@@ -189,6 +189,20 @@ describe("Image", () => {
     expect(img.getAttribute("srcset")).toContain("dynl.mktgcdn.com/p-sandbox/");
   });
 
+  it("properly renders the srcset based on the correct eu prod env", () => {
+    const sbxImage = Object.assign(image.image, {
+      url: `https://a.eu.mktgcdn.com/f/0/${imgUUID}.jpg`,
+    });
+
+    render(<Image image={sbxImage} />);
+
+    const img = screen.getByRole("img", {
+      name: /alt text/i,
+    });
+
+    expect(img.getAttribute("srcset")).toContain("dyn.eu.mktgcdn.com/f/");
+  });
+
   it("properly renders the sizes for a fixed width", () => {
     render(
       <Image
