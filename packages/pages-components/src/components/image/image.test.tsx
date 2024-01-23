@@ -434,7 +434,9 @@ describe("getImageUrl", () => {
         250,
         "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
       )
-    ).toBe("https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250.jpg");
+    ).toBe(
+      "https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250.jpg"
+    );
     expect(
       getImageUrl(
         "Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
@@ -442,7 +444,9 @@ describe("getImageUrl", () => {
         400,
         "https://a.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/450x450"
       )
-    ).toBe("https://dynl.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/300x400");
+    ).toBe(
+      "https://dynl.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/300x400"
+    );
     expect(
       getImageUrl(
         "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
@@ -450,7 +454,9 @@ describe("getImageUrl", () => {
         250,
         "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
       )
-    ).toBe("https://dyn.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=250,height=250");
+    ).toBe(
+      "https://dyn.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=250,height=250"
+    );
     expect(
       getImageUrl(
         "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
@@ -458,7 +464,9 @@ describe("getImageUrl", () => {
         400,
         "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
       )
-    ).toBe("https://dyn.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=400,height=400");
+    ).toBe(
+      "https://dyn.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=400,height=400"
+    );
 
     vi.clearAllMocks();
   });
