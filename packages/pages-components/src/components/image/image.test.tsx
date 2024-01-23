@@ -407,6 +407,16 @@ describe("getImageExtension", () => {
     ).toBe("");
     expect(
       getImageExtension(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("jpg");
+    expect(
+      getImageExtension(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443"
+      )
+    ).toBe("");
+    expect(
+      getImageExtension(
         "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/"
       )
     ).toBe("");
@@ -424,13 +434,13 @@ describe("getImageUrl", () => {
         250,
         "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
       )
-    ).toBe("https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250");
+    ).toBe("https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250.jpg");
     expect(
       getImageUrl(
         "Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
         300,
         400,
-        "https://a.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
+        "https://a.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/450x450"
       )
     ).toBe("https://dynl.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/300x400");
     expect(

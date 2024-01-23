@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
 
 const MKTGCDN_URL_REGEX =
-  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/(.*)/;
+  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/(([0-9]+)x([0-9]+)(\.(?<ext>.+))?)?/;
 
 const MKTGCDN_EU_URL_REGEX =
   /(https?:\/\/a.eu.mktgcdn.com\/f(?<env>-qa)?\/(?<businessId>[0-9]+)\/)(?<uuid>.+)\.(?<ext>.+)/;
@@ -245,12 +245,17 @@ export const getImageBusinessId = (url: string): string => {
 };
 
 /**
- * Returns the file extension for an EU image url.
+ * Returns the file extension for an image url.
  */
 export const getImageExtension = (url: string): string => {
+  const matches = url.match(MKTGCDN_URL_REGEX);
+  if (matches?.groups?.uuid) {
+    return matches?.groups?.ext ?? "";
+  }
+
   const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.ext) {
-    return matchesEu.groups.ext;
+  if (matchesEu?.groups?.uuid) {
+    return matchesEu?.groups?.ext ?? "";
   }
 
   console.error(`Invalid image url: ${url}.`);
@@ -269,20 +274,21 @@ export const getImageUrl = (
   const env = getImageEnv(imgUrl);
   const partition = getImagePartition(imgUrl);
   let bucket: string;
+  const extension = getImageExtension(imgUrl);
   switch (partition) {
     case "EU":
       bucket = env ? `f${env}` : "f";
       const businessId = getImageBusinessId(imgUrl);
-      const extension = getImageExtension(imgUrl);
       return `https://dyn.eu.mktgcdn.com/${bucket}/${businessId}/${uuid}.${extension}/width=${Math.round(
         width
       )},height=${Math.round(height)}`;
     case "US":
+      // intentional fallthrough
     default:
       bucket = env ? `p${env}` : "p";
       return `https://dynl.mktgcdn.com/${bucket}/${uuid}/${Math.round(
         width
-      )}x${Math.round(height)}`;
+      )}x${Math.round(height)}${extension ? `.${extension}` : ""}`;
   }
 };
 
