@@ -204,12 +204,12 @@ export const getImageEnv = (url: string): string | undefined => {
     return matches.groups.env;
   }
 
-	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
   if (matchesEu?.groups?.uuid) {
     return matchesEu.groups.env;
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "";
 };
 
@@ -222,12 +222,12 @@ export const getImagePartition = (url: string): string => {
     return "US";
   }
 
-	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
   if (matchesEu?.groups?.uuid) {
     return "EU";
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "";
 };
 
@@ -235,12 +235,12 @@ export const getImagePartition = (url: string): string => {
  * Returns the business id for an EU image url.
  */
 export const getImageBusinessId = (url: string): string => {
-	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
   if (matchesEu?.groups?.businessId) {
     return matchesEu.groups.businessId;
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "0";
 };
 
@@ -248,12 +248,12 @@ export const getImageBusinessId = (url: string): string => {
  * Returns the file extension for an EU image url.
  */
 export const getImageExtension = (url: string): string => {
-	const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
   if (matchesEu?.groups?.ext) {
     return matchesEu.groups.ext;
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "";
 };
 
