@@ -240,7 +240,7 @@ export const getImageBusinessId = (url: string): string => {
     return matchesEu.groups.businessId;
   }
 
-	console.error(`Invalid image url: ${url}.`);
+  console.error(`Invalid image url: ${url}.`);
   return "";
 };
 
