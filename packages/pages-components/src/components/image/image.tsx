@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
 
 const MKTGCDN_URL_REGEX =
-  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/(([0-9]+)x([0-9]+)(\.(?<ext>.+))?)?/;
+  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/.*?(\.(?<ext>.+))?$/;
 
 const MKTGCDN_EU_URL_REGEX =
   /(https?:\/\/a.eu.mktgcdn.com\/f(?<env>-qa)?\/(?<businessId>[0-9]+)\/)(?<uuid>.+)\.(?<ext>.+)/;
