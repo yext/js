@@ -283,7 +283,7 @@ export const getImageUrl = (
         width
       )},height=${Math.round(height)}`;
     case "US":
-      // intentional fallthrough
+    // intentional fallthrough
     default:
       bucket = env ? `p${env}` : "p";
       return `https://dynl.mktgcdn.com/${bucket}/${uuid}/${Math.round(
