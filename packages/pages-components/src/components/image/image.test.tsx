@@ -6,6 +6,10 @@ import {
   handleLayout,
   getImageSizeForFixedLayout,
   getImageEnv,
+  getImagePartition,
+  getImageBusinessId,
+  getImageExtension,
+  getImageUrl,
 } from "./image.js";
 import { ImageLayoutOption } from "./types.js";
 import { render, screen } from "@testing-library/react";
@@ -189,6 +193,20 @@ describe("Image", () => {
     expect(img.getAttribute("srcset")).toContain("dynl.mktgcdn.com/p-sandbox/");
   });
 
+  it("properly renders the srcset based on the correct eu prod env", () => {
+    const sbxImage = Object.assign(image.image, {
+      url: `https://a.eu.mktgcdn.com/f/0/${imgUUID}.jpg`,
+    });
+
+    render(<Image image={sbxImage} />);
+
+    const img = screen.getByRole("img", {
+      name: /alt text/i,
+    });
+
+    expect(img.getAttribute("srcset")).toContain("dyn.eu.mktgcdn.com/f/");
+  });
+
   it("properly renders the sizes for a fixed width", () => {
     render(
       <Image
@@ -273,33 +291,6 @@ describe("getImageUUID", () => {
     vi.clearAllMocks();
   });
 
-  describe("getImageEnv", () => {
-    it("properly extracts the image env", () => {
-      expect(
-        getImageEnv(
-          "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-        )
-      ).toBe(undefined);
-      expect(
-        getImageEnv(
-          "https://a.mktgcdn.com/p-sandbox/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
-        )
-      ).toBe("-sandbox");
-      expect(
-        getImageEnv(
-          "http://a.mktgcdn.com/p-qa/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-        )
-      ).toBe("-qa");
-      expect(
-        getImageEnv(
-          "http://a.mktgcdn.com/p-dev/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-        )
-      ).toBe("-dev");
-
-      vi.clearAllMocks();
-    });
-  });
-
   it("properly logs error when image url is invalid", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
@@ -316,6 +307,166 @@ describe("getImageUUID", () => {
     expect(getImageUUID(invalidUrl)).toBe("");
     expect(logMock.mock.calls.length).toBe(2);
     expect(logMock.mock.calls[1][0]).toBe(`Invalid image url: ${invalidUrl}.`);
+
+    vi.clearAllMocks();
+  });
+});
+
+describe("getImageEnv", () => {
+  it("properly extracts the image env", () => {
+    expect(
+      getImageEnv(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe(undefined);
+    expect(
+      getImageEnv(
+        "https://a.mktgcdn.com/p-sandbox/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
+      )
+    ).toBe("-sandbox");
+    expect(
+      getImageEnv(
+        "http://a.mktgcdn.com/p-qa/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("-qa");
+    expect(
+      getImageEnv(
+        "http://a.mktgcdn.com/p-dev/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("-dev");
+
+    vi.clearAllMocks();
+  });
+});
+
+describe("getImagePartition", () => {
+  it("properly extracts the image url partition", () => {
+    expect(
+      getImagePartition(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("US");
+    expect(
+      getImagePartition(
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe("EU");
+    expect(
+      getImagePartition(
+        "http://a.mktgcdn.com/invalid/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("");
+
+    vi.clearAllMocks();
+  });
+});
+
+describe("getImageBusinessId", () => {
+  it("properly extracts the image's businessId", () => {
+    expect(
+      getImageBusinessId(
+        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe("100000030");
+    expect(
+      getImageBusinessId(
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe("0");
+    expect(
+      getImageBusinessId(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("");
+
+    vi.clearAllMocks();
+  });
+});
+
+describe("getImageExtension", () => {
+  it("properly extracts the image's file extension", () => {
+    expect(
+      getImageExtension(
+        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe("jpg");
+    expect(
+      getImageExtension(
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.png"
+      )
+    ).toBe("png");
+    expect(
+      getImageExtension(
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.webp"
+      )
+    ).toBe("webp");
+    expect(
+      getImageExtension(
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
+      )
+    ).toBe("");
+    expect(
+      getImageExtension(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe("jpg");
+    expect(
+      getImageExtension(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443"
+      )
+    ).toBe("");
+    expect(
+      getImageExtension(
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/"
+      )
+    ).toBe("");
+
+    vi.clearAllMocks();
+  });
+});
+
+describe("getImageUrl", () => {
+  it("properly generates the image's thumbnail url", () => {
+    expect(
+      getImageUrl(
+        "EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54",
+        250,
+        250,
+        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
+      )
+    ).toBe(
+      "https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250.jpg"
+    );
+    expect(
+      getImageUrl(
+        "Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
+        300,
+        400,
+        "https://a.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/450x450"
+      )
+    ).toBe(
+      "https://dynl.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/300x400"
+    );
+    expect(
+      getImageUrl(
+        "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
+        250,
+        250,
+        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe(
+      "https://dyn.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=250,height=250"
+    );
+    expect(
+      getImageUrl(
+        "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
+        400,
+        400,
+        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
+      )
+    ).toBe(
+      "https://dyn.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=400,height=400"
+    );
 
     vi.clearAllMocks();
   });
