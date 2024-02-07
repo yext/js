@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
 
 const MKTGCDN_URL_REGEX =
-  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/(.*)/;
+  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/.*?(\.(?<ext>.+))?$/;
+
+const MKTGCDN_EU_URL_REGEX =
+  /(https?:\/\/a.eu.mktgcdn.com\/f(?<env>-qa)?\/(?<businessId>[0-9]+)\/)(?<uuid>.+)\.(?<ext>.+)/;
 
 /**
  * Renders an image based from the Yext Knowledge Graph. Example of using the component to render
@@ -174,26 +177,89 @@ export const validateRequiredProps = (
 };
 
 /**
- * Returns the UUID of an image given its url. Logs an error if the image url is invalid.
+ * Returns the UUID of an image given its url.
+ * Logs an error if the image url neither a valid US nor EU url.
  */
-export const getImageUUID = (url: string) => {
+export const getImageUUID = (url: string): string => {
   const matches = url.match(MKTGCDN_URL_REGEX);
-
-  if (!matches?.groups?.uuid) {
-    console.error(`Invalid image url: ${url}.`);
-    return "";
+  if (matches?.groups?.uuid) {
+    return matches.groups.uuid;
   }
 
-  return matches.groups.uuid;
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.uuid) {
+    return matchesEu.groups.uuid;
+  }
+
+  console.error(`Invalid image url: ${url}.`);
+  return "";
 };
 
 /**
  * Returns the environment suffix for a url's bucket, if present.
  */
-export const getImageEnv = (url: string): string | undefined => {
+export const getImageEnv = (url: string): string => {
   const matches = url.match(MKTGCDN_URL_REGEX);
+  if (matches?.groups?.uuid) {
+    return matches.groups.env;
+  }
 
-  return matches?.groups?.env;
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.uuid) {
+    return matchesEu.groups.env;
+  }
+
+  console.error(`Invalid image url: ${url}.`);
+  return "";
+};
+
+/**
+ * Returns the partition for an image url.
+ */
+export const getImagePartition = (url: string): string => {
+  const matches = url.match(MKTGCDN_URL_REGEX);
+  if (matches?.groups?.uuid) {
+    return "US";
+  }
+
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.uuid) {
+    return "EU";
+  }
+
+  console.error(`Invalid image url: ${url}.`);
+  return "";
+};
+
+/**
+ * Returns the business id for an EU image url.
+ */
+export const getImageBusinessId = (url: string): string => {
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.businessId) {
+    return matchesEu.groups.businessId;
+  }
+
+  console.error(`Invalid image url: ${url}.`);
+  return "";
+};
+
+/**
+ * Returns the file extension for an image url.
+ */
+export const getImageExtension = (url: string): string => {
+  const matches = url.match(MKTGCDN_URL_REGEX);
+  if (matches?.groups?.uuid) {
+    return matches?.groups?.ext ?? "";
+  }
+
+  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
+  if (matchesEu?.groups?.uuid) {
+    return matchesEu?.groups?.ext ?? "";
+  }
+
+  console.error(`Invalid image url: ${url}.`);
+  return "";
 };
 
 /**
@@ -206,10 +272,24 @@ export const getImageUrl = (
   imgUrl: string
 ) => {
   const env = getImageEnv(imgUrl);
-  const bucket = env ? `p${env}` : "p";
-  return `https://dynl.mktgcdn.com/${bucket}/${uuid}/${Math.round(
-    width
-  )}x${Math.round(height)}`;
+  const partition = getImagePartition(imgUrl);
+  let bucket: string;
+  const extension = getImageExtension(imgUrl);
+  switch (partition) {
+    case "EU":
+      bucket = env ? `f${env}` : "f";
+      const businessId = getImageBusinessId(imgUrl);
+      return `https://dyn.eu.mktgcdn.com/${bucket}/${businessId}/${uuid}.${extension}/width=${Math.round(
+        width
+      )},height=${Math.round(height)}`;
+    case "US":
+    // intentional fallthrough
+    default:
+      bucket = env ? `p${env}` : "p";
+      return `https://dynl.mktgcdn.com/${bucket}/${uuid}/${Math.round(
+        width
+      )}x${Math.round(height)}${extension ? `.${extension}` : ""}`;
+  }
 };
 
 /**

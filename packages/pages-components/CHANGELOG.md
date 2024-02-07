@@ -1,3 +1,17 @@
+#### 1.0.0-rc.1 (2024-01-23)
+
+##### New Features
+
+- **pages-components:** add support for EU image urls (#40) (be6a9236)
+
+##### Bug Fixes
+
+- github workflow (#41) (68feb383)
+
+##### Refactors
+
+- use @yext/sites-react-components's hours component (#39) (2cbac33d)
+
 #### 1.0.0-rc.5 (2023-10-10)
 
 ##### New Features

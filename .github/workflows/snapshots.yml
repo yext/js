@@ -4,6 +4,8 @@ on:
     secrets:
       BOT_REPO_SCOPED_TOKEN:
         required: true
+env:
+  PLAYWRIGHT_BROWSERS_PATH: 0 # Places binaries to node_modules/@playwright/test
 
 jobs:
   test:
@@ -23,7 +25,10 @@ jobs:
         working-directory: packages/pages-components
         run: pnpm i --ignore-scripts concurrently@8 wait-on@7
       - name: Install playwright browsers
-        run: pnpm dlx playwright install
+        working-directory: packages/pages-components
+        run: |
+          pnpm create playwright
+          npx playwright install
       - name: Serve Storybook and update snapshots
         working-directory: packages/pages-components
         run: |
