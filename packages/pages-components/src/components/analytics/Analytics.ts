@@ -8,7 +8,6 @@ import {
   EventPayload,
   Region,
   analytics,
-  EnvironmentEnum,
 } from "@yext/analytics";
 import { concatScopes, slugify } from "./helpers.js";
 import { getPartition } from "../../util/partition.js";
@@ -67,37 +66,25 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    // TODO: get env from plugin, if not prod or sbx, warning and return
-    const env = "PRODUCTION" as Environment;
-    if (env !== EnvironmentEnum.Production && env !== EnvironmentEnum.Sandbox) {
-      console.warn("Yext Analytics disabled for this environment");
-      return;
-    }
-
     const region = getPartition(
       this.templateData.document.businessId
-    ).toLocaleLowerCase() as Region;
+    ) as Region;
 
     const config: AnalyticsConfig = {
-      key: this.apiKey,
-      env: env,
-      region: region || "us",
+      authorizationType: "apiKey",
+      authorization: this.apiKey,
+      env: "PRODUCTION",
+      region: region || "US",
       sessionTrackingEnabled: this._sessionTrackingEnabled,
     };
 
     const defaultPayload: EventPayload = {
-      action: "ADD_TO_CART", // TODO: Use new type where this isn't required
-      sites: {
-        // TODO: rename to pages
+      pages: {
         siteUid: this.templateData.document.siteId as number,
         template: this.templateData.document.__.name,
       },
+      entity: this.templateData.document.uid as number,
     };
-
-    // Set entityId if this is an entityPageSet
-    if (!!this.templateData.document?.__?.entityPageSet) {
-      defaultPayload.entity = this.templateData.document.uid;
-    }
 
     this._analyticsEventService = analytics(config).with(defaultPayload);
 
@@ -117,7 +104,6 @@ export class Analytics implements AnalyticsMethods {
     if (this.canTrack()) {
       if (this._analyticsEventService) {
         this._analyticsEventService = this._analyticsEventService.with({
-          action: "ADD_TO_CART", // TODO - remove
           visitor: visitor,
         });
       }
@@ -159,7 +145,7 @@ export class Analytics implements AnalyticsMethods {
       action,
       // Do we want to slugify the label? It's slugified for legacyEventName
       label: slugify(scope) || "",
-      sites: {
+      pages: {
         // does this wipe siteUid/template?
         legacyEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },

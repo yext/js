@@ -107,12 +107,9 @@ importers:
       '@lexical/utils':
         specifier: ^0.12.5
         version: 0.12.5(lexical@0.12.5)
-      '@types/mdast':
-        specifier: 3.0.10
-        version: 3.0.10
       '@yext/analytics':
-        specifier: ^0.6.5
-        version: 0.6.5
+        specifier: ^1.0.0-beta.4
+        version: 1.0.0-beta.4
       browser-or-node:
         specifier: ^2.1.1
         version: 2.1.1
@@ -204,6 +201,9 @@ importers:
       '@types/jest-image-snapshot':
         specifier: ^6.4.0
         version: 6.4.0
+      '@types/mdast':
+        specifier: 3.0.10
+        version: 3.0.10
       '@types/node':
         specifier: ^20.10.4
         version: 20.10.4
@@ -6295,7 +6295,6 @@ packages:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
     dependencies:
       '@types/unist': 3.0.2
-    dev: false
 
   /@types/mdx@2.0.5:
     resolution: {integrity: sha512-76CqzuD6Q7LC+AtbPqrvD9AqsN0k8bsYo2bM2J8pmNldP1aIPAbzUQ7QbobyXL4eLr1wK5x8FZFe8eF/ubRuBg==}
@@ -6432,7 +6431,6 @@ packages:
 
   /@types/unist@3.0.2:
     resolution: {integrity: sha512-dqId9J8K/vGi5Zr7oo212BGii5m3q5Hxlkwy3WpYuKPklmBEvsbMYYyLxAQpSffdLl/gdW0XUpKWFvYmyoWCoQ==}
-    dev: false
 
   /@types/uuid@9.0.7:
     resolution: {integrity: sha512-WUtIVRUZ9i5dYXefDEAI7sh9/O7jGvHg7Df/5O/gtH3Yabe5odI3UWopVR1qbPXQtvOxWu3mM4XxlYeZtMWF4g==}
@@ -6765,13 +6763,10 @@ packages:
       tslib: 1.14.1
     dev: true
 
-  /@yext/analytics@0.6.5:
-    resolution: {integrity: sha512-q0zwxUNWkyqsRQ0AGatd9s8Otu0zu0SrV0bOrJxhgl7RxeoJugHoTRpG/NsmM6ENUXx0+MrpkZ1H2xg2mcFYsw==}
+  /@yext/analytics@1.0.0-beta.4:
+    resolution: {integrity: sha512-lA8ba2eFQLMWPupojtBCxptOyNEe7fwC6JGKfZqByLIEMdmTihd6UIBcD8ctnjQYlY5Yy/rmduH5efm0GYxtNQ==}
     dependencies:
-      cross-fetch: 3.1.8
       ulidx: 2.2.1
-    transitivePeerDependencies:
-      - encoding
     dev: false
 
   /@yext/eslint-config@1.0.0(@babel/plugin-syntax-flow@7.23.3)(@babel/plugin-transform-react-jsx@7.22.15)(@typescript-eslint/eslint-plugin@5.61.0)(@typescript-eslint/parser@5.61.0)(@yext/eslint-plugin-export-star@1.2.0)(eslint-plugin-react-perf@3.3.1)(eslint-plugin-tsdoc@0.2.17)(eslint@8.55.0)(typescript@5.3.3):
@@ -8063,14 +8058,6 @@ packages:
       - supports-color
       - ts-node
     dev: true
-
-  /cross-fetch@3.1.8:
-    resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
-    dependencies:
-      node-fetch: 2.6.12
-    transitivePeerDependencies:
-      - encoding
-    dev: false
 
   /cross-fetch@4.0.0:
     resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
