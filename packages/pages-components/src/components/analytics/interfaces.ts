@@ -55,6 +55,11 @@ export interface AnalyticsMethods {
   enableTrackingCookie(): void;
 
   /**
+   * Use the getDebugEnabled method to retrieve whether debugging is on or off.
+   */
+  getDebugEnabled(): boolean;
+
+  /**
    * Use the setDebugEnabled method to toggle debugging on or off. Currently,
    * this will log tracked events to the dev console.
    *
