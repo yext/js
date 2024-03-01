@@ -33,6 +33,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       props.obfuscate || (props.obfuscate !== false && isEmail(link.link));
     const [humanInteraction, setHumanInteraction] = useState<boolean>(false);
 
+    // TODO: is the action/eventName right?
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
       setHumanInteraction(true);
       if (analytics !== null) {
@@ -47,9 +48,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
           } else {
             // Keep this component backwards compatible with the previous analyics integration
             await analytics.track({
-              // Do we want C_link as the correct action fallback?
               action: eventName
-                ? `C_${eventName}`
+                ? `C_${eventName}` // do we want scope
                 : cta
                   ? "CTA_CLICK"
                   : `C_link`,

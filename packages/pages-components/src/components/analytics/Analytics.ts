@@ -84,6 +84,8 @@ export class Analytics implements AnalyticsMethods {
         template: this.templateData.document.__.name,
       },
       entity: this.templateData.document.uid as number,
+      // add currency default
+      // make currency optional on link and provider
     };
 
     this._analyticsEventService = analytics(config).with(defaultPayload);
@@ -141,6 +143,7 @@ export class Analytics implements AnalyticsMethods {
 
     const { action, scope, eventName, value } = props;
 
+    // TODO: uppercase the string part in C_{strin}
     await this._analyticsEventService?.report({
       action,
       // Do we want to slugify the label? It's slugified for legacyEventName
