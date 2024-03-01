@@ -86,6 +86,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         rel={props.target && !props.rel ? "noopener" : undefined}
         ref={ref}
         style={obfuscatedStyle}
+        data-ya-track={trackEvent}
         {...rest}
       >
         {children || link.label || renderedLink}

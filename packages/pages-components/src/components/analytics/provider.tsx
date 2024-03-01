@@ -1,9 +1,10 @@
 import * as React from "react";
-import { PropsWithChildren, useRef } from "react";
+import { PropsWithChildren, useRef, lazy, Suspense } from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
 import { AnalyticsMethods, AnalyticsProviderProps } from "./interfaces.js";
 import { AnalyticsContext } from "./context.js";
+const AnalyticsDebugger = lazy(() => import("./debugger.js"));
 
 /**
  * The main Analytics component for you to use. Sets up the proper react context
@@ -48,9 +49,17 @@ export function AnalyticsProvider(
   analytics.setDebugEnabled(enableDebugging ?? enableDebuggingDefault);
 
   return (
-    <AnalyticsContext.Provider value={analytics}>
-      {children}
-    </AnalyticsContext.Provider>
+    <>
+      <AnalyticsContext.Provider value={analytics}>
+        {children}
+      </AnalyticsContext.Provider>
+      {(enableDebugging ?? enableDebuggingDefault) &&
+      getRuntime().name === "browser" ? (
+        <Suspense fallback={<></>}>
+          <AnalyticsDebugger />
+        </Suspense>
+      ) : null}
+    </>
   );
 }
 

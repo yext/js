@@ -37,6 +37,9 @@ export function useAnalytics(): AnalyticsMethods | null {
 
   // TODO: this is ugly, I imagine there is a more elegant way of doing this
   return {
+    getDebugEnabled(): boolean {
+      return ctx.getDebugEnabled();
+    },
     setDebugEnabled(enabled: boolean): void {
       return ctx.setDebugEnabled(enabled);
     },

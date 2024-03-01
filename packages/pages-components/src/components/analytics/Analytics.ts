@@ -156,6 +156,11 @@ export class Analytics implements AnalyticsMethods {
     });
   }
 
+  /** {@inheritDoc AnalyticsMethods.getDebugEnabled} */
+  getDebugEnabled(): boolean {
+    return this._enableDebugging;
+  }
+
   /** {@inheritDoc AnalyticsMethods.setDebugEnabled} */
   setDebugEnabled(enabled: boolean): void {
     // TODO: is this needed? Need something in new lib

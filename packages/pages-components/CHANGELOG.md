@@ -1,3 +1,11 @@
+#### 1.0.0-rc.2 (2024-03-01)
+
+##### New Features
+
+* **pages-components:**
+  *  add analytics debugger. (#25) (138bcb9a)
+  *  correctly convert eu image urls (#42) (f245efcc)
+
 #### 1.0.0-rc.1 (2024-01-23)
 
 ##### New Features
