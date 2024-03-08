@@ -11,6 +11,7 @@ import {
 } from "@yext/analytics";
 import { concatScopes, slugify } from "./helpers.js";
 import { getPartition } from "../../util/partition.js";
+import { a } from "vitest/dist/suite-9ReVEt_h.js";
 
 /**
  * The Analytics class creates a stateful facade in front of the \@yext/analytics
@@ -30,21 +31,27 @@ export class Analytics implements AnalyticsMethods {
   private _sessionTrackingEnabled: boolean;
   private _analyticsEventService: AnalyticsEventService | undefined;
   private _pageViewFired = false;
-  private _enableDebugging = false;
 
   /**
    * Creates an Analytics instance, will fire a pageview event if requireOptin
    * is false
    *
+   * @param apiKey - the Yext API key for authorizing analytics events
+   * @param defaultCurrency - the ISO 4217 currency code to use for valued events
    * @param templateData - template data object from the pages system
    * @param requireOptIn - boolean, set to true if you require user opt in before tracking analytics
+   * @param productionDomains - the domains that analytics should fire
+   * @param disableSessionTracking - turns off session tracking
+   * @param enableDebugging - turns debug mode on meaning requests are logged instead
    */
   constructor(
     private apiKey: string,
+    private defaultCurrency: string,
     private templateData: TemplateProps,
     requireOptIn?: boolean | undefined,
     private productionDomains: string[] = [],
-    disableSessionTracking?: boolean | undefined
+    disableSessionTracking?: boolean | undefined,
+    private enableDebugging: boolean = false
   ) {
     this._optedIn = !requireOptIn;
     this._sessionTrackingEnabled = !disableSessionTracking;
@@ -76,6 +83,7 @@ export class Analytics implements AnalyticsMethods {
       env: "PRODUCTION",
       region: region || "US",
       sessionTrackingEnabled: this._sessionTrackingEnabled,
+      debug: this.enableDebugging,
     };
 
     const defaultPayload: EventPayload = {
@@ -83,14 +91,10 @@ export class Analytics implements AnalyticsMethods {
         siteUid: this.templateData.document.siteId as number,
         template: this.templateData.document.__.name,
       },
-      entity: this.templateData.document.uid as number,
-      // add currency default
-      // make currency optional on link and provider
+      entity: (this.templateData.document.uid as number) || undefined,
     };
 
     this._analyticsEventService = analytics(config).with(defaultPayload);
-
-    this.setDebugEnabled(this._enableDebugging);
   }
 
   private canTrack(): boolean {
@@ -141,29 +145,28 @@ export class Analytics implements AnalyticsMethods {
       return Promise.resolve();
     }
 
-    const { action, scope, eventName, value } = props;
+    const { action, scope, eventName, currency, amount } = props;
 
-    // TODO: uppercase the string part in C_{strin}
+    let value;
+    if (amount) {
+      value = {
+        amount: amount,
+        currency: currency || this.defaultCurrency,
+      };
+    }
+
     await this._analyticsEventService?.report({
       action,
-      // Do we want to slugify the label? It's slugified for legacyEventName
-      label: slugify(scope) || "",
       pages: {
-        // does this wipe siteUid/template?
-        legacyEventName: concatScopes(scope || "", slugify(eventName) || ""),
+        scope: slugify(scope) || "",
+        originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },
-      value,
+      value: value,
     });
   }
 
   /** {@inheritDoc AnalyticsMethods.getDebugEnabled} */
   getDebugEnabled(): boolean {
-    return this._enableDebugging;
-  }
-
-  /** {@inheritDoc AnalyticsMethods.setDebugEnabled} */
-  setDebugEnabled(enabled: boolean): void {
-    // TODO: is this needed? Need something in new lib
-    this._enableDebugging = enabled;
+    return this.enableDebugging;
   }
 }

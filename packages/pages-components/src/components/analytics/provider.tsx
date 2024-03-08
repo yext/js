@@ -20,6 +20,7 @@ export function AnalyticsProvider(
   const {
     children,
     apiKey,
+    currency,
     templateData,
     requireOptIn,
     productionDomains,
@@ -29,24 +30,25 @@ export function AnalyticsProvider(
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
 
-  if (analyticsRef.current === null) {
-    analyticsRef.current = new Analytics(
-      apiKey,
-      templateData,
-      requireOptIn,
-      productionDomains,
-      disableSessionTracking
-    );
-  }
-
-  const analytics = analyticsRef.current;
-
   let enableDebuggingDefault = debuggingParamDetected();
   if (getRuntime().name === "node") {
     enableDebuggingDefault =
       enableDebuggingDefault || process.env?.NODE_ENV === "development";
   }
-  analytics.setDebugEnabled(enableDebugging ?? enableDebuggingDefault);
+
+  if (analyticsRef.current === null) {
+    analyticsRef.current = new Analytics(
+      apiKey,
+      currency,
+      templateData,
+      requireOptIn,
+      productionDomains,
+      disableSessionTracking,
+      enableDebugging ?? enableDebuggingDefault
+    );
+  }
+
+  const analytics = analyticsRef.current;
 
   return (
     <>

@@ -100,6 +100,7 @@ describe("Analytics", () => {
       return (
         <AnalyticsProvider
           apiKey="key"
+          currency="USD"
           templateData={baseProps}
           requireOptIn={false}
           productionDomains={["localhost"]}
@@ -116,6 +117,7 @@ describe("Analytics", () => {
     render(
       <AnalyticsProvider
         apiKey="key"
+        currency="USD"
         templateData={baseProps}
         requireOptIn={true}
         productionDomains={["localhost"]}
@@ -129,6 +131,7 @@ describe("Analytics", () => {
     render(
       <AnalyticsProvider
         apiKey="key"
+        currency="USD"
         templateData={baseProps}
         requireOptIn={false}
         productionDomains={["localhost"]}
@@ -154,6 +157,7 @@ describe("Analytics", () => {
       return (
         <AnalyticsProvider
           apiKey="key"
+          currency="USD"
           templateData={baseProps}
           requireOptIn={false}
           productionDomains={["localhost"]}
@@ -229,6 +233,7 @@ describe("Analytics", () => {
     render(
       <AnalyticsProvider
         apiKey="key"
+        currency="USD"
         templateData={baseProps}
         requireOptIn={false}
         productionDomains={["localhost"]}
@@ -252,6 +257,7 @@ describe("Analytics", () => {
     render(
       <AnalyticsProvider
         apiKey="key"
+        currency="USD"
         templateData={baseProps}
         requireOptIn={false}
         productionDomains={["localhost"]}

@@ -39,15 +39,22 @@ interface LinkConfig
     React.AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
   > {
+  /** Obfuscates the href and label. */
   obfuscate?: boolean;
-  /**
-   * @deprecated Use action instead
-   */
+  /** The custom name of the event. */
   eventName?: string;
-
-  action?: Action; // will be required once eventName is removed
-  scope?: string; // can be set directly or using the scope provider
-  value?: { amount: number; currency?: string };
+  /** Scope the specific link event. Overrides the scope set by the provider. */
+  scope?: string;
+  /**
+   * The ISO 4217 currency code of the currency the value is expressed in.
+   * Overrides the defaultCurrency set on the provider.
+   * For example, "USD" for US dollars.
+   *
+   * For more information see https://www.iso.org/iso-4217-currency-codes.html.
+   */
+  currency?: string;
+  /** The monetary value of the event. */
+  amount?: number;
 }
 
 /**

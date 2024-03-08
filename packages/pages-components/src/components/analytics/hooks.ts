@@ -40,9 +40,6 @@ export function useAnalytics(): AnalyticsMethods | null {
     getDebugEnabled(): boolean {
       return ctx.getDebugEnabled();
     },
-    setDebugEnabled(enabled: boolean): void {
-      return ctx.setDebugEnabled(enabled);
-    },
     identify(visitor: Record<string, string>): void {
       return ctx.identify(visitor);
     },
@@ -71,7 +68,7 @@ export const useTrack = () => {
 };
 
 /**
- * Simpler hook that just returns returns the analytics pageView method
+ * Simpler hook that just returns the analytics pageView method
  *
  * @public
  */

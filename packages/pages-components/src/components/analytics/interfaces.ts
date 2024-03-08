@@ -5,7 +5,8 @@ export type TrackProps = {
   action: Action;
   scope?: string;
   eventName?: string;
-  value?: { amount: number; currency?: string }; // needs type
+  amount?: number;
+  currency?: string;
 };
 
 /**
@@ -44,14 +45,6 @@ export interface AnalyticsMethods {
    * Use the getDebugEnabled method to retrieve whether debugging is on or off.
    */
   getDebugEnabled(): boolean;
-
-  /**
-   * Use the setDebugEnabled method to toggle debugging on or off. Currently,
-   * this will log tracked events to the dev console.
-   *
-   * @param enabled - boolean value for whethere debugging should be on or off.
-   */
-  setDebugEnabled(enabled: boolean): void;
 }
 
 /**
@@ -70,6 +63,14 @@ export interface AnalyticsProviderProps {
    * The TemplateProps that come from the rendering system
    */
   templateData: TemplateProps;
+
+  /**
+   * The ISO 4217 currency code of the currency the value is expressed in.
+   * For example, "USD" for US dollars.
+   *
+   * For more information see https://www.iso.org/iso-4217-currency-codes.html.
+   */
+  currency: string;
 
   /**
    * requireOptIn should be set to true if your compliance requirements require
