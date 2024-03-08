@@ -28,12 +28,6 @@ vi.mock("../../util/runtime.js", () => {
   };
 });
 
-// The following section of mocks just exists to supress an error that occurs
-// because Vitest does not implement a window.location.navigate.  See:
-// https://www.benmvp.com/blog/mocking-window-location-methods-jest-jsdom/
-// for details.
-const oldWindowLocation = global.location;
-
 beforeAll(() => {
   global.process = {
     ...global.process,
@@ -41,20 +35,6 @@ beforeAll(() => {
       NODE_ENV: "development",
     },
   };
-  // @ts-ignore
-  delete global.location;
-
-  // @ts-ignore
-  global.location = Object.defineProperties(
-    {},
-    {
-      ...Object.getOwnPropertyDescriptors(oldWindowLocation),
-      assign: {
-        configurable: true,
-        value: vi.fn(),
-      },
-    }
-  );
 
   // this mock allows us to inspect the fetch requests sent by the analytics
   // package and ensure they are generated correctly.
@@ -68,9 +48,6 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  // restore window location so we don't side effect other tests.
-  window.location = oldWindowLocation;
-
   // @ts-ignore
   delete global.fetch;
   global.process = currentProcess;
@@ -89,11 +66,6 @@ const baseProps: TemplateProps = {
 };
 
 const currentProcess = global.process;
-
-beforeEach(() => {
-  // @ts-ignore
-  window.location.assign.mockReset();
-});
 
 afterEach(() => {
   // @ts-ignore
@@ -142,9 +114,7 @@ describe("Analytics", () => {
         requireOptIn={false}
         productionDomains={["localhost"]}
       >
-        <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
-          Click Me
-        </Link>
+        <Link href="#">Click Me</Link>
       </AnalyticsProvider>
     );
 
@@ -170,13 +140,13 @@ describe("Analytics", () => {
         >
           <AnalyticsScopeProvider name="header">
             <AnalyticsScopeProvider name="menu">
-              <Link href="https://yext.com">one</Link>
+              <Link href="#">one</Link>
             </AnalyticsScopeProvider>
             <AnalyticsScopeProvider name="drop down">
-              <Link cta={{ link: "https://yext.com" }}>two</Link>
+              <Link cta={{ link: "#" }}>two</Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>
-          <Link href="https://yext.com" eventName="fooclick">
+          <Link href="#" eventName="fooclick">
             three
           </Link>
         </AnalyticsProvider>
@@ -243,7 +213,7 @@ describe("Analytics", () => {
         productionDomains={["localhost"]}
         disableSessionTracking={true}
       >
-        <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
+        <Link href="#" onClick={(e) => e.preventDefault()}>
           Click Me
         </Link>
       </AnalyticsProvider>
@@ -268,7 +238,7 @@ describe("Analytics", () => {
       >
         <AnalyticsScopeProvider name="header">
           <AnalyticsScopeProvider name="menu">
-            <Link href="https://yext.com" scope="custom scope">
+            <Link href="#" scope="custom scope">
               one
             </Link>
           </AnalyticsScopeProvider>
