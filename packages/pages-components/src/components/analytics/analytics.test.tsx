@@ -14,6 +14,7 @@ import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
 import { AnalyticsScopeProvider } from "./scope.js";
+import { Action } from "@yext/analytics";
 
 vi.mock("../../util/runtime.js", () => {
   const runtime = {
@@ -89,6 +90,11 @@ const baseProps: TemplateProps = {
 
 const currentProcess = global.process;
 
+beforeEach(() => {
+  // @ts-ignore
+  window.location.assign.mockReset();
+});
+
 afterEach(() => {
   // @ts-ignore
   global.fetch.mockClear();
@@ -147,9 +153,9 @@ describe("Analytics", () => {
     const callstack = global.fetch.mock.calls;
     const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    expect(payload.action).toBe("C_link");
-    expect(payload.label).toBe("");
-    expect(payload.sites.legacyEventName).toBe("link");
+    expect(payload.action).toBe("LINK");
+    expect(payload.pages.scope).toBe("");
+    expect(payload.pages.originalEventName).toBe("link");
   });
 
   it("should track a click with scoping", async () => {
@@ -181,32 +187,30 @@ describe("Analytics", () => {
     rerender(<App />);
 
     const testClicks: {
-      expectedAction: string;
-      expectedLabel: string;
-      expectedTag: string;
+      expectedAction: Action;
+      expectedScope: string;
+      expectedOriginalEventName: string;
       matcher: RegExp;
     }[] = [
       {
-        expectedAction: "C_link",
-        expectedLabel: "header_menu",
-        expectedTag: "header_menu_link",
+        expectedAction: "LINK",
+        expectedScope: "header_menu",
+        expectedOriginalEventName: "header_menu_link",
         matcher: /one/,
       },
       {
         expectedAction: "CTA_CLICK",
-        expectedLabel: "header_dropdown",
-        expectedTag: "header_dropdown_cta",
+        expectedScope: "header_dropdown",
+        expectedOriginalEventName: "header_dropdown_cta",
         matcher: /two/,
       },
       {
-        expectedAction: "C_fooclick",
-        expectedLabel: "",
-        expectedTag: "fooclick",
+        expectedAction: "LINK",
+        expectedScope: "",
+        expectedOriginalEventName: "fooclick",
         matcher: /three/,
       },
     ];
-
-    // expect.assertions(testClicks.length);
 
     // @ts-ignore
     const user = userEvent.setup();
@@ -217,15 +221,15 @@ describe("Analytics", () => {
     for (const {
       matcher,
       expectedAction,
-      expectedLabel,
-      expectedTag,
+      expectedScope,
+      expectedOriginalEventName,
     } of testClicks) {
       await user.click(screen.getByText(matcher));
       const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
       expect(payload.action).toBe(expectedAction);
-      expect(payload.label).toBe(expectedLabel);
-      expect(payload.sites.legacyEventName).toBe(expectedTag);
+      expect(payload.pages.scope).toBe(expectedScope);
+      expect(payload.pages.originalEventName).toBe(expectedOriginalEventName);
     }
   });
 
@@ -277,8 +281,8 @@ describe("Analytics", () => {
     const callstack = global.fetch.mock.calls;
     const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    expect(payload.action).toBe("C_link");
-    expect(payload.label).toBe("customscope");
-    expect(payload.sites.legacyEventName).toBe("customscope_link");
+    expect(payload.action).toBe("LINK");
+    expect(payload.pages.scope).toBe("customscope");
+    expect(payload.pages.originalEventName).toBe("customscope_link");
   });
 });
