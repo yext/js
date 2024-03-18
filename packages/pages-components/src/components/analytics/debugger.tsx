@@ -55,8 +55,8 @@ const getEventData = (
  * Gets the closest parents up the parent tree that have a given selector.
  */
 const getParents = (e: HTMLElement | null, selector: string): HTMLElement[] => {
-  var results = [];
-  var p = e;
+  const results = [];
+  let p = e;
 
   while (p && p.parentElement) {
     p = p.parentElement.closest(selector);
