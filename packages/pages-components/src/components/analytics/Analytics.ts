@@ -4,14 +4,12 @@ import { AnalyticsMethods, TrackProps } from "./interfaces.js";
 import {
   AnalyticsConfig,
   AnalyticsEventService,
-  Environment,
   EventPayload,
   Region,
   analytics,
 } from "@yext/analytics";
 import { concatScopes, slugify } from "./helpers.js";
 import { getPartition } from "../../util/partition.js";
-import { a } from "vitest/dist/suite-9ReVEt_h.js";
 
 /**
  * The Analytics class creates a stateful facade in front of the \@yext/analytics

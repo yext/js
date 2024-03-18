@@ -1,5 +1,3 @@
-import { Action } from "@yext/analytics";
-
 /**
  * Constants for available link types.
  *

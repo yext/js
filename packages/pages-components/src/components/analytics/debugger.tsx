@@ -58,7 +58,7 @@ const getParents = (e: HTMLElement | null, selector: string): HTMLElement[] => {
   const results = [];
   let p = e;
 
-  while (p && p.parentElement) {
+  while (p?.parentElement) {
     p = p.parentElement.closest(selector);
     if (p) {
       results.push(p);
@@ -129,7 +129,7 @@ export function AnalyticsDebuggerInternal() {
       const scope = eventEl.closest("[data-ya-scope]") as
         | HTMLElement
         | undefined;
-      const scopeName = scope && scope.dataset.yaScope;
+      const scopeName = scope?.dataset.yaScope;
 
       const elemData = getEventData(eventEl, scopeName);
 
@@ -232,7 +232,7 @@ const getUniqueEvents = () => {
 };
 
 function EventsTab(props: TabProps) {
-  const { data, setTooltips } = props;
+  const { setTooltips } = props;
 
   const [activeEventEl, setActiveEventEl] = useState<HTMLElement>();
   const [activeButton, setActiveButton] = useState("");
@@ -267,7 +267,6 @@ function EventsTab(props: TabProps) {
     <div className="analytics-debugger-tab">
       <h2 className="analytics-debugger-tab-title">Event Names</h2>
       <ul className="analytics-debugger-list">
-        {/* uniquify */}
         {getUniqueEvents().map((event, idx) => {
           const eventData = event.eventData;
           const key = `${eventData.originalEventName}_${idx}`;
