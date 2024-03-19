@@ -93,7 +93,7 @@ export interface AnalyticsProviderProps {
   enableDebugging?: boolean | undefined;
 
   /**
-   * isStaging() will evaluate to false if the the event is fired from any of
+   * isProduction() will evaluate to true if the event is fired from any of
    * provided domains in productionDomains.
    */
   productionDomains?: string[];

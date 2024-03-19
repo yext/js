@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PropsWithChildren, useRef, lazy, Suspense } from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";

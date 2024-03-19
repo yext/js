@@ -36,7 +36,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       ...rest
     } = props;
 
-    const action = cta ? "CTA_CLICK" : `LINK`;
+    const action = cta ? "CTA_CLICK" : "LINK";
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
 

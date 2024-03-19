@@ -12,7 +12,7 @@ declare global {
 
 /**
  * The useAnalytics hook can be used anywhere in the tree below a configured
- * AnalyticsProvider.  Calling it will return an object to give you access to
+ * AnalyticsProvider. Calling it will return an object to give you access to
  * the analytics convenience methods for use in your components,
  * such as track(), pageView(), optIn() etc.
  *
