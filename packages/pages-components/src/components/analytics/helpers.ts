@@ -1,11 +1,5 @@
 export function slugify(str: string | undefined): string {
-  return str
-    ? str
-        .toLowerCase()
-        .trim()
-        // strip special characters
-        .replace(/[^\w\s-]|[\s-]+/g, "")
-    : "";
+  return str ? str.toLowerCase().trim().replace(/\s/g, "") : "";
 }
 
 export function concatScopes(a: string, b: string): string {
