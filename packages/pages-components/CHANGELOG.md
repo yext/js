@@ -1,3 +1,9 @@
+#### 1.0.0-rc.5 (2024-04-03)
+
+##### Bug Fixes
+
+* **pages-components:**  debug mode and scope fixes (#46) (b675c297)
+
 #### 1.0.0-rc.4 (2024-03-26)
 
 #### 1.0.0-rc.3 (2024-03-21)
