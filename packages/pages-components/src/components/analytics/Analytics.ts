@@ -65,8 +65,8 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    // Don't fire analytics for non-production domains
-    if (!isProduction(...this.productionDomains)) {
+    // Don't fire analytics for non-production domains, unless debug enabled
+    if (!isProduction(...this.productionDomains) && !this.enableDebugging) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }
@@ -156,7 +156,7 @@ export class Analytics implements AnalyticsMethods {
     await this._analyticsEventService?.report({
       action,
       pages: {
-        scope: slugify(scope) || "",
+        scope: slugify(scope) || undefined,
         originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },
       value: value,
