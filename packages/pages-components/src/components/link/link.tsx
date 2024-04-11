@@ -24,19 +24,8 @@ import type { CTA, LinkProps } from "./types.js";
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
     const link: CTA = isHREFProps(props) ? { link: props.href } : props.cta;
-    const {
-      children,
-      onClick,
-      className,
-      eventName,
-      scope,
-      currency,
-      amount,
-      cta,
-      ...rest
-    } = props;
+    const { children, onClick, className, eventName, cta, ...rest } = props;
 
-    const action = cta ? "CTA_CLICK" : "LINK";
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
 
@@ -46,15 +35,9 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
       setHumanInteraction(true);
-      if (analytics) {
+      if (analytics !== null) {
         try {
-          await analytics.track({
-            action: action,
-            scope: props.scope,
-            eventName: trackEvent,
-            currency: currency,
-            amount: amount,
-          });
+          await analytics.trackClick(trackEvent, props.conversionDetails)(e);
         } catch (exception) {
           console.error("Failed to report click Analytics Event");
         }
@@ -75,23 +58,17 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     const renderedLink = isObfuscate ? reverse(link.link) : link.link;
 
-    const attributes: any = {
-      className: classNames("Link", className),
-      href: humanInteraction || !obfuscate ? getHref(link) : "obfuscate",
-      onClick: handleClick,
-      rel: props.target && !props.rel ? "noopener" : undefined,
-      ref: ref,
-      style: obfuscatedStyle,
-    };
-
-    if (analytics?.getDebugEnabled()) {
-      attributes["data-ya-action"] = action;
-      attributes["data-ya-scopeoverride"] = scope;
-      attributes["data-ya-eventname"] = trackEvent;
-    }
-
     return (
-      <a {...attributes} {...rest}>
+      <a
+        className={classNames("Link", className)}
+        href={humanInteraction || !obfuscate ? getHref(link) : "obfuscate"}
+        onClick={handleClick}
+        rel={props.target && !props.rel ? "noopener" : undefined}
+        ref={ref}
+        style={obfuscatedStyle}
+        data-ya-track={trackEvent}
+        {...rest}
+      >
         {children || link.label || renderedLink}
       </a>
     );
