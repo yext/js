@@ -1,3 +1,9 @@
+#### 1.0.0-rc.6 (2024-04-11)
+
+##### Other Changes
+
+* **pages-components:**  debug mode and scope fixes (#46)" (e519e26b)
+
 #### 1.0.0-rc.5 (2024-04-03)
 
 ##### Bug Fixes
