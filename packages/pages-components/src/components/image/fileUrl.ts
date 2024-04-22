@@ -1,3 +1,5 @@
+import { Env, Partition } from "./url.js";
+
 // FileURL is a URL for a file stored in the Yext CDN.
 //
 // A FileURL always starts with 'a' subdomain, e.g. 'a.mktgcdn.com' or 'a.eu.mktgcdn.com', and the
@@ -13,9 +15,6 @@
 //	US Sandbox: https://a.mktgcdn.com/f-sandbox/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
 //	US Sandbox: https://a.mktgcdn.com/f-sandbox/1234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
 //	EU QA: https://a.eu.mktgcdn.com/f-qa/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-
-import { Env, Partition } from "./url.js";
-
 //	EU QA: https://a.eu.mktgcdn.com/f-qa/100001234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
 export type FileUrl = {
   // Scheme is 'http' or 'https'.
