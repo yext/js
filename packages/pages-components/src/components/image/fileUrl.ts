@@ -8,14 +8,14 @@ import { Env, Partition } from "./url.js";
 //
 // Examples:
 //
-//	US Production: https://a.mktgcdn.com/f/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	US Production: https://a.mktgcdn.com/f/1234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	EU Production: https://a.eu.mktgcdn.com/f/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	EU Production: https://a.eu.mktgcdn.com/f/100001234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	US Sandbox: https://a.mktgcdn.com/f-sandbox/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	US Sandbox: https://a.mktgcdn.com/f-sandbox/1234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	EU QA: https://a.eu.mktgcdn.com/f-qa/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
-//	EU QA: https://a.eu.mktgcdn.com/f-qa/100001234/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00.pdf
+//	US Production: https://a.mktgcdn.com/f/contentHash.pdf
+//	US Production: https://a.mktgcdn.com/f/1234/contentHash.pdf
+//	EU Production: https://a.eu.mktgcdn.com/f/contentHash.pdf
+//	EU Production: https://a.eu.mktgcdn.com/f/100001234/contentHash.pdf
+//	US Sandbox: https://a.mktgcdn.com/f-sandbox/contentHash.pdf
+//	US Sandbox: https://a.mktgcdn.com/f-sandbox/1234/contentHash.pdf
+//	EU QA: https://a.eu.mktgcdn.com/f-qa/contentHash.pdf
+//	EU QA: https://a.eu.mktgcdn.com/f-qa/100001234/contentHash.pdf
 export type FileUrl = {
   // Scheme is 'http' or 'https'.
   //

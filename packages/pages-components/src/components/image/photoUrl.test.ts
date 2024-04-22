@@ -3,63 +3,56 @@ import { parsePhotoUrl, PhotoUrl, photoUrlToDynString } from "./photoUrl.js";
 const validCases = [
   {
     name: "ProdStandard",
-    input:
-      "https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "https://a.mktgcdn.com/p/contentHash/126x164.jpg",
     want: {
       scheme: "https",
       env: "prod",
-      contentHash: "TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno",
+      contentHash: "contentHash",
       aspectRatio: undefined,
       name: "126x164",
       extension: ".jpg",
     } as PhotoUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164",
   },
   {
     name: "ProdOriginal",
-    input:
-      "https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/original",
+    input: "https://a.mktgcdn.com/p/contentHash/original",
     want: {
       scheme: "https",
       env: "prod",
-      contentHash: "TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno",
+      contentHash: "contentHash",
       aspectRatio: undefined,
       name: "original",
       extension: "",
     } as PhotoUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164",
   },
   {
     name: "ProdPadded",
-    input:
-      "https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/1.0000/164x164.jpg",
+    input: "https://a.mktgcdn.com/p/contentHash/1.0000/164x164.jpg",
     want: {
       scheme: "https",
       env: "prod",
-      contentHash: "TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno",
+      contentHash: "contentHash",
       aspectRatio: 1,
       name: "164x164",
       extension: ".jpg",
     } as PhotoUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164",
   },
   {
     name: "SandboxStandard",
-    input:
-      "https://a.mktgcdn.com/p-sandbox/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "https://a.mktgcdn.com/p-sandbox/contentHash/126x164.jpg",
     want: {
       scheme: "https",
       env: "sbx",
-      contentHash: "TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno",
+      contentHash: "contentHash",
       aspectRatio: undefined,
       name: "126x164",
       extension: ".jpg",
     } as PhotoUrl,
     dynUrl:
-      "https://dyn.mktgcdn.com/p-sandbox/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/width=126,height=164",
+      "https://dyn.mktgcdn.com/p-sandbox/contentHash/width=126,height=164",
   },
 ];
 
@@ -82,33 +75,28 @@ const invalidCases = [
   },
   {
     name: "InvalidScheme",
-    input:
-      "ftp://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "ftp://a.mktgcdn.com/p/contentHash/126x164.jpg",
   },
   {
     name: "InvalidSubdomain",
-    input:
-      "https://b.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "https://b.mktgcdn.com/p/contentHash/126x164.jpg",
   },
   {
     name: "InvalidPathRoot",
-    input:
-      "https://a.mktgcdn.com/f/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "https://a.mktgcdn.com/f/contentHash/126x164.jpg",
   },
   {
     name: "InvalidEnv",
-    input:
-      "https://a.mktgcdn.com/p-other/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg",
+    input: "https://a.mktgcdn.com/p-other/contentHash/126x164.jpg",
   },
   {
     name: "InvalidAspectRatio",
-    input:
-      "https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/1.0000000/164x164.jpg",
+    input: "https://a.mktgcdn.com/p/contentHash/1.0000000/164x164.jpg",
   },
   {
     name: "InvalidPath",
     input:
-      "https://a.mktgcdn.com/p/1234/too/many/segments/ab0Q6RcXc3WxYn5j-jsEAG4_V5tuQJLb8Ru5Ol0aX00/126x164.jpg",
+      "https://a.mktgcdn.com/p/1234/too/many/segments/contentHash/126x164.jpg",
   },
 ];
 

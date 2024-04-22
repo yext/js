@@ -1,10 +1,15 @@
-import { convertFileUrl, fileUrlToDynString } from "./fileUrl.js";
-import { convertPhotoUrl, photoUrlToDynString } from "./photoUrl.js";
+import { convertFileUrl, FileUrl, fileUrlToDynString } from "./fileUrl.js";
+import { convertPhotoUrl, PhotoUrl, photoUrlToDynString } from "./photoUrl.js";
 
 export type Env = "prod" | "sbx" | "qa" | "dev";
 export type Partition = "us" | "eu";
 
-export const parseImageUrl = (rawUrl: string) => {
+/**
+ * Parses a raw a.mktgcdn.com type url into either a {@link PhotoUrl} or {@link ImageUrl}.
+ */
+export const parseImageUrl = (
+  rawUrl: string
+): PhotoUrl | FileUrl | undefined => {
   if (!URL.canParse(rawUrl)) {
     console.error(`Invalid image url: ${rawUrl}.`);
     return;
@@ -20,6 +25,9 @@ export const parseImageUrl = (rawUrl: string) => {
   console.error(`Invalid image url: ${rawUrl}.`);
 };
 
+/**
+ * Parses a raw a.mktgcdn.com type url and returns its corresponding dyn.mktgcdn.com version.
+ */
 export const getImageUrl = (rawUrl: string, width: number, height: number) => {
   if (!URL.canParse(rawUrl)) {
     console.error(`Invalid image url: ${rawUrl}.`);

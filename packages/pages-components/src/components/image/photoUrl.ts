@@ -15,10 +15,10 @@ import { Env } from "./url.js";
 //
 // Examples:
 //
-//	US Production: https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg
-//	US Production: https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/original
-//	US Production: https://a.mktgcdn.com/p/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/1.0000/164x164.jpg
-//	US Sandbox: https://a.mktgcdn.com/p-sandbox/TwivlIgmAV7v07Txzke8zHdFggRup8qwlUoAzBcCvno/126x164.jpg
+//	US Production: https://a.mktgcdn.com/p/contentHash/126x164.jpg
+//	US Production: https://a.mktgcdn.com/p/contentHash/original
+//	US Production: https://a.mktgcdn.com/p/contentHash/1.0000/164x164.jpg
+//	US Sandbox: https://a.mktgcdn.com/p-sandbox/contentHash/126x164.jpg
 export type PhotoUrl = {
   // Scheme is 'http' or 'https'.
   //
