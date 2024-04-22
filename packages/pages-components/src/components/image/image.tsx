@@ -1,12 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
-
-const MKTGCDN_URL_REGEX =
-  /(https?:\/\/a.mktgcdn.com\/p(?<env>-sandbox|-qa|-dev)?\/)(?<uuid>.+)\/.*?(\.(?<ext>.+))?$/;
-
-const MKTGCDN_EU_URL_REGEX =
-  /(https?:\/\/a.eu.mktgcdn.com\/f(?<env>-qa)?\/(?<businessId>[0-9]+)\/)(?<uuid>.+)\.(?<ext>.+)/;
+import { getImageUrl, parseImageUrl } from "./url.js";
 
 /**
  * Renders an image based from the Yext Knowledge Graph. Example of using the component to render
@@ -61,10 +56,10 @@ export const Image = ({
     console.warn(`Invalid image height.`);
   }
 
-  const imgUUID = getImageUUID(imageData.url);
+  const parsedImage = parseImageUrl(imageData.url);
 
   // The image is invalid, only try to load the placeholder
-  if (!imgUUID) {
+  if (!parsedImage?.contentHash) {
     return <>{placeholder != null && placeholder}</>;
   }
 
@@ -75,7 +70,6 @@ export const Image = ({
     layout,
     imgWidth,
     imgHeight,
-    imgUUID,
     style,
     imageData.url,
     absWidth,
@@ -87,12 +81,7 @@ export const Image = ({
   const srcSet: string = widths
     .map(
       (w) =>
-        `${getImageUrl(
-          imgUUID,
-          w,
-          (imgHeight / imgWidth) * w,
-          imageData.url
-        )} ${w}w`
+        `${getImageUrl(imageData.url, w, (imgHeight / imgWidth) * w)} ${w}w`
     )
     .join(", ");
 
@@ -177,122 +166,6 @@ export const validateRequiredProps = (
 };
 
 /**
- * Returns the UUID of an image given its url.
- * Logs an error if the image url neither a valid US nor EU url.
- */
-export const getImageUUID = (url: string): string => {
-  const matches = url.match(MKTGCDN_URL_REGEX);
-  if (matches?.groups?.uuid) {
-    return matches.groups.uuid;
-  }
-
-  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.uuid) {
-    return matchesEu.groups.uuid;
-  }
-
-  console.error(`Invalid image url: ${url}.`);
-  return "";
-};
-
-/**
- * Returns the environment suffix for a url's bucket, if present.
- */
-export const getImageEnv = (url: string): string => {
-  const matches = url.match(MKTGCDN_URL_REGEX);
-  if (matches?.groups?.uuid) {
-    return matches.groups.env;
-  }
-
-  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.uuid) {
-    return matchesEu.groups.env;
-  }
-
-  console.error(`Invalid image url: ${url}.`);
-  return "";
-};
-
-/**
- * Returns the partition for an image url.
- */
-export const getImagePartition = (url: string): string => {
-  const matches = url.match(MKTGCDN_URL_REGEX);
-  if (matches?.groups?.uuid) {
-    return "US";
-  }
-
-  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.uuid) {
-    return "EU";
-  }
-
-  console.error(`Invalid image url: ${url}.`);
-  return "";
-};
-
-/**
- * Returns the business id for an EU image url.
- */
-export const getImageBusinessId = (url: string): string => {
-  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.businessId) {
-    return matchesEu.groups.businessId;
-  }
-
-  console.error(`Invalid image url: ${url}.`);
-  return "";
-};
-
-/**
- * Returns the file extension for an image url.
- */
-export const getImageExtension = (url: string): string => {
-  const matches = url.match(MKTGCDN_URL_REGEX);
-  if (matches?.groups?.uuid) {
-    return matches?.groups?.ext ?? "";
-  }
-
-  const matchesEu = url.match(MKTGCDN_EU_URL_REGEX);
-  if (matchesEu?.groups?.uuid) {
-    return matchesEu?.groups?.ext ?? "";
-  }
-
-  console.error(`Invalid image url: ${url}.`);
-  return "";
-};
-
-/**
- * Returns the image url given its uuid, width and height.
- */
-export const getImageUrl = (
-  uuid: string,
-  width: number,
-  height: number,
-  imgUrl: string
-) => {
-  const env = getImageEnv(imgUrl);
-  const partition = getImagePartition(imgUrl);
-  let bucket: string;
-  const extension = getImageExtension(imgUrl);
-  switch (partition) {
-    case "EU":
-      bucket = env ? `f${env}` : "f";
-      const businessId = getImageBusinessId(imgUrl);
-      return `https://dyn.eu.mktgcdn.com/${bucket}/${businessId}/${uuid}.${extension}/width=${Math.round(
-        width
-      )},height=${Math.round(height)}`;
-    case "US":
-    // intentional fallthrough
-    default:
-      bucket = env ? `p${env}` : "p";
-      return `https://dynl.mktgcdn.com/${bucket}/${uuid}/${Math.round(
-        width
-      )}x${Math.round(height)}${extension ? `.${extension}` : ""}`;
-  }
-};
-
-/**
  * Returns the src, imgStyle and widths that will be set on the underlying img tag based on the
  * layout.
  */
@@ -300,15 +173,14 @@ export const handleLayout = (
   layout: ImageLayout,
   imgWidth: number,
   imgHeight: number,
-  imgUUID: string,
   style: React.CSSProperties,
   imgUrl: string,
   absWidth?: number,
   absHeight?: number,
   aspectRatio?: number
-): { src: string; imgStyle: React.CSSProperties; widths: number[] } => {
+): { src?: string; imgStyle: React.CSSProperties; widths: number[] } => {
   let widths: number[] = [100, 320, 640, 960, 1280, 1920];
-  let src: string = getImageUrl(imgUUID, 500, 500, imgUrl);
+  let src = getImageUrl(imgUrl, 500, 500);
   const imgStyle = { ...style };
   imgStyle.objectFit = imgStyle.objectFit || "cover";
   imgStyle.objectPosition = imgStyle.objectPosition || "center";
@@ -335,7 +207,7 @@ export const handleLayout = (
       imgStyle.width = fixedWidth;
       imgStyle.height = fixedHeight;
       widths = fixedWidths;
-      src = getImageUrl(imgUUID, fixedWidth, fixedHeight, imgUrl);
+      src = getImageUrl(imgUrl, fixedWidth, fixedHeight);
 
       break;
     }
