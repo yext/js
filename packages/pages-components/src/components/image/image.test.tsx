@@ -121,7 +121,7 @@ describe("Image", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
-    const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
+    const invalidUrl = "random";
 
     expect(logMock.mock.calls.length).toBe(0);
 
@@ -136,7 +136,7 @@ describe("Image", () => {
 
     expect(screen.getByText(placeholderText)).toBeTruthy();
     expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(`Invalid path: ${invalidUrl}`);
+    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}`);
 
     vi.clearAllMocks();
   });
@@ -145,7 +145,7 @@ describe("Image", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
-    const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
+    const invalidUrl = "random";
 
     expect(logMock.mock.calls.length).toBe(0);
     render(
@@ -158,7 +158,7 @@ describe("Image", () => {
 
     expect(screen.queryByRole("img")).toBeNull();
     expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(`Invalid path: ${invalidUrl}`);
+    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}`);
 
     vi.clearAllMocks();
   });

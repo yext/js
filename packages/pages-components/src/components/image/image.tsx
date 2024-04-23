@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
-import { getImageUrl, parseImageUrl } from "./url.js";
+import { getImageUrl } from "./url.js";
 
 /**
  * Renders an image based from the Yext Knowledge Graph. Example of using the component to render
@@ -56,10 +56,9 @@ export const Image = ({
     console.warn(`Invalid image height.`);
   }
 
-  const parsedImage = parseImageUrl(imageData.url);
-
   // The image is invalid, only try to load the placeholder
-  if (!parsedImage?.contentHash) {
+  if (!URL.canParse(imageData.url)) {
+    console.error(`Invalid image url: ${imageData.url}`);
     return <>{placeholder != null && placeholder}</>;
   }
 
