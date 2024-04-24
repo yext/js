@@ -1,3 +1,5 @@
+import { ConversionDetails } from "@yext/analytics";
+
 /**
  * Constants for available link types.
  *
@@ -37,22 +39,9 @@ interface LinkConfig
     React.AnchorHTMLAttributes<HTMLAnchorElement>,
     HTMLAnchorElement
   > {
-  /** Obfuscates the href and label. */
   obfuscate?: boolean;
-  /** The custom name of the event. */
   eventName?: string;
-  /** Scope the specific link event. Overrides the scope set by the provider. */
-  scope?: string;
-  /**
-   * The ISO 4217 currency code of the currency the value is expressed in.
-   * Overrides the defaultCurrency set on the provider.
-   * For example, "USD" for US dollars.
-   *
-   * For more information see https://www.iso.org/iso-4217-currency-codes.html.
-   */
-  currency?: string;
-  /** The monetary value of the event. */
-  amount?: number;
+  conversionDetails?: ConversionDetails | undefined;
 }
 
 /**
