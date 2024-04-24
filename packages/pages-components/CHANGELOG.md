@@ -2,13 +2,13 @@
 
 ##### Other Changes
 
-* **pages-components:**  debug mode and scope fixes (#46)" (e519e26b)
+- **pages-components:** debug mode and scope fixes (#46)" (e519e26b)
 
 #### 1.0.0-rc.5 (2024-04-03)
 
 ##### Bug Fixes
 
-* **pages-components:**  debug mode and scope fixes (#46) (b675c297)
+- **pages-components:** debug mode and scope fixes (#46) (b675c297)
 
 #### 1.0.0-rc.4 (2024-03-26)
 

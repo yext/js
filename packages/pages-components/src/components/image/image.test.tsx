@@ -2,14 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import {
   Image,
   validateRequiredProps,
-  getImageUUID,
   handleLayout,
   getImageSizeForFixedLayout,
-  getImageEnv,
-  getImagePartition,
-  getImageBusinessId,
-  getImageExtension,
-  getImageUrl,
 } from "./image.js";
 import { ImageLayoutOption } from "./types.js";
 import { render, screen } from "@testing-library/react";
@@ -127,7 +121,7 @@ describe("Image", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
-    const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
+    const invalidUrl = "random";
 
     expect(logMock.mock.calls.length).toBe(0);
 
@@ -142,7 +136,7 @@ describe("Image", () => {
 
     expect(screen.getByText(placeholderText)).toBeTruthy();
     expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}.`);
+    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}`);
 
     vi.clearAllMocks();
   });
@@ -151,7 +145,7 @@ describe("Image", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
     });
-    const invalidUrl = "https://a.mktgcdn.com/p/2x1.jpg";
+    const invalidUrl = "random";
 
     expect(logMock.mock.calls.length).toBe(0);
     render(
@@ -164,7 +158,7 @@ describe("Image", () => {
 
     expect(screen.queryByRole("img")).toBeNull();
     expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}.`);
+    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}`);
 
     vi.clearAllMocks();
   });
@@ -176,7 +170,7 @@ describe("Image", () => {
       name: /alt text/i,
     });
 
-    expect(img.getAttribute("srcset")).toContain("dynl.mktgcdn.com/p/");
+    expect(img.getAttribute("srcset")).toContain("dyn.mktgcdn.com/p/");
   });
 
   it("properly renders the srcset based on the correct sandbox env", () => {
@@ -190,7 +184,7 @@ describe("Image", () => {
       name: /alt text/i,
     });
 
-    expect(img.getAttribute("srcset")).toContain("dynl.mktgcdn.com/p-sandbox/");
+    expect(img.getAttribute("srcset")).toContain("dyn.mktgcdn.com/p-sandbox/");
   });
 
   it("properly renders the srcset based on the correct eu prod env", () => {
@@ -247,240 +241,14 @@ describe("Image", () => {
   });
 });
 
-describe("getImageUUID", () => {
-  it("properly extracts the image UUID", () => {
-    expect(
-      getImageUUID(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54");
-    expect(
-      getImageUUID(
-        "https://a.mktgcdn.com/p/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/1300x872.jpg"
-      )
-    ).toBe("ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo");
-    expect(
-      getImageUUID(
-        "https://a.mktgcdn.com/p/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
-      )
-    ).toBe("ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo");
-    expect(
-      getImageUUID(
-        "https://a.mktgcdn.com/p/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo"
-      )
-    ).toBe("");
-    expect(
-      getImageUUID(
-        "http://a.mktgcdn.com/p-sandbox/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54");
-    expect(
-      getImageUUID(
-        "http://a.mktgcdn.com/p-qa/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54");
-    expect(
-      getImageUUID(
-        "http://a.mktgcdn.com/p-dev/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54");
-    expect(getImageUUID("https://a.mktgcdn.com/p//1300x872.jpg")).toBe("");
-    expect(getImageUUID("https://a.mktgcdn.com/p/1300x872.jpg")).toBe("");
-    expect(getImageUUID("")).toBe("");
-
-    vi.clearAllMocks();
-  });
-
-  it("properly logs error when image url is invalid", () => {
-    const logMock = vi.spyOn(console, "error").mockImplementation(() => {
-      /* do nothing */
-    });
-    let invalidUrl = "https://a.mktgcdn.com/p/1300x872.jpg";
-
-    expect(logMock.mock.calls.length).toBe(0);
-    expect(getImageUUID(invalidUrl)).toBe("");
-    expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(`Invalid image url: ${invalidUrl}.`);
-
-    invalidUrl =
-      "http://a.mktgcdn.com/p-badinput/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg";
-    expect(getImageUUID(invalidUrl)).toBe("");
-    expect(logMock.mock.calls.length).toBe(2);
-    expect(logMock.mock.calls[1][0]).toBe(`Invalid image url: ${invalidUrl}.`);
-
-    vi.clearAllMocks();
-  });
-});
-
-describe("getImageEnv", () => {
-  it("properly extracts the image env", () => {
-    expect(
-      getImageEnv(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe(undefined);
-    expect(
-      getImageEnv(
-        "https://a.mktgcdn.com/p-sandbox/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
-      )
-    ).toBe("-sandbox");
-    expect(
-      getImageEnv(
-        "http://a.mktgcdn.com/p-qa/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("-qa");
-    expect(
-      getImageEnv(
-        "http://a.mktgcdn.com/p-dev/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("-dev");
-
-    vi.clearAllMocks();
-  });
-});
-
-describe("getImagePartition", () => {
-  it("properly extracts the image url partition", () => {
-    expect(
-      getImagePartition(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("US");
-    expect(
-      getImagePartition(
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe("EU");
-    expect(
-      getImagePartition(
-        "http://a.mktgcdn.com/invalid/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("");
-
-    vi.clearAllMocks();
-  });
-});
-
-describe("getImageBusinessId", () => {
-  it("properly extracts the image's businessId", () => {
-    expect(
-      getImageBusinessId(
-        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe("100000030");
-    expect(
-      getImageBusinessId(
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe("0");
-    expect(
-      getImageBusinessId(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("");
-
-    vi.clearAllMocks();
-  });
-});
-
-describe("getImageExtension", () => {
-  it("properly extracts the image's file extension", () => {
-    expect(
-      getImageExtension(
-        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe("jpg");
-    expect(
-      getImageExtension(
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.png"
-      )
-    ).toBe("png");
-    expect(
-      getImageExtension(
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.webp"
-      )
-    ).toBe("webp");
-    expect(
-      getImageExtension(
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/"
-      )
-    ).toBe("");
-    expect(
-      getImageExtension(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe("jpg");
-    expect(
-      getImageExtension(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443"
-      )
-    ).toBe("");
-    expect(
-      getImageExtension(
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/"
-      )
-    ).toBe("");
-
-    vi.clearAllMocks();
-  });
-});
-
-describe("getImageUrl", () => {
-  it("properly generates the image's thumbnail url", () => {
-    expect(
-      getImageUrl(
-        "EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54",
-        250,
-        250,
-        "http://a.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/443x443.jpg"
-      )
-    ).toBe(
-      "https://dynl.mktgcdn.com/p/EttBe_p52CsFx6ZlAn0-WpvY9h_MCYPH793iInfWY54/250x250.jpg"
-    );
-    expect(
-      getImageUrl(
-        "Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
-        300,
-        400,
-        "https://a.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/450x450"
-      )
-    ).toBe(
-      "https://dynl.mktgcdn.com/p-sandbox/Xb40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo/300x400"
-    );
-    expect(
-      getImageUrl(
-        "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
-        250,
-        250,
-        "https://a.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe(
-      "https://dyn.eu.mktgcdn.com/f/100000030/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=250,height=250"
-    );
-    expect(
-      getImageUrl(
-        "ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo",
-        400,
-        400,
-        "https://a.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg"
-      )
-    ).toBe(
-      "https://dyn.eu.mktgcdn.com/f/0/ob40t_wP5WDgMN16PKEBrt8gAYyKfev_Hl1ahZPlGJo.jpg/width=400,height=400"
-    );
-
-    vi.clearAllMocks();
-  });
-});
-
 describe("handleLayout", () => {
   it(`properly sets aspectRatio when layout is ${ImageLayoutOption.INTRINSIC} and aspectRatio is provided`, () => {
     const { imgStyle } = handleLayout(
       ImageLayoutOption.INTRINSIC,
       imgWidth,
       imgHeight,
-      imgUUID,
       {},
-      "",
+      "https://a.mktgcdn.com/p/uuid/20x10",
       width,
       height,
       aspectRatio
@@ -494,9 +262,8 @@ describe("handleLayout", () => {
       ImageLayoutOption.INTRINSIC,
       imgWidth,
       imgHeight,
-      imgUUID,
       {},
-      "",
+      "https://a.mktgcdn.com/p/uuid/20x10",
       width,
       height,
       undefined
@@ -510,16 +277,15 @@ describe("handleLayout", () => {
       ImageLayoutOption.FIXED,
       imgWidth,
       imgHeight,
-      imgUUID,
       {},
-      "",
+      "https://a.mktgcdn.com/p/uuid/20x10",
       width,
       undefined,
       undefined
     );
 
     expect(src).toEqual(
-      `https://dynl.mktgcdn.com/p/${imgUUID}/${width}x${height}`
+      `https://dyn.mktgcdn.com/p/${imgUUID}/width=${width},height=${height}`
     );
     expect(imgStyle.width).toEqual(width);
     expect(imgStyle.height).toEqual(height);
@@ -531,9 +297,8 @@ describe("handleLayout", () => {
       ImageLayoutOption.ASPECT,
       imgWidth,
       imgHeight,
-      imgUUID,
       {},
-      "",
+      "https://a.mktgcdn.com/p/uuid/20x10",
       undefined,
       undefined,
       aspectRatio
@@ -547,7 +312,6 @@ describe("handleLayout", () => {
       ImageLayoutOption.FILL,
       imgWidth,
       imgHeight,
-      imgUUID,
       {},
       "",
       undefined,
