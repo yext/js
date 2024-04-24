@@ -1,3 +1,15 @@
+#### 1.0.0-rc.7 (2024-04-24)
+
+##### Bug Fixes
+
+* **pages-components:**  updated image url formats (#47) (5e2ab268)
+
+##### Other Changes
+
+* **pages-components:**
+  *  debug mode and scope fixes (#46)""" (45480037)
+  *  debug mode and scope fixes (#46)"" (f782ce81)
+
 #### 1.0.0-rc.6 (2024-04-11)
 
 ##### Other Changes
