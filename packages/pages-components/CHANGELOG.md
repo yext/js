@@ -28,7 +28,7 @@
 
 ##### Bug Fixes
 
-- **pages-components:** change slug for analytics eventNames (#45) (2b25e50e)
+* **pages-components:**  change slug for analytics eventNames (#45) (2b25e50e)
 
 #### 1.0.0-rc.2 (2024-03-01)
 
