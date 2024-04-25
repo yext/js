@@ -1,4 +1,4 @@
-import { Env, Partition } from "./url.js";
+import { Env, isValidHttpUrl, Partition } from "./url.js";
 
 // FileURL is a URL for a file stored in the Yext CDN.
 //
@@ -54,7 +54,7 @@ export type FileUrl = {
 };
 
 export const parseFileUrl = (rawUrl: string) => {
-  if (!URL.canParse(rawUrl)) {
+  if (!isValidHttpUrl(rawUrl)) {
     console.error(`Invalid image url: ${rawUrl}.`);
     return;
   }
