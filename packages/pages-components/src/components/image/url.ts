@@ -9,7 +9,7 @@ export type Partition = "us" | "eu";
  * If the raw url cannot be parsed, it's simply returned as-is and used as a passthrough.
  */
 export const getImageUrl = (rawUrl: string, width: number, height: number) => {
-  if (!URL.canParse(rawUrl)) {
+  if (!isValidHttpUrl(rawUrl)) {
     console.error(`Invalid image url: ${rawUrl}.`);
     return;
   }
@@ -28,4 +28,16 @@ export const getImageUrl = (rawUrl: string, width: number, height: number) => {
   }
 
   return rawUrl;
+};
+
+export const isValidHttpUrl = (rawUrl: string) => {
+  let url;
+
+  try {
+    url = new URL(rawUrl);
+  } catch (_) {
+    return false;
+  }
+
+  return url.protocol === "http:" || url.protocol === "https:";
 };
