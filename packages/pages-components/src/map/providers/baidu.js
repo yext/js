@@ -398,7 +398,7 @@ function load(resolve, reject, apiKey, { params = {}, version = "3.0" } = {}) {
   }
 
   const negativeLngFixStyle = document.createElement("style");
-  negativeLngFixStyle.innerHTML = negativeLngFixCSS;
+  negativeLngFixStyle.appendChild(document.createTextNode(negativeLngFixCSS));
 
   document.head.appendChild(negativeLngFixStyle);
 }

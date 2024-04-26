@@ -2,15 +2,15 @@
 
 ##### Bug Fixes
 
-* **pages-components:**
-  *  don't use URL.canParse (#49) (7b760fc8)
-  *  update Vite to fix vulnerability (#48) (48a240ec)
+- **pages-components:**
+  - don't use URL.canParse (#49) (7b760fc8)
+  - update Vite to fix vulnerability (#48) (48a240ec)
 
 ##### Other Changes
 
-* **pages-components:**
-  *  debug mode and scope fixes (#46)""""" (47cdf9ec)
-  *  debug mode and scope fixes (#46)"""" (d901fc8e)
+- **pages-components:**
+  - debug mode and scope fixes (#46)""""" (47cdf9ec)
+  - debug mode and scope fixes (#46)"""" (d901fc8e)
 
 #### 1.0.0-rc.7 (2024-04-24)
 
