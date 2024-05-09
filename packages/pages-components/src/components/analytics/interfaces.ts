@@ -1,13 +1,6 @@
-import { Action } from "@yext/analytics";
+import { MouseEvent } from "react";
+import { ConversionDetails, Visitor } from "@yext/analytics";
 import { TemplateProps } from "./types.js";
-
-export type TrackProps = {
-  action: Action;
-  scope?: string;
-  eventName?: string;
-  amount?: number;
-  currency?: string;
-};
 
 /**
  * The AnalyticsMethod interface specifies the methods that can be used with
@@ -21,19 +14,32 @@ export interface AnalyticsMethods {
    * @param eventName - the name of the event, will appear in Yext's Report Builder UI
    * @param conversionData - optional details for tracking an event as a conversion
    */
-  track(props: TrackProps): Promise<void>;
+  track(eventName: string, conversionData?: ConversionDetails): Promise<void>;
 
   /**
    * The identify method will allow you to tie analytics events to a specific user.
    *
    * @param visitor - the Visitor object
    */
-  identify(visitor: Record<string, string>): void;
+  identify(visitor: Visitor): void;
 
   /**
    * The pageView method will track a pageview event.
    */
   pageView(): Promise<void>;
+
+  /**
+   * trackClick will return an event handler that delays navigation to allow
+   * a click event to send.  To use it you simply pass it to the onClick prop,
+   * like so:
+   * ```ts
+   * <a onClick={trackClick('my click')}
+   * ```
+   */
+  trackClick(
+    eventName: string,
+    conversionData?: ConversionDetails
+  ): (e: MouseEvent<HTMLAnchorElement>) => Promise<void>;
 
   /**
    * The optIn method should be called when a user opts into analytics tracking,
@@ -42,9 +48,24 @@ export interface AnalyticsMethods {
   optIn(): Promise<void>;
 
   /**
+   * Use the enableTrackingCookie method to enable conversion tracking on
+   * your page.  This should be done only if you have conversion tracking
+   * configured in your Yext account.
+   */
+  enableTrackingCookie(): void;
+
+  /**
    * Use the getDebugEnabled method to retrieve whether debugging is on or off.
    */
   getDebugEnabled(): boolean;
+
+  /**
+   * Use the setDebugEnabled method to toggle debugging on or off. Currently,
+   * this will log tracked events to the dev console.
+   *
+   * @param enabled - boolean value for whethere debugging should be on or off.
+   */
+  setDebugEnabled(enabled: boolean): void;
 }
 
 /**
@@ -55,22 +76,9 @@ export interface AnalyticsMethods {
  */
 export interface AnalyticsProviderProps {
   /**
-   * The API Key or OAuth for accessing the Analytics Events API
-   */
-  apiKey: string;
-
-  /**
    * The TemplateProps that come from the rendering system
    */
   templateData: TemplateProps;
-
-  /**
-   * The ISO 4217 currency code of the currency the value is expressed in.
-   * For example, "USD" for US dollars.
-   *
-   * For more information see https://www.iso.org/iso-4217-currency-codes.html.
-   */
-  currency: string;
 
   /**
    * requireOptIn should be set to true if your compliance requirements require
@@ -80,11 +88,10 @@ export interface AnalyticsProviderProps {
   requireOptIn?: boolean | undefined;
 
   /**
-   * disableSessionTracking will set sessionId to undefined in the event payload
-   * when a user does any trackable action on your site, such as a page view,
-   * click, etc.
+   * enableTrackingCookie will set a tracking cookie when a user does any
+   * trackable action on your site, such as a page view, click, etc.
    */
-  disableSessionTracking?: boolean | undefined;
+  enableTrackingCookie?: boolean | undefined;
 
   /**
    * enableDebugging can be set to true if you want to expose tracked events
@@ -93,7 +100,14 @@ export interface AnalyticsProviderProps {
   enableDebugging?: boolean | undefined;
 
   /**
-   * isProduction() will evaluate to true if the event is fired from any of
+   * The domain of the page to send with API requests. If none is specified,
+   * the hostname for the site ID is used. The domain string must include the
+   * scheme (e.g. https://foo.com).
+   */
+  pageDomain?: string;
+
+  /**
+   * isStaging() will evaluate to false if the the event is fired from any of
    * provided domains in productionDomains.
    */
   productionDomains?: string[];

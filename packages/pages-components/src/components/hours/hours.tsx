@@ -374,7 +374,7 @@ export function intervalsListsAreEqual(
   il1: HoursInterval[],
   il2: HoursInterval[]
 ): boolean {
-  if (il1.length !== il2.length) {
+  if (il1.length != il2.length) {
     return false;
   }
 
