@@ -124,7 +124,7 @@ describe("Analytics", () => {
     const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
     expect(payload.action).toBe("LINK");
-    expect(payload.pages.scope).toBe(undefined);
+    expect(payload.pages.scope).toBe("");
     expect(payload.pages.originalEventName).toBe("link");
   });
 
@@ -158,7 +158,7 @@ describe("Analytics", () => {
 
     const testClicks: {
       expectedAction: Action;
-      expectedScope: string | undefined;
+      expectedScope: string;
       expectedOriginalEventName: string;
       matcher: RegExp;
     }[] = [
@@ -176,7 +176,7 @@ describe("Analytics", () => {
       },
       {
         expectedAction: "LINK",
-        expectedScope: undefined,
+        expectedScope: "",
         expectedOriginalEventName: "fooclick",
         matcher: /three/,
       },
