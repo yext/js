@@ -54,6 +54,20 @@ const validCases = [
       "https://dyn.eu.mktgcdn.com/f/100001234/contentHash.pdf/width=126,height=164",
   },
   {
+    name: "ProdEUAccountZero",
+    input: "https://a.eu.mktgcdn.com/f/0/contentHash.pdf",
+    want: {
+      scheme: "https",
+      partition: "eu",
+      env: "prod",
+      accountId: 0,
+      contentHash: "contentHash",
+      extension: ".pdf",
+    } as FileUrl,
+    dynUrl:
+      "https://dyn.eu.mktgcdn.com/f/0/contentHash.pdf/width=126,height=164",
+  },
+  {
     name: "USSandbox",
     input: "https://a.mktgcdn.com/f-sandbox/contentHash.pdf",
     want: {

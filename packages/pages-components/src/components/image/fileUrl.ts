@@ -169,7 +169,8 @@ export const fileUrlToDynString = (
     }
   }
 
-  const accountId = fileUrl.accountId ? `${fileUrl.accountId}/` : "";
+  const accountId =
+    fileUrl.accountId !== undefined ? `${fileUrl.accountId}/` : "";
 
   return `${dynUrl}/${bucket}/${accountId}${fileUrl.contentHash}${
     fileUrl.extension
