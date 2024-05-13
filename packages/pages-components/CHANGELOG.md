@@ -1,3 +1,15 @@
+#### 1.0.0-rc.10 (2024-05-13)
+
+##### Bug Fixes
+
+* **pages-components:**  pass region to analytics reporter (#54) (61290348)
+
+##### Other Changes
+
+* **pages-components:**
+  *  debug mode and scope fixes (#46)""""""""" (11eb0205)
+  *  debug mode and scope fixes (#46)"""""""" (9751636d)
+
 #### 1.0.0-rc.9 (2024-05-09)
 
 ##### Bug Fixes
