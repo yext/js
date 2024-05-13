@@ -4,6 +4,8 @@ import { getRuntime } from "../../util/index.js";
 import type {
   DebuggerTabs,
   EventData,
+  EventMap,
+  Event,
   TabProps,
   Tooltip,
   TooltipHandlerProps,
@@ -31,8 +33,74 @@ export default function AnalyticsDebugger() {
   return createPortal(<AnalyticsDebuggerInternal />, document.body);
 }
 
+const getEventData = (
+  elem: HTMLElement,
+  scope: string | undefined
+): EventData => {
+  const action = elem.dataset.yaAction!;
+  const scopeOverride = elem.dataset.yaScopeoverride!;
+  const eventName = elem.dataset.yaEventname!;
+  const effectiveScope = scopeOverride || scope;
+
+  return {
+    action: action,
+    originalEventName: effectiveScope
+      ? `${effectiveScope}_${eventName}`
+      : eventName,
+    scope: effectiveScope,
+  };
+};
+
+/**
+ * Gets the closest parents up the parent tree that have a given selector.
+ */
+const getParents = (e: HTMLElement | null, selector: string): HTMLElement[] => {
+  const results = [];
+  let p = e;
+
+  while (p?.parentElement) {
+    p = p.parentElement.closest(selector);
+    if (p) {
+      results.push(p);
+    }
+  }
+  return results;
+};
+
 // Track scope / event elements.
-const data: EventData = {};
+const data: EventMap = {};
+
+const NO_SCOPE = "YA_NO_SCOPE";
+
+const addToData = (
+  scopeName: string,
+  eventData: EventData,
+  scopeEl: HTMLElement | undefined,
+  eventEl: HTMLElement
+) => {
+  if (!data.hasOwnProperty(scopeName)) {
+    data[scopeName] = {
+      scopeEl: scopeEl || eventEl, // overidden scopes still need an element
+      events: [
+        {
+          eventData: eventData,
+          el: eventEl,
+        },
+      ],
+    };
+  } else {
+    // Don't readd elements
+    if (!data[scopeName].events.map((event) => event.el).includes(eventEl)) {
+      data[scopeName].events = [
+        ...data[scopeName].events,
+        {
+          eventData: eventData,
+          el: eventEl,
+        },
+      ];
+    }
+  }
+};
 
 export function AnalyticsDebuggerInternal() {
   // Track whether the Events, Scope, or no tab is opened.
@@ -53,45 +121,49 @@ export function AnalyticsDebuggerInternal() {
   useEffect(() => {
     document.documentElement.classList.add("xYextDebug");
 
-    const scopes: NodeListOf<HTMLElement> =
-      document.querySelectorAll("[data-ya-scope]");
-    scopes.forEach((scope) => {
-      const scopeName = scope.dataset.yaScope;
-      const events: NodeListOf<HTMLElement> =
-        scope.querySelectorAll("[data-ya-track]");
+    const events: NodeListOf<HTMLElement> = document.querySelectorAll(
+      "[data-ya-eventname]"
+    );
 
-      events.forEach((eventEl, idx) => {
-        const eventName = eventEl.dataset.yaTrack;
+    events.forEach((eventEl, idx) => {
+      const scope = eventEl.closest("[data-ya-scope]") as
+        | HTMLElement
+        | undefined;
+      const scopeName = scope?.dataset.yaScope;
 
-        // Add tooltip when element is hovered.
-        eventEl.addEventListener("mouseenter", () => {
-          setTooltips([
-            {
-              eventEl,
-              eventName: `${scopeName}_${eventName}`,
-              key: `${scopeName}_${eventName}_${idx}`,
-            },
-          ]);
-        });
+      const elemData = getEventData(eventEl, scopeName);
 
-        // Remove tooltip.
-        eventEl.addEventListener("mouseleave", () => {
-          setTooltips([]);
-        });
+      // Add tooltip when element is hovered.
+      eventEl.addEventListener("mouseenter", () => {
+        setTooltips([
+          {
+            elem: eventEl,
+            key: `${elemData.originalEventName}_${idx}`,
+            action: elemData.action,
+            originalEventName: elemData.originalEventName,
+            scope: elemData.scope,
+          },
+        ]);
       });
 
-      if (scopeName) {
-        if (!data.hasOwnProperty(scopeName)) {
-          data[scopeName] = {
-            scope,
-            events: Array.from(events),
-          };
-        } else {
-          data[scopeName].events = [
-            ...data[scopeName].events,
-            ...Array.from(events),
-          ];
-        }
+      // Remove tooltip.
+      eventEl.addEventListener("mouseleave", () => {
+        setTooltips([]);
+      });
+
+      const scopeOverride = eventEl.dataset.yaScopeoverride!;
+      if (scopeOverride) {
+        addToData(scopeOverride, elemData, scope, eventEl);
+      } else {
+        const scopeNames = [
+          scopeName,
+          ...getParents(eventEl, "[data-ya-scope]").map(
+            (scopeEl) => scopeEl.dataset.yaScope
+          ),
+        ];
+        scopeNames.forEach((curScope) => {
+          addToData(curScope || NO_SCOPE, elemData, scope, eventEl);
+        });
       }
     });
 
@@ -143,15 +215,31 @@ export function AnalyticsDebuggerInternal() {
   );
 }
 
+const getUniqueEvents = () => {
+  const events: Event[] = [];
+  Object.entries(data).map(([_, eventNode]) =>
+    eventNode.events.map((event) => {
+      if (
+        !events
+          .map((event) => event.eventData.originalEventName)
+          .includes(event.eventData.originalEventName)
+      ) {
+        events.push(event);
+      }
+    })
+  );
+  return events;
+};
+
 function EventsTab(props: TabProps) {
-  const { data, setTooltips } = props;
+  const { setTooltips } = props;
 
   const [activeEventEl, setActiveEventEl] = useState<HTMLElement>();
   const [activeButton, setActiveButton] = useState("");
 
   const handleClick = (
     eventEl: HTMLElement,
-    eventName: string,
+    eventData: EventData,
     key: string
   ) => {
     eventEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -163,11 +251,14 @@ function EventsTab(props: TabProps) {
     eventEl.classList.add("analytics-event-highlight");
 
     setActiveButton(key);
+
     setTooltips([
       {
-        eventEl,
-        eventName,
-        key,
+        elem: eventEl,
+        key: key,
+        action: eventData.action,
+        originalEventName: eventData.originalEventName,
+        scope: eventData.scope,
       },
     ]);
   };
@@ -176,25 +267,23 @@ function EventsTab(props: TabProps) {
     <div className="analytics-debugger-tab">
       <h2 className="analytics-debugger-tab-title">Event Names</h2>
       <ul className="analytics-debugger-list">
-        {Object.entries(data).map(([scopeName, value]) =>
-          value.events.map((eventEl, idx) => {
-            const eventName = `${scopeName}_${eventEl.dataset.yaTrack}`;
-            const key = `${eventName}_${idx}`;
+        {getUniqueEvents().map((event, idx) => {
+          const eventData = event.eventData;
+          const key = `${eventData.originalEventName}_${idx}`;
 
-            return (
-              <li className="analytics-debugger-listItem" key={key}>
-                <button
-                  className={c("analytics-debugger-button", {
-                    "is-active": key === activeButton,
-                  })}
-                  onClick={() => handleClick(eventEl, eventName, key)}
-                >
-                  {eventName}
-                </button>
-              </li>
-            );
-          })
-        )}
+          return (
+            <li className="analytics-debugger-listItem" key={key}>
+              <button
+                className={c("analytics-debugger-button", {
+                  "is-active": key === activeButton,
+                })}
+                onClick={() => handleClick(event.el, eventData, key)}
+              >
+                {eventData.originalEventName}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -206,36 +295,51 @@ function ScopesTab(props: TabProps) {
   const [activeButton, setActiveButton] = useState("");
 
   const handleClick = (scopeName: string) => {
-    const node = data[scopeName];
-    node.scope.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    const eventNode = data[scopeName];
+    if (eventNode.scopeEl) {
+      eventNode.scopeEl.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
 
-    setActiveButton(scopeName);
+      setActiveButton(scopeName);
 
-    setTooltips(
-      node.events.map((eventEl, idx) => ({
-        eventEl,
-        eventName: `${scopeName}_${eventEl.dataset.yaTrack}`,
-        key: `${scopeName}_${eventEl.dataset.yaTrack}_${idx}`,
-      }))
-    );
+      setTooltips(
+        eventNode.events.map((event, idx) => {
+          const eventData = event.eventData;
+
+          return {
+            elem: event.el,
+            key: `${eventData.originalEventName}_${idx}`,
+            action: eventData.action,
+            originalEventName: eventData.originalEventName,
+            scope: eventData.scope,
+          };
+        })
+      );
+    }
   };
 
   return (
     <div className="analytics-debugger-tab">
       <h2 className="analytics-debugger-tab-title">Scope Names</h2>
       <ul className="analytics-debugger-list">
-        {Object.keys(data).map((scopeName, idx) => (
-          <li className="analytics-debugger-listItem" key={scopeName + idx}>
-            <button
-              className={c("analytics-debugger-button", {
-                "is-active": scopeName === activeButton,
-              })}
-              onClick={() => handleClick(scopeName)}
-            >
-              {scopeName}
-            </button>
-          </li>
-        ))}
+        {Object.keys(data).map((scopeName, idx) => {
+          if (scopeName !== NO_SCOPE) {
+            return (
+              <li className="analytics-debugger-listItem" key={scopeName + idx}>
+                <button
+                  className={c("analytics-debugger-button", {
+                    "is-active": scopeName === activeButton,
+                  })}
+                  onClick={() => handleClick(scopeName)}
+                >
+                  {scopeName}
+                </button>
+              </li>
+            );
+          }
+        })}
       </ul>
     </div>
   );
@@ -274,7 +378,11 @@ function TooltipHandler(props: TooltipHandlerProps) {
             }
           }}
         >
-          <span>{tooltip.eventName}</span>
+          <span>Action: {tooltip.action}</span>
+          <br />
+          <span>Scope: {tooltip.scope}</span>
+          <br />
+          <span>Original Event Name: {tooltip.originalEventName}</span>
         </div>
       ))}
     </>
@@ -289,7 +397,7 @@ function setTooltipPosition(
   for (let i = 0; i < 9; i++) {
     // Get base position and position the tooltip.
     const position = positionFinder(
-      item.tooltip.eventEl.getBoundingClientRect(),
+      item.tooltip.elem.getBoundingClientRect(),
       item.el,
       i
     );

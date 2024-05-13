@@ -1,4 +1,4 @@
-export function slugify(str: string): string {
+export function slugify(str: string | undefined): string {
   return str ? str.toLowerCase().trim().replace(/\s/g, "") : "";
 }
 

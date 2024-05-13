@@ -1,9 +1,7 @@
-import { ConversionDetails, Visitor } from "@yext/analytics";
-import { MouseEvent, useContext } from "react";
+import { useContext } from "react";
 import { getRuntime } from "../../util/index.js";
 import { AnalyticsContext } from "./context.js";
-import { concatScopes } from "./helpers.js";
-import { AnalyticsMethods } from "./interfaces.js";
+import { AnalyticsMethods, TrackProps } from "./interfaces.js";
 import { useScope } from "./scope.js";
 
 declare global {
@@ -14,7 +12,7 @@ declare global {
 
 /**
  * The useAnalytics hook can be used anywhere in the tree below a configured
- * AnalyticsProvider.  Calling it will return an object to give you access to
+ * AnalyticsProvider. Calling it will return an object to give you access to
  * the analytics convenience methods for use in your components,
  * such as track(), pageView(), optIn() etc.
  *
@@ -39,22 +37,10 @@ export function useAnalytics(): AnalyticsMethods | null {
 
   // TODO: this is ugly, I imagine there is a more elegant way of doing this
   return {
-    trackClick(
-      eventName: string,
-      conversionData?: ConversionDetails
-    ): (e: MouseEvent<HTMLAnchorElement>) => Promise<void> {
-      return ctx.trackClick(concatScopes(scope, eventName), conversionData);
-    },
     getDebugEnabled(): boolean {
       return ctx.getDebugEnabled();
     },
-    setDebugEnabled(enabled: boolean): void {
-      return ctx.setDebugEnabled(enabled);
-    },
-    enableTrackingCookie(): void {
-      return ctx.enableTrackingCookie();
-    },
-    identify(visitor: Visitor): void {
+    identify(visitor: Record<string, string>): void {
       return ctx.identify(visitor);
     },
     optIn(): Promise<void> {
@@ -63,11 +49,11 @@ export function useAnalytics(): AnalyticsMethods | null {
     pageView(): Promise<void> {
       return ctx.pageView();
     },
-    track(
-      eventName: string,
-      conversionData?: ConversionDetails
-    ): Promise<void> {
-      return ctx.track(concatScopes(scope, eventName), conversionData);
+    track(props: TrackProps): Promise<void> {
+      return ctx.track({
+        ...props,
+        scope: props.scope ?? scope, // prefer specific scope over hook
+      });
     },
   };
 }
@@ -82,7 +68,7 @@ export const useTrack = () => {
 };
 
 /**
- * Simpler hook that just returns returns the analytics pageView method
+ * Simpler hook that just returns the analytics pageView method
  *
  * @public
  */

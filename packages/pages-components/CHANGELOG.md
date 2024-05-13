@@ -2,15 +2,15 @@
 
 ##### Bug Fixes
 
-* **pages-components:**
-  *  properly translate dyn url when accountId is 0 (#51) (ff34649d)
-  *  remove usage of innerHTML (#50) (1c6520f4)
+- **pages-components:**
+  - properly translate dyn url when accountId is 0 (#51) (ff34649d)
+  - remove usage of innerHTML (#50) (1c6520f4)
 
 ##### Other Changes
 
-* **pages-components:**
-  *  debug mode and scope fixes (#46)""""""" (91ebfc95)
-  *  debug mode and scope fixes (#46)"""""" (71cbc243)
+- **pages-components:**
+  - debug mode and scope fixes (#46)""""""" (91ebfc95)
+  - debug mode and scope fixes (#46)"""""" (71cbc243)
 
 #### 1.0.0-rc.8 (2024-04-25)
 
@@ -56,7 +56,7 @@
 
 ##### Bug Fixes
 
-* **pages-components:**  change slug for analytics eventNames (#45) (2b25e50e)
+- **pages-components:** change slug for analytics eventNames (#45) (2b25e50e)
 
 #### 1.0.0-rc.2 (2024-03-01)
 

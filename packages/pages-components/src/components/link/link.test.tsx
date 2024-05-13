@@ -32,7 +32,12 @@ vi.mock("../../components/analytics", () => {
   };
   return {
     useAnalytics: () => {
-      return { trackClick };
+      return {
+        trackClick,
+        getDebugEnabled: () => {
+          return false;
+        },
+      };
     },
   };
 });

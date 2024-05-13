@@ -1,17 +1,15 @@
-import { MouseEvent } from "react";
 import { TemplateProps } from "./types.js";
 import { getRuntime, isProduction } from "../../util/index.js";
-import { AnalyticsMethods } from "./interfaces.js";
+import { AnalyticsMethods, TrackProps } from "./interfaces.js";
 import {
-  ConversionDetails,
-  CookieManager,
-  EntityPage,
-  PagesAnalyticsService,
-  providePagesAnalytics,
-  StaticPage,
-  Visitor,
+  AnalyticsConfig,
+  AnalyticsEventService,
+  EventPayload,
+  Region,
+  analytics,
 } from "@yext/analytics";
-import { slugify } from "./helpers.js";
+import { concatScopes, slugify } from "./helpers.js";
+import { getPartition } from "../../util/partition.js";
 
 /**
  * The Analytics class creates a stateful facade in front of the \@yext/analytics
@@ -28,52 +26,35 @@ import { slugify } from "./helpers.js";
  */
 export class Analytics implements AnalyticsMethods {
   private _optedIn: boolean;
-  private _conversionTrackingEnabled = false;
-  private _cookieManager: CookieManager | undefined;
-  private _analyticsReporter: PagesAnalyticsService | undefined;
+  private _sessionTrackingEnabled: boolean;
+  private _analyticsEventService: AnalyticsEventService | undefined;
   private _pageViewFired = false;
-  private _enableDebugging = false;
 
   /**
    * Creates an Analytics instance, will fire a pageview event if requireOptin
    * is false
    *
+   * @param apiKey - the Yext API key for authorizing analytics events
+   * @param defaultCurrency - the ISO 4217 currency code to use for valued events
    * @param templateData - template data object from the pages system
    * @param requireOptIn - boolean, set to true if you require user opt in before tracking analytics
+   * @param productionDomains - the domains that analytics should fire
+   * @param disableSessionTracking - turns off session tracking
+   * @param enableDebugging - turns debug mode on meaning requests are logged instead
    */
   constructor(
+    private apiKey: string,
+    private defaultCurrency: string,
     private templateData: TemplateProps,
     requireOptIn?: boolean | undefined,
-    private pageDomain?: string,
-    private productionDomains: string[] = []
+    private productionDomains: string[] = [],
+    disableSessionTracking?: boolean | undefined,
+    private enableDebugging: boolean = false
   ) {
     this._optedIn = !requireOptIn;
+    this._sessionTrackingEnabled = !disableSessionTracking;
     this.makeReporter();
     this.pageView();
-  }
-
-  private calculatePageType(): EntityPage | StaticPage {
-    const isStaticPage = !!this.templateData.document?.__?.staticPage;
-    const isEntityPage = !!this.templateData.document?.__?.entityPageSet;
-
-    let pageType: EntityPage | StaticPage;
-
-    if (isStaticPage) {
-      pageType = {
-        name: "static",
-        staticPageId: this.templateData.document.__.name as string,
-      };
-    } else if (isEntityPage) {
-      pageType = {
-        name: "entity",
-        pageSetId: this.templateData.document.__.name as string,
-        id: this.templateData.document.uid as number,
-      };
-    } else {
-      throw new Error("invalid document type");
-    }
-
-    return pageType;
   }
 
   private makeReporter() {
@@ -84,50 +65,52 @@ export class Analytics implements AnalyticsMethods {
       return;
     }
 
-    const inProduction = isProduction(...this.productionDomains);
+    // Don't fire analytics for non-production domains, unless debug enabled
+    if (!isProduction(...this.productionDomains) && !this.enableDebugging) {
+      console.warn("Yext Analytics disabled for non-production domains");
+      return;
+    }
 
-    this._analyticsReporter = providePagesAnalytics({
-      businessId: this.templateData.document.businessId as number,
-      pageType: this.calculatePageType(),
-      pageUrl: window.location.href,
-      production: inProduction,
-      referrer: document.referrer,
-      siteId: this.templateData.document.siteId as number,
-      pageDomain: this.pageDomain,
-    });
+    const region = getPartition(
+      this.templateData.document.businessId
+    ) as Region;
 
-    this.setDebugEnabled(this._enableDebugging);
+    const config: AnalyticsConfig = {
+      authorizationType: "apiKey",
+      authorization: this.apiKey,
+      env: "PRODUCTION",
+      region: region || "US",
+      sessionTrackingEnabled: this._sessionTrackingEnabled,
+      debug: this.enableDebugging,
+    };
+
+    const defaultPayload: EventPayload = {
+      pages: {
+        siteUid: this.templateData.document.siteId as number,
+        template: this.templateData.document.__.name,
+      },
+      entity: (this.templateData.document.uid as number) || undefined,
+    };
+
+    this._analyticsEventService = analytics(config).with(defaultPayload);
   }
 
   private canTrack(): boolean {
     return (
       getRuntime().name === "browser" &&
       this._optedIn &&
-      !!this._analyticsReporter
+      !!this._analyticsEventService
     );
-  }
-
-  private setupConversionTracking(): void {
-    this._cookieManager = new CookieManager();
-    this._analyticsReporter?.setConversionTrackingEnabled(
-      true,
-      this._cookieManager.setAndGetYextCookie()
-    );
-  }
-
-  /** {@inheritDoc AnalyticsMethods.enableConversionTracking} */
-  enableTrackingCookie(): void {
-    this._conversionTrackingEnabled = true;
-
-    if (this.canTrack()) {
-      this.setupConversionTracking();
-    }
   }
 
   /** {@inheritDoc AnalyticsMethods.identify} */
-  identify(visitor: Visitor): void {
+  identify(visitor: Record<string, string>): void {
     if (this.canTrack()) {
-      this._analyticsReporter?.setVisitor(visitor);
+      if (this._analyticsEventService) {
+        this._analyticsEventService = this._analyticsEventService.with({
+          visitor: visitor,
+        });
+      }
     }
   }
 
@@ -135,9 +118,7 @@ export class Analytics implements AnalyticsMethods {
   async optIn(): Promise<void> {
     this._optedIn = true;
     this.makeReporter();
-    if (this._conversionTrackingEnabled && !this._cookieManager) {
-      this.setupConversionTracking();
-    }
+
     if (!this._pageViewFired) {
       await this.pageView();
     }
@@ -148,98 +129,42 @@ export class Analytics implements AnalyticsMethods {
     if (!this.canTrack()) {
       return Promise.resolve(undefined);
     }
-    // TODO: if this successfully completes & conversion tracking is enabled
-    // and the user is opted in we should remove the y_source query parameter
-    // from the url if it is present to prevent double counting a listings click
-    // if the page is refreshed.
-    await this._analyticsReporter?.pageView();
+
+    await this._analyticsEventService?.report({
+      action: "PAGE_VIEW",
+    });
+
     this._pageViewFired = true;
   }
 
   /** {@inheritDoc AnalyticsMethods.track} */
-  async track(
-    eventName: string,
-    conversionData?: ConversionDetails
-  ): Promise<void> {
+  async track(props: TrackProps): Promise<void> {
     if (!this.canTrack()) {
       return Promise.resolve();
     }
 
-    await this._analyticsReporter?.track(
-      { eventType: slugify(eventName) },
-      conversionData
-    );
+    const { action, scope, eventName, currency, amount } = props;
+
+    let value;
+    if (amount) {
+      value = {
+        amount: amount,
+        currency: currency || this.defaultCurrency,
+      };
+    }
+
+    await this._analyticsEventService?.report({
+      action,
+      pages: {
+        scope: slugify(scope) || undefined,
+        originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
+      },
+      value: value,
+    });
   }
 
   /** {@inheritDoc AnalyticsMethods.getDebugEnabled} */
   getDebugEnabled(): boolean {
-    return this._enableDebugging;
-  }
-
-  /** {@inheritDoc AnalyticsMethods.setDebugEnabled} */
-  setDebugEnabled(enabled: boolean): void {
-    this._enableDebugging = enabled;
-    this._analyticsReporter?.setDebugEnabled(enabled);
-  }
-
-  /** {@inheritDoc AnalyticsMethods.trackClick} */
-  trackClick(
-    eventName: string,
-    conversionData?: ConversionDetails
-  ): (e: MouseEvent<HTMLAnchorElement>) => Promise<void> {
-    return (e: MouseEvent) => {
-      if (!this.canTrack()) {
-        return Promise.resolve();
-      }
-
-      if (e.target === null || e.defaultPrevented) {
-        return this.track(eventName, conversionData);
-      }
-
-      const targetLink = e.target as HTMLAnchorElement;
-
-      if (targetLink.href === null || targetLink.href === undefined) {
-        return this.track(eventName, conversionData);
-      }
-
-      const linkUrl = new URL(targetLink.href);
-
-      if (
-        linkUrl.protocol === "mailto:" ||
-        linkUrl.protocol === "tel:" ||
-        // eslint-disable-next-line no-script-url
-        linkUrl.protocol === "javascript:" ||
-        linkUrl.hostname === window.location.hostname
-      ) {
-        return this.track(eventName, conversionData);
-      }
-
-      const targetBlankOrSimilar =
-        (targetLink.target &&
-          !targetLink.target.match(/^_(self|parent|top)$/i)) ||
-        e.ctrlKey ||
-        e.shiftKey ||
-        e.metaKey;
-
-      if (targetBlankOrSimilar) {
-        return this.track(eventName, conversionData);
-      }
-
-      e.preventDefault();
-
-      const navigate = () => {
-        window.location.assign(linkUrl);
-      };
-
-      const awaitTimeout = new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 1000);
-      });
-
-      return Promise.race([this.track(eventName, conversionData), awaitTimeout])
-        .then(navigate)
-        .catch(navigate);
-    };
+    return this.enableDebugging;
   }
 }
