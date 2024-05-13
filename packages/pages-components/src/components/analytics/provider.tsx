@@ -1,4 +1,3 @@
-import * as React from "react";
 import { PropsWithChildren, useRef, lazy, Suspense } from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
@@ -19,37 +18,36 @@ export function AnalyticsProvider(
 ): JSX.Element {
   const {
     children,
-    requireOptIn,
-    enableTrackingCookie,
-    enableDebugging,
+    apiKey,
+    currency,
     templateData,
-    pageDomain,
+    requireOptIn,
     productionDomains,
+    disableSessionTracking,
+    enableDebugging,
   } = props;
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
-
-  if (analyticsRef.current === null) {
-    analyticsRef.current = new Analytics(
-      templateData,
-      requireOptIn,
-      pageDomain,
-      productionDomains
-    );
-  }
-
-  const analytics = analyticsRef.current;
-
-  if (enableTrackingCookie) {
-    analytics.enableTrackingCookie();
-  }
 
   let enableDebuggingDefault = debuggingParamDetected();
   if (getRuntime().name === "node") {
     enableDebuggingDefault =
       enableDebuggingDefault || process.env?.NODE_ENV === "development";
   }
-  analytics.setDebugEnabled(enableDebugging ?? enableDebuggingDefault);
+
+  if (analyticsRef.current === null) {
+    analyticsRef.current = new Analytics(
+      apiKey,
+      currency,
+      templateData,
+      requireOptIn,
+      productionDomains,
+      disableSessionTracking,
+      enableDebugging ?? enableDebuggingDefault
+    );
+  }
+
+  const analytics = analyticsRef.current;
 
   return (
     <>

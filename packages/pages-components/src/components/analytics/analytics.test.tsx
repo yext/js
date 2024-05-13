@@ -13,8 +13,8 @@ import userEvent from "@testing-library/user-event";
 import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
-import { useAnalytics } from "./hooks.js";
 import { AnalyticsScopeProvider } from "./scope.js";
+import { Action } from "@yext/analytics";
 
 vi.mock("../../util/runtime.js", () => {
   const runtime = {
@@ -28,12 +28,6 @@ vi.mock("../../util/runtime.js", () => {
   };
 });
 
-// The following section of mocks just exists to supress an error that occurs
-// because Vitest does not implement a window.location.navigate.  See:
-// https://www.benmvp.com/blog/mocking-window-location-methods-jest-jsdom/
-// for details.
-const oldWindowLocation = global.location;
-
 beforeAll(() => {
   global.process = {
     ...global.process,
@@ -41,20 +35,6 @@ beforeAll(() => {
       NODE_ENV: "development",
     },
   };
-  // @ts-ignore
-  delete global.location;
-
-  // @ts-ignore
-  global.location = Object.defineProperties(
-    {},
-    {
-      ...Object.getOwnPropertyDescriptors(oldWindowLocation),
-      assign: {
-        configurable: true,
-        value: vi.fn(),
-      },
-    }
-  );
 
   // this mock allows us to inspect the fetch requests sent by the analytics
   // package and ensure they are generated correctly.
@@ -68,9 +48,6 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  // restore window location so we don't side effect other tests.
-  window.location = oldWindowLocation;
-
   // @ts-ignore
   delete global.fetch;
   global.process = currentProcess;
@@ -99,7 +76,13 @@ describe("Analytics", () => {
   it("should fire a page view once", () => {
     const App = () => {
       return (
-        <AnalyticsProvider templateData={baseProps} requireOptIn={false} />
+        <AnalyticsProvider
+          apiKey="key"
+          currency="USD"
+          templateData={baseProps}
+          requireOptIn={false}
+          productionDomains={["localhost"]}
+        />
       );
     };
     const { rerender } = render(<App />);
@@ -109,42 +92,61 @@ describe("Analytics", () => {
   });
 
   it("should not fire a page view when opt in is required", () => {
-    render(<AnalyticsProvider templateData={baseProps} requireOptIn={true} />);
+    render(
+      <AnalyticsProvider
+        apiKey="key"
+        currency="USD"
+        templateData={baseProps}
+        requireOptIn={true}
+        productionDomains={["localhost"]}
+      />
+    );
 
     expect(global.fetch).toHaveBeenCalledTimes(0);
   });
 
   it("should track a click", () => {
     render(
-      <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
-        <Link href="https://yext.com" onClick={(e) => e.preventDefault()}>
-          Click Me
-        </Link>
+      <AnalyticsProvider
+        apiKey="key"
+        currency="USD"
+        templateData={baseProps}
+        requireOptIn={false}
+        productionDomains={["localhost"]}
+      >
+        <Link href="#">Click Me</Link>
       </AnalyticsProvider>
     );
 
     fireEvent.click(screen.getByRole("link"));
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
-    const generatedUrlStr = callstack[callstack.length - 1][0];
-    const generatedUrl = new URL(generatedUrlStr);
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    expect(generatedUrl.searchParams.get("eventType")).toBe("link");
+    expect(payload.action).toBe("LINK");
+    expect(payload.pages.scope).toBe(undefined);
+    expect(payload.pages.originalEventName).toBe("link");
   });
 
   it("should track a click with scoping", async () => {
     const App = () => {
       return (
-        <AnalyticsProvider templateData={baseProps} requireOptIn={false}>
+        <AnalyticsProvider
+          apiKey="key"
+          currency="USD"
+          templateData={baseProps}
+          requireOptIn={false}
+          productionDomains={["localhost"]}
+        >
           <AnalyticsScopeProvider name="header">
             <AnalyticsScopeProvider name="menu">
-              <Link href="https://yext.com">one</Link>
+              <Link href="#">one</Link>
             </AnalyticsScopeProvider>
             <AnalyticsScopeProvider name="drop down">
-              <Link cta={{ link: "https://yext.com" }}>two</Link>
+              <Link cta={{ link: "#" }}>two</Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>
-          <Link href="https://yext.com" eventName="fooclick">
+          <Link href="#" eventName="fooclick">
             three
           </Link>
         </AnalyticsProvider>
@@ -155,24 +157,30 @@ describe("Analytics", () => {
     rerender(<App />);
 
     const testClicks: {
-      expectedTag: string;
+      expectedAction: Action;
+      expectedScope: string | undefined;
+      expectedOriginalEventName: string;
       matcher: RegExp;
     }[] = [
       {
-        expectedTag: "header_menu_link",
+        expectedAction: "LINK",
+        expectedScope: "header_menu",
+        expectedOriginalEventName: "header_menu_link",
         matcher: /one/,
       },
       {
-        expectedTag: "header_dropdown_cta",
+        expectedAction: "CTA_CLICK",
+        expectedScope: "header_dropdown",
+        expectedOriginalEventName: "header_dropdown_cta",
         matcher: /two/,
       },
       {
-        expectedTag: "fooclick",
+        expectedAction: "LINK",
+        expectedScope: undefined,
+        expectedOriginalEventName: "fooclick",
         matcher: /three/,
       },
     ];
-
-    expect.assertions(testClicks.length);
 
     // @ts-ignore
     const user = userEvent.setup();
@@ -180,77 +188,71 @@ describe("Analytics", () => {
     // @ts-ignore
     const callstack = global.fetch.mock.calls;
 
-    for (const { matcher, expectedTag } of testClicks) {
+    for (const {
+      matcher,
+      expectedAction,
+      expectedScope,
+      expectedOriginalEventName,
+    } of testClicks) {
       await user.click(screen.getByText(matcher));
-      const generatedUrlStr = callstack[callstack.length - 1][0];
-      const generatedUrl = new URL(generatedUrlStr);
-      const eventName = generatedUrl.searchParams.get("eventType");
-      expect(eventName).toBe(expectedTag);
+      const payload = JSON.parse(callstack[callstack.length - 1][1].body);
+
+      expect(payload.action).toBe(expectedAction);
+      expect(payload.pages.scope).toBe(expectedScope);
+      expect(payload.pages.originalEventName).toBe(expectedOriginalEventName);
     }
   });
 
-  it("should track a click with a conversion", async () => {
-    const expectedConversionData = { cid: "123456", cv: "10" };
-
-    const MyButton = () => {
-      const analytics = useAnalytics();
-      analytics?.enableTrackingCookie();
-      return (
-        <button
-          onClick={async () =>
-            await analytics?.track("foo click", expectedConversionData)
-          }
-        />
-      );
-    };
-
+  it("turns off session tracking", () => {
     render(
       <AnalyticsProvider
+        apiKey="key"
+        currency="USD"
         templateData={baseProps}
         requireOptIn={false}
-        enableTrackingCookie={true}
+        productionDomains={["localhost"]}
+        disableSessionTracking={true}
       >
-        <MyButton />
+        <Link href="#" onClick={(e) => e.preventDefault()}>
+          Click Me
+        </Link>
       </AnalyticsProvider>
     );
 
+    fireEvent.click(screen.getByRole("link"));
     // @ts-ignore
-    const user = userEvent.setup();
-    await user.click(screen.getByRole("button"));
+    const callstack = global.fetch.mock.calls;
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
 
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-
-      const generatedClickUrlStr = mockCalls[1][0];
-      const generatedClickUrl = new URL(generatedClickUrlStr);
-      expect(generatedClickUrl.searchParams.get("_yfpc")).toBeTruthy();
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("_yfpc")).toBeTruthy();
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("cid")).toBe(
-        expectedConversionData.cid
-      );
-    });
-    await vi.waitFor(() => {
-      // @ts-ignore
-      const mockCalls = global.fetch.mock.calls;
-      const generatedConversionUrlStr = mockCalls[2][0];
-      const generatedConversionUrl = new URL(generatedConversionUrlStr);
-      expect(generatedConversionUrl.searchParams.get("cv")).toBe(
-        expectedConversionData.cv
-      );
-    });
+    expect(payload.sessionId).toBeUndefined();
   });
-  // TODO: figure out the right way to test window.location logic to credit listings with y_source param
+
+  it("overrides AnalyticsScopeProvider", () => {
+    render(
+      <AnalyticsProvider
+        apiKey="key"
+        currency="USD"
+        templateData={baseProps}
+        requireOptIn={false}
+        productionDomains={["localhost"]}
+      >
+        <AnalyticsScopeProvider name="header">
+          <AnalyticsScopeProvider name="menu">
+            <Link href="#" scope="custom scope">
+              one
+            </Link>
+          </AnalyticsScopeProvider>
+        </AnalyticsScopeProvider>
+      </AnalyticsProvider>
+    );
+
+    fireEvent.click(screen.getByRole("link"));
+    // @ts-ignore
+    const callstack = global.fetch.mock.calls;
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
+
+    expect(payload.action).toBe("LINK");
+    expect(payload.pages.scope).toBe("customscope");
+    expect(payload.pages.originalEventName).toBe("customscope_link");
+  });
 });
