@@ -86,7 +86,7 @@ export class Analytics implements AnalyticsMethods {
     }
 
     const inProduction = isProduction(...this.productionDomains);
-    
+
     const region = getPartition(
       this.templateData.document.businessId
     ) as Region;
