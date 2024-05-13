@@ -13,6 +13,7 @@ import {
   Visitor,
 } from "@yext/analytics";
 import { slugify } from "./helpers.js";
+import { getPartition } from "../../util/partition.js";
 
 /**
  * The Analytics class creates a stateful facade in front of the \@yext/analytics
