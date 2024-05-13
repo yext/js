@@ -8,6 +8,7 @@ import {
   EntityPage,
   PagesAnalyticsService,
   providePagesAnalytics,
+  Region,
   StaticPage,
   Visitor,
 } from "@yext/analytics";
@@ -86,6 +87,10 @@ export class Analytics implements AnalyticsMethods {
 
     const inProduction = isProduction(...this.productionDomains);
 
+    const region = getPartition(
+      this.templateData.document.businessId
+    ) as Region;
+
     this._analyticsReporter = providePagesAnalytics({
       businessId: this.templateData.document.businessId as number,
       pageType: this.calculatePageType(),
@@ -94,6 +99,7 @@ export class Analytics implements AnalyticsMethods {
       referrer: document.referrer,
       siteId: this.templateData.document.siteId as number,
       pageDomain: this.pageDomain,
+      region: region,
     });
 
     this.setDebugEnabled(this._enableDebugging);
