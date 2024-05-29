@@ -24,17 +24,22 @@ import type { CTA, LinkProps } from "./types.js";
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
     const link: CTA = isHREFProps(props) ? { link: props.href } : props.cta;
-    const { children, onClick, className, eventName, cta, ...rest } = props;
+    const { children, onClick, className, eventName, cta, obfuscate, ...rest } =
+      props;
 
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
 
-    const obfuscate =
-      props.obfuscate || (props.obfuscate !== false && isEmail(link.link));
-    const [humanInteraction, setHumanInteraction] = useState<boolean>(false);
+    const isObfuscate =
+      obfuscate || (obfuscate !== false && isEmail(link.link));
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-      setHumanInteraction(true);
+      const currentTarget = e.currentTarget;
+      if (isObfuscate) {
+        // must happen before the async call
+        e.preventDefault();
+      }
+
       if (analytics !== null) {
         try {
           await analytics.trackClick(trackEvent, props.conversionDetails)(e);
@@ -46,26 +51,26 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       if (onClick) {
         onClick(e);
       }
+
+      if (isObfuscate) {
+        const encodedLink = currentTarget.href.split("/").at(-1);
+        if (encodedLink) {
+          window.location.href = atob(encodedLink);
+        }
+      }
     };
 
-    const useLinkAsLabel = !children && !link.label;
-    const isObfuscate = !humanInteraction && obfuscate;
-    const obfuscatedStyle: React.CSSProperties = {
-      ...props.style,
-      unicodeBidi: "bidi-override",
-      direction: useLinkAsLabel && isObfuscate ? "rtl" : "ltr",
-    };
-
-    const renderedLink = isObfuscate ? reverse(link.link) : link.link;
+    const renderedLink = isObfuscate
+      ? "Obfuscated, set a label or child"
+      : link.link;
 
     return (
       <a
         className={classNames("Link", className)}
-        href={humanInteraction || !obfuscate ? getHref(link) : "obfuscate"}
+        href={isObfuscate ? btoa(getHref(link)) : getHref(link)}
         onClick={handleClick}
         rel={props.target && !props.rel ? "noopener" : undefined}
         ref={ref}
-        style={obfuscatedStyle}
         data-ya-track={trackEvent}
         {...rest}
       >

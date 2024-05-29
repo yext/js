@@ -8,10 +8,16 @@ import { LinkProps, HREFLinkProps, CTA } from "./types.js";
  */
 const getHref = (cta: CTA): string => {
   if (cta.linkType === "Email" || (!cta.linkType && isEmail(cta.link))) {
+    if (cta.link.includes("mailto:")) {
+      return cta.link;
+    }
     return `mailto:${cta.link}`;
   }
 
   if (cta.linkType === "Phone") {
+    if (cta.link.includes("tel:")) {
+      return cta.link;
+    }
     return `tel:${cta.link}`;
   }
 
@@ -24,10 +30,14 @@ const getHref = (cta: CTA): string => {
  * Regex defined in HTML Spec for <input type="email"> validation.
  * https://html.spec.whatwg.org/#email-state-(type=email)
  */
-const isEmail = (string: string): boolean => {
+const isEmail = (link: string): boolean => {
+  if (link.includes("mailto:")) {
+    return true;
+  }
+
   const re =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return re.test(string);
+  return re.test(link);
 };
 
 /**
