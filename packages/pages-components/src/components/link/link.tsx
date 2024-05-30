@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
-import { getHref, isEmail, isHREFProps, reverse } from "./methods.js";
+import { getHref, isEmail, isHREFProps } from "./methods.js";
 import type { CTA, LinkProps } from "./types.js";
 
 /**
