@@ -2,7 +2,7 @@
 
 ##### Bug Fixes
 
-* **pages-components:**  properly obfuscate links (#55) (b9fee518)
+- **pages-components:** properly obfuscate links (#55) (b9fee518)
 
 #### 1.0.0-rc.10 (2024-05-13)
 
