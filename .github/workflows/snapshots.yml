@@ -11,16 +11,19 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.BOT_REPO_SCOPED_TOKEN }}
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4.0.2
         with:
-          node-version: 18.x
+          node-version: ${{ matrix.node-version }}
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.4
+        uses: pnpm/action-setup@v4.0.0
       - name: Install deps
         working-directory: packages/pages-components
         run: pnpm i --ignore-scripts concurrently@8 wait-on@7
