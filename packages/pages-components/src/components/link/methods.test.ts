@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { getHref, isEmail, reverse } from "./methods.js";
+import { getHref, isEmail } from "./methods.js";
 import { LinkTypes } from "./types.js";
 
 // getHref
@@ -79,14 +79,4 @@ test.each<[string, boolean]>([
   ["ddjk-s-jk@asl-.com", expectInvalid],
 ])(`isEmail: %s`, (emailAddress, validity) => {
   expect(isEmail(emailAddress)).toEqual(validity);
-});
-
-// reverse
-
-test.each<[string, string]>([
-  ["https://yext.com", "moc.txey//:sptth"],
-  ["0123456789", "9876543210"],
-  ["the quick fox", "xof kciuq eht"],
-])(`reverse: %s`, (forwards, backwards) => {
-  expect(reverse(forwards)).toEqual(backwards);
 });
