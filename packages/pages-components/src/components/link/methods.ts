@@ -8,14 +8,14 @@ import { LinkProps, HREFLinkProps, CTA } from "./types.js";
  */
 const getHref = (cta: CTA): string => {
   if (cta.linkType === "Email" || (!cta.linkType && isEmail(cta.link))) {
-    if (cta.link.includes("mailto:")) {
+    if (cta.link.startsWith("mailto:")) {
       return cta.link;
     }
     return `mailto:${cta.link}`;
   }
 
   if (cta.linkType === "Phone") {
-    if (cta.link.includes("tel:")) {
+    if (cta.link.startsWith("tel:")) {
       return cta.link;
     }
     return `tel:${cta.link}`;
@@ -31,7 +31,7 @@ const getHref = (cta: CTA): string => {
  * https://html.spec.whatwg.org/#email-state-(type=email)
  */
 const isEmail = (link: string): boolean => {
-  if (link.includes("mailto:")) {
+  if (link.startsWith("mailto:")) {
     return true;
   }
 
