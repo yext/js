@@ -195,6 +195,7 @@ function load(
     language,
     region,
     libraries = [],
+    loading = "async",
     params = {},
   } = {}
 ) {
@@ -225,6 +226,10 @@ function load(
 
   if (region) {
     apiParams.region = region;
+  }
+
+  if (loading) {
+    apiParams.loading = loading;
   }
 
   LoadScript(
