@@ -20,7 +20,7 @@ export interface MapProps {
   className?: string;
   clientKey?: string;
   children?: any;
-  controls: boolean;
+  controls?: boolean;
   defaultCenter?: Coordinate;
   defaultZoom?: number;
   mapRef?: React.MutableRefObject<MapType | null>;
@@ -32,11 +32,11 @@ export interface MapProps {
         right: number | (() => number);
         top: number | (() => number);
       };
-  panHandler: (previousBounds: GeoBounds, currentBounds: GeoBounds) => void;
+  panHandler?: (previousBounds: GeoBounds, currentBounds: GeoBounds) => void;
   panStartHandler?: (currentBounds: GeoBounds) => void;
-  provider: MapProvider;
+  provider?: MapProvider;
   providerOptions?: { [key: string]: any };
-  singleZoom: number;
+  singleZoom?: number;
 }
 
 // Marker
@@ -47,9 +47,9 @@ export interface MarkerProps {
   hideOffscreen?: boolean;
   icon?: JSX.Element;
   id: string;
-  onClick: (id: string) => void;
-  onHover: (hovered: boolean, id: string) => void;
-  onFocus: (focused: boolean, id: string) => void;
+  onClick?: (id: string) => void;
+  onHover?: (hovered: boolean, id: string) => void;
+  onFocus?: (focused: boolean, id: string) => void;
   statusOptions?: { [key: string]: boolean };
   zIndex?: number;
 }

@@ -23,12 +23,12 @@ const defaultMarkerIcon = (
 export const Marker = ({
   children,
   coordinate,
-  hideOffscreen,
+  hideOffscreen = false,
   id,
-  icon,
-  onClick,
-  onFocus,
-  onHover,
+  icon = defaultMarkerIcon,
+  onClick = () => null,
+  onFocus = () => null,
+  onHover = () => null,
   zIndex,
 }: MarkerProps): JSX.Element | null => {
   const { map, provider } = useContext(MapContext) as MapContextType;
@@ -95,12 +95,4 @@ export const Marker = ({
   }
 
   return null;
-};
-
-Marker.defaultProps = {
-  hideOffscreen: false,
-  icon: defaultMarkerIcon,
-  onClick: () => null,
-  onHover: () => null,
-  onFocus: () => null,
 };
