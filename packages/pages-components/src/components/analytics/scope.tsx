@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, PropsWithChildren, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  PropsWithChildren,
+  useEffect,
+} from "react";
 import { concatScopes } from "./helpers.js";
 import { AnalyticsScopeProps } from "./interfaces.js";
 import { useAnalytics } from "./hooks.js";
