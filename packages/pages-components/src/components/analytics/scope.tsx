@@ -8,7 +8,6 @@ import {
 import { concatScopes } from "./helpers.js";
 import { AnalyticsScopeProps } from "./interfaces.js";
 import { useAnalytics } from "./hooks.js";
-import { getRuntime } from "../../util/runtime.js";
 
 const ScopeContext = createContext({ name: "" });
 
