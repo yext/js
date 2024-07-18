@@ -80,3 +80,5 @@ out
 .turbo
 
 packages/*-components/dist
+
+.DS_Store

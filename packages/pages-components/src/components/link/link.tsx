@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
-import { getHref, isEmail, isHREFProps, reverse } from "./methods.js";
+import { getHref, isEmail, isHREFProps } from "./methods.js";
 import type { CTA, LinkProps } from "./types.js";
 
 /**
@@ -33,6 +33,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       currency,
       amount,
       cta,
+      obfuscate,
       ...rest
     } = props;
 
@@ -40,13 +41,17 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
 
-    const obfuscate =
-      props.obfuscate || (props.obfuscate !== false && isEmail(link.link));
-    const [humanInteraction, setHumanInteraction] = useState<boolean>(false);
+    const isObfuscate =
+      obfuscate || (obfuscate !== false && isEmail(link.link));
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-      setHumanInteraction(true);
-      if (analytics) {
+      const currentTarget = e.currentTarget;
+      if (isObfuscate) {
+        // must happen before the async call
+        e.preventDefault();
+      }
+
+      if (analytics !== null) {
         try {
           await analytics.track({
             action: action,
@@ -63,25 +68,25 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       if (onClick) {
         onClick(e);
       }
+
+      if (isObfuscate) {
+        const encodedLink = currentTarget.href.split("/").at(-1);
+        if (encodedLink) {
+          window.location.href = atob(encodedLink);
+        }
+      }
     };
 
-    const useLinkAsLabel = !children && !link.label;
-    const isObfuscate = !humanInteraction && obfuscate;
-    const obfuscatedStyle: React.CSSProperties = {
-      ...props.style,
-      unicodeBidi: "bidi-override",
-      direction: useLinkAsLabel && isObfuscate ? "rtl" : "ltr",
-    };
-
-    const renderedLink = isObfuscate ? reverse(link.link) : link.link;
+    const renderedLink = isObfuscate
+      ? "Obfuscated, set a label or child"
+      : link.link;
 
     const attributes: any = {
       className: classNames("Link", className),
-      href: humanInteraction || !obfuscate ? getHref(link) : "obfuscate",
+      href: isObfuscate ? btoa(getHref(link)) : getHref(link),
       onClick: handleClick,
       rel: props.target && !props.rel ? "noopener" : undefined,
       ref: ref,
-      style: obfuscatedStyle,
     };
 
     if (analytics?.getDebugEnabled()) {

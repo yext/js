@@ -1,4 +1,11 @@
-import { PropsWithChildren, useRef, lazy, Suspense } from "react";
+import {
+  PropsWithChildren,
+  useRef,
+  lazy,
+  Suspense,
+  useEffect,
+  useState,
+} from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
 import { AnalyticsMethods, AnalyticsProviderProps } from "./interfaces.js";
@@ -28,6 +35,11 @@ export function AnalyticsProvider(
   } = props;
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   let enableDebuggingDefault = debuggingParamDetected();
   if (getRuntime().name === "node") {
@@ -54,7 +66,8 @@ export function AnalyticsProvider(
       <AnalyticsContext.Provider value={analytics}>
         {children}
       </AnalyticsContext.Provider>
-      {(enableDebugging ?? enableDebuggingDefault) &&
+      {isClient &&
+      (enableDebugging ?? enableDebuggingDefault) &&
       getRuntime().name === "browser" ? (
         <Suspense fallback={<></>}>
           <AnalyticsDebugger />

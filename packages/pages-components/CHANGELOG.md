@@ -1,16 +1,34 @@
+#### 1.0.0-rc.11 (2024-05-30)
+
+##### Bug Fixes
+
+- **pages-components:** properly obfuscate links (#55) (b9fee518)
+
+#### 1.0.0-rc.10 (2024-05-13)
+
+##### Bug Fixes
+
+- **pages-components:** pass region to analytics reporter (#54) (61290348)
+
+##### Other Changes
+
+- **pages-components:**
+  - debug mode and scope fixes (#46)""""""""" (11eb0205)
+  - debug mode and scope fixes (#46)"""""""" (9751636d)
+
 #### 1.0.0-rc.9 (2024-05-09)
 
 ##### Bug Fixes
 
-* **pages-components:**
-  *  properly translate dyn url when accountId is 0 (#51) (ff34649d)
-  *  remove usage of innerHTML (#50) (1c6520f4)
+- **pages-components:**
+  - properly translate dyn url when accountId is 0 (#51) (ff34649d)
+  - remove usage of innerHTML (#50) (1c6520f4)
 
 ##### Other Changes
 
-* **pages-components:**
-  *  debug mode and scope fixes (#46)""""""" (91ebfc95)
-  *  debug mode and scope fixes (#46)"""""" (71cbc243)
+- **pages-components:**
+  - debug mode and scope fixes (#46)""""""" (91ebfc95)
+  - debug mode and scope fixes (#46)"""""" (71cbc243)
 
 #### 1.0.0-rc.8 (2024-04-25)
 

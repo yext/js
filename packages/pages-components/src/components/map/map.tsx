@@ -30,16 +30,16 @@ export const Map = ({
   children,
   className,
   clientKey,
-  controls,
-  defaultCenter,
-  defaultZoom,
+  controls = true,
+  defaultCenter = { latitude: 39.83, longitude: -98.58 },
+  defaultZoom = 4,
   mapRef,
-  padding,
-  panStartHandler,
-  panHandler,
-  provider,
+  padding = { bottom: 50, left: 50, right: 50, top: 50 },
+  panHandler = () => null,
+  panStartHandler = () => null,
+  provider = GoogleMaps,
   providerOptions = {},
-  singleZoom,
+  singleZoom = 14,
 }: MapProps) => {
   const wrapper = useRef(null);
 
@@ -132,16 +132,4 @@ export const Map = ({
       )}
     </div>
   );
-};
-
-Map.defaultProps = {
-  controls: true,
-  defaultCenter: { latitude: 39.83, longitude: -98.58 },
-  defaultZoom: 4,
-  padding: { bottom: 50, left: 50, right: 50, top: 50 },
-  panHandler: () => null,
-  panStartHandler: () => null,
-  provider: GoogleMaps,
-  providerOptions: {},
-  singleZoom: 14,
 };
