@@ -15,7 +15,6 @@ import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
 import { AnalyticsScopeProvider } from "./scope.js";
 import { Action } from "@yext/analytics";
-import { isProduction } from "../../util/env.js";
 
 vi.mock("../../util/runtime.js", () => {
   const runtime = {
