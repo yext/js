@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, PropsWithChildren } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  PropsWithChildren,
+  useEffect,
+} from "react";
 import { concatScopes } from "./helpers.js";
 import { AnalyticsScopeProps } from "./interfaces.js";
 import { useAnalytics } from "./hooks.js";
@@ -31,8 +37,13 @@ export function AnalyticsScopeProvider(
     name: concatScopes(parentScope, props.name),
   });
   const debugEnabled = useAnalytics()?.getDebugEnabled();
+  const [isClient, setIsClient] = useState(false);
 
-  if (debugEnabled) {
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (debugEnabled && isClient) {
     return (
       <section data-ya-scope={combinedScope.name}>
         <ScopeContext.Provider value={combinedScope}>
