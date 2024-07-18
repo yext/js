@@ -46,9 +46,16 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
       const currentTarget = e.currentTarget;
+      let decodedLink = "";
+
       if (isObfuscate) {
         // must happen before the async call
         e.preventDefault();
+
+        const encodedLink = currentTarget.href.split("/").at(-1);
+        if (encodedLink) {
+          decodedLink = atob(encodedLink);
+        }
       }
 
       if (analytics !== null) {
@@ -59,6 +66,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             eventName: trackEvent,
             currency: currency,
             amount: amount,
+            destinationUrl: decodedLink || currentTarget.href,
           });
         } catch (exception) {
           console.error("Failed to report click Analytics Event");
@@ -69,11 +77,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         onClick(e);
       }
 
-      if (isObfuscate) {
-        const encodedLink = currentTarget.href.split("/").at(-1);
-        if (encodedLink) {
-          window.location.href = atob(encodedLink);
-        }
+      if (decodedLink) {
+        window.location.href = decodedLink;
       }
     };
 

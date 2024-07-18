@@ -141,7 +141,8 @@ export class Analytics implements AnalyticsMethods {
       return Promise.resolve();
     }
 
-    const { action, scope, eventName, currency, amount } = props;
+    const { action, scope, eventName, currency, amount, destinationUrl } =
+      props;
 
     let value;
     if (amount) {
@@ -157,7 +158,8 @@ export class Analytics implements AnalyticsMethods {
         scope: slugify(scope) || undefined,
         originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },
-      value: value,
+      value,
+      destinationUrl,
     });
   }
 

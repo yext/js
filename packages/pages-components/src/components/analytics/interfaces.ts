@@ -7,6 +7,7 @@ export type TrackProps = {
   eventName?: string;
   amount?: number;
   currency?: string;
+  destinationUrl: string;
 };
 
 /**
