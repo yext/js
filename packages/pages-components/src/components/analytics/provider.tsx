@@ -29,7 +29,6 @@ export function AnalyticsProvider(
     currency,
     templateData,
     requireOptIn,
-    productionDomains,
     disableSessionTracking,
     enableDebugging,
   } = props;
@@ -41,21 +40,14 @@ export function AnalyticsProvider(
     setIsClient(true);
   }, []);
 
-  let enableDebuggingDefault = debuggingParamDetected();
-  if (getRuntime().name === "node") {
-    enableDebuggingDefault =
-      enableDebuggingDefault || process.env?.NODE_ENV === "development";
-  }
-
   if (analyticsRef.current === null) {
     analyticsRef.current = new Analytics(
       apiKey,
       currency,
       templateData,
       requireOptIn,
-      productionDomains,
       disableSessionTracking,
-      enableDebugging ?? enableDebuggingDefault
+      enableDebugging ?? debuggingParamDetected()
     );
   }
 
@@ -67,7 +59,7 @@ export function AnalyticsProvider(
         {children}
       </AnalyticsContext.Provider>
       {isClient &&
-      (enableDebugging ?? enableDebuggingDefault) &&
+      (enableDebugging ?? debuggingParamDetected()) &&
       getRuntime().name === "browser" ? (
         <Suspense fallback={<></>}>
           <AnalyticsDebugger />

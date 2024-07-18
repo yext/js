@@ -15,6 +15,7 @@ import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
 import { AnalyticsScopeProvider } from "./scope.js";
 import { Action } from "@yext/analytics";
+import { isProduction } from "../../util/env.js";
 
 vi.mock("../../util/runtime.js", () => {
   const runtime = {
@@ -25,6 +26,12 @@ vi.mock("../../util/runtime.js", () => {
   };
   return {
     getRuntime: () => runtime,
+  };
+});
+
+vi.mock("../../util/env.js", () => {
+  return {
+    isProduction: () => true,
   };
 });
 
@@ -81,7 +88,6 @@ describe("Analytics", () => {
           currency="USD"
           templateData={baseProps}
           requireOptIn={false}
-          productionDomains={["localhost"]}
         />
       );
     };
@@ -98,7 +104,6 @@ describe("Analytics", () => {
         currency="USD"
         templateData={baseProps}
         requireOptIn={true}
-        productionDomains={["localhost"]}
       />
     );
 
@@ -112,7 +117,6 @@ describe("Analytics", () => {
         currency="USD"
         templateData={baseProps}
         requireOptIn={false}
-        productionDomains={["localhost"]}
       >
         <Link href="#">Click Me</Link>
       </AnalyticsProvider>
@@ -136,7 +140,6 @@ describe("Analytics", () => {
           currency="USD"
           templateData={baseProps}
           requireOptIn={false}
-          productionDomains={["localhost"]}
         >
           <AnalyticsScopeProvider name="header">
             <AnalyticsScopeProvider name="menu">
@@ -210,7 +213,6 @@ describe("Analytics", () => {
         currency="USD"
         templateData={baseProps}
         requireOptIn={false}
-        productionDomains={["localhost"]}
         disableSessionTracking={true}
       >
         <Link href="#" onClick={(e) => e.preventDefault()}>
@@ -234,7 +236,6 @@ describe("Analytics", () => {
         currency="USD"
         templateData={baseProps}
         requireOptIn={false}
-        productionDomains={["localhost"]}
       >
         <AnalyticsScopeProvider name="header">
           <AnalyticsScopeProvider name="menu">

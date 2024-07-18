@@ -38,7 +38,6 @@ export class Analytics implements AnalyticsMethods {
    * @param defaultCurrency - the ISO 4217 currency code to use for valued events
    * @param templateData - template data object from the pages system
    * @param requireOptIn - boolean, set to true if you require user opt in before tracking analytics
-   * @param productionDomains - the domains that analytics should fire
    * @param disableSessionTracking - turns off session tracking
    * @param enableDebugging - turns debug mode on meaning requests are logged instead
    */
@@ -47,7 +46,6 @@ export class Analytics implements AnalyticsMethods {
     private defaultCurrency: string,
     private templateData: TemplateProps,
     requireOptIn?: boolean | undefined,
-    private productionDomains: string[] = [],
     disableSessionTracking?: boolean | undefined,
     private enableDebugging: boolean = false
   ) {
@@ -66,7 +64,7 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (!isProduction(...this.productionDomains) && !this.enableDebugging) {
+    if (!isProduction() && !this.enableDebugging) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }
