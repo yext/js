@@ -3,11 +3,11 @@ import { TemplateProps } from "./types.js";
 
 export type TrackProps = {
   action: Action;
+  destinationUrl: string;
   scope?: string;
   eventName?: string;
   amount?: number;
   currency?: string;
-  destinationUrl: string;
 };
 
 /**

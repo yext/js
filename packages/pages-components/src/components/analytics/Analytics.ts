@@ -45,8 +45,8 @@ export class Analytics implements AnalyticsMethods {
     private apiKey: string,
     private defaultCurrency: string,
     private templateData: TemplateProps,
-    requireOptIn?: boolean | undefined,
-    disableSessionTracking?: boolean | undefined,
+    requireOptIn?: boolean,
+    disableSessionTracking?: boolean,
     private enableDebugging: boolean = false
   ) {
     this._optedIn = !requireOptIn;
