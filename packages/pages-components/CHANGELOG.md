@@ -1,3 +1,15 @@
+#### 1.0.0 (2024-07-29)
+
+##### Chores
+
+* **pages-components:**  map components updates (#58) (50121f3b)
+*  update test suite dependencies (#57) (d9d6c116)
+*  update actions and node versions (#56) (1b3f8d83)
+
+##### Bug Fixes
+
+* **pages-components:**  fix debugger hydration error (#59) (924012c1)
+
 #### 1.0.0-rc.11 (2024-05-30)
 
 ##### Bug Fixes
