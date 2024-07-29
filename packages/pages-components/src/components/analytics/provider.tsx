@@ -1,10 +1,10 @@
 import {
   PropsWithChildren,
-  useEffect,
   useRef,
-  useState,
   lazy,
   Suspense,
+  useEffect,
+  useState,
 } from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
@@ -25,42 +25,33 @@ export function AnalyticsProvider(
 ): JSX.Element {
   const {
     children,
-    requireOptIn,
-    enableTrackingCookie,
-    enableDebugging,
+    apiKey,
+    currency,
     templateData,
-    pageDomain,
-    productionDomains,
+    requireOptIn,
+    disableSessionTracking,
+    enableDebugging,
   } = props;
 
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
   const [isClient, setIsClient] = useState(false);
 
-  if (analyticsRef.current === null) {
-    analyticsRef.current = new Analytics(
-      templateData,
-      requireOptIn,
-      pageDomain,
-      productionDomains
-    );
-  }
-
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  if (analyticsRef.current === null) {
+    analyticsRef.current = new Analytics(
+      apiKey,
+      currency,
+      templateData,
+      requireOptIn,
+      disableSessionTracking,
+      enableDebugging ?? debuggingParamDetected()
+    );
+  }
+
   const analytics = analyticsRef.current;
-
-  if (enableTrackingCookie) {
-    analytics.enableTrackingCookie();
-  }
-
-  let enableDebuggingDefault = debuggingParamDetected();
-  if (getRuntime().name === "node") {
-    enableDebuggingDefault =
-      enableDebuggingDefault || process.env?.NODE_ENV === "development";
-  }
-  analytics.setDebugEnabled(enableDebugging ?? enableDebuggingDefault);
 
   return (
     <>
@@ -68,7 +59,7 @@ export function AnalyticsProvider(
         {children}
       </AnalyticsContext.Provider>
       {isClient &&
-      (enableDebugging ?? enableDebuggingDefault) &&
+      (enableDebugging ?? debuggingParamDetected()) &&
       getRuntime().name === "browser" ? (
         <Suspense fallback={<></>}>
           <AnalyticsDebugger />
