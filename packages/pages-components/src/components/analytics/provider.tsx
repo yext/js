@@ -59,7 +59,7 @@ export function AnalyticsProvider(
         {children}
       </AnalyticsContext.Provider>
       {isClient &&
-      (enableDebugging ?? debuggingParamDetected()) &&
+      (enableDebugging || debuggingParamDetected()) &&
       getRuntime().name === "browser" ? (
         <Suspense fallback={<></>}>
           <AnalyticsDebugger />
@@ -73,7 +73,7 @@ export function AnalyticsProvider(
  * This will look for the xYextDebug parameter and if it is present,
  * enable analytics debugging.
  */
-function debuggingParamDetected(): boolean {
+export function debuggingParamDetected(): boolean {
   if (getRuntime().name !== "browser") {
     return false;
   }

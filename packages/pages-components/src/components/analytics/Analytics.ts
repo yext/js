@@ -10,6 +10,7 @@ import {
 } from "@yext/analytics";
 import { concatScopes, slugify } from "./helpers.js";
 import { getPartition } from "../../util/partition.js";
+import { debuggingParamDetected } from "./provider.js";
 
 /**
  * The Analytics class creates a stateful facade in front of the \@yext/analytics
@@ -64,7 +65,7 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (!isProduction() && !this.enableDebugging) {
+    if (!isProduction() && !this.getDebugEnabled()) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }
@@ -79,7 +80,7 @@ export class Analytics implements AnalyticsMethods {
       env: "PRODUCTION",
       region: region || "US",
       sessionTrackingEnabled: this._sessionTrackingEnabled,
-      debug: this.enableDebugging,
+      debug: this.getDebugEnabled(),
     };
 
     const defaultPayload: EventPayload = {
@@ -165,6 +166,6 @@ export class Analytics implements AnalyticsMethods {
 
   /** {@inheritDoc AnalyticsMethods.getDebugEnabled} */
   getDebugEnabled(): boolean {
-    return this.enableDebugging;
+    return this.enableDebugging || debuggingParamDetected();
   }
 }
