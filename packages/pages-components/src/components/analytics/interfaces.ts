@@ -92,12 +92,6 @@ export interface AnalyticsProviderProps {
    * in the developer console.
    */
   enableDebugging?: boolean | undefined;
-
-  /**
-   * isProduction() will evaluate to true if the event is fired from any of
-   * provided domains in productionDomains.
-   */
-  productionDomains?: string[];
 }
 
 /**
