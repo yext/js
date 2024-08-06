@@ -100,8 +100,9 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       attributes["data-ya-eventname"] = trackEvent;
     }
 
+    // hydration warnings suppressed because they will show when the xYextDebug query param is used
     return (
-      <a {...attributes} {...rest}>
+      <a {...attributes} {...rest} suppressHydrationWarning={true}>
         {children || link.label || renderedLink}
       </a>
     );
