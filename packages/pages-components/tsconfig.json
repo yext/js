@@ -13,7 +13,7 @@
     "moduleResolution": "NodeNext",
     "outDir": "./dist",
     "target": "ESNext",
-    "types": ["vite/client", "node", "vitest/globals"],
+    "types": ["vite/client", "node", "vitest/globals", "bingmaps", "google.maps", "leaflet", "mapbox-gl"],
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },

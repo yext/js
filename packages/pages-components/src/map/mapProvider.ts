@@ -4,18 +4,16 @@ import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { ProviderMapOptions, ProviderMap } from "./providerMap.js";
 import { ProviderPinOptions, ProviderPin } from "./providerPin.js";
 
-/**
- * @callback ProviderLoadFunction
- * @param {function} resolve Callback with no arguments called when the load finishes successfully
- * @param {function} reject Callback with no arguments called when the load fails
- * @param {string} apiKey Provider API key
- * @param {Object} [options={}] Additional provider-specific options
- */
+type ProviderLoadFunction = (resolve: Function, reject: Function, apiKey: string, options: Object) => void;
 
 /**
  * {@link module:@yext/components-maps~MapProvider MapProvider} options class
  */
 class MapProviderOptions {
+  loadFunction: ProviderLoadFunction;
+  mapClass: typeof ProviderMap;
+  pinClass: typeof ProviderPin;
+  providerName: string;
   constructor() {
     this.loadFunction = (resolve, reject, apiKey, options) => resolve();
     this.mapClass = ProviderMap;
@@ -24,10 +22,9 @@ class MapProviderOptions {
   }
 
   /**
-   * @param {module:@yext/components-maps~ProviderLoadFunction} loadFunction
-   * @returns {module:@yext/components-maps~MapProviderOptions}
+   * @param loadFunction
    */
-  withLoadFunction(loadFunction) {
+  withLoadFunction(loadFunction: ProviderLoadFunction): MapProviderOptions {
     assertType(loadFunction, Type.FUNCTION);
 
     this.loadFunction = loadFunction;
@@ -35,38 +32,32 @@ class MapProviderOptions {
   }
 
   /**
-   * @param {module:@yext/components-maps~ProviderMap} mapClass Subclass of {@link module:@yext/components-maps~ProviderMap ProviderMap}
+   * @param mapClass Subclass of {@link module:@yext/components-maps~ProviderMap ProviderMap}
    *   for the provider
-   * @returns {module:@yext/components-maps~MapProviderOptions}
    */
-  withMapClass(mapClass) {
+  withMapClass(mapClass: typeof ProviderMap): MapProviderOptions {
     this.mapClass = mapClass;
     return this;
   }
 
   /**
-   * @param {module:@yext/components-maps~ProviderPin} pinClass Subclass of {@link module:@yext/components-maps~ProviderPin ProviderPin}
+   * @param pinClass Subclass of {@link module:@yext/components-maps~ProviderPin ProviderPin}
    *   for the provider
-   * @returns {module:@yext/components-maps~MapProviderOptions}
    */
-  withPinClass(pinClass) {
+  withPinClass(pinClass: typeof ProviderPin): MapProviderOptions {
     this.pinClass = pinClass;
     return this;
   }
 
   /**
    * @param {string} providerName Name of the map provider
-   * @returns {module:@yext/components-maps~MapProviderOptions}
    */
-  withProviderName(providerName) {
+  withProviderName(providerName: string): MapProviderOptions {
     this.providerName = providerName;
     return this;
   }
 
-  /**
-   * @returns {module:@yext/components-maps~MapProvider}
-   */
-  build() {
+  build(): MapProvider {
     return new MapProvider(this);
   }
 }
@@ -80,10 +71,19 @@ class MapProviderOptions {
  * class: GoogleMaps.load().then(() => map = new MapOptions().withProvider(GoogleMaps).build());
  */
 class MapProvider {
-  /**
-   * @param {module:@yext/components-maps~MapProviderOptions} options
-   */
-  constructor(options) {
+  _loadFunction: ProviderLoadFunction;
+  _mapClass: typeof ProviderMap;
+  _pinClass: typeof ProviderPin;
+  _providerName: string;
+  _loadPromise: Promise<void>;
+  _resolveLoad?: Function;
+  _rejectLoad?: Function;
+  _apiKey: string;
+  _loadInvoked: boolean;
+  _loaded: boolean;
+  _options: any;
+
+  constructor(options: MapProviderOptions) {
     assertInstance(options, MapProviderOptions);
 
     this._loadFunction = options.loadFunction;
@@ -104,33 +104,29 @@ class MapProvider {
 
   /**
    * Returns true if the map provider has been successfully loaded
-   * @type {boolean}
    */
-  get loaded() {
+  get loaded(): boolean {
     return this._loaded;
   }
 
   /**
-   * @returns {module:@yext/components-maps~ProviderMap}
    * @see module:@yext/components-maps~MapProviderOptions#withMapClass
    */
-  getMapClass() {
+  getMapClass(): typeof ProviderMap {
     return this._mapClass;
   }
 
   /**
-   * @returns {module:@yext/components-maps~ProviderPin}
    * @see module:@yext/components-maps~MapProviderOptions#withPinClass
    */
-  getPinClass() {
+  getPinClass(): typeof ProviderPin {
     return this._pinClass;
   }
 
   /**
-   * @returns {string}
    * @see module:@yext/components-maps~MapProviderOptions#withProviderName
    */
-  getProviderName() {
+  getProviderName(): string{
     return this._providerName;
   }
 
@@ -138,13 +134,13 @@ class MapProvider {
    * Call {@link module:@yext/components-maps~MapPinOptions~loadFunction MapPinOptions~loadFunction}
    * and resolve or reject when loading succeeds or fails
    * @async
-   * @param {string} [apiKey] Provider API key -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
+   * @param apiKey Provider API key -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
    *   if not passed
-   * @param {Object} [options] Additional provider-specific options -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
+   * @param options Additional provider-specific options -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
    *   if not passed
    */
-  async load(apiKey = this._apiKey, options = this._options) {
-    if (!this._loadInvoked) {
+  async load(apiKey: string = this._apiKey, options: any = this._options) {
+    if (!this._loadInvoked && this._resolveLoad && this._rejectLoad) {
       this._loadInvoked = true;
       this._loadFunction(this._resolveLoad, this._rejectLoad, apiKey, options);
     }
@@ -163,10 +159,10 @@ class MapProvider {
 
   /**
    * Set the API key and provider options used on load. Does nothing if load was already called.
-   * @param {string} apiKey Provider API key
-   * @param {?Object} [options=null] Additional provider-specific options
+   * @param apiKey Provider API key
+   * @param options Additional provider-specific options
    */
-  setLoadOptions(apiKey, options = null) {
+  setLoadOptions(apiKey: string, options: Object | null = null) {
     if (!this._loadInvoked) {
       this._apiKey = apiKey;
       this._options = options || this._options;
