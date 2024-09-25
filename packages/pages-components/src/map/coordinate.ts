@@ -27,11 +27,11 @@ const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
  * Find a truthy or 0 value in an object, searching the given keys
  * @memberof Coordinate
  * @inner
- * @param {Object} object Object to find a value in
- * @param {string[]} keys Keys to search in object
- * @returns {*} The value found, or undefined if not found
+ * @param object Object to find a value in
+ * @param keys Keys to search in object
+ * @returns The value found, or undefined if not found
  */
-function findValue(object, keys) {
+function findValue(object: { [key: string]: any }, keys: string[]): any {
   for (const key of keys) {
     if (object[key] || object[key] === 0) {
       return object[key];
@@ -42,15 +42,14 @@ function findValue(object, keys) {
 /**
  * @memberof Coordinate
  * @inner
- * @param {*} value
- * @returns {number}
+ * @param value
  * @throws Will throw an error if value cannot be converted to a number.
  */
-function forceNumber(value) {
+function forceNumber(value: any): number {
   switch (typeof value) {
     case "string":
     case "number":
-      const parsed = Number.parseFloat(value);
+      const parsed = Number.parseFloat(value as string);
       if (Number.isNaN(parsed)) {
         throw new Error(`'${value}' must be convertible to a Number'`);
       }
@@ -65,20 +64,20 @@ function forceNumber(value) {
 /**
  * @memberof Coordinate
  * @inner
- * @param {number} degrees
- * @returns {number} Radians
+ * @param degrees
+ * @returns Radians
  */
-function degreesToRadians(degrees) {
+function degreesToRadians(degrees: number): number {
   return (degrees * Math.PI) / 180;
 }
 
 /**
  * @memberof Coordinate
  * @inner
- * @param {number} radians
- * @returns {number} Degrees
+ * @param radians
+ * @returns Degrees
  */
-function radiansToDegrees(radians) {
+function radiansToDegrees(radians: number): number {
   return (radians / Math.PI) * 180;
 }
 
@@ -86,11 +85,10 @@ function radiansToDegrees(radians) {
  * Calculate distance between two points using the {@link https://en.wikipedia.org/wiki/Haversine_formula Haversine Formula}
  * @memberof Coordinate
  * @inner
- * @param {Coordinate} source
- * @param {Coordinate} destination
- * @returns {number}
+ * @param source
+ * @param dest
  */
-function haversineDistance(source, dest) {
+function haversineDistance(source: Coordinate, dest: Coordinate): number {
   const lat1Rads = degreesToRadians(source.latitude);
   const lat2Rads = degreesToRadians(dest.latitude);
   const deltaLat = lat2Rads - lat1Rads;
@@ -99,8 +97,8 @@ function haversineDistance(source, dest) {
   const a =
     Math.pow(Math.sin(deltaLat / 2), 2) +
     Math.cos(lat1Rads) *
-      Math.cos(lat2Rads) *
-      Math.pow(Math.sin(deltaLon / 2), 2);
+    Math.cos(lat2Rads) *
+    Math.pow(Math.sin(deltaLon / 2), 2);
   return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -110,11 +108,11 @@ function haversineDistance(source, dest) {
  * between latitudes is lowest at the equator and highest towards the poles.
  * @memberof Coordinate
  * @inner
- * @param {number} latitudeA The source latitude in degrees
- * @param {number} latitudeB The destination latitude in degrees
- * @returns {number} Distance in radians of longitude
+ * @param latitudeA The source latitude in degrees
+ * @param latitudeB The destination latitude in degrees
+ * @returns Distance in radians of longitude
  */
-function mercatorLatDistanceInRadians(latitudeA, latitudeB) {
+function mercatorLatDistanceInRadians(latitudeA: number, latitudeB: number): number {
   const aTan = Math.tan((Math.PI / 360) * (latitudeA + 90));
   const bTan = Math.tan((Math.PI / 360) * (latitudeB + 90));
 
@@ -127,11 +125,11 @@ function mercatorLatDistanceInRadians(latitudeA, latitudeB) {
  * between latitudes is lowest at the equator and highest towards the poles.
  * @memberof Coordinate
  * @inner
- * @param {number} startingLat The source latitude in degrees
- * @param {number} radians Distance in radians of longitude
- * @returns {number} The destination latitude in degrees
+ * @param startingLat The source latitude in degrees
+ * @param radians Distance in radians of longitude
+ * @returns The destination latitude in degrees
  */
-function mercatorLatAddRadians(startingLat, radians) {
+function mercatorLatAddRadians(startingLat: number, radians: number): number {
   const aTan = Math.tan((Math.PI / 360) * (startingLat + 90));
   const bTan = aTan * Math.pow(Math.E, radians);
 
@@ -144,6 +142,8 @@ function mercatorLatAddRadians(startingLat, radians) {
  * Longitude is a degree number without limits but is normalized to [-180, 180).
  */
 class Coordinate {
+  _lat: number;
+  _lon: number
   /**
    * Constructor takes either 1 or 2 arguments.
    * 2 arguments: latitude and longitude.
@@ -152,7 +152,7 @@ class Coordinate {
    * @param {number|Object} latitudeOrObject
    * @param {number} [longitude] Optional only if the first argument is a {@link module:@yext/components-geo~Coordinate Coordinate}-like object
    */
-  constructor(latitudeOrObject, longitude) {
+  constructor(latitudeOrObject: number | Object, longitude?: number | Function) {
     let latitude = latitudeOrObject;
 
     if (typeof latitudeOrObject == "object") {
@@ -163,8 +163,8 @@ class Coordinate {
       longitude = typeof longitude == "function" ? longitude() : longitude;
     }
 
-    this.latitude = latitude;
-    this.longitude = longitude;
+    this._lat = latitude as number;
+    this._lon = longitude as number;
   }
 
   /**
@@ -172,7 +172,7 @@ class Coordinate {
    * If setting a value outside this range, it will be set to -90 or 90, whichever is closer.
    * @type {number}
    */
-  get latitude() {
+  get latitude(): number {
     return this._lat;
   }
 
@@ -204,12 +204,12 @@ class Coordinate {
 
   /**
    * Add distance to the coordinate to change its position.
-   * @param {number} latDist latitude distance
-   * @param {number} lonDist longitude distance
-   * @param {module:@yext/components-geo~Unit} [unit=Unit.DEGREE] The unit of latDist and lonDist
-   * @param {module:@yext/components-geo~Projection} [projection=Projection.SPHERICAL] The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
+   * @param latDist latitude distance
+   * @param lonDist longitude distance
+   * @param unit The unit of latDist and lonDist
+   * @param projection The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    */
-  add(latDist, lonDist, unit = Unit.DEGREE, projection = Projection.SPHERICAL) {
+  add(latDist: number, lonDist: number, unit = Unit.DEGREE, projection = Projection.SPHERICAL): void {
     if (
       projection === Projection.MERCATOR &&
       (unit === Unit.DEGREE || unit === Unit.RADIAN)
@@ -246,19 +246,19 @@ class Coordinate {
           this.longitude += radiansToDegrees(lonDist);
           break;
         default:
-          throw new Error(`unit unhandled: ${unit}`);
+          throw new Error(`unit unhandled: ${String(unit)}`);
       }
     }
   }
 
   /**
    * Calculate the distance from this coordinate to another coordinate.
-   * @param {module:@yext/components-geo~Coordinate} coordinate
-   * @param {module:@yext/components-geo~Unit} [unit=Unit.MILE] The unit of distance
-   * @param {module:@yext/components-geo~Projection} [projection=Projection.SPHERICAL] The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
-   * @returns {number} Distance in the requested unit
+   * @param coordinate
+   * @param unit The unit of distance
+   * @param projection The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
+   * @returns Distance in the requested unit
    */
-  distanceTo(coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL) {
+  distanceTo(coordinate: Coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL): number {
     if (
       projection === Projection.MERCATOR &&
       (unit === Unit.DEGREE || unit === Unit.RADIAN)
@@ -280,7 +280,7 @@ class Coordinate {
         case Unit.RADIAN:
           return radianDist;
         default:
-          throw new Error(`unit unhandled: ${unit}`);
+          throw new Error(`unit unhandled: ${String(unit)}`);
       }
     } else {
       const radianDist = haversineDistance(this, coordinate);
@@ -295,17 +295,16 @@ class Coordinate {
         case Unit.RADIAN:
           return radianDist;
         default:
-          throw new Error(`unit unhandled: ${unit}`);
+          throw new Error(`unit unhandled: ${String(unit)}`);
       }
     }
   }
 
   /**
    * Test if this coordinate has the same latitude and longitude as another.
-   * @param {module:@yext/components-geo~Coordinate} coordinate
-   * @returns {boolean}
+   * @param coordinate
    */
-  equals(coordinate) {
+  equals(coordinate: Coordinate): boolean {
     return (
       coordinate &&
       coordinate.latitude === this.latitude &&
@@ -316,9 +315,8 @@ class Coordinate {
   /**
    * Get the coordinate as a string that can be used in a search query.
    * Example: {latitude: -45, longitude: 123} => '-45,123'
-   * @returns {string}
    */
-  searchQueryString() {
+  searchQueryString(): string {
     return `${this.latitude},${this.longitude}`;
   }
 }
