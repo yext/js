@@ -1,11 +1,11 @@
-// @ts-nocheck
 /** @module @yext/components-maps */
 
 import { Coordinate } from "../coordinate.js";
 import { LoadScript } from "../performance/loadContent.js";
 import { MapProviderOptions } from "../mapProvider.js";
-import { ProviderMap } from "../providerMap.js";
-import { HTMLProviderPin } from "../providerPin.js";
+import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
+import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
+import { Map } from "../map.js";
 
 /**
  * @enum {string}
@@ -15,18 +15,26 @@ const Library = {
   PLACES: "places",
 };
 
+declare const window: Window &
+  typeof globalThis & { [key: string]: any };
+
 // Map Class
 
 /**
  * @extends module:@yext/components-maps~ProviderMap
  */
 class GoogleMap extends ProviderMap {
+  map?: google.maps.Map;
+  _moving?: boolean;
   /**
-   * @param {module:@yext/components-maps~ProviderMapOptions} options
+   * @param options
    */
-  constructor(options) {
+  constructor(options: ProviderMapOptions) {
     super(options);
 
+    if (!options.wrapper) {
+      return;
+    }
     this.map = new google.maps.Map(options.wrapper, {
       disableDefaultUI: !options.controlEnabled,
       fullscreenControl: false,
@@ -58,45 +66,45 @@ class GoogleMap extends ProviderMap {
   /**
    * @inheritdoc
    */
-  getCenter() {
-    return new Coordinate(this.map.getCenter());
+  getCenter(): Coordinate {
+    return new Coordinate(this.map?.getCenter() ?? { lat: 0, lng: 0 });
   }
 
   /**
    * @inheritdoc
    */
-  getZoom() {
-    return this.map.getZoom();
+  getZoom(): number {
+    return this.map?.getZoom() ?? 0;
   }
 
   /**
    * @inheritdoc
    */
-  setCenter(coordinate, animated) {
+  setCenter(coordinate: Coordinate, animated: boolean) {
     const latLng = new google.maps.LatLng(
       coordinate.latitude,
       coordinate.longitude
     );
 
     if (animated) {
-      this.map.panTo(latLng);
+      this.map?.panTo(latLng);
     } else {
-      this.map.setCenter(latLng);
+      this.map?.setCenter(latLng);
     }
   }
 
   /**
    * @inheritdoc
    */
-  setZoom(zoom, animated) {
+  setZoom(zoom: number, animated: boolean) {
     // Set zoom level to integer value to avoid zoom change on the next bounds change.
-    this.map.setZoom(Math.floor(zoom));
+    this.map?.setZoom(Math.floor(zoom));
   }
 
   /**
    * @inheritdoc
    */
-  setZoomCenter(zoom, center, animated) {
+  setZoomCenter(zoom: number, center: Coordinate, animated: boolean) {
     this.setCenter(center, animated);
     this.setZoom(zoom, animated);
   }
@@ -104,49 +112,59 @@ class GoogleMap extends ProviderMap {
 
 // Pin Class
 
+class CustomMarker extends google.maps.OverlayView {
+  pin: GooglePin;
+  constructor(pin: GooglePin) {
+    super();
+    this.pin = pin;
+  }
+  draw() {
+    const position = this.getProjection()?.fromLatLngToDivPixel(
+      this.pin._latLng ?? null
+    );
+
+    if (position && this.pin._wrapper) {
+      this.pin._wrapper.style.left = position.x + "px";
+      this.pin._wrapper.style.top = position.y + "px";
+    }
+  }
+
+  onAdd() {
+    if (this.pin._wrapper) {
+      this.getPanes()?.floatPane.appendChild(this.pin._wrapper);
+
+    }
+  }
+
+  onRemove() {
+    this.pin._wrapper?.parentNode?.removeChild(this.pin._wrapper);
+  }
+}
+
 /**
  * @extends module:@yext/components-maps~HTMLProviderPin
  */
 class GooglePin extends HTMLProviderPin {
+  _latLng?: google.maps.LatLng;
+  pin: CustomMarker;
   /**
-   * @param {module:@yext/components-maps~ProviderPinOptions} options
+   * @param options
    */
-  constructor(options) {
+  constructor(options: ProviderPinOptions) {
     super(options);
 
-    this._wrapper.style.position = "absolute";
-    google.maps.OverlayView.preventMapHitsAndGesturesFrom(this._wrapper);
-
-    const that = this;
-
-    class CustomMarker extends google.maps.OverlayView {
-      draw() {
-        const position = this.getProjection()?.fromLatLngToDivPixel(
-          that._latLng
-        );
-
-        if (position) {
-          that._wrapper.style.left = position.x + "px";
-          that._wrapper.style.top = position.y + "px";
-        }
-      }
-
-      onAdd() {
-        this.getPanes().floatPane.appendChild(that._wrapper);
-      }
-
-      onRemove() {
-        that._wrapper.parentNode?.removeChild(that._wrapper);
-      }
+    if (this._wrapper) {
+      this._wrapper.style.position = "absolute";
+      google.maps.OverlayView.preventMapHitsAndGesturesFrom(this._wrapper);
     }
 
-    this.pin = new CustomMarker();
+    this.pin = new CustomMarker(this);
   }
 
   /**
    * @inheritdoc
    */
-  setCoordinate(coordinate) {
+  setCoordinate(coordinate: Coordinate) {
     this._latLng = new google.maps.LatLng(
       coordinate.latitude,
       coordinate.longitude
@@ -157,8 +175,9 @@ class GooglePin extends HTMLProviderPin {
   /**
    * @inheritdoc
    */
-  setMap(newMap, currentMap) {
-    this.pin.setMap(newMap ? newMap.getProviderMap().map : null);
+  setMap(newMap: Map, currentMap: Map) {
+    let googleMap = (newMap?.getProviderMap() as GoogleMap)?.map;
+    this.pin.setMap(googleMap ?? null);
   }
 }
 
@@ -185,9 +204,9 @@ const baseUrl = "https://maps.googleapis.com/maps/api/js";
  * @see module:@yext/components-maps~ProviderLoadFunction
  */
 function load(
-  resolve,
-  reject,
-  apiKey,
+  resolve: Function,
+  reject: Function,
+  apiKey: string,
   {
     autocomplete = false,
     channel = window.location.hostname,
@@ -197,7 +216,7 @@ function load(
     libraries = [],
     loading = "async",
     params = {},
-  } = {}
+  }: { autocomplete?: boolean, channel?: string, client?: string, language?: string, region?: string, libraries?: string[], params?: { [key: string]: string }, loading?: string } = {}
 ) {
   window[globalCallback] = resolve;
 
@@ -205,7 +224,7 @@ function load(
     libraries.push(Library.GEOCODER, Library.PLACES);
   }
 
-  const apiParams = {
+  const apiParams: { [key: string]: string } = {
     callback: globalCallback,
     channel,
     libraries: libraries.join(","),
@@ -234,10 +253,10 @@ function load(
 
   LoadScript(
     baseUrl +
-      "?" +
-      Object.entries(apiParams)
-        .map(([key, value]) => key + "=" + value)
-        .join("&")
+    "?" +
+    Object.entries(apiParams)
+      .map(([key, value]) => key + "=" + value)
+      .join("&")
   );
 }
 

@@ -1,27 +1,26 @@
 /** @module @yext/components-util */
-// @ts-nocheck
 
 /**
- * @enum {string}
+ * @enum
  */
-const Type = {
-  UNDEFINED: "undefined",
-  NULL: "object", // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
-  BOOLEAN: "boolean",
-  NUMBER: "number",
-  BIGINT: "bigint",
-  STRING: "string",
-  SYMBOL: "symbol",
-  FUNCTION: "function",
-  OBJECT: "object",
+enum Type {
+  UNDEFINED = "undefined",
+  NULL = "object", // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
+  BOOLEAN = "boolean",
+  NUMBER = "number",
+  BIGINT = "bigint",
+  STRING = "string",
+  SYMBOL = "symbol",
+  FUNCTION = "function",
+  OBJECT = "object",
 };
 
 /**
  * Assert that a value is a certain type. Returns nothing, but throws if the type does not match.
- * @param {*} object Any value
- * @param {string} type Value type
+ * @param object Any value
+ * @param type Value type
  */
-function assertType(object, type) {
+function assertType(object: any, type: string) {
   if (typeof type != "string") {
     throw new Error("Assertion error: 'type' must be a string");
   }
@@ -36,10 +35,10 @@ function assertType(object, type) {
 /**
  * Assert that an object is an instance of the given class. Returns nothing, but throws if the type
  * does not match.
- * @param {Object} object An instance of some class
- * @param {Class} instanceClass
+ * @param object An instance of some class
+ * @param instanceClass
  */
-function assertInstance(object, instanceClass) {
+function assertInstance(object: Object, instanceClass: any) {
   let isInstance;
 
   try {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /** @module @yext/components-maps */
 
 /**
@@ -7,6 +6,15 @@
  * implement {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPin}.
  */
 class PinProperties {
+  _anchorX: number;
+  _anchorY: number;
+  _height: number;
+  _icon: string;
+  _srText: string;
+  _width: number;
+  _zIndex: number;
+  _class: string;
+  _element: HTMLElement | null;
   constructor() {
     // Properties supported by all pins
     this._anchorX = 0.5;
@@ -23,160 +31,151 @@ class PinProperties {
   }
 
   /**
-   * @returns {number} The point in the pin that should be positioned over the coordinate, from 0
+   * @returns The point in the pin that should be positioned over the coordinate, from 0
    *   (left edge) to 1 (right edge)
    */
-  getAnchorX() {
+  getAnchorX(): number {
     return this._anchorX;
   }
 
   /**
-   * @returns {number} The point in the pin that should be positioned over the coordinate, from 0
+   * @returns The point in the pin that should be positioned over the coordinate, from 0
    *   (top edge) to 1 (bottom edge)
    */
-  getAnchorY() {
+  getAnchorY(): number {
     return this._anchorY;
   }
 
   /**
    * {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPins} only
-   * @returns {string} The class of the wrapper element for an HTML pin
+   * @returns The class of the wrapper element for an HTML pin
    */
-  getClass() {
+  getClass(): string {
     return this._class;
   }
 
   /**
    * {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPins} only
-   * @returns {string} The HTML pin element
+   * @returns The HTML pin element
    */
-  getElement() {
+  getElement(): HTMLElement | null {
     return this._element;
   }
 
   /**
-   * @returns {number} The pixel height of the pin
+   * @returns The pixel height of the pin
    */
-  getHeight() {
+  getHeight(): number {
     return this._height;
   }
 
   /**
    * This returns a string key that can be used with {@link module:@yext/components-maps~MapPin#getIcon MapPin#getIcon}
    * to get the icon image for a pin.
-   * @returns {string} The unique name of the icon
+   * @returns The unique name of the icon
    */
-  getIcon() {
+  getIcon(): string {
     return this._icon;
   }
 
   /**
-   * @returns {string} The text that a screen reader reads when focused on the pin
+   * @returns The text that a screen reader reads when focused on the pin
    */
-  getSRText() {
+  getSRText(): string {
     return this._srText;
   }
 
   /**
-   * @returns {number} The pixel width of the pin
+   * @returns The pixel width of the pin
    */
-  getWidth() {
+  getWidth(): number {
     return this._width;
   }
 
   /**
-   * @returns {number} The z-index of the pin
+   * @returns The z-index of the pin
    */
-  getZIndex() {
+  getZIndex(): number {
     return this._zIndex;
   }
 
   /**
-   * @param {number} anchorX
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param anchorX
    * @see module:@yext/components-maps~PinProperties#getAnchorX
    */
-  setAnchorX(anchorX) {
+  setAnchorX(anchorX: number): PinProperties {
     this._anchorX = anchorX;
     return this;
   }
 
   /**
-   * @param {number} anchorY
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param anchorY
    * @see module:@yext/components-maps~PinProperties#getAnchorY
    */
-  setAnchorY(anchorY) {
+  setAnchorY(anchorY: number): PinProperties {
     this._anchorY = anchorY;
     return this;
   }
 
   /**
-   * @param {string} className
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param className
    * @see module:@yext/components-maps~PinProperties#getClass
    */
-  setClass(className) {
+  setClass(className: string): PinProperties {
     this._class = className;
     return this;
   }
 
   /**
-   * @param {HTMLElement} element
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param element
    * @see module:@yext/components-maps~PinProperties#getElement
    */
-  setElement(element) {
+  setElement(element: HTMLElement): PinProperties {
     this._element = element;
     return this;
   }
 
   /**
-   * @param {number} height
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param height
    * @see module:@yext/components-maps~PinProperties#getHeight
    */
-  setHeight(height) {
+  setHeight(height: number): PinProperties {
     this._height = height;
     return this;
   }
 
   /**
-   * @param {string} icon
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param icon
    * @see module:@yext/components-maps~PinProperties#getIcon
    */
-  setIcon(icon) {
+  setIcon(icon: string): PinProperties {
     this._icon = icon;
     return this;
   }
 
   /**
-   * @param {string} srText
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param srText
    * @see module:@yext/components-maps~PinProperties#getSRText
    */
-  setSRText(srText) {
+  setSRText(srText: string): PinProperties {
     this._srText = srText;
     return this;
   }
 
   /**
-   * @param {number} width
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param width
    * @see module:@yext/components-maps~PinProperties#getWidth
    */
-  setWidth(width) {
+  setWidth(width: number): PinProperties {
     this._width = width;
     return this;
   }
 
   /**
-   * @param {number} zIndex
-   * @returns {module:@yext/components-maps~PinProperties}
+   * @param zIndex
    * @see module:@yext/components-maps~PinProperties#getZIndex
    */
-  setZIndex(zIndex) {
+  setZIndex(zIndex: number): PinProperties {
     this._zIndex = zIndex;
     return this;
   }
