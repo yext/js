@@ -1,11 +1,18 @@
-// @ts-nocheck
 
 /** @module @yext/components-maps */
 
 import { Coordinate } from "../coordinate.js";
+import { Map, PanHandler, PanStartHandler } from "../map.js";
 import { MapProviderOptions } from "../mapProvider.js";
-import { ProviderMap } from "../providerMap.js";
-import { HTMLProviderPin } from "../providerPin.js";
+import { PinProperties } from "../pinProperties.js";
+import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
+import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
+
+declare const window: Window &
+  typeof globalThis & { [key: string]: any };
+declare const BMap: any;
+declare const BMAP_ANCHOR_TOP_RIGHT: any;
+declare const BMAP_NAVIGATION_CONTROL_ZOOM: any;
 
 // Baidu zoom formula: equatorWidth = 2^zoom * 152.87572479248047
 // Our standard zoom formula: equatorWidth = 2^zoom * 256
@@ -21,23 +28,23 @@ const negativeLngPinClass = "js-baidu-neg-lng-fix";
 
 // The API key is needed for coordinate conversion.
 // The load function will resolve apiKeyPromise with the key once it is invoked.
-let resolveAPIKey;
+let resolveAPIKey: Function;
 const apiKeyPromise = new Promise((resolve) => (resolveAPIKey = resolve));
 const geoconvBaseUrl = "https://api.map.baidu.com/geoconv/v1/";
 
 // Batch coordinate conversion requests to reduce network load
-let gcj02ToBD09Requests = [];
+let gcj02ToBD09Requests: { coordinates: Coordinate[], resolve: Function, reject: Function }[] = [];
 const gcj02ToBD09GlobalCallback = "gcj02ToBD09Callback_b872c21c";
 let gcj02ToBD09CallbackCounter = 0;
-let gcj02ToBD09CallbackTimeout;
+let gcj02ToBD09CallbackTimeout: NodeJS.Timeout;
 
 /**
  * This function converts coordinates from China's coordinate system GCJ-02 to Baidu's coordinate
  * system BD-09. See {@link https://en.wikipedia.org/wiki/Baidu_Maps#Coordinate_system} for more info
- * @param {module:@yext/components-tsx-geo~Coordinate[]} coordinates Coordinates in GCJ-02
- * @returns {module:@yext/components-tsx-geo~Coordinate[]} Equivalent coordinates in BD-09
+ * @param coordinates Coordinates in GCJ-02
+ * @returns Equivalent coordinates in BD-09
  */
-async function gcj02ToBD09(coordinates) {
+async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
   return await new Promise((resolve, reject) => {
     gcj02ToBD09Requests.push({ coordinates, resolve, reject });
 
@@ -55,18 +62,17 @@ async function gcj02ToBD09(coordinates) {
     function sendRequests() {
       const requests = gcj02ToBD09Requests;
       gcj02ToBD09Requests = [];
-      const coordinates = [].concat(
+      const coordinates: Coordinate[] = ([] as Coordinate[]).concat(
         ...requests.map((request) => request.coordinates)
       );
       const callback =
         gcj02ToBD09GlobalCallback + "_" + gcj02ToBD09CallbackCounter++;
       const script = document.createElement("script");
 
-      window[callback] = (data) => {
+      window[callback] = (data: { status?: string, message?: string, result: { x: number, y: number }[] }) => {
         if (data.status) {
           const err = new Error(
-            `Unable to convert coordinates to BD-09: Received status code ${
-              data.status
+            `Unable to convert coordinates to BD-09: Received status code ${data.status
             }${data.message ? ": " + data.message : ""}`
           );
           requests.forEach((request) => request.reject(err));
@@ -87,7 +93,7 @@ async function gcj02ToBD09(coordinates) {
         });
 
         delete window[callback];
-        script.parentNode.removeChild(script);
+        script.parentNode?.removeChild(script);
       };
 
       apiKeyPromise.then((ak) => {
@@ -122,13 +128,18 @@ async function gcj02ToBD09(coordinates) {
  * @extends module:@yext/components-maps~ProviderMap
  */
 class BaiduMap extends ProviderMap {
+  _wrapper: HTMLElement | null;
+  map: any;
+  _panStartHandler: PanStartHandler;
+  _panHandler: PanHandler;
+  _centerReady: Promise<void>;
   /**
-   * @param {module:@yext/components-maps~ProviderMapOptions} options
+   * @param options
    */
-  constructor(options) {
+  constructor(options: ProviderMapOptions) {
     super(options);
 
-    const isIE11 = !!(window.MSInputMethodContext && document.documentMode);
+    const isIE11 = !!(window.MSInputMethodContext && document.DOCUMENT_NODE);
 
     this._wrapper = options.wrapper;
     this.map = new BMap.Map(this._wrapper, {
@@ -153,11 +164,16 @@ class BaiduMap extends ProviderMap {
       this.map.disablePinchToZoom();
     }
 
+    this._panStartHandler = () => null;
+    this._panHandler = () => null;
+
     this.map.addEventListener("movestart", () => this._panStartHandler());
     this.map.addEventListener("moveend", () => this._panHandler());
     this.map.addEventListener("zoomstart", () => this._panStartHandler());
     this.map.addEventListener("zoomend", () => {
-      this._wrapper.dataset.baiduZoom = this.map.getZoom();
+      if (this._wrapper) {
+        this._wrapper.dataset.baiduZoom = this.map.getZoom();
+      }
       this._panHandler();
     });
 
@@ -182,7 +198,7 @@ class BaiduMap extends ProviderMap {
   /**
    * @inheritdoc
    */
-  setCenter(coordinate, animated) {
+  setCenter(coordinate: Coordinate, animated: boolean) {
     this._centerReady = gcj02ToBD09([coordinate]).then(([convertedCoord]) => {
       const point = new BMap.Point(
         convertedCoord.longitude,
@@ -195,7 +211,7 @@ class BaiduMap extends ProviderMap {
   /**
    * @inheritdoc
    */
-  setZoom(zoom, animated) {
+  setZoom(zoom: number, animated: boolean) {
     this._centerReady.then(() => {
       this.map.setViewport(
         {
@@ -215,10 +231,18 @@ class BaiduMap extends ProviderMap {
  * @extends module:@yext/components-maps~HTMLProviderPin
  */
 class BaiduPin extends HTMLProviderPin {
+  _wrapper: HTMLElement | null;
+  _zIndex: number;
+  _wrapperClass: string;
+  _originalWrapperClass: string;
+  _element: HTMLElement;
+  _coordinateReady: Promise<void>;
+  _negativeLngFix: boolean;
+  pin: any;
   /**
-   * @param {module:@yext/components-maps~ProviderPinOptions} options
+   * @param options
    */
-  constructor(options) {
+  constructor(options: ProviderPinOptions) {
     super(options);
 
     this._wrapper = null;
@@ -234,12 +258,16 @@ class BaiduPin extends HTMLProviderPin {
     const that = this;
 
     class CustomMarker extends BMap.Marker {
-      initialize(map) {
+      constructor(point: any) {
+        super(point);
+      }
+
+      initialize(map: any) {
         that._wrapper = super.initialize(map);
 
         if (that._wrapper) {
-          that._wrapper.style.zIndex = that._zIndex;
-          that._originalWrapperClass = that._wrapper.getAttribute("class");
+          that._wrapper.style.zIndex = that._zIndex.toString();
+          that._originalWrapperClass = that._wrapper.getAttribute("class") ?? "";
           that._wrapper.setAttribute("class", that._getClass());
           that._wrapper.appendChild(that._element);
           that.addListeners();
@@ -280,13 +308,15 @@ class BaiduPin extends HTMLProviderPin {
   addListeners() {
     super.addListeners();
 
-    this._wrapper.addEventListener("touchend", () => this._clickHandler());
+    if (this._wrapper) {
+      this._wrapper.addEventListener("touchend", () => this._clickHandler());
+    }
   }
 
   /**
    * @inheritdoc
    */
-  setCoordinate(coordinate) {
+  setCoordinate(coordinate: Coordinate) {
     this._coordinateReady = gcj02ToBD09([coordinate]).then(
       ([convertedCoord]) => {
         // To avoid Baidu's glitched rendering of pins with negative longitude, this will set the pin to a
@@ -311,14 +341,14 @@ class BaiduPin extends HTMLProviderPin {
   /**
    * @inheritdoc
    */
-  setMap(newMap, currentMap) {
+  setMap(newMap: Map, currentMap: Map) {
     this._coordinateReady.then(() => {
       if (currentMap) {
-        currentMap.getProviderMap().map.removeOverlay(this.pin);
+        (currentMap.getProviderMap() as BaiduMap).map.removeOverlay(this.pin);
       }
 
       if (newMap) {
-        newMap.getProviderMap().map.addOverlay(this.pin);
+        (newMap.getProviderMap() as BaiduMap).map.addOverlay(this.pin);
       }
     });
   }
@@ -326,7 +356,7 @@ class BaiduPin extends HTMLProviderPin {
   /**
    * @inheritdoc
    */
-  setProperties(pinProperties) {
+  setProperties(pinProperties: PinProperties) {
     super.setProperties(pinProperties);
 
     this._wrapperClass = pinProperties.getClass();
@@ -344,9 +374,8 @@ class BaiduPin extends HTMLProviderPin {
    * @returns {string}
    */
   _getClass() {
-    return `${this._originalWrapperClass} ${
-      this._negativeLngFix ? negativeLngPinClass : ""
-    } ${this._wrapperClass}`;
+    return `${this._originalWrapperClass} ${this._negativeLngFix ? negativeLngPinClass : ""
+      } ${this._wrapperClass}`;
   }
 }
 
@@ -366,7 +395,7 @@ const baseUrl = "https://api.map.baidu.com/getscript";
  * @param {string} [options.version='3.0'] API version
  * @see module:@yext/components-maps~ProviderLoadFunction
  */
-function load(resolve, reject, apiKey, { params = {}, version = "3.0" } = {}) {
+function load(resolve: Function, reject: Function, apiKey: string, { params = {}, version = "3.0" } = {}) {
   window.BMAP_PROTOCOL = "https";
   window.BMap_loadScriptTime = new Date().getTime();
 
