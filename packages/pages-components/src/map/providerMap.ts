@@ -1,17 +1,14 @@
-/** @module @yext/components-maps */
-
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
 import { PanHandler, PanStartHandler } from "./map.js";
 import { Coordinate } from "./coordinate.js";
 
 /**
- * {@link module:@yext/components-maps~ProviderMap ProviderMap} options class
+ * {@link ProviderMap} options class
  */
 class ProviderMapOptions {
   /**
-   * @param provider
-   * @param wrapper The wrapper element that the map will be inserted into
+   * @param wrapper - The wrapper element that the map will be inserted into
    */
   providerMapClass: typeof ProviderMap;
   wrapper: HTMLElement | null;
@@ -36,7 +33,7 @@ class ProviderMapOptions {
   }
 
   /**
-   * @param controlEnabled Whether the user can interact with the map
+   * @param controlEnabled - Whether the user can interact with the map
    */
   withControlEnabled(controlEnabled: boolean): ProviderMapOptions {
     this.controlEnabled = controlEnabled;
@@ -44,7 +41,7 @@ class ProviderMapOptions {
   }
 
   /**
-   * @param panHandler Function called after the map bounds change
+   * @param panHandler - Function called after the map bounds change
    */
   withPanHandler(panHandler: PanHandler): ProviderMapOptions {
     assertType(panHandler, Type.FUNCTION);
@@ -54,7 +51,7 @@ class ProviderMapOptions {
   }
 
   /**
-   * @param panStartHandler Function called before the map bounds change
+   * @param panStartHandler - Function called before the map bounds change
    */
   withPanStartHandler(panStartHandler: PanStartHandler): ProviderMapOptions {
     assertType(panStartHandler, Type.FUNCTION);
@@ -64,17 +61,17 @@ class ProviderMapOptions {
   }
 
   /**
-   * @param providerOptions A free-form object used to set any additional provider-specific
+   * @param providerOptions - A free-form object used to set any additional provider-specific
    *   options, usually by passing the object to the map's constructor
    */
-  withProviderOptions(providerOptions: Object): ProviderMapOptions {
+  withProviderOptions(providerOptions: object): ProviderMapOptions {
     this.providerOptions = providerOptions;
     return this;
   }
 
   /**
-   * @returns An instance of a subclass of {@link module:@yext/components-maps~ProviderMap ProviderMap}
-   *   for the given {@link module:@yext/components-maps~MapProvider MapProvider}
+   * @returns An instance of a subclass of {@link ProviderMap}
+   *   for the given {@link MapProvider}
    */
   build(): ProviderMap {
     const providerMapClass = this.providerMapClass;
@@ -84,16 +81,15 @@ class ProviderMapOptions {
 
 /**
  * This class is an interface that should be implemented for each map provider, such as Google Maps.
- * It is used as an API for a {@link module:@yext/components-maps~Map Map} to control a
+ * It is used as an API for a {@link Map} to control a
  * provider-specific map instance. Ideally, this class should have minimal functionality so that
  * adding a new provider is easy and behavior is as consistent as possible across all providers.
  */
 class ProviderMap {
   /**
    * The constructor creates a map instance using the provider's API and initializes it with all the
-   * given options. See {@link module:@yext/components-maps~ProviderMapOptions ProviderMapOptions}
+   * given options. See {@link ProviderMapOptions}
    * for the supported options.
-   * @param options
    */
   _panHandler: PanHandler;
   _panStartHandler: PanStartHandler;
@@ -115,7 +111,7 @@ class ProviderMap {
   }
 
   /**
-   * Zoom level complies with the specifications in {@link module:@yext/components-maps~Map#getZoom Map#getZoom}
+   * Zoom level complies with the specifications in {@link Map#getZoom}
    * @returns The current zoom level of the map
    */
   getZoom(): number {
@@ -123,28 +119,27 @@ class ProviderMap {
   }
 
   /**
-   * @param coordinate The new center for the map
-   * @param animated Whether to transition smoothly to the new center
+   * @param coordinate - The new center for the map
+   * @param animated - Whether to transition smoothly to the new center
    */
-  setCenter(coordinate: Coordinate, animated: boolean) {
+  setCenter(_: Coordinate, __: boolean) {
     throw new Error("not implemented");
   }
 
   /**
-   * Zoom level complies with the specifications in {@link module:@yext/components-maps~Map#getZoom Map#getZoom}
-   * @param zoom The new zoom level for the map
-   * @param animated Whether to transition smoothly to the new zoom
+   * Zoom level complies with the specifications in {@link Map#getZoom}
+   * @param zoom - The new zoom level for the map
+   * @param animated - Whether to transition smoothly to the new zoom
    */
-  setZoom(zoom: number, animated: boolean) {
+  setZoom(_: number, __: boolean) {
     throw new Error("not implemented");
   }
 
   /**
-   * @param zoom
-   * @param center Must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
-   * @param animated Whether to transition smoothly to the new bounds
-   * @see module:@yext/components-maps~ProviderMap#setZoom
-   * @see module:@yext/components-maps~ProviderMap#setCenter
+   * @param center - Must be convertible to {@link Coordinate}
+   * @param animated - Whether to transition smoothly to the new bounds
+   * @see ProviderMap#setZoom
+   * @see ProviderMap#setCenter
    */
   setZoomCenter(zoom: number, center: Coordinate, animated: boolean) {
     // This method doesn't need to be implemented for each provider,

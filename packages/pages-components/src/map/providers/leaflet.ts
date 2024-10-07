@@ -1,6 +1,3 @@
-/** @module @yext/components-maps */
-
-import L from "leaflet";
 import { Coordinate } from "../coordinate.js";
 import { MapProviderOptions } from "../mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
@@ -8,15 +5,12 @@ import { ProviderPin, ProviderPinOptions } from "../providerPin.js";
 import { Map } from "../map.js";
 import { PinProperties } from "../pinProperties.js";
 
+declare const L: any;
+
 // Map Class
 
-/**
- * @extends module:@yext/components-maps~ProviderMap
- */
 class LeafletMap extends ProviderMap {
-  /**
-   * @param options
-   */
+
   map?: L.Map;
   static apiKey: string;
   constructor(options: ProviderMapOptions) {
@@ -33,21 +27,21 @@ class LeafletMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getCenter}
    */
   getCenter(): Coordinate {
     return new Coordinate(this.map?.getCenter() ?? { lat: 0, lng: 0 });
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getZoom}
    */
   getZoom(): number {
     return this.map?.getZoom() ?? 0;
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
     const latLng = new L.LatLng(coordinate.latitude, coordinate.longitude);
@@ -56,14 +50,14 @@ class LeafletMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoom}
    */
   setZoom(zoom: number, animated: boolean) {
     this.map?.setZoom(zoom, { animate: animated });
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoomCenter}
    */
   setZoomCenter(zoom: number, center: Coordinate, animated: boolean) {
     const latLng = new L.LatLng(center.latitude, center.longitude);
@@ -71,11 +65,6 @@ class LeafletMap extends ProviderMap {
     this.map?.setView(latLng, zoom, { animate: animated });
   }
 
-  /**
-   * Initialize the Leaflet map
-   * @protected
-   * @param options
-   */
   _initMap(options: ProviderMapOptions) {
     // We need to setZoom on map init because otherwise it will default
     // to zoom = undefined and will try to load infinite map tiles.
@@ -114,14 +103,11 @@ class LeafletMap extends ProviderMap {
 // Pin Class
 
 /**
- * @extends module:@yext/components-maps~ProviderPin
- * @todo GENERATOR TODO Full HTML pin support {@link https://leafletjs.com/reference-1.6.0.html#popup}
+ * GENERATOR TODO Full HTML pin support {@link https://leafletjs.com/reference-1.6.0.html#popup}
  */
 class LeafletPin extends ProviderPin {
   pin: L.Marker;
-  /**
-   * @param options
-   */
+
   constructor(options: ProviderPinOptions) {
     super(options);
 
@@ -134,7 +120,7 @@ class LeafletPin extends ProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
     const latLng = new L.LatLng(coordinate.latitude, coordinate.longitude);
@@ -142,11 +128,11 @@ class LeafletPin extends ProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderPin.setMap}
    */
-  setMap(newMap: Map, currentMap: Map) {
+  setMap(newMap: Map, _: Map) {
     if (newMap) {
-      let leafletMap = (newMap.getProviderMap() as LeafletMap).map;
+      const leafletMap = (newMap.getProviderMap() as LeafletMap).map;
       if (leafletMap) {
         this.pin.addTo(leafletMap);
       }
@@ -156,7 +142,7 @@ class LeafletPin extends ProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderPin.setProperties}
    */
   setProperties(pinProperties: PinProperties) {
     const width = pinProperties.getWidth();
@@ -179,17 +165,16 @@ class LeafletPin extends ProviderPin {
 // Load Function
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~LeafletMaps LeafletMaps}.
- * @alias module:@yext/components-maps~loadLeafletMaps
- * @param resolve Callback with no arguments called when the load finishes successfully
- * @param reject Callback with no arguments called when the load fails
- * @param apiKey Provider API key
- * @param options Additional provider-specific options
- * @param options.version='1.7.1' API version
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link LeafletMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject - Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * options.version='1.7.1' - API version
+ * @see ProviderLoadFunction
  */
-function load(resolve: Function, reject: Function, apiKey: string, { version = "1.7.1" } = {}) {
+function load(resolve: () => void, _: () => void, apiKey: string, { version = "1.7.1" } = {}) {
   const baseUrl = `https://unpkg.com/leaflet@${version}/dist/leaflet`;
 
   LeafletMap.apiKey = apiKey;
@@ -208,9 +193,6 @@ function load(resolve: Function, reject: Function, apiKey: string, { version = "
 
 // Exports
 
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const LeafletMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(LeafletMap)

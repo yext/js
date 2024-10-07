@@ -1,8 +1,3 @@
-/** @module @yext/components-util */
-
-/**
- * @enum
- */
 enum Type {
   UNDEFINED = "undefined",
   NULL = "object", // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
@@ -17,8 +12,8 @@ enum Type {
 
 /**
  * Assert that a value is a certain type. Returns nothing, but throws if the type does not match.
- * @param object Any value
- * @param type Value type
+ * @param object - Any value
+ * @param type - Value type
  */
 function assertType(object: any, type: string) {
   if (typeof type != "string") {
@@ -35,10 +30,9 @@ function assertType(object: any, type: string) {
 /**
  * Assert that an object is an instance of the given class. Returns nothing, but throws if the type
  * does not match.
- * @param object An instance of some class
- * @param instanceClass
+ * @param object - An instance of some class
  */
-function assertInstance(object: Object, instanceClass: any) {
+function assertInstance(object: object, instanceClass: any) {
   let isInstance;
 
   try {

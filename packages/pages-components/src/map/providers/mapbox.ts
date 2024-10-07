@@ -1,23 +1,16 @@
-/** @module @yext/components-maps */
-
-import mapboxgl from "mapbox-gl";
 import { Coordinate } from "../coordinate.js";
 import { MapProviderOptions } from "../mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
 import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 import { Map } from "../map.js";
+import mapboxgl from "mapbox-gl";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
 
 // Map Class
 
-/**
- * @extends module:@yext/components-maps~ProviderMap
- */
 class MapboxMap extends ProviderMap {
-  /**
-   * @param options
-   */
+
   map?: mapboxgl.Map;
   constructor(options: ProviderMapOptions) {
     super(options);
@@ -44,14 +37,14 @@ class MapboxMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getCenter}
    */
   getCenter(): Coordinate {
     return new Coordinate(this.map?.getCenter() ?? { lat: 0, lng: 0 });
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getZoom}
    */
   getZoom(): number {
     // Our standard zoom: at level 0, the world is 256 pixels wide and doubles each level
@@ -60,7 +53,7 @@ class MapboxMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
     const center = new mapboxgl.LngLat(
@@ -74,7 +67,7 @@ class MapboxMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoom}
    */
   setZoom(zoom: number, animated: boolean) {
     // Our standard zoom: at level 0, the world is 256 pixels wide and doubles each level
@@ -85,7 +78,7 @@ class MapboxMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.zetZoomCenter}
    */
   setZoomCenter(zoom: number, coordinate: Coordinate, animated: boolean) {
     const center = new mapboxgl.LngLat(
@@ -103,13 +96,8 @@ class MapboxMap extends ProviderMap {
 
 // Pin Class
 
-/**
- * @extends module:@yext/components-maps~HTMLProviderPin
- */
 class MapboxPin extends HTMLProviderPin {
-  /**
-   * @param options
-   */
+
   pin?: mapboxgl.Marker;
   constructor(options: ProviderPinOptions) {
     super(options);
@@ -124,7 +112,7 @@ class MapboxPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
     this.pin?.setLngLat(
@@ -133,9 +121,9 @@ class MapboxPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setMap}
    */
-  setMap(newMap: Map, currentMap: Map) {
+  setMap(newMap: Map, _: Map) {
     if (newMap) {
       const mapboxMap = (newMap.getProviderMap() as MapboxMap).map;
       if (mapboxMap) {
@@ -150,17 +138,16 @@ class MapboxPin extends HTMLProviderPin {
 // Load Function
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~MapboxMaps MapboxMaps}.
- * @alias module:@yext/components-maps~loadMapboxMaps
- * @param resolve Callback with no arguments called when the load finishes successfully
- * @param reject Callback with no arguments called when the load fails
- * @param apiKey Provider API key
- * @param options Additional provider-specific options
- * @param options.version='v1.13.0' API version
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link MapboxMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject - Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * options.version='v1.13.0' - API version
+ * @see ProviderLoadFunction
  */
-function load(resolve: Function, reject: Function, apiKey: string, { version = "v1.13.0" } = {}) {
+function load(resolve: () => void, _: () => void, apiKey: string, { version = "v1.13.0" } = {}) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
 
   const mapStyle = document.createElement("link");
@@ -170,7 +157,7 @@ function load(resolve: Function, reject: Function, apiKey: string, { version = "
   const mapScript = document.createElement("script");
   mapScript.src = baseUrl + ".js";
   mapScript.onload = () => {
-    mapboxgl.accessToken = apiKey;
+    (mapboxgl as any).accessToken = apiKey;
     resolve();
   };
 
@@ -180,9 +167,6 @@ function load(resolve: Function, reject: Function, apiKey: string, { version = "
 
 // Exports
 
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const MapboxMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(MapboxMap)

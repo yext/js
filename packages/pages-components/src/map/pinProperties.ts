@@ -1,9 +1,7 @@
-/** @module @yext/components-maps */
-
 /**
- * This class is used to set the appearance of a {@link module:@yext/components-maps~MapPin MapPin}.
+ * This class is used to set the appearance of a {@link MapPin}.
  * Most properties are supported by all providers, but some are only supported by providers that
- * implement {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPin}.
+ * implement {@link HTMLProviderPin}.
  */
 class PinProperties {
   _anchorX: number;
@@ -47,7 +45,7 @@ class PinProperties {
   }
 
   /**
-   * {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPins} only
+   * {@link HTMLProviderPins} only
    * @returns The class of the wrapper element for an HTML pin
    */
   getClass(): string {
@@ -55,7 +53,7 @@ class PinProperties {
   }
 
   /**
-   * {@link module:@yext/components-maps~HTMLProviderPin HTMLProviderPins} only
+   * {@link HTMLProviderPins} only
    * @returns The HTML pin element
    */
   getElement(): HTMLElement | null {
@@ -70,7 +68,7 @@ class PinProperties {
   }
 
   /**
-   * This returns a string key that can be used with {@link module:@yext/components-maps~MapPin#getIcon MapPin#getIcon}
+   * This returns a string key that can be used with {@link MapPin#getIcon}
    * to get the icon image for a pin.
    * @returns The unique name of the icon
    */
@@ -100,8 +98,7 @@ class PinProperties {
   }
 
   /**
-   * @param anchorX
-   * @see module:@yext/components-maps~PinProperties#getAnchorX
+   * @see PinProperties#getAnchorX
    */
   setAnchorX(anchorX: number): PinProperties {
     this._anchorX = anchorX;
@@ -109,8 +106,7 @@ class PinProperties {
   }
 
   /**
-   * @param anchorY
-   * @see module:@yext/components-maps~PinProperties#getAnchorY
+   * @see PinProperties#getAnchorY
    */
   setAnchorY(anchorY: number): PinProperties {
     this._anchorY = anchorY;
@@ -118,8 +114,7 @@ class PinProperties {
   }
 
   /**
-   * @param className
-   * @see module:@yext/components-maps~PinProperties#getClass
+   * @see PinProperties#getClass
    */
   setClass(className: string): PinProperties {
     this._class = className;
@@ -127,8 +122,7 @@ class PinProperties {
   }
 
   /**
-   * @param element
-   * @see module:@yext/components-maps~PinProperties#getElement
+   * @see PinProperties#getElement
    */
   setElement(element: HTMLElement): PinProperties {
     this._element = element;
@@ -136,8 +130,7 @@ class PinProperties {
   }
 
   /**
-   * @param height
-   * @see module:@yext/components-maps~PinProperties#getHeight
+   * @see PinProperties#getHeight
    */
   setHeight(height: number): PinProperties {
     this._height = height;
@@ -145,8 +138,7 @@ class PinProperties {
   }
 
   /**
-   * @param icon
-   * @see module:@yext/components-maps~PinProperties#getIcon
+   * @see PinProperties#getIcon
    */
   setIcon(icon: string): PinProperties {
     this._icon = icon;
@@ -154,8 +146,7 @@ class PinProperties {
   }
 
   /**
-   * @param srText
-   * @see module:@yext/components-maps~PinProperties#getSRText
+   * @see PinProperties#getSRText
    */
   setSRText(srText: string): PinProperties {
     this._srText = srText;
@@ -163,8 +154,7 @@ class PinProperties {
   }
 
   /**
-   * @param width
-   * @see module:@yext/components-maps~PinProperties#getWidth
+   * @see PinProperties#getWidth
    */
   setWidth(width: number): PinProperties {
     this._width = width;
@@ -172,8 +162,7 @@ class PinProperties {
   }
 
   /**
-   * @param zIndex
-   * @see module:@yext/components-maps~PinProperties#getZIndex
+   * @see PinProperties#getZIndex
    */
   setZIndex(zIndex: number): PinProperties {
     this._zIndex = zIndex;

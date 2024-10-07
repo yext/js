@@ -1,11 +1,9 @@
-/** @module @yext/components-geo */
-
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 
 /**
  * This class represents a bounded coordinate region of a sphere.
- * The bounds are defined by two {@link module:@yext/components-geo~Coordinate Coordinates}: southwest and northeast.
+ * The bounds are defined by two {@link Coordinates}: southwest and northeast.
  * If the northeast coordinate does not have a greater latitude and longitude than the soutwest
  * coordinate, the behavior of this object is undefined.
  */
@@ -13,9 +11,8 @@ class GeoBounds {
   _ne: Coordinate;
   _sw: Coordinate;
   /**
-   * Create a new {@link module:@yext/components-geo~GeoBounds GeoBounds} with minimal area that
+   * Create a new {@link GeoBounds} with minimal area that
    * contains all the given coordinates
-   * @param coordinates
    */
   static fit(coordinates: Coordinate[]): GeoBounds {
     // North/South bounds are the northernmost and southernmost points
@@ -46,8 +43,8 @@ class GeoBounds {
   }
 
   /**
-   * @param sw Southwest coordinate
-   * @param ne Northeast coordinate
+   * @param sw - Southwest coordinate
+   * @param ne - Northeast coordinate
    */
   constructor(sw: Coordinate, ne: Coordinate) {
     this._ne = new Coordinate(ne);
@@ -61,15 +58,15 @@ class GeoBounds {
     return this._ne;
   }
 
+  set ne(newNE) {
+    this._ne = new Coordinate(newNE);
+  }
+
   /**
    * Southwest coordinate
    */
   get sw(): Coordinate {
     return this._sw;
-  }
-
-  set ne(newNE) {
-    this._ne = new Coordinate(newNE);
   }
 
   set sw(newSW) {
@@ -78,9 +75,8 @@ class GeoBounds {
 
   /**
    * Whether the coordinate lies within the region defined by the bounds.
-   * {@link module:@yext/components-geo~Coordinate#normalLon Normalized longitudes} are used for the
+   * {@link Normalized | longitudes} are used for the
    * bounds and the coordinate.
-   * @param coordinate
    */
   contains(coordinate: Coordinate): boolean{
     const withinLatitude =
@@ -99,7 +95,6 @@ class GeoBounds {
 
   /**
    * Extend the bounds if necessary so that the coordinate is contained by them.
-   * @param coordinate
    */
   extend(coordinate: Coordinate) {
     this._ne.latitude = Math.max(this._ne.latitude, coordinate.latitude);
@@ -123,7 +118,6 @@ class GeoBounds {
    * Calculate the center of the bounds using the given projection.
    * To find the visual center on a Mercator map, use Projection.MERCATOR.
    * To find the center for geolocation or geosearch purposes, use Projection.SPHERICAL.
-   * @param projection
    */
   getCenter(projection = Projection.SPHERICAL): Coordinate {
     const nw = new Coordinate(this._ne.latitude, this._sw.longitude);

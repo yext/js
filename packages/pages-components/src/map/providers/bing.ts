@@ -1,6 +1,4 @@
 
-/** @module @yext/components-maps */
-
 import { Coordinate } from "../coordinate.js";
 import { LoadScript } from "../performance/loadContent.js";
 import { MapProviderOptions } from "../mapProvider.js";
@@ -20,13 +18,12 @@ function initPinOverlayClass() {
     _container: HTMLElement;
     _pins: Set<BingPin>;
     _viewChangeEventHandler: Microsoft.Maps.IHandlerId | null;
-    // @ts-ignore
+    // @ts-expect-error Property '_map' in type 'PinOverlayClass' is not assignable to the same property in base type 'CustomOverlay'.
     _map: Microsoft.Maps.Map | null;
     constructor() {
       super({ beneathLabels: false });
 
       this._container = document.createElement("div");
-      this._map = null;
       this._pins = new Set<BingPin>();
       this._viewChangeEventHandler = null;
 
@@ -101,17 +98,12 @@ function initPinOverlayClass() {
   PinOverlay = PinOverlayClass;
 }
 
-/**
- * @extends module:@yext/components-maps~ProviderMap
- */
 class BingMap extends ProviderMap {
 
   wrapper: HTMLElement | null;
   map?: Microsoft.Maps.Map;
   pinOverlay: typeof PinOverlay;
-  /**
-   * @param options
-   */
+
   constructor(options: ProviderMapOptions) {
     super(options);
 
@@ -141,23 +133,23 @@ class BingMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getCenter}
    */
   getCenter(): Coordinate {
     return new Coordinate(this.map?.getCenter() ?? { lat: 0, lng: 0 });
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getZoom}
    */
   getZoom(): number {
     return this.map?.getZoom() ?? 0;
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setCenter}
    */
-  setCenter(coordinate: Coordinate, animated: boolean) {
+  setCenter(coordinate: Coordinate, _: boolean) {
     const center = new Microsoft.Maps.Location(
       coordinate.latitude,
       coordinate.longitude
@@ -167,9 +159,9 @@ class BingMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoom}
    */
-  setZoom(zoom: number, animated: boolean) {
+  setZoom(zoom: number, _: boolean) {
     // Bing only allows integer zoom
     this.map?.setView({ zoom: Math.floor(zoom) });
     this.pinOverlay.updatePinPositions();
@@ -177,10 +169,6 @@ class BingMap extends ProviderMap {
 }
 
 // Pin Class
-
-/**
- * @extends module:@yext/components-maps~HTMLProviderPin
- */
 class BingPin extends HTMLProviderPin {
   _location: Microsoft.Maps.Location;
   _map: Map | null;
@@ -188,16 +176,13 @@ class BingPin extends HTMLProviderPin {
   /**
    * Bing pins need global callbacks to complete initialization.
    * This function provides a unique ID to include in the name of the callback.
-   * @returns An ID for the pin unique across all instances of {@link module:@yext/components-maps~BingPin BingPin}
+   * @returns An ID for the pin unique across all instances of {@link BingPin}
    */
   static getId(): number {
     this._pinId = (this._pinId || 0) + 1;
     return this._pinId;
   }
 
-  /**
-   * @param options
-   */
   constructor(options: ProviderPinOptions) {
     super(options);
 
@@ -206,7 +191,7 @@ class BingPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
     this._location = new Microsoft.Maps.Location(
@@ -220,7 +205,7 @@ class BingPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setMap}
    */
   setMap(newMap: Map, currentMap: Map) {
     if (currentMap) {
@@ -242,17 +227,16 @@ const globalCallback = "BingMapsCallback_593d7d33";
 const baseUrl = "https://www.bing.com/api/maps/mapcontrol";
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~BingMaps BingMaps}.
- * @alias module:@yext/components-maps~loadBingMaps
- * @param resolve Callback with no arguments called when the load finishes successfully
- * @param reject Callback with no arguments called when the load fails
- * @param apiKey Provider API key
- * @param options Additional provider-specific options
- * @param options.params={} Additional API params
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link BingMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject - Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * options.params=\{\} - Additional API params
+ * @see ProviderLoadFunction
  */
-function load(resolve: Function, reject: Function, apiKey: string, { params = {} } = {}) {
+function load(resolve: () => void, _: () => void, apiKey: string, { params = {} } = {}) {
   window[globalCallback] = () => {
     initPinOverlayClass();
     resolve();
@@ -274,10 +258,6 @@ function load(resolve: Function, reject: Function, apiKey: string, { params = {}
 }
 
 // Exports
-
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const BingMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(BingMap)
