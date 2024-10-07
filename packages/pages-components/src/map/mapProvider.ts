@@ -1,13 +1,11 @@
-/** @module @yext/components-maps */
-
 import { Type, assertType, assertInstance } from "./util/assertions.js";
-import { ProviderMapOptions, ProviderMap } from "./providerMap.js";
-import { ProviderPinOptions, ProviderPin } from "./providerPin.js";
+import { ProviderMap } from "./providerMap.js";
+import { ProviderPin } from "./providerPin.js";
 
-type ProviderLoadFunction = (resolve: Function, reject: Function, apiKey: string, options: Object) => void;
+type ProviderLoadFunction = (resolve: () => void, reject: () => void, apiKey: string, options: object) => void;
 
 /**
- * {@link module:@yext/components-maps~MapProvider MapProvider} options class
+ * {@link MapProvider} options class
  */
 class MapProviderOptions {
   loadFunction: ProviderLoadFunction;
@@ -15,15 +13,12 @@ class MapProviderOptions {
   pinClass: typeof ProviderPin;
   providerName: string;
   constructor() {
-    this.loadFunction = (resolve, reject, apiKey, options) => resolve();
+    this.loadFunction = (resolve, _, __, ___) => resolve();
     this.mapClass = ProviderMap;
     this.pinClass = ProviderPin;
     this.providerName = "";
   }
 
-  /**
-   * @param loadFunction
-   */
   withLoadFunction(loadFunction: ProviderLoadFunction): MapProviderOptions {
     assertType(loadFunction, Type.FUNCTION);
 
@@ -32,7 +27,7 @@ class MapProviderOptions {
   }
 
   /**
-   * @param mapClass Subclass of {@link module:@yext/components-maps~ProviderMap ProviderMap}
+   * @param mapClass - Subclass of {@link ProviderMap}
    *   for the provider
    */
   withMapClass(mapClass: typeof ProviderMap): MapProviderOptions {
@@ -41,8 +36,7 @@ class MapProviderOptions {
   }
 
   /**
-   * @param pinClass Subclass of {@link module:@yext/components-maps~ProviderPin ProviderPin}
-   *   for the provider
+   * @param pinClass - Subclass of {@link ProviderPin} for the provider
    */
   withPinClass(pinClass: typeof ProviderPin): MapProviderOptions {
     this.pinClass = pinClass;
@@ -50,7 +44,7 @@ class MapProviderOptions {
   }
 
   /**
-   * @param {string} providerName Name of the map provider
+   * @param providerName - Name of the map provider
    */
   withProviderName(providerName: string): MapProviderOptions {
     this.providerName = providerName;
@@ -63,12 +57,12 @@ class MapProviderOptions {
 }
 
 /**
- * This class is used for loading the API for a map provider such as Google Maps and creating {@link module:@yext/components-maps~ProviderMap ProviderMap}
- * and {@link module:@yext/components-maps~ProviderPin ProviderPin} instances.
+ * This class is used for loading the API for a map provider such as Google Maps and creating {@link ProviderMap}
+ * and {@link ProviderPin} instances.
  * Provider map implementations return an instance of this class for their provider that you can use
- * to load the API and pass in to {@link module:@yext/components-maps~MapOptions MapOptions} and {@link module:@yext/components-maps~MapPinOptions MapPinOptions} objects as the provider.
- * Example using {@link module:@yext/components-maps~GoogleMaps GoogleMaps}, an instance of this
- * class: GoogleMaps.load().then(() => map = new MapOptions().withProvider(GoogleMaps).build());
+ * to load the API and pass in to {@link MapOptions} and {@link MapPinOptions} objects as the provider.
+ * Example using {@link GoogleMaps}, an instance of this
+ * class: GoogleMaps.load().then(() =\> map = new MapOptions().withProvider(GoogleMaps).build());
  */
 class MapProvider {
   _loadFunction: ProviderLoadFunction;
@@ -76,8 +70,8 @@ class MapProvider {
   _pinClass: typeof ProviderPin;
   _providerName: string;
   _loadPromise: Promise<void>;
-  _resolveLoad?: Function;
-  _rejectLoad?: Function;
+  _resolveLoad?: () => void;
+  _rejectLoad?: () => void;
   _apiKey: string;
   _loadInvoked: boolean;
   _loaded: boolean;
@@ -110,33 +104,32 @@ class MapProvider {
   }
 
   /**
-   * @see module:@yext/components-maps~MapProviderOptions#withMapClass
+   * @see ~MapProviderOptions#withMapClass
    */
   getMapClass(): typeof ProviderMap {
     return this._mapClass;
   }
 
   /**
-   * @see module:@yext/components-maps~MapProviderOptions#withPinClass
+   * @see MapProviderOptions#withPinClass
    */
   getPinClass(): typeof ProviderPin {
     return this._pinClass;
   }
 
   /**
-   * @see module:@yext/components-maps~MapProviderOptions#withProviderName
+   * @see MapProviderOptions#withProviderName
    */
   getProviderName(): string{
     return this._providerName;
   }
 
   /**
-   * Call {@link module:@yext/components-maps~MapPinOptions~loadFunction MapPinOptions~loadFunction}
+   * Call {@link loadFunction}
    * and resolve or reject when loading succeeds or fails
-   * @async
-   * @param apiKey Provider API key -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
+   * @param apiKey - Provider API key -- uses value from {@link MapProvider#setLoadOptions}
    *   if not passed
-   * @param options Additional provider-specific options -- uses value from {@link module:@yext/components-maps~MapProvider#setLoadOptions MapProvider#setLoadOptions}
+   * @param options - Additional provider-specific options -- uses value from {@link MapProvider#setLoadOptions}
    *   if not passed
    */
   async load(apiKey: string = this._apiKey, options: any = this._options) {
@@ -151,7 +144,6 @@ class MapProvider {
 
   /**
    * Resolves or rejects when the map provider has loaded successfully or unsuccessfully
-   * @async
    */
   async ready() {
     await this._loadPromise;
@@ -159,10 +151,10 @@ class MapProvider {
 
   /**
    * Set the API key and provider options used on load. Does nothing if load was already called.
-   * @param apiKey Provider API key
-   * @param options Additional provider-specific options
+   * @param apiKey - Provider API key
+   * @param options - Additional provider-specific options
    */
-  setLoadOptions(apiKey: string, options: Object | null = null) {
+  setLoadOptions(apiKey: string, options: object | null = null) {
     if (!this._loadInvoked) {
       this._apiKey = apiKey;
       this._options = options || this._options;

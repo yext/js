@@ -7,28 +7,20 @@ import {
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees latitude
- * @memberof Coordinate
- * @inner
- * @constant {string[]}
- * @default
  */
 const LATITUDE_ALIASES = ["latitude", "lat"];
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees longitude
- * @memberof Coordinate
- * @inner
- * @constant {string[]}
- * @default
  */
 const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
 
+type LatOrLngFunction = () => number;
+
 /**
  * Find a truthy or 0 value in an object, searching the given keys
- * @memberof Coordinate
- * @inner
- * @param object Object to find a value in
- * @param keys Keys to search in object
+ * @param object - Object to find a value in
+ * @param keys - Keys to search in object
  * @returns The value found, or undefined if not found
  */
 function findValue(object: { [key: string]: any }, keys: string[]): any {
@@ -40,9 +32,6 @@ function findValue(object: { [key: string]: any }, keys: string[]): any {
 }
 
 /**
- * @memberof Coordinate
- * @inner
- * @param value
  * @throws Will throw an error if value cannot be converted to a number.
  */
 function forceNumber(value: any): number {
@@ -62,9 +51,6 @@ function forceNumber(value: any): number {
 }
 
 /**
- * @memberof Coordinate
- * @inner
- * @param degrees
  * @returns Radians
  */
 function degreesToRadians(degrees: number): number {
@@ -72,9 +58,6 @@ function degreesToRadians(degrees: number): number {
 }
 
 /**
- * @memberof Coordinate
- * @inner
- * @param radians
  * @returns Degrees
  */
 function radiansToDegrees(radians: number): number {
@@ -82,11 +65,7 @@ function radiansToDegrees(radians: number): number {
 }
 
 /**
- * Calculate distance between two points using the {@link https://en.wikipedia.org/wiki/Haversine_formula Haversine Formula}
- * @memberof Coordinate
- * @inner
- * @param source
- * @param dest
+ * Calculate distance between two points using the {@link https://en.wikipedia.org/wiki/Haversine_formula | Haversine Formula}
  */
 function haversineDistance(source: Coordinate, dest: Coordinate): number {
   const lat1Rads = degreesToRadians(source.latitude);
@@ -106,10 +85,8 @@ function haversineDistance(source: Coordinate, dest: Coordinate): number {
  * Calculate the distance between two Mercator-projected latitudes in radians of longitude.
  * In Mercator Projection, visual distance between longitudes is always the same but visual distance
  * between latitudes is lowest at the equator and highest towards the poles.
- * @memberof Coordinate
- * @inner
- * @param latitudeA The source latitude in degrees
- * @param latitudeB The destination latitude in degrees
+ * @param latitudeA - The source latitude in degrees
+ * @param latitudeB - The destination latitude in degrees
  * @returns Distance in radians of longitude
  */
 function mercatorLatDistanceInRadians(latitudeA: number, latitudeB: number): number {
@@ -123,10 +100,8 @@ function mercatorLatDistanceInRadians(latitudeA: number, latitudeB: number): num
  * Add radians of longitude to a Mercator-projected latitude.
  * In Mercator Projection, visual distance between longitudes is always the same but visual distance
  * between latitudes is lowest at the equator and highest towards the poles.
- * @memberof Coordinate
- * @inner
- * @param startingLat The source latitude in degrees
- * @param radians Distance in radians of longitude
+ * @param startingLat - The source latitude in degrees
+ * @param radians - Distance in radians of longitude
  * @returns The destination latitude in degrees
  */
 function mercatorLatAddRadians(startingLat: number, radians: number): number {
@@ -147,12 +122,11 @@ class Coordinate {
   /**
    * Constructor takes either 1 or 2 arguments.
    * 2 arguments: latitude and longitude.
-   * 1 argument: an object with at least one {@link module:@yext/components-geo~Coordinate~LATITUDE_ALIASES latitude alias}
-   * and one one {@link module:@yext/components-geo~CoordinateCoordinate~LONGITUDE_ALIASES longitude alias}.
-   * @param {number|Object} latitudeOrObject
-   * @param {number} [longitude] Optional only if the first argument is a {@link module:@yext/components-geo~Coordinate Coordinate}-like object
+   * 1 argument: an object with at least one {@link LATITUDE_ALIASES | latitude alias}
+   * and one one {@link LONGITUDE_ALIASES | longitude alias}.
+   * @param longitude - Optional only if the first argument is a {@link Coordinate}-like object
    */
-  constructor(latitudeOrObject: number | Object, longitude?: number | Function) {
+  constructor(latitudeOrObject: number | { [key: string]: any }, longitude?: number | LatOrLngFunction) {
     let latitude = latitudeOrObject;
 
     if (typeof latitudeOrObject == "object") {
@@ -170,44 +144,41 @@ class Coordinate {
   /**
    * Degrees latitude in the range [-90, 90].
    * If setting a value outside this range, it will be set to -90 or 90, whichever is closer.
-   * @type {number}
    */
   get latitude(): number {
     return this._lat;
   }
 
+  set latitude(newLat: number) {
+    this._lat = Math.max(-90, Math.min(forceNumber(newLat), 90));
+  }
+
   /**
    * Degrees longitude in the range [-Infinity, Infinity].
-   * @type {number}
    */
-  get longitude() {
+  get longitude(): number {
     return this._lon;
+  }
+
+  set longitude(newLon: number) {
+    this._lon = forceNumber(newLon);
   }
 
   /**
    * Degrees longitude in the range [-180, 180).
    * If the coordinate's longitude is outside this range, the equivalent value within it is used.
-   * Examples: 123 => 123, 270 => -90, -541 => 179
-   * @type {number}
+   * Examples: 123 =\> 123, 270 =\> -90, -541 =\> 179
    */
-  get normalLon() {
+  get normalLon(): number {
     return ((((this._lon + 180) % 360) + 360) % 360) - 180;
-  }
-
-  set latitude(newLat) {
-    this._lat = Math.max(-90, Math.min(forceNumber(newLat), 90));
-  }
-
-  set longitude(newLon) {
-    this._lon = forceNumber(newLon);
   }
 
   /**
    * Add distance to the coordinate to change its position.
-   * @param latDist latitude distance
-   * @param lonDist longitude distance
-   * @param unit The unit of latDist and lonDist
-   * @param projection The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
+   * @param latDist - latitude distance
+   * @param lonDist - longitude distance
+   * @param unit - The unit of latDist and lonDist
+   * @param projection - The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    */
   add(latDist: number, lonDist: number, unit = Unit.DEGREE, projection = Projection.SPHERICAL): void {
     if (
@@ -253,9 +224,8 @@ class Coordinate {
 
   /**
    * Calculate the distance from this coordinate to another coordinate.
-   * @param coordinate
-   * @param unit The unit of distance
-   * @param projection The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
+   * @param unit - The unit of distance
+   * @param projection - The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    * @returns Distance in the requested unit
    */
   distanceTo(coordinate: Coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL): number {
@@ -302,7 +272,6 @@ class Coordinate {
 
   /**
    * Test if this coordinate has the same latitude and longitude as another.
-   * @param coordinate
    */
   equals(coordinate: Coordinate): boolean {
     return (
@@ -314,7 +283,7 @@ class Coordinate {
 
   /**
    * Get the coordinate as a string that can be used in a search query.
-   * Example: {latitude: -45, longitude: 123} => '-45,123'
+   * Example: \{latitude: -45, longitude: 123\} =\> '-45,123'
    */
   searchQueryString(): string {
     return `${this.latitude},${this.longitude}`;

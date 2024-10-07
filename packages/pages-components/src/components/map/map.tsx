@@ -43,15 +43,17 @@ export const Map = ({
 }: MapProps) => {
   const wrapper = useRef(null);
 
-  const [center, setCenter] = useState(defaultCenter);
+  const [center, setCenter] = useState(new Coordinate(defaultCenter));
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState<MapType>();
   const [zoom, setZoom] = useState(defaultZoom);
 
   // Update center on map move
-  const _panHandler = (previous: GeoBounds, current: GeoBounds) => {
+  const _panHandler = (previous?: GeoBounds, current?: GeoBounds) => {
     panHandler(previous, current);
-    setCenter(current.getCenter());
+    if (current) {
+      setCenter(current.getCenter());
+    }
   };
 
   // On map move

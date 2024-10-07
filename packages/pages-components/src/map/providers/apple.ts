@@ -22,11 +22,11 @@ class AppleMap extends ProviderMap {
     throw new Error("not implemented");
   }
 
-  setCenter(coordinate: Coordinate, animated: boolean) {
+  setCenter(_: Coordinate, __: boolean) {
     // GENERATOR TODO
   }
 
-  setZoom(zoom: number, animated: boolean) {
+  setZoom(_: number, __: boolean) {
     // GENERATOR TODO
   }
 }
@@ -38,22 +38,22 @@ class ApplePin extends ProviderPin {
     super(options);
   }
 
-  setCoordinate(coordinate: Coordinate) {
+  setCoordinate(_: Coordinate) {
     // GENERATOR TODO
   }
 
-  setMap(newMap: Map | null, currentMap: Map | null) {
+  setMap(_: Map | null, __: Map | null) {
     // GENERATOR TODO
   }
 
-  setProperties(pinProperties: PinProperties) {
+  setProperties(_: PinProperties) {
     // GENERATOR TODO
   }
 }
 
 // Load Function
 
-function load(resolve: Function, reject: Function, apiKey: string, options: Object) {
+function load(_: () => void, __: () => void, ___: string, ____: object) {
   // GENERATOR TODO
 }
 

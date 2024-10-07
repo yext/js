@@ -1,5 +1,3 @@
-/** @module @yext/components-maps */
-
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
 import { PinClickHandler, PinFocusHandler, PinHoverHandler, PinProperties } from "./mapPin.js";
@@ -7,12 +5,9 @@ import { Coordinate } from "./coordinate.js";
 import { Map } from "./map.js";
 
 /**
- * {@link module:@yext/components-maps~ProviderPin ProviderPin} options class
+ * {@link ProviderPin} options class
  */
 class ProviderPinOptions {
-  /**
-   * @param provider
-   */
   providerPinClass: typeof ProviderPin;
   clickHandler: PinClickHandler;
   focusHandler: PinFocusHandler;
@@ -25,13 +20,13 @@ class ProviderPinOptions {
     this.providerPinClass = provider.getPinClass();
 
     this.clickHandler = () => null;
-    this.focusHandler = (focused: boolean) => null;
-    this.hoverHandler = (hovered: boolean) => null;
+    this.focusHandler = (_: boolean) => null;
+    this.hoverHandler = (_: boolean) => null;
     this.icons = {};
   }
 
   /**
-   * @param clickHandler Function called when the pin is clicked
+   * @param clickHandler - Function called when the pin is clicked
    */
   withClickHandler(clickHandler: PinClickHandler): ProviderPinOptions {
     assertType(clickHandler, Type.FUNCTION);
@@ -41,7 +36,7 @@ class ProviderPinOptions {
   }
 
   /**
-   * @param focusHandler Function called when the pin becomes (un)focused
+   * @param focusHandler - Function called when the pin becomes (un)focused
    */
   withFocusHandler(focusHandler: PinFocusHandler): ProviderPinOptions {
     assertType(focusHandler, Type.FUNCTION);
@@ -51,7 +46,7 @@ class ProviderPinOptions {
   }
 
   /**
-   * @param {import('./mapPin.js').PinHoverHandler} hoverHandler Function called when the pin becomes (un)hovered
+   * @param hoverHandler - Function called when the pin becomes (un)hovered
    */
   withHoverHandler(hoverHandler: PinHoverHandler): ProviderPinOptions {
     assertType(hoverHandler, Type.FUNCTION);
@@ -61,12 +56,12 @@ class ProviderPinOptions {
   }
 
   /**
-   * Similar to {@link module:@yext/components-maps~MapPinOptions#withIcon MapPinOptions#withIcon},
-   * but all icons are given as a map of key => icon. If a provider pin instance needs an icon to be
+   * Similar to {@link MapPinOptions#withIcon},
+   * but all icons are given as a map of key =\> icon. If a provider pin instance needs an icon to be
    * a specialized class rather than a simple URL, the icons in this object can be converted in this
    * function and assigned back to the icons object instead of being recreated from the URL every
    * time the pin's icon changes.
-   * @param icons Map of a string key to the URL or data URI of an image
+   * @param icons - Map of a string key to the URL or data URI of an image
    */
   withIcons(icons: { [key: string]: string }): ProviderPinOptions {
     this.icons = icons;
@@ -74,8 +69,8 @@ class ProviderPinOptions {
   }
 
   /**
-   * @returns An instance of a subclass of {@link module:@yext/components-maps~ProviderPin ProviderPin}
-   *   for the given {@link module:@yext/components-maps~MapProvider MapProvider}
+   * @returns An instance of a subclass of {@link ProviderPin}
+   *   for the given {@link MapProvider}
    */
   build(): ProviderPin {
     const providerPinClass = this.providerPinClass;
@@ -85,7 +80,7 @@ class ProviderPinOptions {
 
 /**
  * This class is an interface that should be implemented for each map provider, such as Google Maps.
- * It is used as an API for a {@link module:@yext/components-maps~MapPin MapPin} to control a
+ * It is used as an API for a {@link MapPin} to control a
  * provider-specific pin instance. Ideally, this class should have minimal functionality so that
  * adding a new provider is easy and behavior is as consistent as possible across all providers.
  */
@@ -96,9 +91,8 @@ class ProviderPin {
   _icons: { [key: string]: string };
   /**
    * The constructor creates a pin instance using the provider's API and initializes it with all the
-   * given options. See {@link module:@yext/components-maps~ProviderPinOptions ProviderPinOptions}
+   * given options. See {@link ProviderPinOptions}
    * for the supported options.
-   * @param options
    */
   constructor(options: ProviderPinOptions) {
     assertInstance(options, ProviderPinOptions);
@@ -110,29 +104,28 @@ class ProviderPin {
   }
 
   /**
-   * @param coordinate The position of the pin
+   * @param coordinate - The position of the pin
    */
-  setCoordinate(coordinate: Coordinate) {
+  setCoordinate(_: Coordinate) {
     throw new Error("not implemented");
   }
 
   /**
    * Remove the pin from its current map and, if newMap is not null, add it to the new map.
-   * @param newMap The new map -- if null, the pin will not be
+   * @param newMap - The new map -- if null, the pin will not be
    *   shown on any map
-   * @param currentMap The current map -- if null, the pin is
+   * @param currentMap - The current map -- if null, the pin is
    *   not shown on any map
    */
-  setMap(newMap: Map | null, currentMap: Map | null) {
+  setMap(_: Map | null, __: Map | null) {
     throw new Error("not implemented");
   }
 
   /**
    * Apply the given properties to modify the appearance of the pin.
-   * @param pinProperties
-   * @see module:@yext/components-maps~PinProperties
+   * @see PinProperties
    */
-  setProperties(pinProperties: PinProperties) {
+  setProperties(_: PinProperties) {
     throw new Error("not implemented");
   }
 }
@@ -149,9 +142,8 @@ const htmlPinBaseStyle = Object.freeze({
 });
 
 /**
- * This class is an extension of {@link module:@yext/components-maps~ProviderPin ProviderPin} that
+ * This class is an extension of {@link ProviderPin} that
  * allows HTML elements to be used as map pins.
- * @extends module:@yext/components-maps~ProviderPin
  */
 class HTMLProviderPin extends ProviderPin {
   _pinEl: HTMLElement;
@@ -161,16 +153,14 @@ class HTMLProviderPin extends ProviderPin {
   /**
    * This is the base style applied to pin elements. It is a map from CSS property to value, such
    * as 'position': 'absolute'
-   * @type {Object}
    */
   static get baseStyle() {
     return htmlPinBaseStyle;
   }
 
   /**
-   * After instatiating a {@link module:@yext/components-maps~ProviderPin ProviderPin}, this creates
+   * After instatiating a {@link ProviderPin}, this creates
    * a wrapper element and a default pin element.
-   * @param options
    */
   constructor(options: ProviderPinOptions) {
     super(options);
@@ -203,22 +193,21 @@ class HTMLProviderPin extends ProviderPin {
   }
 
   /**
-   * @returns {HTMLElement} HTML button element for pin element
+   * @returns HTML button element for pin element
    */
-  getPinElement() {
+  getPinElement(): HTMLElement {
     return this._pinEl;
   }
 
   /**
-   * @returns {HTMLElement} HTML button element for wrapper element
+   * @returns HTML button element for wrapper element
    */
-  getWrapperElement() {
+  getWrapperElement(): HTMLElement | null {
     return this._wrapper;
   }
 
   /**
-   * @param pinProperties
-   * @see module:@yext/components-maps~ProviderPin#setProperties
+   * @see ProviderPin#setProperties
    */
   setProperties(pinProperties: PinProperties) {
     this.setElementProperties(pinProperties);
@@ -243,7 +232,6 @@ class HTMLProviderPin extends ProviderPin {
 
   /**
    * Sets properties used specifically by the pin element
-   * @param pinProperties
    */
   setElementProperties(pinProperties: PinProperties) {
     const anchorX = pinProperties.getAnchorX();

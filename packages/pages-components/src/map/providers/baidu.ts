@@ -1,6 +1,3 @@
-
-/** @module @yext/components-maps */
-
 import { Coordinate } from "../coordinate.js";
 import { Map, PanHandler, PanStartHandler } from "../map.js";
 import { MapProviderOptions } from "../mapProvider.js";
@@ -28,12 +25,12 @@ const negativeLngPinClass = "js-baidu-neg-lng-fix";
 
 // The API key is needed for coordinate conversion.
 // The load function will resolve apiKeyPromise with the key once it is invoked.
-let resolveAPIKey: Function;
+let resolveAPIKey: (_: string) => void;
 const apiKeyPromise = new Promise((resolve) => (resolveAPIKey = resolve));
 const geoconvBaseUrl = "https://api.map.baidu.com/geoconv/v1/";
 
 // Batch coordinate conversion requests to reduce network load
-let gcj02ToBD09Requests: { coordinates: Coordinate[], resolve: Function, reject: Function }[] = [];
+let gcj02ToBD09Requests: { coordinates: Coordinate[], resolve: (coord: Coordinate[]) => void, reject: (reason?: any) => void }[] = [];
 const gcj02ToBD09GlobalCallback = "gcj02ToBD09Callback_b872c21c";
 let gcj02ToBD09CallbackCounter = 0;
 let gcj02ToBD09CallbackTimeout: NodeJS.Timeout;
@@ -41,7 +38,7 @@ let gcj02ToBD09CallbackTimeout: NodeJS.Timeout;
 /**
  * This function converts coordinates from China's coordinate system GCJ-02 to Baidu's coordinate
  * system BD-09. See {@link https://en.wikipedia.org/wiki/Baidu_Maps#Coordinate_system} for more info
- * @param coordinates Coordinates in GCJ-02
+ * @param coordinates - Coordinates in GCJ-02
  * @returns Equivalent coordinates in BD-09
  */
 async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
@@ -125,7 +122,6 @@ async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
 
 /**
  * Baidu Maps documentation lives here: {@link http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference_3_0.html}
- * @extends module:@yext/components-maps~ProviderMap
  */
 class BaiduMap extends ProviderMap {
   _wrapper: HTMLElement | null;
@@ -133,9 +129,7 @@ class BaiduMap extends ProviderMap {
   _panStartHandler: PanStartHandler;
   _panHandler: PanHandler;
   _centerReady: Promise<void>;
-  /**
-   * @param options
-   */
+
   constructor(options: ProviderMapOptions) {
     super(options);
 
@@ -182,21 +176,21 @@ class BaiduMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getCenter}
    */
   getCenter() {
     return new Coordinate(this.map.getCenter());
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getZoom}
    */
   getZoom() {
     return this.map.getZoom() - baiduZoomConversionConstant;
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
     this._centerReady = gcj02ToBD09([coordinate]).then(([convertedCoord]) => {
@@ -209,7 +203,7 @@ class BaiduMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoom}
    */
   setZoom(zoom: number, animated: boolean) {
     this._centerReady.then(() => {
@@ -224,11 +218,46 @@ class BaiduMap extends ProviderMap {
   }
 }
 
+class CustomMarker extends BMap.Marker {
+  pin: BaiduPin;
+  constructor(point: any, pin: BaiduPin) {
+    super(point);
+    this.pin = pin;
+  }
+
+  initialize(map: any) {
+    this.pin._wrapper = super.initialize(map);
+
+    if (this.pin._wrapper) {
+      this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
+      this.pin._originalWrapperClass = this.pin._wrapper.getAttribute("class") ?? "";
+      this.pin._wrapper.setAttribute("class", this.pin._getClass());
+      this.pin._wrapper.appendChild(this.pin._element);
+      this.pin.addListeners();
+    }
+
+    return this.pin._wrapper;
+  }
+
+  draw() {
+    if (this.pin._wrapper) {
+      const zIndex = this.pin._wrapper.style.zIndex;
+
+      super.draw();
+      this.pin._wrapper.style.height = "";
+      this.pin._wrapper.style.width = "";
+      this.pin._wrapper.style.pointerEvents = "none";
+      this.pin._wrapper.style.zIndex = zIndex;
+    } else {
+      super.draw();
+    }
+  }
+}
+
 // Pin Class
 
 /**
  * Baidu Maps documentation lives here: {@link http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference_3_0.html}
- * @extends module:@yext/components-maps~HTMLProviderPin
  */
 class BaiduPin extends HTMLProviderPin {
   _wrapper: HTMLElement | null;
@@ -239,9 +268,7 @@ class BaiduPin extends HTMLProviderPin {
   _coordinateReady: Promise<void>;
   _negativeLngFix: boolean;
   pin: any;
-  /**
-   * @param options
-   */
+
   constructor(options: ProviderPinOptions) {
     super(options);
 
@@ -255,43 +282,7 @@ class BaiduPin extends HTMLProviderPin {
     this._coordinateReady = Promise.resolve();
     this._negativeLngFix = false;
 
-    const that = this;
-
-    class CustomMarker extends BMap.Marker {
-      constructor(point: any) {
-        super(point);
-      }
-
-      initialize(map: any) {
-        that._wrapper = super.initialize(map);
-
-        if (that._wrapper) {
-          that._wrapper.style.zIndex = that._zIndex.toString();
-          that._originalWrapperClass = that._wrapper.getAttribute("class") ?? "";
-          that._wrapper.setAttribute("class", that._getClass());
-          that._wrapper.appendChild(that._element);
-          that.addListeners();
-        }
-
-        return that._wrapper;
-      }
-
-      draw() {
-        if (that._wrapper) {
-          const zIndex = that._wrapper.style.zIndex;
-
-          super.draw();
-          that._wrapper.style.height = "";
-          that._wrapper.style.width = "";
-          that._wrapper.style.pointerEvents = "none";
-          that._wrapper.style.zIndex = zIndex;
-        } else {
-          super.draw();
-        }
-      }
-    }
-
-    this.pin = new CustomMarker(new BMap.Point(0, 0));
+    this.pin = new CustomMarker(new BMap.Point(0, 0), this);
 
     // Remove the default icon and shadow by setting it to a transparent 0x0 pixel
     const hiddenIcon = new BMap.Icon(
@@ -303,7 +294,7 @@ class BaiduPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.addListeners}
    */
   addListeners() {
     super.addListeners();
@@ -314,7 +305,7 @@ class BaiduPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
     this._coordinateReady = gcj02ToBD09([coordinate]).then(
@@ -339,7 +330,7 @@ class BaiduPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setMap}
    */
   setMap(newMap: Map, currentMap: Map) {
     this._coordinateReady.then(() => {
@@ -354,7 +345,7 @@ class BaiduPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setProperties}
    */
   setProperties(pinProperties: PinProperties) {
     super.setProperties(pinProperties);
@@ -370,10 +361,8 @@ class BaiduPin extends HTMLProviderPin {
 
   /**
    * Get the class attribute value for the pin element
-   * @protected
-   * @returns {string}
    */
-  _getClass() {
+  _getClass(): string {
     return `${this._originalWrapperClass} ${this._negativeLngFix ? negativeLngPinClass : ""
       } ${this._wrapperClass}`;
   }
@@ -384,18 +373,17 @@ class BaiduPin extends HTMLProviderPin {
 const baseUrl = "https://api.map.baidu.com/getscript";
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~BaiduMaps BaiduMaps}.
- * @alias module:@yext/components-maps~loadBaiduMaps
- * @param {function} resolve Callback with no arguments called when the load finishes successfully
- * @param {function} reject Callback with no arguments called when the load fails
- * @param {string} apiKey Provider API key
- * @param {Object} options Additional provider-specific options
- * @param {Object<string,string>} [options.params={}] Additional API params
- * @param {string} [options.version='3.0'] API version
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link BaiduMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject- Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * @param options - Additional API params
+ * options.version - API version
+ * @see ProviderLoadFunction
  */
-function load(resolve: Function, reject: Function, apiKey: string, { params = {}, version = "3.0" } = {}) {
+function load(resolve: () => void, _: () => void, apiKey: string, { params = {}, version = "3.0" } = {}) {
   window.BMAP_PROTOCOL = "https";
   window.BMap_loadScriptTime = new Date().getTime();
 
@@ -433,10 +421,6 @@ function load(resolve: Function, reject: Function, apiKey: string, { params = {}
 }
 
 // Exports
-
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const BaiduMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(BaiduMap)

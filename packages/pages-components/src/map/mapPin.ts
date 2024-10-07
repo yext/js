@@ -1,5 +1,3 @@
-/** @module @yext/components-maps */
-
 import { Coordinate } from "./coordinate.js";
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { Map } from "./map.js";
@@ -7,13 +5,13 @@ import { MapProvider } from "./mapProvider.js";
 import { PinProperties } from "./pinProperties.js";
 import { ProviderPin, ProviderPinOptions } from "./providerPin.js";
 
-type PropertiesForStatus = (status: Object) => PinProperties;
+type PropertiesForStatus = (status: object) => PinProperties;
 export type PinClickHandler = () => void;
 export type PinFocusHandler = (focused: boolean) => void;
 export type PinHoverHandler = (hovered: boolean) => void;
 
 /**
- * {@link module:@yext/components-maps~MapPin MapPin} options class
+ * {@link MapPin} options class
  */
 class MapPinOptions {
   /**
@@ -30,13 +28,13 @@ class MapPinOptions {
     this.coordinate = new Coordinate(0, 0);
     this.hideOffscreen = false;
     this.icons = {};
-    this.propertiesForStatus = (status) => new PinProperties();
+    this.propertiesForStatus = (_) => new PinProperties();
     this.provider = null;
     this.type = "";
   }
 
   /**
-   * @param coordinate Must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
+   * @param coordinate - Must be convertible to {@link Coordinate}
    */
   withCoordinate(coordinate: Coordinate): MapPinOptions {
     this.coordinate = new Coordinate(coordinate);
@@ -44,7 +42,7 @@ class MapPinOptions {
   }
 
   /**
-   * @param hideOffscreen If true, the pin will only be rendered if it's in the visible
+   * @param hideOffscreen - If true, the pin will only be rendered if it's in the visible
    *   portion of the map to improve performance
    */
   withHideOffscreen(hideOffscreen: boolean): MapPinOptions {
@@ -53,18 +51,15 @@ class MapPinOptions {
   }
 
   /**
-   * @param key The unique name for the icon, used in {@link module:@yext/components-maps~PinProperties#getIcon PinProperties#getIcon}
-   *   and {@link module:@yext/components-maps~PinProperties#setIcon PinProperties#setIcon}
-   * @param icon The URL or data URI of the icon image
+   * @param key - The unique name for the icon, used in {@link PinProperties#getIcon}
+   *   and {@link PinProperties#setIcon}
+   * @param icon - The URL or data URI of the icon image
    */
   withIcon(key: string, icon: string): MapPinOptions {
     this.icons[key] = icon;
     return this;
   }
 
-  /**
-   * @param propertiesForStatus
-   */
   withPropertiesForStatus(propertiesForStatus: PropertiesForStatus): MapPinOptions {
     assertType(propertiesForStatus, Type.FUNCTION);
 
@@ -72,9 +67,6 @@ class MapPinOptions {
     return this;
   }
 
-  /**
-   * @param provider
-   */
   withProvider(provider: MapProvider | null): MapPinOptions {
     if (provider) {
       assertInstance(provider, MapProvider);
@@ -84,7 +76,7 @@ class MapPinOptions {
   }
 
   /**
-   * @param type A string describing the type of the pin
+   * @param type - A string describing the type of the pin
    */
   withType(type: string): MapPinOptions {
     this.type = type;
@@ -97,10 +89,10 @@ class MapPinOptions {
 }
 
 /**
- * A pin for a {@link module:@yext/components-maps~Map Map} that displays at a given {@link module:@yext/components-tsx-geo~Coordinate Coordinate}.
+ * A pin for a {@link Map} that displays at a given {@link Coordinate}.
  * A MapPin can be displayed on at most one Map at a time. Pins support event handlers for clicking,
  * hovering, and focusing. The pin can change its appearance based on its current status, which is
- * changed by {@link module:@yext/components-maps~MapPin#setStatus setStatus}.
+ * changed by {@link setStatus}.
  */
 class MapPin {
   _coordinate: Coordinate;
@@ -112,14 +104,11 @@ class MapPin {
   _focusHandler: PinFocusHandler;
   _hoverHandler: PinHoverHandler;
   _hidden: boolean;
-  _cancelHiddenUpdater: Function;
+  _cancelHiddenUpdater: () => void;
   _map: Map | null;
   _pin: ProviderPin;
-  _status: Object;
+  _status: object;
 
-  /**
-   * @param options
-   */
   constructor(options: MapPinOptions) {
     assertInstance(options, MapPinOptions);
     if (options.provider) {
@@ -140,7 +129,7 @@ class MapPin {
 
     this._clickHandler = () => null;
     this._focusHandler = (focused) => this._hoverHandler(focused);
-    this._hoverHandler = (hovered) => null;
+    this._hoverHandler = (_) => null;
 
     this._hidden = false;
     this._cancelHiddenUpdater = () => null;
@@ -169,9 +158,9 @@ class MapPin {
 
   /**
    * Get the icon for a string key, such as 'default', 'hovered', or 'selected'
-   * @param key The unique name of the icon
+   * @param key - The unique name of the icon
    * @returns The URL or data URI of the icon image
-   * @see module:@yext/components-maps~MapPinOptions#withIcon
+   * @see MapPinOptions#withIcon
    */
   getIcon(key: string): string {
     return this._icons[key];
@@ -187,7 +176,7 @@ class MapPin {
 
   /**
    * Intended for internal use only
-   * @returns The pin's {@link module:@yext/components-maps~ProviderPin ProviderPin}
+   * @returns The pin's {@link ProviderPin}
    *   instance
    */
   getProviderPin(): ProviderPin {
@@ -210,7 +199,6 @@ class MapPin {
 
   /**
    * Set a handler function for when the pin is clicked, replacing any previously set click handler.
-   * @param clickHandler
    */
   setClickHandler(clickHandler: PinClickHandler) {
     assertType(clickHandler, Type.FUNCTION);
@@ -219,7 +207,7 @@ class MapPin {
   }
 
   /**
-   * @param coordinate Must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
+   * @param coordinate - Must be convertible to {@link Coordinate}
    */
   setCoordinate(coordinate: Coordinate) {
     this._coordinate = new Coordinate(coordinate);
@@ -232,7 +220,6 @@ class MapPin {
 
   /**
    * Set a handler function for when the pin is (un)focused, replacing any previously set focus handler.
-   * @param focusHandler
    */
   setFocusHandler(focusHandler: PinFocusHandler) {
     assertType(focusHandler, Type.FUNCTION);
@@ -242,7 +229,6 @@ class MapPin {
 
   /**
    * Set a handler function for when the pin is (un)hovered, replacing any previously set hover handler.
-   * @param hoverHandler
    */
   setHoverHandler(hoverHandler: PinHoverHandler) {
     assertType(hoverHandler, Type.FUNCTION);
@@ -252,7 +238,6 @@ class MapPin {
 
   /**
    * Add the pin to a map, removing it from its current map if on one.
-   * @param map
    */
   setMap(map: Map | null) {
     if (map === this._map) {
@@ -291,18 +276,16 @@ class MapPin {
 
   /**
    * Assign all properties in an object to the pin's status.
-   * Example: if the pin's status is { a: true, b: true }, passing in { a: false, c: true } will
-   * change the pin's status to { a: false, b: true, c: true }
-   * @param status
+   * Example: if the pin's status is \{ a: true, b: true \}, passing in \{ a: false, c: true \} will
+   * change the pin's status to \{ a: false, b: true, c: true \}
    */
-  setStatus(status: Object) {
+  setStatus(status: object) {
     Object.assign(this._status, status);
     this._pin.setProperties(this._propertiesForStatus(this._status));
   }
 
   /**
    * Add or remove the pin from the map based on whether its coordinate is within the current bounds
-   * @protected
    */
   _hideIfOffscreen() {
     if (this._map) {

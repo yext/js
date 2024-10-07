@@ -1,5 +1,3 @@
-/** @module @yext/components-maps */
-
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 import { GeoBounds } from "./geoBounds.js";
@@ -8,7 +6,7 @@ import { MapPin, MapPinOptions } from "./mapPin.js";
 import { MapProvider } from "./mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "./providerMap.js";
 
-type PaddingFunction = () => number;
+export type PaddingFunction = () => number;
 
 export type PanHandler = (previousBounds?: GeoBounds, currentBounds?: GeoBounds) => void;
 
@@ -23,20 +21,18 @@ type PaddingObject = {
 
 /**
  * The maximum percent of the map height or width that can be taken up by padding.
- * It's a number arbitrarily close to 1, because if total padding is >= 1 there's no space for pins.
- * This shouldn't need to be changed. To set a {@link module:@yext/components-maps~Map Map}'s
- * padding, use {@link module:@yext/components-maps~Map#setPadding setPadding}.
- * @constant {number}
- * @default
+ * It's a number arbitrarily close to 1, because if total padding is \>= 1 there's no space for pins.
+ * This shouldn't need to be changed. To set a {@link Map}'s
+ * padding, use {@link setPadding}.
  */
 const MAX_PADDING = 0.98;
 
 /**
  * Padding values are given in pixels as a number or a function that returns a number.
  * They need to be converted to a non-negative fraction of the map's current height or width.
- * @param value Minimum number of pixels
+ * @param value - Minimum number of pixels
  *   between the map's edge and a pin
- * @param basis The pixel measurement that the padding will be a fraction of
+ * @param basis - The pixel measurement that the padding will be a fraction of
  * @returns The padding value as a fraction of basis
  */
 function normalizePadding(value: number | PaddingFunction | undefined, basis: number): number {
@@ -46,7 +42,7 @@ function normalizePadding(value: number | PaddingFunction | undefined, basis: nu
 }
 
 /**
- * {@link module:@yext/components-maps~Map Map} options class
+ * {@link Map} options class
  */
 class MapOptions {
   controlEnabled: boolean;
@@ -57,7 +53,7 @@ class MapOptions {
   panHandler: PanHandler;
   panStartHandler: PanStartHandler;
   provider: MapProvider | null;
-  providerOptions: ProviderMapOptions | {};
+  providerOptions: ProviderMapOptions | object;
   singlePinZoom: number;
   wrapper: HTMLElement | null;
   /**
@@ -74,8 +70,8 @@ class MapOptions {
       right: () => 50,
       top: () => 50,
     };
-    this.panHandler = (previousBounds, currentBounds) => null;
-    this.panStartHandler = (currentBounds) => null;
+    this.panHandler = (_, __) => null;
+    this.panStartHandler = (_) => null;
     this.provider = null;
     this.providerOptions = {};
     this.singlePinZoom = 14;
@@ -83,7 +79,7 @@ class MapOptions {
   }
 
   /**
-   * @param controlEnabled Whether the user can move and zoom the map
+   * @param controlEnabled - Whether the user can move and zoom the map
    */
   withControlEnabled(controlEnabled: boolean): MapOptions {
     this.controlEnabled = controlEnabled;
@@ -91,8 +87,8 @@ class MapOptions {
   }
 
   /**
-   * @param defaultCenter The center on initial load and
-   *   when calling {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates} with an empty array
+   * @param defaultCenter - The center on initial load and
+   *   when calling {@link Map#fitCoordinates} with an empty array
    */
   withDefaultCenter(defaultCenter: Coordinate): MapOptions {
     this.defaultCenter = new Coordinate(defaultCenter);
@@ -100,7 +96,7 @@ class MapOptions {
   }
 
   /**
-   * @param defaultZoom The zoom on initial load and when calling {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates}
+   * @param defaultZoom - The zoom on initial load and when calling {@link Map#fitCoordinates}
    *   with an empty array
    */
   withDefaultZoom(defaultZoom: number): MapOptions {
@@ -109,8 +105,8 @@ class MapOptions {
   }
 
   /**
-   * @todo GENERATOR TODO Map legend not yet implemented
-   * @param {module:@yext/components-maps~MapPin[]} legendPins Pins used to construct the map legend
+   * GENERATOR TODO Map legend not yet implemented
+   * @param legendPins - Pins used to construct the map legend
    */
   withLegendPins(legendPins: MapPin[]): MapOptions {
     this.legendPins = Array.from(legendPins);
@@ -118,20 +114,16 @@ class MapOptions {
   }
 
   /**
-   * Padding is used by {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates}.
+   * Padding is used by {@link Map#fitCoordinates}.
    * Padding can either be constant values or funtions that return a padding value.
-   * See {@link module:@yext/components-maps~Map#setPadding Map#setPadding} for more information.
-   * @param padding
-   * @see module:@yext/components-maps~Map#setPadding
+   * See {@link Map#setPadding} for more information.
+   * @see {@link Map#setPadding}
    */
   withPadding(padding: { bottom: number | PaddingFunction, left: number | PaddingFunction, right: number | PaddingFunction, top: number | PaddingFunction }): MapOptions {
     this.padding = padding;
     return this;
   }
 
-  /**
-   * @param panHandler
-   */
   withPanHandler(panHandler: PanHandler): MapOptions {
     assertType(panHandler, Type.FUNCTION);
 
@@ -139,9 +131,6 @@ class MapOptions {
     return this;
   }
 
-  /**
-   * @param panStartHandler
-   */
   withPanStartHandler(panStartHandler: PanStartHandler): MapOptions {
     assertType(panStartHandler, Type.FUNCTION);
 
@@ -150,9 +139,8 @@ class MapOptions {
   }
 
   /**
-   * The {@link module:@yext/components-maps~MapProvider MapProvider} must be loaded before
-   * constructing the {@link module:@yext/components-maps~Map Map}.
-   * @param provider
+   * The {@link MapProvider} must be loaded before
+   * constructing the {@link Map}.
    */
   withProvider(provider: MapProvider): MapOptions {
     assertInstance(provider, MapProvider);
@@ -162,16 +150,16 @@ class MapOptions {
   }
 
   /**
-   * @param providerOptions A free-form object used to set any additional provider-specific
-   *   options in the {@link module:@yext/components-maps~ProviderMap ProviderMap}
+   * @param providerOptions - A free-form object used to set any additional provider-specific
+   *   options in the {@link ProviderMap}
    */
-  withProviderOptions(providerOptions: Object): MapOptions {
+  withProviderOptions(providerOptions: object): MapOptions {
     this.providerOptions = providerOptions;
     return this;
   }
 
   /**
-   * @param singlePinZoom The zoom when calling {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates}
+   * @param singlePinZoom - The zoom when calling {@link Map#fitCoordinates}
    *   with an array containing one coordinate
    */
   withSinglePinZoom(singlePinZoom: number): MapOptions {
@@ -180,10 +168,13 @@ class MapOptions {
   }
 
   /**
-   * @param wrapper The wrapper element that the map will be inserted into. The
+   * @param wrapper - The wrapper element that the map will be inserted into. The
    *   existing contents of the element will be removed.
    */
-  withWrapper(wrapper: HTMLElement): MapOptions {
+  withWrapper(wrapper: HTMLElement | null): MapOptions {
+    if (!wrapper) {
+      return this;
+    }
     assertInstance(wrapper, HTMLElement);
 
     this.wrapper = wrapper;
@@ -198,13 +189,12 @@ class MapOptions {
 /**
  * An interactive map that supports various map providers, such as Google Maps and Mapbox, with a
  * single API. Code written using this class functions approximately the same regardless of the map
- * provider used. Any map provider can be supported via an instance of {@link module:@yext/components-maps~MapProvider MapProvider}.
+ * provider used. Any map provider can be supported via an instance of {@link MapProvider}.
  */
 class Map {
   /**
-   * The {@link module:@yext/components-maps~MapProvider MapProvider} for the map must be loaded
+   * The {@link MapProvider} for the map must be loaded
    * before calling this constructor.
-   * @param options
    */
   _defaultCenter: Coordinate;
   _defaultZoom: number;
@@ -214,8 +204,8 @@ class Map {
   _singlePinZoom: number;
   _wrapper: HTMLElement | null;
   _cachedBounds: GeoBounds | null;
-  _resolveIdle: Function;
-  _resolveMoving: Function;
+  _resolveIdle: () => void;
+  _resolveMoving: () => void;
   _idlePromise: Promise<void>;
   _panHandlerRunning: boolean;
   _panStartHandlerRunning: boolean;
@@ -279,14 +269,13 @@ class Map {
   }
 
   /**
-   * Set the map bounds so that all the given coordinates are within the {@link module:@yext/components-maps~MapOptions#withPadding padded}
+   * Set the map bounds so that all the given coordinates are within the {@link padded}
    * view.
-   * @param coordinates
-   * @param animated Whether to transition smoothly to the new bounds
-   * @param maxZoom The max zoom level after fitting. Uses {@link module:@yext/components-maps~MapOptions#withSinglePinZoom singlePinZoom}
+   * @param animated - Whether to transition smoothly to the new bounds
+   * @param maxZoom - The max zoom level after fitting. Uses {@link singlePinZoom}
    *   by default.
    */
-  fitCoordinates(coordinates: Coordinate[], animated: boolean = false, maxZoom: number = this._singlePinZoom) {
+  fitCoordinates(coordinates: Coordinate[], animated = false, maxZoom: number = this._singlePinZoom) {
     if (coordinates.length) {
       this.setBounds(
         GeoBounds.fit(coordinates),
@@ -345,7 +334,7 @@ class Map {
 
   /**
    * Intended for internal use only
-   * @returns The map's {@link module:@yext/components-maps~ProviderMap ProviderMap}
+   * @returns The map's {@link ProviderMap}
    *   instance
    */
   getProviderMap(): ProviderMap {
@@ -384,7 +373,7 @@ class Map {
   }
 
   /**
-   * @returns A {@link module:@yext/components-maps~MapPinOptions MapPinOptions}
+   * @returns A {@link MapPinOptions}
    *   instance with the same provider as this map
    */
   newPinOptions(): MapPinOptions {
@@ -393,7 +382,7 @@ class Map {
 
   /**
    * Called when the map has finished moving, at most once per animation frame.
-   * Passes the current and previous bounds to the custom pan handler given by {@link module:@yext/components-maps~MapOptions#withPanHandler MapOptions#withPanHandler}
+   * Passes the current and previous bounds to the custom pan handler given by {@link MapOptions#withPanHandler}
    */
   panHandler() {
     // Throttle panHandler to run at most once per frame
@@ -425,7 +414,7 @@ class Map {
 
   /**
    * Called when the map has started moving, at most once per animation frame.
-   * Passes the current bounds to the custom pan handler given by {@link module:@yext/components-maps~MapOptions#withPanStartHandler MapOptions#withPanStartHandler}
+   * Passes the current bounds to the custom pan handler given by {@link MapOptions#withPanStartHandler}
    */
   panStartHandler() {
     // Throttle panStartHandler to run at most once per frame
@@ -452,22 +441,15 @@ class Map {
   }
 
   /**
-   * @param bounds
-   * @param bounds.ne The northeast corner of the bounds -- must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
-   * @param bounds.sw The southwest corner of the bounds -- must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
-   * @param animated Whether to transition smoothly to the new bounds
-   * @param padding
-   * @param padding.bottom Minimum number of
-   *   pixels between the map's bottom edge and a pin
-   * @param padding.left Minimum number of
-   *   pixels between the map's left edge and a pin
-   * @param padding.right Minimum number of
-   *   pixels between the map's right edge and a pin
-   * @param padding.top Minimum number of
-   *   pixels between the map's top edge and a pin
-   * @param maxZoom
+   * @param bounds - bounds.ne: The northeast corner of the bounds -- must be convertible to {@link Coordinate}
+   * bounds.se: The southwest corner of the bounds -- must be convertible to {@link Coordinate}
+   * @param animated - Whether to transition smoothly to the new bounds
+   * @param padding - padding.bottom: Minimum number of pixels between the map's bottom edge and a pin
+   * padding.left: Minimum number of pixels between the map's left edge and a pin
+   * padding.right: Minimum number of pixels between the map's right edge and a pin
+   * padding.top: Minimum number of pixels between the map's top edge and a pin
    */
-  setBounds({ ne, sw }: GeoBounds, animated: boolean = false, padding: { bottom?: number | PaddingFunction, left?: number | PaddingFunction, right?: number | PaddingFunction, top?: number | PaddingFunction } = {}, maxZoom: number = Infinity) {
+  setBounds({ ne, sw }: GeoBounds, animated = false, padding: { bottom?: number | PaddingFunction, left?: number | PaddingFunction, right?: number | PaddingFunction, top?: number | PaddingFunction } = {}, maxZoom = Infinity) {
     const pixelHeight = this._wrapper?.offsetHeight;
     const pixelWidth = this._wrapper?.offsetWidth;
 
@@ -541,28 +523,23 @@ class Map {
   }
 
   /**
-   * @param coordinate Must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
-   * @param animated Whether to transition smoothly to the new center
+   * @param coordinate - Must be convertible to {@link Coordinate}
+   * @param animated - Whether to transition smoothly to the new center
    */
-  setCenter(coordinate: Object, animated: boolean = false) {
+  setCenter(coordinate: object, animated = false) {
     this._map.setCenter(new Coordinate(coordinate), animated);
   }
 
   /**
-   * Padding is used by {@link module:@yext/components-maps~Map#fitCoordinates Map#fitCoordinates}.
+   * Padding is used by {@link Map#fitCoordinates}.
    * Padding can either be constant values or funtions that return a padding value.
    * Constant values are good if the map should always have the same padding on every breakpoint.
    * Functions are useful if the map should have different padding at different breakpoints/layouts.
    * The function can check window.innerWidth or any other condition before returning a number.
-   * @param {Object} padding
-   * @param padding.bottom Minimum number of
-   *   pixels between the map's bottom edge and a pin
-   * @param padding.left Minimum number of
-   *   pixels between the map's left edge and a pin
-   * @param padding.right Minimum number of
-   *   pixels between the map's right edge and a pin
-   * @param padding.top Minimum number of
-   *   pixels between the map's top edge and a pin
+   * @param padding - padding.bottom: Minimum number of pixels between the map's bottom edge and a pin
+   * padding.left: Minimum number of pixels between the map's left edge and a pin
+   * padding.right: Minimum number of pixels between the map's right edge and a pin
+   * padding.top: Minimum number of pixels between the map's top edge and a pin
    */
   setPadding({
     bottom = this._padding.bottom,
@@ -574,18 +551,12 @@ class Map {
     return this;
   }
 
-  /**
-   * @param panHandler
-   */
   setPanHandler(panHandler: PanHandler) {
     assertType(panHandler, Type.FUNCTION);
 
     this._panHandler = panHandler;
   }
 
-  /**
-   * @param panStartHandler
-   */
   setPanStartHandler(panStartHandler: PanStartHandler) {
     assertType(panStartHandler, Type.FUNCTION);
 
@@ -593,28 +564,25 @@ class Map {
   }
 
   /**
-   * @param zoom
-   * @param animated Whether to transition smoothly to the new zoom
-   * @see module:@yext/components-maps~Map#getZoom
+   * @param animated - Whether to transition smoothly to the new zoom
+   * @see Map#getZoom
    */
-  setZoom(zoom: number, animated: boolean = false) {
+  setZoom(zoom: number, animated = false) {
     this._map.setZoom(zoom, animated);
   }
 
   /**
-   * @param zoom
-   * @param center Must be convertible to {@link module:@yext/components-tsx-geo~Coordinate Coordinate}
-   * @param animated Whether to transition smoothly to the new bounds
-   * @see module:@yext/components-maps~Map#setZoom
-   * @see module:@yext/components-maps~Map#setCenter
+   * @param center - Must be convertible to {@link Coordinate}
+   * @param animated - Whether to transition smoothly to the new bounds
+   * @see Map#setZoom
+   * @see Map#setCenter
    */
-  setZoomCenter(zoom: number, center: Object, animated: boolean = false) {
+  setZoomCenter(zoom: number, center: Coordinate, animated = false) {
     this._map.setZoomCenter(zoom, center, animated);
   }
 
   /**
    * Set the map state to idle
-   * @protected
    */
   _setIdle() {
     this._resolveMoving();
@@ -626,7 +594,6 @@ class Map {
 
   /**
    * Set the map state to moving
-   * @protected
    */
   _setMoving() {
     this._resolveIdle();
