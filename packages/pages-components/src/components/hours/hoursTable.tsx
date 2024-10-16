@@ -108,8 +108,8 @@ export function intervalsToHoursDays(
       startDay: day,
       endDay: day,
       dayName:
-        dayOfWeekNames && defaultDayName(day) in dayOfWeekNames
-          ? (dayOfWeekNames as any)[defaultDayName(day)] || ""
+        dayOfWeekNames && defaultDayName(day).toLowerCase() in dayOfWeekNames
+          ? (dayOfWeekNames as any)[defaultDayName(day).toLowerCase()] || ""
           : defaultDayName(day),
       intervals: intervals.filter((interval) => interval.start.weekday === i),
       isToday: now.weekday === i,
