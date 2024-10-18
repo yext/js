@@ -41,6 +41,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
 
+    if (!link?.link) {
+      throw new Error("CTA's link is undefined");
+    }
+
     const isObfuscate =
       obfuscate || (obfuscate !== false && isEmail(link.link));
 
