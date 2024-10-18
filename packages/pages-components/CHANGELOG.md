@@ -2,11 +2,11 @@
 
 ##### Chores
 
-* **pages-components:**  remove old productionDomains prop (#61) (eec7e91f)
+- **pages-components:** remove old productionDomains prop (#61) (eec7e91f)
 
 ##### Bug Fixes
 
-* **pages-components:**  xYextDebug query param not honored (#60) (9bb45b4e)
+- **pages-components:** xYextDebug query param not honored (#60) (9bb45b4e)
 
 #### 1.0.0 (2024-07-29)
 
