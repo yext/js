@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import { Link } from "./link.js";
+import { CTA } from "./types.js";
 
 describe("Link", () => {
   it("renders component when given href + children", () => {
@@ -21,6 +22,10 @@ describe("Link", () => {
 
   it("renders component when given full cta prop, no children, and just a link", () => {
     render(<Link cta={{ link: "https://yext.com" }} />);
+  });
+
+  it("throws an error when cta link is not set", () => {
+    expect(() => render(<Link cta={{} as CTA} />)).toThrowError();
   });
 });
 
