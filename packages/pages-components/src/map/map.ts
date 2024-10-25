@@ -8,16 +8,19 @@ import { ProviderMap, ProviderMapOptions } from "./providerMap.js";
 
 export type PaddingFunction = () => number;
 
-export type PanHandler = (previousBounds?: GeoBounds, currentBounds?: GeoBounds) => void;
+export type PanHandler = (
+  previousBounds?: GeoBounds,
+  currentBounds?: GeoBounds
+) => void;
 
 export type PanStartHandler = (currentBounds?: GeoBounds) => void;
 
 type PaddingObject = {
-  bottom?: number | PaddingFunction,
-  left?: number | PaddingFunction,
-  right?: number | PaddingFunction,
-  top?: number | PaddingFunction,
-}
+  bottom?: number | PaddingFunction;
+  left?: number | PaddingFunction;
+  right?: number | PaddingFunction;
+  top?: number | PaddingFunction;
+};
 
 /**
  * The maximum percent of the map height or width that can be taken up by padding.
@@ -35,10 +38,11 @@ const MAX_PADDING = 0.98;
  * @param basis - The pixel measurement that the padding will be a fraction of
  * @returns The padding value as a fraction of basis
  */
-function normalizePadding(value: number | PaddingFunction | undefined, basis: number): number {
-  return (
-    Math.max(value instanceof Function ? value() : value || 0, 0) / basis
-  );
+function normalizePadding(
+  value: number | PaddingFunction | undefined,
+  basis: number
+): number {
+  return Math.max(value instanceof Function ? value() : value || 0, 0) / basis;
 }
 
 /**
@@ -119,7 +123,12 @@ class MapOptions {
    * See {@link Map#setPadding} for more information.
    * @see {@link Map#setPadding}
    */
-  withPadding(padding: { bottom: number | PaddingFunction, left: number | PaddingFunction, right: number | PaddingFunction, top: number | PaddingFunction }): MapOptions {
+  withPadding(padding: {
+    bottom: number | PaddingFunction;
+    left: number | PaddingFunction;
+    right: number | PaddingFunction;
+    top: number | PaddingFunction;
+  }): MapOptions {
     this.padding = padding;
     return this;
   }
@@ -275,7 +284,11 @@ class Map {
    * @param maxZoom - The max zoom level after fitting. Uses {@link singlePinZoom}
    *   by default.
    */
-  fitCoordinates(coordinates: Coordinate[], animated = false, maxZoom: number = this._singlePinZoom) {
+  fitCoordinates(
+    coordinates: Coordinate[],
+    animated = false,
+    maxZoom: number = this._singlePinZoom
+  ) {
     if (coordinates.length) {
       this.setBounds(
         GeoBounds.fit(coordinates),
@@ -449,7 +462,17 @@ class Map {
    * padding.right: Minimum number of pixels between the map's right edge and a pin
    * padding.top: Minimum number of pixels between the map's top edge and a pin
    */
-  setBounds({ ne, sw }: GeoBounds, animated = false, padding: { bottom?: number | PaddingFunction, left?: number | PaddingFunction, right?: number | PaddingFunction, top?: number | PaddingFunction } = {}, maxZoom = Infinity) {
+  setBounds(
+    { ne, sw }: GeoBounds,
+    animated = false,
+    padding: {
+      bottom?: number | PaddingFunction;
+      left?: number | PaddingFunction;
+      right?: number | PaddingFunction;
+      top?: number | PaddingFunction;
+    } = {},
+    maxZoom = Infinity
+  ) {
     const pixelHeight = this._wrapper?.offsetHeight;
     const pixelWidth = this._wrapper?.offsetWidth;
 
@@ -546,7 +569,12 @@ class Map {
     left = this._padding.left,
     right = this._padding.right,
     top = this._padding.top,
-  }: { bottom?: number | PaddingFunction, left?: number | PaddingFunction, right?: number | PaddingFunction, top?: number | PaddingFunction }): Map {
+  }: {
+    bottom?: number | PaddingFunction;
+    left?: number | PaddingFunction;
+    right?: number | PaddingFunction;
+    top?: number | PaddingFunction;
+  }): Map {
     this._padding = { bottom, left, right, top };
     return this;
   }

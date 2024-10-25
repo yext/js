@@ -8,10 +8,9 @@ import { Map } from "../map.js";
 enum Library {
   GEOCODER = "geocoder",
   PLACES = "places",
-};
+}
 
-declare const window: Window &
-  typeof globalThis & { [key: string]: any };
+declare const window: Window & typeof globalThis & { [key: string]: any };
 
 // Map Class
 class GoogleMap extends ProviderMap {
@@ -121,7 +120,6 @@ class CustomMarker extends google.maps.OverlayView {
   onAdd() {
     if (this.pin._wrapper) {
       this.getPanes()?.floatPane.appendChild(this.pin._wrapper);
-
     }
   }
 
@@ -199,7 +197,16 @@ function load(
     libraries = [],
     loading = "async",
     params = {},
-  }: { autocomplete?: boolean, channel?: string, client?: string, language?: string, region?: string, libraries?: string[], params?: { [key: string]: string }, loading?: string } = {}
+  }: {
+    autocomplete?: boolean;
+    channel?: string;
+    client?: string;
+    language?: string;
+    region?: string;
+    libraries?: string[];
+    params?: { [key: string]: string };
+    loading?: string;
+  } = {}
 ) {
   window[globalCallback] = resolve;
 
@@ -236,10 +243,10 @@ function load(
 
   LoadScript(
     baseUrl +
-    "?" +
-    Object.entries(apiParams)
-      .map(([key, value]) => key + "=" + value)
-      .join("&")
+      "?" +
+      Object.entries(apiParams)
+        .map(([key, value]) => key + "=" + value)
+        .join("&")
   );
 }
 

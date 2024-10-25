@@ -76,8 +76,8 @@ function haversineDistance(source: Coordinate, dest: Coordinate): number {
   const a =
     Math.pow(Math.sin(deltaLat / 2), 2) +
     Math.cos(lat1Rads) *
-    Math.cos(lat2Rads) *
-    Math.pow(Math.sin(deltaLon / 2), 2);
+      Math.cos(lat2Rads) *
+      Math.pow(Math.sin(deltaLon / 2), 2);
   return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -89,7 +89,10 @@ function haversineDistance(source: Coordinate, dest: Coordinate): number {
  * @param latitudeB - The destination latitude in degrees
  * @returns Distance in radians of longitude
  */
-function mercatorLatDistanceInRadians(latitudeA: number, latitudeB: number): number {
+function mercatorLatDistanceInRadians(
+  latitudeA: number,
+  latitudeB: number
+): number {
   const aTan = Math.tan((Math.PI / 360) * (latitudeA + 90));
   const bTan = Math.tan((Math.PI / 360) * (latitudeB + 90));
 
@@ -118,7 +121,7 @@ function mercatorLatAddRadians(startingLat: number, radians: number): number {
  */
 class Coordinate {
   _lat: number;
-  _lon: number
+  _lon: number;
   /**
    * Constructor takes either 1 or 2 arguments.
    * 2 arguments: latitude and longitude.
@@ -126,7 +129,10 @@ class Coordinate {
    * and one one {@link LONGITUDE_ALIASES | longitude alias}.
    * @param longitude - Optional only if the first argument is a {@link Coordinate}-like object
    */
-  constructor(latitudeOrObject: number | { [key: string]: any }, longitude?: number | LatOrLngFunction) {
+  constructor(
+    latitudeOrObject: number | { [key: string]: any },
+    longitude?: number | LatOrLngFunction
+  ) {
     let latitude = latitudeOrObject;
 
     if (typeof latitudeOrObject == "object") {
@@ -180,7 +186,12 @@ class Coordinate {
    * @param unit - The unit of latDist and lonDist
    * @param projection - The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    */
-  add(latDist: number, lonDist: number, unit = Unit.DEGREE, projection = Projection.SPHERICAL): void {
+  add(
+    latDist: number,
+    lonDist: number,
+    unit = Unit.DEGREE,
+    projection = Projection.SPHERICAL
+  ): void {
     if (
       projection === Projection.MERCATOR &&
       (unit === Unit.DEGREE || unit === Unit.RADIAN)
@@ -228,7 +239,11 @@ class Coordinate {
    * @param projection - The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    * @returns Distance in the requested unit
    */
-  distanceTo(coordinate: Coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL): number {
+  distanceTo(
+    coordinate: Coordinate,
+    unit = Unit.MILE,
+    projection = Projection.SPHERICAL
+  ): number {
     if (
       projection === Projection.MERCATOR &&
       (unit === Unit.DEGREE || unit === Unit.RADIAN)

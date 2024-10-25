@@ -1,4 +1,3 @@
-
 import { Coordinate } from "../coordinate.js";
 import { LoadScript } from "../performance/loadContent.js";
 import { MapProviderOptions } from "../mapProvider.js";
@@ -10,8 +9,7 @@ import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 
 // CustomOverlay for HTML Pins
 let PinOverlay: any;
-declare const window: Window &
-  typeof globalThis & { [key: string]: any };
+declare const window: Window & typeof globalThis & { [key: string]: any };
 
 function initPinOverlayClass() {
   class PinOverlayClass extends Microsoft.Maps.CustomOverlay {
@@ -85,7 +83,6 @@ function initPinOverlayClass() {
         if (topLeft instanceof Microsoft.Maps.Point) {
           pin._wrapper.style.left = topLeft.x + "px";
           pin._wrapper.style.top = topLeft.y + "px";
-
         }
       }
     }
@@ -99,7 +96,6 @@ function initPinOverlayClass() {
 }
 
 class BingMap extends ProviderMap {
-
   wrapper: HTMLElement | null;
   map?: Microsoft.Maps.Map;
   pinOverlay: typeof PinOverlay;
@@ -109,7 +105,7 @@ class BingMap extends ProviderMap {
 
     this.wrapper = options.wrapper;
     if (!this.wrapper) {
-      return
+      return;
     }
     this.map = new Microsoft.Maps.Map(this.wrapper, {
       disablePanning: !options.controlEnabled,
@@ -200,7 +196,9 @@ class BingPin extends HTMLProviderPin {
     );
 
     if (this._map) {
-      (this._map.getProviderMap() as BingMap).pinOverlay.updatePinPosition(this);
+      (this._map.getProviderMap() as BingMap).pinOverlay.updatePinPosition(
+        this
+      );
     }
   }
 
@@ -236,7 +234,12 @@ const baseUrl = "https://www.bing.com/api/maps/mapcontrol";
  * options.params=\{\} - Additional API params
  * @see ProviderLoadFunction
  */
-function load(resolve: () => void, _: () => void, apiKey: string, { params = {} } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { params = {} } = {}
+) {
   window[globalCallback] = () => {
     initPinOverlayClass();
     resolve();
@@ -250,10 +253,10 @@ function load(resolve: () => void, _: () => void, apiKey: string, { params = {} 
 
   LoadScript(
     baseUrl +
-    "?" +
-    Object.entries(apiParams)
-      .map(([key, value]) => key + "=" + value)
-      .join("&")
+      "?" +
+      Object.entries(apiParams)
+        .map(([key, value]) => key + "=" + value)
+        .join("&")
   );
 }
 

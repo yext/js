@@ -78,7 +78,7 @@ class GeoBounds {
    * {@link Normalized | longitudes} are used for the
    * bounds and the coordinate.
    */
-  contains(coordinate: Coordinate): boolean{
+  contains(coordinate: Coordinate): boolean {
     const withinLatitude =
       this._sw.latitude <= coordinate.latitude &&
       coordinate.latitude <= this._ne.latitude;
