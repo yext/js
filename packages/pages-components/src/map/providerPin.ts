@@ -1,6 +1,11 @@
 import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
-import { PinClickHandler, PinFocusHandler, PinHoverHandler, PinProperties } from "./mapPin.js";
+import {
+  PinClickHandler,
+  PinFocusHandler,
+  PinHoverHandler,
+  PinProperties,
+} from "./mapPin.js";
 import { Coordinate } from "./coordinate.js";
 import { Map } from "./map.js";
 
@@ -186,9 +191,15 @@ class HTMLProviderPin extends ProviderPin {
     if (this._wrapper) {
       this._wrapper.addEventListener("click", () => this._clickHandler());
       this._wrapper.addEventListener("focusin", () => this._focusHandler(true));
-      this._wrapper.addEventListener("focusout", () => this._focusHandler(false));
-      this._wrapper.addEventListener("mouseover", () => this._hoverHandler(true));
-      this._wrapper.addEventListener("mouseout", () => this._hoverHandler(false));
+      this._wrapper.addEventListener("focusout", () =>
+        this._focusHandler(false)
+      );
+      this._wrapper.addEventListener("mouseover", () =>
+        this._hoverHandler(true)
+      );
+      this._wrapper.addEventListener("mouseout", () =>
+        this._hoverHandler(false)
+      );
     }
   }
 

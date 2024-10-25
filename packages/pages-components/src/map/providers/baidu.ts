@@ -5,8 +5,7 @@ import { PinProperties } from "../pinProperties.js";
 import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
 import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 
-declare const window: Window &
-  typeof globalThis & { [key: string]: any };
+declare const window: Window & typeof globalThis & { [key: string]: any };
 declare const BMap: any;
 declare const BMAP_ANCHOR_TOP_RIGHT: any;
 declare const BMAP_NAVIGATION_CONTROL_ZOOM: any;
@@ -30,7 +29,11 @@ const apiKeyPromise = new Promise((resolve) => (resolveAPIKey = resolve));
 const geoconvBaseUrl = "https://api.map.baidu.com/geoconv/v1/";
 
 // Batch coordinate conversion requests to reduce network load
-let gcj02ToBD09Requests: { coordinates: Coordinate[], resolve: (coord: Coordinate[]) => void, reject: (reason?: any) => void }[] = [];
+let gcj02ToBD09Requests: {
+  coordinates: Coordinate[];
+  resolve: (coord: Coordinate[]) => void;
+  reject: (reason?: any) => void;
+}[] = [];
 const gcj02ToBD09GlobalCallback = "gcj02ToBD09Callback_b872c21c";
 let gcj02ToBD09CallbackCounter = 0;
 let gcj02ToBD09CallbackTimeout: NodeJS.Timeout;
@@ -66,10 +69,15 @@ async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
         gcj02ToBD09GlobalCallback + "_" + gcj02ToBD09CallbackCounter++;
       const script = document.createElement("script");
 
-      window[callback] = (data: { status?: string, message?: string, result: { x: number, y: number }[] }) => {
+      window[callback] = (data: {
+        status?: string;
+        message?: string;
+        result: { x: number; y: number }[];
+      }) => {
         if (data.status) {
           const err = new Error(
-            `Unable to convert coordinates to BD-09: Received status code ${data.status
+            `Unable to convert coordinates to BD-09: Received status code ${
+              data.status
             }${data.message ? ": " + data.message : ""}`
           );
           requests.forEach((request) => request.reject(err));
@@ -230,7 +238,8 @@ class CustomMarker extends BMap.Marker {
 
     if (this.pin._wrapper) {
       this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
-      this.pin._originalWrapperClass = this.pin._wrapper.getAttribute("class") ?? "";
+      this.pin._originalWrapperClass =
+        this.pin._wrapper.getAttribute("class") ?? "";
       this.pin._wrapper.setAttribute("class", this.pin._getClass());
       this.pin._wrapper.appendChild(this.pin._element);
       this.pin.addListeners();
@@ -363,8 +372,9 @@ class BaiduPin extends HTMLProviderPin {
    * Get the class attribute value for the pin element
    */
   _getClass(): string {
-    return `${this._originalWrapperClass} ${this._negativeLngFix ? negativeLngPinClass : ""
-      } ${this._wrapperClass}`;
+    return `${this._originalWrapperClass} ${
+      this._negativeLngFix ? negativeLngPinClass : ""
+    } ${this._wrapperClass}`;
   }
 }
 
@@ -383,7 +393,12 @@ const baseUrl = "https://api.map.baidu.com/getscript";
  * options.version - API version
  * @see ProviderLoadFunction
  */
-function load(resolve: () => void, _: () => void, apiKey: string, { params = {}, version = "3.0" } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { params = {}, version = "3.0" } = {}
+) {
   window.BMAP_PROTOCOL = "https";
   window.BMap_loadScriptTime = new Date().getTime();
 

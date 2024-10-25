@@ -10,7 +10,6 @@ declare const L: any;
 // Map Class
 
 class LeafletMap extends ProviderMap {
-
   map?: L.Map;
   static apiKey: string;
   constructor(options: ProviderMapOptions) {
@@ -80,7 +79,6 @@ class LeafletMap extends ProviderMap {
         ...options.providerOptions,
       });
     }
-
 
     const params = options.providerOptions;
     const tileLayerSrc =
@@ -174,7 +172,12 @@ class LeafletPin extends ProviderPin {
  * options.version='1.7.1' - API version
  * @see ProviderLoadFunction
  */
-function load(resolve: () => void, _: () => void, apiKey: string, { version = "1.7.1" } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { version = "1.7.1" } = {}
+) {
   const baseUrl = `https://unpkg.com/leaflet@${version}/dist/leaflet`;
 
   LeafletMap.apiKey = apiKey;

@@ -10,7 +10,6 @@ import mapboxgl from "mapbox-gl";
 // Map Class
 
 class MapboxMap extends ProviderMap {
-
   map?: mapboxgl.Map;
   constructor(options: ProviderMapOptions) {
     super(options);
@@ -97,7 +96,6 @@ class MapboxMap extends ProviderMap {
 // Pin Class
 
 class MapboxPin extends HTMLProviderPin {
-
   pin?: mapboxgl.Marker;
   constructor(options: ProviderPinOptions) {
     super(options);
@@ -147,7 +145,12 @@ class MapboxPin extends HTMLProviderPin {
  * options.version='v1.13.0' - API version
  * @see ProviderLoadFunction
  */
-function load(resolve: () => void, _: () => void, apiKey: string, { version = "v1.13.0" } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { version = "v1.13.0" } = {}
+) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
 
   const mapStyle = document.createElement("link");

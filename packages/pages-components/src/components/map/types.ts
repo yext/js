@@ -1,4 +1,9 @@
-import type { Map as MapType, PaddingFunction, PanHandler, PanStartHandler } from "../../map/map.js";
+import type {
+  Map as MapType,
+  PaddingFunction,
+  PanHandler,
+  PanStartHandler,
+} from "../../map/map.js";
 import type { MapProvider } from "../../map/mapProvider.js";
 import type { MapPin } from "../../map/mapPin.js";
 import React from "react";

@@ -49,7 +49,9 @@ export const Marker = ({
     if (zIndex !== 0 && !zIndex) {
       return;
     }
-    const wrapper: HTMLElement | null = (marker.getProviderPin() as HTMLProviderPin).getWrapperElement();
+    const wrapper: HTMLElement | null = (
+      marker.getProviderPin() as HTMLProviderPin
+    ).getWrapperElement();
     if (wrapper) {
       wrapper.style.zIndex = zIndex.toString();
     }

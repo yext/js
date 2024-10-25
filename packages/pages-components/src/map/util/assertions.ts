@@ -8,7 +8,7 @@ enum Type {
   SYMBOL = "symbol",
   FUNCTION = "function",
   OBJECT = "object",
-};
+}
 
 /**
  * Assert that a value is a certain type. Returns nothing, but throws if the type does not match.

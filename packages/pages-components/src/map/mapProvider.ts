@@ -2,7 +2,12 @@ import { Type, assertType, assertInstance } from "./util/assertions.js";
 import { ProviderMap } from "./providerMap.js";
 import { ProviderPin } from "./providerPin.js";
 
-type ProviderLoadFunction = (resolve: () => void, reject: () => void, apiKey: string, options: object) => void;
+type ProviderLoadFunction = (
+  resolve: () => void,
+  reject: () => void,
+  apiKey: string,
+  options: object
+) => void;
 
 /**
  * {@link MapProvider} options class
@@ -120,7 +125,7 @@ class MapProvider {
   /**
    * @see MapProviderOptions#withProviderName
    */
-  getProviderName(): string{
+  getProviderName(): string {
     return this._providerName;
   }
 
