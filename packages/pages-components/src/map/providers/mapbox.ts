@@ -3,14 +3,14 @@ import { MapProviderOptions } from "../mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
 import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 import { Map } from "../map.js";
-import mapboxgl from "mapbox-gl";
+import type { Map as MapType, Marker as MarkerType } from "mapbox-gl";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
 
 // Map Class
 
 class MapboxMap extends ProviderMap {
-  map?: mapboxgl.Map;
+  map?: MapType;
   constructor(options: ProviderMapOptions) {
     super(options);
 
@@ -96,7 +96,7 @@ class MapboxMap extends ProviderMap {
 // Pin Class
 
 class MapboxPin extends HTMLProviderPin {
-  pin?: mapboxgl.Marker;
+  pin?: MarkerType;
   constructor(options: ProviderPinOptions) {
     super(options);
 
