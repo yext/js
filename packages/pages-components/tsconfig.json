@@ -25,6 +25,6 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "include": ["src", "index.d.ts"],
+  "include": ["src", "index.d.ts", "mapboxgl-global.d.ts"],
   "exclude": ["node_modules/**/*"]
 }
