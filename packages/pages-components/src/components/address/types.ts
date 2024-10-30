@@ -94,3 +94,13 @@ export interface GetDirectionsConfig {
   provider?: MapProvider;
   route?: boolean;
 }
+
+/**
+ * Type definition for coordinate
+ * 
+ * @public
+ */
+export interface Coordinate {
+  latitude: number;
+  longitude: number;
+}

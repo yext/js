@@ -5,6 +5,7 @@ import {
   ListingPublisherOption,
   ListingType,
   MapProviderOption,
+  Coordinate,
 } from "./types.js";
 
 const sampleAddress: AddressType = {
@@ -14,6 +15,11 @@ const sampleAddress: AddressType = {
   postalCode: "10010",
   region: "NY",
 };
+
+const sampleCoordinate: Coordinate = {
+  latitude: 32.747594,
+  longitude: -97.082073,
+}
 
 const sampleAddress2: AddressType = {
   city: "Birmingham",
@@ -125,6 +131,21 @@ describe("getDirections()", () => {
   it("returns URL to Google Maps Place ID, by forcing route", () => {
     expect(getDirections(undefined, undefined, "someID")).toEqual(
       "https://maps.google.com/maps/dir/?api=1&destination_place_id=someID&destination=direct"
+    );
+  });
+  it("returns URL to Apple Maps coordinates query", () => {
+    expect(getDirections(undefined, undefined, undefined, {provider: "apple"}, sampleCoordinate)).toEqual(
+      "https://maps.apple.com/?address=32.747594,-97.082073"
+    );
+  });
+  it("returns URL to Bing Maps coordinates query", () => {
+    expect(getDirections(undefined, undefined, undefined, {provider: "bing"}, sampleCoordinate)).toEqual(
+      "https://bing.com/maps/default.aspx?where1=32.747594,-97.082073"
+    );
+  });
+  it("returns URL to Google Maps coordinates query", () => {
+    expect(getDirections(undefined, undefined, undefined, {provider: "google"}, sampleCoordinate)).toEqual(
+      "https://maps.google.com/maps/search/?api=1&query=32.747594,-97.082073"
     );
   });
 });

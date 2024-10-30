@@ -4,6 +4,7 @@ import {
   ListingPublisherOption,
   ListingType,
   MapProviderOption,
+  Coordinate,
 } from "./types.js";
 
 /**
@@ -36,6 +37,7 @@ export const getUnabbreviated = (
  * @param listings - List of available Yext Listings
  * @param googlePlaceId - Google Place ID
  * @param config - Options for determining URL
+ * @param coordinates - Coordinates of location
  *
  * @returns Maps service url
  */
@@ -45,7 +47,8 @@ export const getDirections = (
   googlePlaceId?: string,
   config: GetDirectionsConfig = {
     route: false,
-  }
+  },
+  coordinate?: Coordinate,
 ): string | undefined => {
   const NO_QUERY_WARNING = "Failed to construct query for maps service.";
   // Default query for all providers
@@ -63,6 +66,9 @@ export const getDirections = (
   switch (config.provider) {
     case MapProviderOption.APPLE: {
       // Apple Maps requires a query string
+      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
+        return getDirectionsApple(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      }
       if (!query) {
         console.warn(
           `${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`
@@ -73,6 +79,9 @@ export const getDirections = (
       return getDirectionsApple(query, config.route);
     }
     case MapProviderOption.BING: {
+      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
+        return getDirectionsBing(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      }
       query =
         address &&
         encodeArray([
@@ -93,6 +102,9 @@ export const getDirections = (
       return getDirectionsBing(query, config.route);
     }
     default: {
+      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
+        return getDirectionsGoogle(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      }
       const gmbListing = listings.find(
         (listing) =>
           listing?.publisher?.toUpperCase() ===
