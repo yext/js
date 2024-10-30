@@ -100,7 +100,7 @@ export interface GetDirectionsConfig {
  *
  * @public
  */
-export interface Coordinate {
+export interface DirectionCoordinate {
   latitude: number;
   longitude: number;
 }

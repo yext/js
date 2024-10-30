@@ -5,7 +5,7 @@ import {
   ListingPublisherOption,
   ListingType,
   MapProviderOption,
-  Coordinate,
+  DirectionCoordinate,
 } from "./types.js";
 
 const sampleAddress: AddressType = {
@@ -16,7 +16,7 @@ const sampleAddress: AddressType = {
   region: "NY",
 };
 
-const sampleCoordinate: Coordinate = {
+const sampleCoordinate: DirectionCoordinate = {
   latitude: 32.747594,
   longitude: -97.082073,
 };

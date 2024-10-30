@@ -4,7 +4,7 @@ import {
   ListingPublisherOption,
   ListingType,
   MapProviderOption,
-  Coordinate,
+  DirectionCoordinate,
 } from "./types.js";
 
 /**
@@ -48,7 +48,7 @@ export const getDirections = (
   config: GetDirectionsConfig = {
     route: false,
   },
-  coordinate?: Coordinate
+  coordinate?: DirectionCoordinate
 ): string | undefined => {
   const NO_QUERY_WARNING = "Failed to construct query for maps service.";
   // Default query for all providers
