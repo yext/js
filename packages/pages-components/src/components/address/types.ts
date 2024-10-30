@@ -97,7 +97,7 @@ export interface GetDirectionsConfig {
 
 /**
  * Type definition for coordinate
- * 
+ *
  * @public
  */
 export interface Coordinate {

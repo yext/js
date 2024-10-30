@@ -48,7 +48,7 @@ export const getDirections = (
   config: GetDirectionsConfig = {
     route: false,
   },
-  coordinate?: Coordinate,
+  coordinate?: Coordinate
 ): string | undefined => {
   const NO_QUERY_WARNING = "Failed to construct query for maps service.";
   // Default query for all providers
@@ -66,8 +66,15 @@ export const getDirections = (
   switch (config.provider) {
     case MapProviderOption.APPLE: {
       // Apple Maps requires a query string
-      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
-        return getDirectionsApple(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      if (
+        coordinate &&
+        coordinate.latitude !== undefined &&
+        coordinate.longitude !== undefined
+      ) {
+        return getDirectionsApple(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
       }
       if (!query) {
         console.warn(
@@ -79,8 +86,15 @@ export const getDirections = (
       return getDirectionsApple(query, config.route);
     }
     case MapProviderOption.BING: {
-      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
-        return getDirectionsBing(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      if (
+        coordinate &&
+        coordinate.latitude !== undefined &&
+        coordinate.longitude !== undefined
+      ) {
+        return getDirectionsBing(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
       }
       query =
         address &&
@@ -102,8 +116,15 @@ export const getDirections = (
       return getDirectionsBing(query, config.route);
     }
     default: {
-      if (coordinate && coordinate.latitude !== undefined && coordinate.longitude !== undefined) {
-        return getDirectionsGoogle(`${coordinate.latitude},${coordinate.longitude}`, config.route);
+      if (
+        coordinate &&
+        coordinate.latitude !== undefined &&
+        coordinate.longitude !== undefined
+      ) {
+        return getDirectionsGoogle(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
       }
       const gmbListing = listings.find(
         (listing) =>
