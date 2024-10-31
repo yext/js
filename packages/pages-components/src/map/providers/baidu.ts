@@ -261,10 +261,10 @@ class BaiduPin extends HTMLProviderPin {
         super(point);
         this.pin = pin;
       }
-    
+
       initialize(map: any) {
         this.pin._wrapper = super.initialize(map);
-    
+
         if (this.pin._wrapper) {
           this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
           this.pin._originalWrapperClass =
@@ -273,14 +273,14 @@ class BaiduPin extends HTMLProviderPin {
           this.pin._wrapper.appendChild(this.pin._element);
           this.pin.addListeners();
         }
-    
+
         return this.pin._wrapper;
       }
-    
+
       draw() {
         if (this.pin._wrapper) {
           const zIndex = this.pin._wrapper.style.zIndex;
-    
+
           super.draw();
           this.pin._wrapper.style.height = "";
           this.pin._wrapper.style.width = "";
