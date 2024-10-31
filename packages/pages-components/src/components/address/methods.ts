@@ -37,7 +37,7 @@ export const getUnabbreviated = (
  * @param listings - List of available Yext Listings
  * @param googlePlaceId - Google Place ID
  * @param config - Options for determining URL
- * @param coordinates - Coordinates of location
+ * @param coordinates - Coordinates of location, if provided will be used instead of address or listings
  *
  * @returns Maps service url
  */
@@ -65,13 +65,13 @@ export const getDirections = (
 
   switch (config.provider) {
     case MapProviderOption.APPLE: {
-      // Apple Maps requires a query string
       if (!!coordinate?.latitude && !!coordinate?.longitude) {
         return getDirectionsApple(
           `${coordinate.latitude},${coordinate.longitude}`,
           config.route
         );
       }
+      // Apple Maps requires a query string
       if (!query) {
         console.warn(
           `${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`
