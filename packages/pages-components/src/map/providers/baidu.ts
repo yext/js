@@ -226,48 +226,12 @@ class BaiduMap extends ProviderMap {
   }
 }
 
-class CustomMarker extends BMap.Marker {
-  pin: BaiduPin;
-  constructor(point: any, pin: BaiduPin) {
-    super(point);
-    this.pin = pin;
-  }
-
-  initialize(map: any) {
-    this.pin._wrapper = super.initialize(map);
-
-    if (this.pin._wrapper) {
-      this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
-      this.pin._originalWrapperClass =
-        this.pin._wrapper.getAttribute("class") ?? "";
-      this.pin._wrapper.setAttribute("class", this.pin._getClass());
-      this.pin._wrapper.appendChild(this.pin._element);
-      this.pin.addListeners();
-    }
-
-    return this.pin._wrapper;
-  }
-
-  draw() {
-    if (this.pin._wrapper) {
-      const zIndex = this.pin._wrapper.style.zIndex;
-
-      super.draw();
-      this.pin._wrapper.style.height = "";
-      this.pin._wrapper.style.width = "";
-      this.pin._wrapper.style.pointerEvents = "none";
-      this.pin._wrapper.style.zIndex = zIndex;
-    } else {
-      super.draw();
-    }
-  }
-}
-
 // Pin Class
 
 /**
  * Baidu Maps documentation lives here: {@link http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_reference_3_0.html}
  */
+
 class BaiduPin extends HTMLProviderPin {
   _wrapper: HTMLElement | null;
   _zIndex: number;
@@ -290,6 +254,43 @@ class BaiduPin extends HTMLProviderPin {
     // The pin coordinate has to be converted asynchronously via Baidu's API
     this._coordinateReady = Promise.resolve();
     this._negativeLngFix = false;
+
+    class CustomMarker extends BMap.Marker {
+      pin: BaiduPin;
+      constructor(point: any, pin: BaiduPin) {
+        super(point);
+        this.pin = pin;
+      }
+    
+      initialize(map: any) {
+        this.pin._wrapper = super.initialize(map);
+    
+        if (this.pin._wrapper) {
+          this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
+          this.pin._originalWrapperClass =
+            this.pin._wrapper.getAttribute("class") ?? "";
+          this.pin._wrapper.setAttribute("class", this.pin._getClass());
+          this.pin._wrapper.appendChild(this.pin._element);
+          this.pin.addListeners();
+        }
+    
+        return this.pin._wrapper;
+      }
+    
+      draw() {
+        if (this.pin._wrapper) {
+          const zIndex = this.pin._wrapper.style.zIndex;
+    
+          super.draw();
+          this.pin._wrapper.style.height = "";
+          this.pin._wrapper.style.width = "";
+          this.pin._wrapper.style.pointerEvents = "none";
+          this.pin._wrapper.style.zIndex = zIndex;
+        } else {
+          super.draw();
+        }
+      }
+    }
 
     this.pin = new CustomMarker(new BMap.Point(0, 0), this);
 

@@ -99,38 +99,13 @@ class GoogleMap extends ProviderMap {
 }
 
 // Pin Class
-
-class CustomMarker extends google.maps.OverlayView {
+interface CustomMarkerType extends google.maps.OverlayView {
   pin: GooglePin;
-  constructor(pin: GooglePin) {
-    super();
-    this.pin = pin;
-  }
-  draw() {
-    const position = this.getProjection()?.fromLatLngToDivPixel(
-      this.pin._latLng ?? null
-    );
-
-    if (position && this.pin._wrapper) {
-      this.pin._wrapper.style.left = position.x + "px";
-      this.pin._wrapper.style.top = position.y + "px";
-    }
-  }
-
-  onAdd() {
-    if (this.pin._wrapper) {
-      this.getPanes()?.floatPane.appendChild(this.pin._wrapper);
-    }
-  }
-
-  onRemove() {
-    this.pin._wrapper?.parentNode?.removeChild(this.pin._wrapper);
-  }
 }
 
 class GooglePin extends HTMLProviderPin {
   _latLng?: google.maps.LatLng;
-  pin: CustomMarker;
+  pin: CustomMarkerType;
 
   constructor(options: ProviderPinOptions) {
     super(options);
@@ -138,6 +113,34 @@ class GooglePin extends HTMLProviderPin {
     if (this._wrapper) {
       this._wrapper.style.position = "absolute";
       google.maps.OverlayView.preventMapHitsAndGesturesFrom(this._wrapper);
+    }
+
+    class CustomMarker extends google.maps.OverlayView {
+      pin: GooglePin;
+      constructor(pin: GooglePin) {
+        super();
+        this.pin = pin;
+      }
+      draw() {
+        const position = this.getProjection()?.fromLatLngToDivPixel(
+          this.pin._latLng ?? null
+        );
+    
+        if (position && this.pin._wrapper) {
+          this.pin._wrapper.style.left = position.x + "px";
+          this.pin._wrapper.style.top = position.y + "px";
+        }
+      }
+    
+      onAdd() {
+        if (this.pin._wrapper) {
+          this.getPanes()?.floatPane.appendChild(this.pin._wrapper);
+        }
+      }
+    
+      onRemove() {
+        this.pin._wrapper?.parentNode?.removeChild(this.pin._wrapper);
+      }
     }
 
     this.pin = new CustomMarker(this);
