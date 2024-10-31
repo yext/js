@@ -66,11 +66,7 @@ export const getDirections = (
   switch (config.provider) {
     case MapProviderOption.APPLE: {
       // Apple Maps requires a query string
-      if (
-        coordinate &&
-        coordinate.latitude !== undefined &&
-        coordinate.longitude !== undefined
-      ) {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
         return getDirectionsApple(
           `${coordinate.latitude},${coordinate.longitude}`,
           config.route
@@ -86,11 +82,7 @@ export const getDirections = (
       return getDirectionsApple(query, config.route);
     }
     case MapProviderOption.BING: {
-      if (
-        coordinate &&
-        coordinate.latitude !== undefined &&
-        coordinate.longitude !== undefined
-      ) {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
         return getDirectionsBing(
           `${coordinate.latitude},${coordinate.longitude}`,
           config.route
@@ -116,11 +108,7 @@ export const getDirections = (
       return getDirectionsBing(query, config.route);
     }
     default: {
-      if (
-        coordinate &&
-        coordinate.latitude !== undefined &&
-        coordinate.longitude !== undefined
-      ) {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
         return getDirectionsGoogle(
           `${coordinate.latitude},${coordinate.longitude}`,
           config.route
