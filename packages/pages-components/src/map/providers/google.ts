@@ -125,19 +125,19 @@ class GooglePin extends HTMLProviderPin {
         const position = this.getProjection()?.fromLatLngToDivPixel(
           this.pin._latLng ?? null
         );
-    
+
         if (position && this.pin._wrapper) {
           this.pin._wrapper.style.left = position.x + "px";
           this.pin._wrapper.style.top = position.y + "px";
         }
       }
-    
+
       onAdd() {
         if (this.pin._wrapper) {
           this.getPanes()?.floatPane.appendChild(this.pin._wrapper);
         }
       }
-    
+
       onRemove() {
         this.pin._wrapper?.parentNode?.removeChild(this.pin._wrapper);
       }
