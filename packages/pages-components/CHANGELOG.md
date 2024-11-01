@@ -1,3 +1,20 @@
+#### 1.0.2 (2024-11-01)
+
+##### Documentation Changes
+
+*  detail enableDebugging does not fire sdk events (c871bea6)
+
+##### New Features
+
+* **pages-components:**
+  *  support customValues and customTags in Link component (#67) (3b939029)
+  *  add functionality to get directions from coordinates (#66) (cd188f93)
+
+##### Bug Fixes
+
+* **pages-components:**  hoursTable component not matching dayOfWeekNames correctly (#63) (da3b6a09)
+*  throw error when cta link not set (#64) (70697513)
+
 #### 1.0.1 (2024-08-06)
 
 ##### Chores
