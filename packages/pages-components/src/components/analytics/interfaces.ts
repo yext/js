@@ -8,6 +8,8 @@ export type TrackProps = {
   eventName?: string;
   amount?: number;
   currency?: string;
+  customTags?: Record<string, string>;
+  customValues?: Record<string, number>;
 };
 
 /**
