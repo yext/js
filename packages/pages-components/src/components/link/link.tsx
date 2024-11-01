@@ -34,12 +34,18 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       amount,
       cta,
       obfuscate,
+      customTags,
+      customValues,
       ...rest
     } = props;
 
     const action = cta ? "CTA_CLICK" : "LINK";
     const trackEvent = eventName ? eventName : cta ? "cta" : "link";
     const analytics = useAnalytics();
+
+    if (!link?.link) {
+      throw new Error("CTA's link is undefined");
+    }
 
     const isObfuscate =
       obfuscate || (obfuscate !== false && isEmail(link.link));
@@ -67,6 +73,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             currency: currency,
             amount: amount,
             destinationUrl: decodedLink || currentTarget.href,
+            customTags: customTags,
+            customValues: customValues,
           });
         } catch (exception) {
           console.error("Failed to report click Analytics Event");

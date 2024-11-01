@@ -8,6 +8,8 @@ export type TrackProps = {
   eventName?: string;
   amount?: number;
   currency?: string;
+  customTags?: Record<string, string>;
+  customValues?: Record<string, number>;
 };
 
 /**
@@ -89,7 +91,8 @@ export interface AnalyticsProviderProps {
 
   /**
    * enableDebugging can be set to true if you want to expose tracked events
-   * in the developer console.
+   * in the Browser's developer console. When true, events will only be logged
+   * and will NOT be fired/sent through the Analytics SDK.
    */
   enableDebugging?: boolean | undefined;
 }

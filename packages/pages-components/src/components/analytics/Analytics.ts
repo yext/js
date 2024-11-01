@@ -142,8 +142,16 @@ export class Analytics implements AnalyticsMethods {
       return Promise.resolve();
     }
 
-    const { action, scope, eventName, currency, amount, destinationUrl } =
-      props;
+    const {
+      action,
+      scope,
+      eventName,
+      currency,
+      amount,
+      destinationUrl,
+      customTags,
+      customValues,
+    } = props;
 
     let value;
     if (amount) {
@@ -161,6 +169,8 @@ export class Analytics implements AnalyticsMethods {
       },
       value,
       destinationUrl,
+      customTags,
+      customValues,
     });
   }
 

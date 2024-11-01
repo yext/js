@@ -53,6 +53,16 @@ interface LinkConfig
   currency?: string;
   /** The monetary value of the event. */
   amount?: number;
+  /**
+   * Up to 10 pairs matching custom string keys to string values to associate with the event.
+   * Keys are case-insensitive; values are case-sensitive.
+   */
+  customTags?: Record<string, string>;
+  /**
+   * Up to 10 pairs matching custom string keys to number values to associate with the event.
+   * Keys are case-insensitive.
+   */
+  customValues?: Record<string, number>;
 }
 
 /**
