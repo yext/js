@@ -142,9 +142,12 @@ class Coordinate {
       latitude = typeof latitude == "function" ? latitude() : latitude;
       longitude = typeof longitude == "function" ? longitude() : longitude;
     }
-
-    this._lat = latitude as number;
-    this._lon = longitude as number;
+    if (typeof latitude == "number") {
+      this._lat = latitude;
+    }
+    if (typeof longitude == "number") {
+      this._lon = longitude;
+    }
   }
 
   /**
