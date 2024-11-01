@@ -4,6 +4,7 @@ import {
   ListingPublisherOption,
   ListingType,
   MapProviderOption,
+  DirectionCoordinate,
 } from "./types.js";
 
 /**
@@ -36,6 +37,7 @@ export const getUnabbreviated = (
  * @param listings - List of available Yext Listings
  * @param googlePlaceId - Google Place ID
  * @param config - Options for determining URL
+ * @param coordinates - Coordinates of location, if provided will be used instead of address or listings
  *
  * @returns Maps service url
  */
@@ -45,7 +47,8 @@ export const getDirections = (
   googlePlaceId?: string,
   config: GetDirectionsConfig = {
     route: false,
-  }
+  },
+  coordinate?: DirectionCoordinate
 ): string | undefined => {
   const NO_QUERY_WARNING = "Failed to construct query for maps service.";
   // Default query for all providers
@@ -62,6 +65,12 @@ export const getDirections = (
 
   switch (config.provider) {
     case MapProviderOption.APPLE: {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
+        return getDirectionsApple(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
+      }
       // Apple Maps requires a query string
       if (!query) {
         console.warn(
@@ -73,6 +82,12 @@ export const getDirections = (
       return getDirectionsApple(query, config.route);
     }
     case MapProviderOption.BING: {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
+        return getDirectionsBing(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
+      }
       query =
         address &&
         encodeArray([
@@ -93,6 +108,12 @@ export const getDirections = (
       return getDirectionsBing(query, config.route);
     }
     default: {
+      if (!!coordinate?.latitude && !!coordinate?.longitude) {
+        return getDirectionsGoogle(
+          `${coordinate.latitude},${coordinate.longitude}`,
+          config.route
+        );
+      }
       const gmbListing = listings.find(
         (listing) =>
           listing?.publisher?.toUpperCase() ===
