@@ -34,6 +34,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       amount,
       cta,
       obfuscate,
+      customTags,
+      customValues,
       ...rest
     } = props;
 
@@ -71,6 +73,8 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
             currency: currency,
             amount: amount,
             destinationUrl: decodedLink || currentTarget.href,
+            customTags: customTags,
+            customValues: customValues,
           });
         } catch (exception) {
           console.error("Failed to report click Analytics Event");
