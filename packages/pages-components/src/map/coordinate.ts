@@ -15,8 +15,6 @@ const LATITUDE_ALIASES = ["latitude", "lat"];
  */
 const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
 
-type LatOrLngFunction = () => number;
-
 /**
  * Find a truthy or 0 value in an object, searching the given keys
  * @param object - Object to find a value in
