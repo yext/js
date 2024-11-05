@@ -23,7 +23,10 @@ type LatOrLngFunction = () => number;
  * @param keys - Keys to search in object
  * @returns The value found, or undefined if not found
  */
-function findValue(object: { [key: string]: any }, keys: string[]): number | undefined {
+function findValue(
+  object: { [key: string]: any },
+  keys: string[]
+): number | undefined {
   for (const key of keys) {
     if (object[key] || object[key] === 0) {
       return object[key];
@@ -129,11 +132,8 @@ class Coordinate {
    * and one one {@link LONGITUDE_ALIASES | longitude alias}.
    * @param longitude - Optional only if the first argument is a {@link Coordinate}-like object
    */
-  constructor(
-    latitudeOrObject: number | object,
-    longitude?: number
-  ) {
-    let latitude = latitudeOrObject;
+  constructor(latitudeOrObject: number | object, longitude?: number) {
+    const latitude = latitudeOrObject;
 
     this._lat = 0;
     this._lon = 0;
