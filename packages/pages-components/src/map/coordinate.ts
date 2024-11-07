@@ -136,10 +136,10 @@ class Coordinate {
     this._lat = 0;
     this._lon = 0;
 
-    if (typeof latitudeOrObject == "object") {
+    if (typeof latitudeOrObject === "object") {
       this._lat = findValue(latitudeOrObject, LATITUDE_ALIASES) ?? 0;
       this._lon = findValue(latitudeOrObject, LONGITUDE_ALIASES) ?? 0;
-    } else if (typeof latitude == "number" && longitude) {
+    } else if (typeof latitude === "number" && longitude) {
       this.latitude = latitude;
       this.longitude = longitude;
     }
