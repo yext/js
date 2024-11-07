@@ -140,8 +140,8 @@ class Coordinate {
       this._lat = findValue(latitudeOrObject, LATITUDE_ALIASES) ?? 0;
       this._lon = findValue(latitudeOrObject, LONGITUDE_ALIASES) ?? 0;
     } else if (typeof latitude == "number" && longitude) {
-      this._lat = latitude;
-      this._lon = longitude;
+      this.latitude = latitude;
+      this.longitude = longitude;
     }
   }
 
