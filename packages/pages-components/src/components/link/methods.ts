@@ -1,4 +1,4 @@
-import { LinkProps, HREFLinkProps, CTA } from "./types.js";
+import { LinkProps, CTA } from "./types.js";
 
 /**
  * Get the link from a CTA
@@ -54,10 +54,10 @@ const reverse = (string: string): string => {
 };
 
 /**
- * Type predicate for distinguishing between data cases.
+ * Get the CTA from the props if it exists, or return a CTA using the href prop.
  */
-const isHREFProps = (props: LinkProps): props is HREFLinkProps => {
-  return "href" in props;
+const getLinkFromProps = (props: LinkProps): CTA => {
+  return props.cta ?? { link: props.href };
 };
 
-export { getHref, isEmail, isHREFProps, reverse };
+export { getHref, isEmail, getLinkFromProps, reverse };

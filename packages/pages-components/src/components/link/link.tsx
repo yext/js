@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
-import { getHref, isEmail, isHREFProps } from "./methods.js";
+import { getHref, getLinkFromProps, isEmail } from "./methods.js";
 import type { CTA, LinkProps } from "./types.js";
 
 /**
@@ -23,7 +23,7 @@ import type { CTA, LinkProps } from "./types.js";
  */
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const link: CTA = props.cta ?? { link: props.href };
+    const link: CTA = getLinkFromProps(props);
     const {
       children,
       onClick,
