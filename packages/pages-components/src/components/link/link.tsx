@@ -23,7 +23,7 @@ import type { CTA, LinkProps } from "./types.js";
  */
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const link: CTA = isHREFProps(props) ? { link: props.href } : props.cta;
+    const link: CTA = props.cta ?? { link: props.href };
     const {
       children,
       onClick,
