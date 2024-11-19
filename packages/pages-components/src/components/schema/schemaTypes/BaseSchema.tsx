@@ -1,8 +1,8 @@
-const BaseSchema = (data: any, schemaType: string) => {
+const BaseSchema = (document: Record<string, any>, schemaType: string) => {
   return {
     "@context": "https://schema.org",
     "@type": schemaType,
-    name: data.document.name,
+    name: document.name,
   };
 };
 

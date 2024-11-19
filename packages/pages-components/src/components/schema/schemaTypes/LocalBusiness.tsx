@@ -7,15 +7,15 @@ import { PhotoGallerySchema } from "../yextFields/photoGallery.js";
 // FinancialService, TravelAgency, GovernmentOffice, ShoppingCenter, MedicalBusiness etc
 // pass different variables to the schemaType param if needed
 // more sub-types see https://schema.org/LocalBusiness
-const LocalBusiness = (data: any, schemaType?: string) => {
+const LocalBusiness = (document: Record<string, any>, schemaType?: string) => {
   return {
-    ...BaseSchema(data, schemaType ?? "LocalBusiness"), // default, if schemaType is nil, set to LocalBusiness
-    ...AddressSchema(data.document.address),
-    ...OpeningHoursSchema(data.document.hours),
-    ...PhotoGallerySchema(data.document.photoGallery),
-    description: data.document.description,
-    telephone: data.document.mainPhone,
-    email: data.document.email,
+    ...BaseSchema(document, schemaType ?? "LocalBusiness"), // default, if schemaType is nil, set to LocalBusiness
+    ...AddressSchema(document.address),
+    ...OpeningHoursSchema(document.hours),
+    ...PhotoGallerySchema(document.photoGallery),
+    description: document.description,
+    telephone: document.mainPhone,
+    email: document.email,
   };
 };
 

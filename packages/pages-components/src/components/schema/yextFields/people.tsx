@@ -1,10 +1,9 @@
-export type Performer = Array<string>;
 export type Organization = {
   name?: string;
   url?: string;
 };
 
-export const PerformerSchema = (performers?: Performer) => {
+export const PerformerSchema = (performers?: string[]) => {
   return (
     performers && {
       performer: {

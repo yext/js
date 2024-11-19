@@ -6,30 +6,30 @@ import { OfferSchema } from "../yextFields/offers.js";
 
 // https://schema.org/Event
 // Make sure to double check if the fields are correct for your site
-const Event = (data: any, schemaType?: string) => {
+const Event = (document: Record<string, any>, schemaType?: string) => {
   return {
-    ...BaseSchema(data, schemaType ?? "Event"),
-    ...PhotoGallerySchema(data.document.photoGallery),
+    ...BaseSchema(document, schemaType ?? "Event"),
+    ...PhotoGallerySchema(document.photoGallery),
     ...LocationSchema({
-      name: data.document.geomodifier,
-      address: data.document.address,
+      name: document.geomodifier,
+      address: document.address,
     }),
-    startDate: data.document.c_startDate,
-    endDate: data.document.c_endDate,
-    description: data.document.description,
-    eventAttendanceMode: data.document.attendance,
-    eventStatus: data.document.eventStatus,
-    ...PerformerSchema(data.document.performers),
+    startDate: document.c_startDate,
+    endDate: document.c_endDate,
+    description: document.description,
+    eventAttendanceMode: document.attendance,
+    eventStatus: document.eventStatus,
+    ...PerformerSchema(document.performers),
     ...OrganizationSchema({
-      name: data.document.organizerName,
+      name: document.organizerName,
     }),
     ...OfferSchema({
       url: "",
-      priceCurrency: data.document.c_currency,
-      price: data.document.price,
-      priceValidUntil: data.document.expirationDate,
-      itemCondition: data.document.stockStatus,
-      availability: data.document.availabilityDate,
+      priceCurrency: document.c_currency,
+      price: document.price,
+      priceValidUntil: document.expirationDate,
+      itemCondition: document.stockStatus,
+      availability: document.availabilityDate,
     }),
   };
 };

@@ -5,26 +5,26 @@ import { OfferSchema } from "../yextFields/offers.js";
 
 // https://schema.org/Product
 // Make sure to double check if the fields are correct for your site
-const Product = (data: any, schemaType?: string) => {
+const Product = (document: Record<string, any>, schemaType?: string) => {
   return {
-    ...BaseSchema(data, schemaType ?? "Product"),
-    ...PhotoGallerySchema(data.document.photoGallery),
-    ...ReviewSchema(data.document.c_reviews),
-    ...AggregateRatingSchema(data.document.c_aggregateRating),
+    ...BaseSchema(document, schemaType ?? "Product"),
+    ...PhotoGallerySchema(document.photoGallery),
+    ...ReviewSchema(document.c_reviews),
+    ...AggregateRatingSchema(document.c_aggregateRating),
     ...OfferSchema({
       url: "",
-      priceCurrency: data.document.c_currency,
-      price: data.document.price,
-      priceValidUntil: data.document.expirationDate,
-      itemCondition: data.document.stockStatus,
-      availability: data.document.availabilityDate,
+      priceCurrency: document.c_currency,
+      price: document.price,
+      priceValidUntil: document.expirationDate,
+      itemCondition: document.stockStatus,
+      availability: document.availabilityDate,
     }),
-    description: data.document.description,
-    sku: data.document.sku,
-    mpn: data.document.mpn,
+    description: document.description,
+    sku: document.sku,
+    mpn: document.mpn,
     brand: {
       "@type": "Brand",
-      name: data.document.brand,
+      name: document.brand,
     },
   };
 };
