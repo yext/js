@@ -1,9 +1,9 @@
-export type PhotoGallery = Array<Photo>;
+import { ImageType } from "../../image/types.js";
+
+export type PhotoGallery = Photo[];
 
 type Photo = {
-  image: {
-    url: string;
-  };
+  image: ImageType;
 };
 
 // takes in a list of Yext images and return a list of image urls

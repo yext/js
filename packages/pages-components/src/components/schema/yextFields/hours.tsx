@@ -1,26 +1,8 @@
-export type Hours = {
-  monday: DayHours;
-  tuesday: DayHours;
-  wednesday: DayHours;
-  thursday: DayHours;
-  friday: DayHours;
-  saturday: DayHours;
-  sunday: DayHours;
-};
-
-export type DayHours = {
-  isClosed: boolean;
-  openIntervals: Array<openInterval>;
-};
-
-type openInterval = {
-  start: string;
-  end: string;
-};
+import { HoursType, DayType } from "../../hours/types.js";
 
 // example output: ["Mo-Fr 10:00-19:00", "Sa 10:00-22:00", "Su 10:00-21:00"]
 // weekdays are indicated as Mo, Tu, We, Th, Fr, Sa, Su
-export const OpeningHoursSchema = (hours?: Hours) => {
+export const OpeningHoursSchema = (hours?: HoursType) => {
   if (!hours?.monday) {
     return {};
   }
@@ -48,13 +30,13 @@ export const OpeningHoursSchema = (hours?: Hours) => {
 };
 
 const getHoursByDay = (
-  hours: DayHours,
+  hours: DayType | undefined,
   hoursMap: Map<string, Array<string>>,
   day: string
 ) => {
-  if (hours.isClosed) {
+  if (!hours || hours.isClosed) {
     const interval = "00:00-00:00";
-    const days = hoursMap.get(interval) ?? Array<string>();
+    const days = hoursMap.get(interval) ?? [];
     days.push(day);
     hoursMap.set(interval, days);
 
@@ -64,7 +46,7 @@ const getHoursByDay = (
   for (let i = 0; i < hours.openIntervals.length; i++) {
     const interval =
       hours.openIntervals[i].start + "-" + hours.openIntervals[i].end;
-    const days = hoursMap.get(interval) ?? Array<string>();
+    const days = hoursMap.get(interval) ?? [];
     days.push(day);
     hoursMap.set(interval, days);
   }

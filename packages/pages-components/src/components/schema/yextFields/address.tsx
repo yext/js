@@ -1,17 +1,11 @@
-export type Address = {
-  line1: string;
-  city: string;
-  region: string;
-  postalCode: string;
-  countryCode: string;
-};
+import { AddressType } from "../../address/types.js";
 
 export type Location = {
   name?: string;
-  address?: Address;
+  address?: AddressType;
 };
 
-export const AddressSchema = (address?: Address) => {
+export const AddressSchema = (address?: AddressType) => {
   return (
     address && {
       address: {
