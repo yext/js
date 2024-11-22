@@ -2,16 +2,16 @@
 
 ##### Chores
 
-*  update playwright version (#69) (6612a5b5)
+- update playwright version (#69) (6612a5b5)
 
 ##### New Features
 
-*  add schema-wrapper (#71) (4aed5f6d)
+- add schema-wrapper (#71) (4aed5f6d)
 
 ##### Bug Fixes
 
-*  prevent TS error for link cta prop (#70) (01e1fc7b)
-*  install playwright with dependencies (#68) (91155e13)
+- prevent TS error for link cta prop (#70) (01e1fc7b)
+- install playwright with dependencies (#68) (91155e13)
 
 #### 1.0.2 (2024-11-01)
 

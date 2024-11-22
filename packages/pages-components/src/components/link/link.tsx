@@ -1,4 +1,4 @@
-import React from "react";
+import { forwardRef } from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
 import { getHref, getLinkFromProps, isEmail } from "./methods.js";
@@ -21,7 +21,7 @@ import type { CTA, LinkProps } from "./types.js";
  *
  * @public
  */
-export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
     const link: CTA = getLinkFromProps(props);
     const {
