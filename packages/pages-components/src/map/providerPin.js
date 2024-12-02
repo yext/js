@@ -72,7 +72,7 @@ class ProviderPinOptions {
 
   /**
    * @param {boolean} hasPinUrl Pass through from MapPin class
-   * @returns 
+   * @returns
    */
   withHasPinUrl(hasPinUrl) {
     this.hasPinUrl = hasPinUrl;
@@ -173,7 +173,9 @@ class HTMLProviderPin extends ProviderPin {
   constructor(options) {
     super(options);
 
-    this._pinEl = options.hasPinUrl ? document.createElement("div") : document.createElement("button");
+    this._pinEl = options.hasPinUrl
+      ? document.createElement("div")
+      : document.createElement("button");
     Object.assign(this._pinEl.style, this.constructor.baseStyle);
 
     this._pinAlt = document.createElement("span");
