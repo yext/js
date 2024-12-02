@@ -22,6 +22,7 @@ export const LocationMap = ({
         onClick={onClick}
         onHover={onHover}
         onFocus={onFocus}
+        hasPinUrl={(pinUrl || "")?.length > 0}
       >
         {pinUrl ? (
           <Link href={pinUrl} target={linkSameTab ? "_self" : "_blank"}>

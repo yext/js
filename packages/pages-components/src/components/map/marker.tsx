@@ -30,6 +30,7 @@ export const Marker = ({
   onFocus = () => null,
   onHover = () => null,
   zIndex,
+  hasPinUrl,
 }: MarkerProps): JSX.Element | null => {
   const { map, provider } = useContext(MapContext) as MapContextType;
   const cluster = useContext(ClustererContext);
@@ -39,6 +40,7 @@ export const Marker = ({
       .withCoordinate(coordinate)
       .withHideOffscreen(hideOffscreen)
       .withProvider(provider)
+      .withHasPinUrl(hasPinUrl)
       .build();
   }, []);
 

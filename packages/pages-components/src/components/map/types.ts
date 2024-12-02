@@ -52,6 +52,7 @@ export interface MarkerProps {
   onFocus?: (focused: boolean, id: string) => void;
   statusOptions?: { [key: string]: boolean };
   zIndex?: number;
+  hasPinUrl?: boolean;
 }
 
 // Clusterer
