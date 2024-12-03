@@ -79,10 +79,10 @@ class MapPinOptions {
     return this;
   }
 
-   /**
+  /**
    * @param hasPinUrl - If true, the pin's HTML element will be a div instead of a button since there is a nested anchor tag within the pin. This will fix current accessibility issues.
    */
-   withHasPinUrl(hasPinUrl: boolean): MapPinOptions {
+  withHasPinUrl(hasPinUrl: boolean): MapPinOptions {
     this.hasPinUrl = hasPinUrl;
     return this;
   }
