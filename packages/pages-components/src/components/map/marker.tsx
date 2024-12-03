@@ -32,7 +32,7 @@ export const Marker = ({
   onFocus = () => null,
   onHover = () => null,
   zIndex,
-  hasPinUrl,
+  hasPinUrl = false,
 }: MarkerProps): JSX.Element | null => {
   const { map, provider } = useContext(MapContext) as MapContextType;
   const cluster = useContext(ClustererContext);
