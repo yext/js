@@ -1,3 +1,11 @@
+#### 1.0.4 (2024-12-03)
+
+##### Bug Fixes
+
+* **pages-components:**
+  *  resolve nested-interactive WCAG issue (#74) (f970d1aa)
+  *  link component type appearing as any (#72) (494bf4d7)
+
 #### 1.0.3 (2024-11-19)
 
 ##### Chores
