@@ -20,6 +20,7 @@ class ProviderPinOptions {
     this.focusHandler = (focused) => null;
     this.hoverHandler = (hovered) => null;
     this.icons = {};
+    this.hasPinUrl = false;
   }
 
   /**
@@ -66,6 +67,15 @@ class ProviderPinOptions {
    */
   withIcons(icons) {
     this.icons = icons;
+    return this;
+  }
+
+  /**
+   * @param {boolean} hasPinUrl Pass through from MapPin class
+   * @returns
+   */
+  withHasPinUrl(hasPinUrl) {
+    this.hasPinUrl = hasPinUrl;
     return this;
   }
 
@@ -163,7 +173,9 @@ class HTMLProviderPin extends ProviderPin {
   constructor(options) {
     super(options);
 
-    this._pinEl = document.createElement("button");
+    this._pinEl = options.hasPinUrl
+      ? document.createElement("div")
+      : document.createElement("button");
     Object.assign(this._pinEl.style, this.constructor.baseStyle);
 
     this._pinAlt = document.createElement("span");

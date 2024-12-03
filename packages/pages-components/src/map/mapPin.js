@@ -43,6 +43,7 @@ class MapPinOptions {
     this.propertiesForStatus = (status) => new PinProperties();
     this.provider = null;
     this.type = "";
+    this.hasPinUrl = false;
   }
 
   /**
@@ -107,6 +108,15 @@ class MapPinOptions {
   }
 
   /**
+   * @param {boolean} hasPinUrl If true, the pin's HTML element will be a div instead of a button since there is a nested anchor tag within the pin. This will fix current accessibility issues.
+   * @returns {module:@yext/components-maps~MapPinOptions}
+   */
+  withHasPinUrl(hasPinUrl) {
+    this.hasPinUrl = hasPinUrl;
+    return this;
+  }
+
+  /**
    * @returns {module:@yext/components-maps~MapPin}
    */
   build() {
@@ -154,6 +164,7 @@ class MapPin {
       .withClickHandler(() => this._clickHandler())
       .withFocusHandler((focused) => this._focusHandler(focused))
       .withHoverHandler((hovered) => this._hoverHandler(hovered))
+      .withHasPinUrl(options.hasPinUrl)
       .build();
 
     this._pin.setCoordinate(options.coordinate);
