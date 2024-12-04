@@ -15,6 +15,8 @@ const LATITUDE_ALIASES = ["latitude", "lat"];
  */
 const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
 
+type latLngFunction = () => number;
+
 /**
  * Find a truthy or 0 value in an object, searching the given keys
  * @param object - Object to find a value in
@@ -24,7 +26,7 @@ const LONGITUDE_ALIASES = ["longitude", "lon", "lng", "long"];
 function findValue(
   object: { [key: string]: any },
   keys: string[]
-): number | undefined {
+): number | latLngFunction | undefined {
   for (const key of keys) {
     if (object[key] || object[key] === 0) {
       return object[key];
@@ -130,16 +132,21 @@ class Coordinate {
    * and one one {@link LONGITUDE_ALIASES | longitude alias}.
    * @param longitude - Optional only if the first argument is a {@link Coordinate}-like object
    */
-  constructor(latitudeOrObject: number | object, longitude?: number) {
-    const latitude = latitudeOrObject;
+  constructor(latitudeOrObject: number | object, long?: number) {
+    let latitude = latitudeOrObject;
+    let longitude: number | latLngFunction | undefined = long;
 
     this._lat = 0;
     this._lon = 0;
 
-    if (typeof latitudeOrObject === "object") {
-      this._lat = findValue(latitudeOrObject, LATITUDE_ALIASES) ?? 0;
-      this._lon = findValue(latitudeOrObject, LONGITUDE_ALIASES) ?? 0;
-    } else if (typeof latitude === "number" && longitude) {
+    if (typeof latitudeOrObject == "object") {
+      latitude = findValue(latitudeOrObject, LATITUDE_ALIASES) ?? 0;
+      longitude = findValue(latitudeOrObject, LONGITUDE_ALIASES) ?? 0;
+
+      this.latitude = typeof latitude == "function" ? latitude() : latitude;
+      this.longitude = typeof longitude == "function" ? longitude() : longitude;
+    }
+    if (typeof latitude == "number" && typeof longitude == "number") {
       this.latitude = latitude;
       this.longitude = longitude;
     }
