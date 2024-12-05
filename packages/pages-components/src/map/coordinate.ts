@@ -146,7 +146,7 @@ class Coordinate {
       this.latitude = typeof latitude == "function" ? latitude() : latitude;
       this.longitude = typeof longitude == "function" ? longitude() : longitude;
     }
-    if (typeof latitude == "number" && typeof longitude == "number") {
+    else if (typeof latitude == "number" && typeof longitude == "number") {
       this.latitude = latitude;
       this.longitude = longitude;
     }
