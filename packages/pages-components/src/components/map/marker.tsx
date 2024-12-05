@@ -4,6 +4,8 @@ import { MapPin, MapPinOptions } from "../../map/mapPin.js";
 import { MapContext } from "./map.js";
 import { MapContextType, MarkerProps } from "./types.js";
 import { ClustererContext } from "./clusterer.js";
+import { HTMLProviderPin } from "../../map/providerPin.js";
+import { Coordinate } from "../../map/coordinate.js";
 
 const defaultMarkerIcon = (
   <svg
@@ -30,14 +32,14 @@ export const Marker = ({
   onFocus = () => null,
   onHover = () => null,
   zIndex,
-  hasPinUrl,
+  hasPinUrl = false,
 }: MarkerProps): JSX.Element | null => {
   const { map, provider } = useContext(MapContext) as MapContextType;
   const cluster = useContext(ClustererContext);
 
   const marker: MapPin = useMemo(() => {
     return new MapPinOptions()
-      .withCoordinate(coordinate)
+      .withCoordinate(coordinate as Coordinate)
       .withHideOffscreen(hideOffscreen)
       .withProvider(provider)
       .withHasPinUrl(hasPinUrl)
@@ -49,7 +51,9 @@ export const Marker = ({
     if (zIndex !== 0 && !zIndex) {
       return;
     }
-    const wrapper: HTMLDivElement = marker.getProviderPin().getWrapperElement();
+    const wrapper: HTMLElement | null = (
+      marker.getProviderPin() as HTMLProviderPin
+    ).getWrapperElement();
     if (wrapper) {
       wrapper.style.zIndex = zIndex.toString();
     }
@@ -88,7 +92,7 @@ export const Marker = ({
   const elementToRender = children ? children : icon;
 
   if (elementToRender) {
-    const pinEl = marker.getProviderPin().getPinElement();
+    const pinEl = (marker.getProviderPin() as HTMLProviderPin).getPinElement();
     Object.assign(pinEl.style, {
       height: "auto",
       width: "auto",

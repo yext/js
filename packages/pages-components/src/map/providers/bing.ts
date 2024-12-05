@@ -1,26 +1,28 @@
-// @ts-nocheck
-
-/** @module @yext/components-maps */
-
 import { Coordinate } from "../coordinate.js";
 import { LoadScript } from "../performance/loadContent.js";
 import { MapProviderOptions } from "../mapProvider.js";
-import { ProviderMap } from "../providerMap.js";
-import { HTMLProviderPin } from "../providerPin.js";
+import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
+import { Map } from "../map.js";
+import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 
 // Map Class
 
 // CustomOverlay for HTML Pins
-let PinOverlay;
+let PinOverlay: any;
+declare const window: Window & typeof globalThis & { [key: string]: any };
 
 function initPinOverlayClass() {
   class PinOverlayClass extends Microsoft.Maps.CustomOverlay {
+    _container: HTMLElement;
+    _pins: Set<BingPin>;
+    _viewChangeEventHandler: Microsoft.Maps.IHandlerId | null;
+    // @ts-expect-error Property '_map' in type 'PinOverlayClass' is not assignable to the same property in base type 'CustomOverlay'.
+    _map: Microsoft.Maps.Map | null;
     constructor() {
       super({ beneathLabels: false });
 
       this._container = document.createElement("div");
-      this._map = null;
-      this._pins = new Set();
+      this._pins = new Set<BingPin>();
       this._viewChangeEventHandler = null;
 
       this._container.style.position = "absolute";
@@ -28,10 +30,12 @@ function initPinOverlayClass() {
       this._container.style.top = "0";
     }
 
-    addPin(pin) {
+    addPin(pin: BingPin) {
       this._pins.add(pin);
-      pin._wrapper.style.position = "absolute";
-      this._container.appendChild(pin._wrapper);
+      if (pin._wrapper) {
+        pin._wrapper.style.position = "absolute";
+        this._container.appendChild(pin._wrapper);
+      }
 
       if (this._map) {
         this.updatePinPosition(pin);
@@ -53,16 +57,20 @@ function initPinOverlayClass() {
     }
 
     onRemove() {
-      Microsoft.Maps.Events.removeHandler(this._viewChangeEventHandler);
+      if (this._viewChangeEventHandler) {
+        Microsoft.Maps.Events.removeHandler(this._viewChangeEventHandler);
+      }
       this._map = null;
     }
 
-    removePin(pin) {
+    removePin(pin: BingPin) {
       this._pins.delete(pin);
-      this._container.removeChild(pin._wrapper);
+      if (pin._wrapper) {
+        this._container.removeChild(pin._wrapper);
+      }
     }
 
-    updatePinPosition(pin) {
+    updatePinPosition(pin: BingPin) {
       if (!this._map) {
         return;
       }
@@ -71,29 +79,34 @@ function initPinOverlayClass() {
         pin._location,
         Microsoft.Maps.PixelReference.control
       );
-      pin._wrapper.style.left = topLeft.x + "px";
-      pin._wrapper.style.top = topLeft.y + "px";
+      if (pin._wrapper) {
+        if (topLeft instanceof Microsoft.Maps.Point) {
+          pin._wrapper.style.left = topLeft.x + "px";
+          pin._wrapper.style.top = topLeft.y + "px";
+        }
+      }
     }
 
     updatePinPositions() {
-      this._pins.forEach((pin) => this.updatePinPosition(pin));
+      this._pins.forEach((pin: BingPin) => this.updatePinPosition(pin));
     }
   }
 
   PinOverlay = PinOverlayClass;
 }
 
-/**
- * @extends module:@yext/components-maps~ProviderMap
- */
 class BingMap extends ProviderMap {
-  /**
-   * @param {module:@yext/components-maps~ProviderMapOptions} options
-   */
-  constructor(options) {
+  wrapper: HTMLElement | null;
+  map?: Microsoft.Maps.Map;
+  pinOverlay: typeof PinOverlay;
+
+  constructor(options: ProviderMapOptions) {
     super(options);
 
     this.wrapper = options.wrapper;
+    if (!this.wrapper) {
+      return;
+    }
     this.map = new Microsoft.Maps.Map(this.wrapper, {
       disablePanning: !options.controlEnabled,
       disableZooming: !options.controlEnabled,
@@ -102,7 +115,7 @@ class BingMap extends ProviderMap {
       showScalebar: false,
       showTrafficButton: false,
       ...options.providerOptions,
-    });
+    } as Microsoft.Maps.IMapLoadOptions);
 
     this.pinOverlay = new PinOverlay(this.map);
     this.map.layers.insert(this.pinOverlay);
@@ -116,61 +129,57 @@ class BingMap extends ProviderMap {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getCenter}
    */
-  getCenter() {
-    return new Coordinate(this.map.getCenter());
+  getCenter(): Coordinate {
+    return new Coordinate(this.map?.getCenter() ?? { lat: 0, lng: 0 });
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.getZoom}
    */
-  getZoom() {
-    return this.map.getZoom();
+  getZoom(): number {
+    return this.map?.getZoom() ?? 0;
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setCenter}
    */
-  setCenter(coordinate, animated) {
+  setCenter(coordinate: Coordinate, _: boolean) {
     const center = new Microsoft.Maps.Location(
       coordinate.latitude,
       coordinate.longitude
     );
-    this.map.setView({ center });
+    this.map?.setView({ center });
     this.pinOverlay.updatePinPositions();
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc ProviderMap.setZoom}
    */
-  setZoom(zoom, animated) {
+  setZoom(zoom: number, _: boolean) {
     // Bing only allows integer zoom
-    this.map.setView({ zoom: Math.floor(zoom) });
+    this.map?.setView({ zoom: Math.floor(zoom) });
     this.pinOverlay.updatePinPositions();
   }
 }
 
 // Pin Class
-
-/**
- * @extends module:@yext/components-maps~HTMLProviderPin
- */
 class BingPin extends HTMLProviderPin {
+  _location: Microsoft.Maps.Location;
+  _map: Map | null;
+  static _pinId?: number;
   /**
    * Bing pins need global callbacks to complete initialization.
    * This function provides a unique ID to include in the name of the callback.
-   * @returns {number} An ID for the pin unique across all instances of {@link module:@yext/components-maps~BingPin BingPin}
+   * @returns An ID for the pin unique across all instances of {@link BingPin}
    */
-  static getId() {
+  static getId(): number {
     this._pinId = (this._pinId || 0) + 1;
     return this._pinId;
   }
 
-  /**
-   * @param {module:@yext/components-maps~ProviderPinOptions} options
-   */
-  constructor(options) {
+  constructor(options: ProviderPinOptions) {
     super(options);
 
     this._map = null;
@@ -178,29 +187,31 @@ class BingPin extends HTMLProviderPin {
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
-  setCoordinate(coordinate) {
+  setCoordinate(coordinate: Coordinate) {
     this._location = new Microsoft.Maps.Location(
       coordinate.latitude,
       coordinate.longitude
     );
 
     if (this._map) {
-      this._map.getProviderMap().pinOverlay.updatePinPosition(this);
+      (this._map.getProviderMap() as BingMap).pinOverlay.updatePinPosition(
+        this
+      );
     }
   }
 
   /**
-   * @inheritdoc
+   * {@inheritDoc HTMLProviderPin.setMap}
    */
-  setMap(newMap, currentMap) {
+  setMap(newMap: Map, currentMap: Map) {
     if (currentMap) {
-      currentMap.getProviderMap().pinOverlay.removePin(this);
+      (currentMap.getProviderMap() as BingMap).pinOverlay.removePin(this);
     }
 
     if (newMap) {
-      newMap.getProviderMap().pinOverlay.addPin(this);
+      (newMap.getProviderMap() as BingMap).pinOverlay.addPin(this);
     }
 
     this._map = newMap;
@@ -214,17 +225,21 @@ const globalCallback = "BingMapsCallback_593d7d33";
 const baseUrl = "https://www.bing.com/api/maps/mapcontrol";
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~BingMaps BingMaps}.
- * @alias module:@yext/components-maps~loadBingMaps
- * @param {function} resolve Callback with no arguments called when the load finishes successfully
- * @param {function} reject Callback with no arguments called when the load fails
- * @param {string} apiKey Provider API key
- * @param {Object} options Additional provider-specific options
- * @param {Object<string,string>} [options.params={}] Additional API params
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link BingMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject - Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * options.params=\{\} - Additional API params
+ * @see ProviderLoadFunction
  */
-function load(resolve, reject, apiKey, { params = {} } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { params = {} } = {}
+) {
   window[globalCallback] = () => {
     initPinOverlayClass();
     resolve();
@@ -246,10 +261,6 @@ function load(resolve, reject, apiKey, { params = {} } = {}) {
 }
 
 // Exports
-
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const BingMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(BingMap)

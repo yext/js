@@ -1,24 +1,22 @@
-/** @module @yext/components-maps */
-
 import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMapOptions } from "../providerMap.js";
 import { LeafletMaps } from "./leaflet.js";
 
+declare const L: any;
 const LeafletMap = LeafletMaps.getMapClass();
 const LeafletPin = LeafletMaps.getPinClass();
 
 // Map Class
 
-/**
- * @extends module:@yext/components-maps~LeafletMap
- */
 class MapQuestMap extends LeafletMap {
+  map: any;
   /**
-   * @inheritdoc
+   * {@inheritDoc LeafletMap._initMap}
    */
-  _initMap(options) {
+  _initMap(options: ProviderMapOptions) {
     this.map = L.mapquest.map(options.wrapper, {
       boxZoom: options.controlEnabled,
-      center: new L.latLng(0, 0),
+      center: new L.LatLng(0, 0),
       doubleClickZoom: options.controlEnabled,
       dragging: options.controlEnabled,
       layers: L.mapquest.tileLayer("map"),
@@ -31,26 +29,26 @@ class MapQuestMap extends LeafletMap {
 }
 
 // Pin Class
-
-/**
- * @extends module:@yext/components-maps~LeafletPin
- */
 class MapQuestPin extends LeafletPin {}
 
 // Load Function
 
 /**
- * This function is called when calling {@link module:@yext/components-maps~MapProvider#load MapProvider#load}
- * on {@link module:@yext/components-maps~MapQuestMaps MapQuestMaps}.
- * @alias module:@yext/components-maps~loadMapQuestMaps
- * @param {function} resolve Callback with no arguments called when the load finishes successfully
- * @param {function} reject Callback with no arguments called when the load fails
- * @param {string} apiKey Provider API key
- * @param {Object} options Additional provider-specific options
- * @param {string} [options.version='v1.3.2'] API version
- * @see module:@yext/components-maps~ProviderLoadFunction
+ * This function is called when calling {@link MapProvider#load}
+ * on {@link MapQuestMaps}.
+ * @param resolve - Callback with no arguments called when the load finishes successfully
+ * @param reject - Callback with no arguments called when the load fails
+ * @param apiKey - Provider API key
+ * @param options - Additional provider-specific options
+ * options.version='v1.3.2' - API version
+ * @see ProviderLoadFunction
  */
-function load(resolve, reject, apiKey, { version = "v1.3.2" } = {}) {
+function load(
+  resolve: () => void,
+  _: () => void,
+  apiKey: string,
+  { version = "v1.3.2" } = {}
+) {
   const baseUrl = `https://api.mqcdn.com/sdk/mapquest-js/${version}/mapquest-maps`;
 
   const mapStyle = document.createElement("link");
@@ -70,9 +68,6 @@ function load(resolve, reject, apiKey, { version = "v1.3.2" } = {}) {
 
 // Exports
 
-/**
- * @type {module:@yext/components-maps~MapProvider}
- */
 const MapQuestMaps = new MapProviderOptions()
   .withLoadFunction(load)
   .withMapClass(MapQuestMap)

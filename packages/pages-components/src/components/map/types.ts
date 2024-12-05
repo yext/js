@@ -1,7 +1,11 @@
-import type { Map as MapType } from "../../map/map.js";
+import type {
+  Map as MapType,
+  PaddingFunction,
+  PanHandler,
+  PanStartHandler,
+} from "../../map/map.js";
 import type { MapProvider } from "../../map/mapProvider.js";
 import type { MapPin } from "../../map/mapPin.js";
-import type { GeoBounds } from "../../map/geoBounds.js";
 import React from "react";
 
 export interface Coordinate {
@@ -24,16 +28,14 @@ export interface MapProps {
   defaultCenter?: Coordinate;
   defaultZoom?: number;
   mapRef?: React.MutableRefObject<MapType | null>;
-  padding?:
-    | number
-    | {
-        bottom: number | (() => number);
-        left: number | (() => number);
-        right: number | (() => number);
-        top: number | (() => number);
-      };
-  panHandler?: (previousBounds: GeoBounds, currentBounds: GeoBounds) => void;
-  panStartHandler?: (currentBounds: GeoBounds) => void;
+  padding?: {
+    bottom: number | PaddingFunction;
+    left: number | PaddingFunction;
+    right: number | PaddingFunction;
+    top: number | PaddingFunction;
+  };
+  panHandler?: PanHandler;
+  panStartHandler?: PanStartHandler;
   provider?: MapProvider;
   providerOptions?: { [key: string]: any };
   singleZoom?: number;

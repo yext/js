@@ -21,8 +21,7 @@ jobs:
       - name: Install playwright browsers
         working-directory: packages/pages-components
         run: |
-          pnpm create playwright
-          npx playwright install
+          pnpm exec playwright install
       - name: Serve Storybook and run WCAG checks
         working-directory: packages/pages-components
         run: |

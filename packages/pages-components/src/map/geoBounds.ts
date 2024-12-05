@@ -1,22 +1,20 @@
-/** @module @yext/components-geo */
-
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 
 /**
  * This class represents a bounded coordinate region of a sphere.
- * The bounds are defined by two {@link module:@yext/components-geo~Coordinate Coordinates}: southwest and northeast.
+ * The bounds are defined by two {@link Coordinates}: southwest and northeast.
  * If the northeast coordinate does not have a greater latitude and longitude than the soutwest
  * coordinate, the behavior of this object is undefined.
  */
 class GeoBounds {
+  _ne: Coordinate;
+  _sw: Coordinate;
   /**
-   * Create a new {@link module:@yext/components-geo~GeoBounds GeoBounds} with minimal area that
+   * Create a new {@link GeoBounds} with minimal area that
    * contains all the given coordinates
-   * @param {module:@yext/components-geo~Coordinate[]} coordinates
-   * @returns {module:@yext/components-geo~GeoBounds}
    */
-  static fit(coordinates) {
+  static fit(coordinates: Coordinate[]): GeoBounds {
     // North/South bounds are the northernmost and southernmost points
     const latitudes = coordinates.map((coordinate) => coordinate.latitude);
     const north = Math.max(...latitudes);
@@ -45,32 +43,30 @@ class GeoBounds {
   }
 
   /**
-   * @param {module:@yext/components-geo~Coordinate} sw Southwest coordinate
-   * @param {module:@yext/components-geo~Coordinate} ne Northeast coordinate
+   * @param sw - Southwest coordinate
+   * @param ne - Northeast coordinate
    */
-  constructor(sw, ne) {
+  constructor(sw: Coordinate, ne: Coordinate) {
     this._ne = new Coordinate(ne);
     this._sw = new Coordinate(sw);
   }
 
   /**
    * Northeast coordinate
-   * @type {module:@yext/components-geo~Coordinate}
    */
-  get ne() {
+  get ne(): Coordinate {
     return this._ne;
-  }
-
-  /**
-   * Southwest coordinate
-   * @type {module:@yext/components-geo~Coordinate}
-   */
-  get sw() {
-    return this._sw;
   }
 
   set ne(newNE) {
     this._ne = new Coordinate(newNE);
+  }
+
+  /**
+   * Southwest coordinate
+   */
+  get sw(): Coordinate {
+    return this._sw;
   }
 
   set sw(newSW) {
@@ -79,12 +75,10 @@ class GeoBounds {
 
   /**
    * Whether the coordinate lies within the region defined by the bounds.
-   * {@link module:@yext/components-geo~Coordinate#normalLon Normalized longitudes} are used for the
+   * {@link Normalized | longitudes} are used for the
    * bounds and the coordinate.
-   * @param {module:@yext/components-geo~Coordinate} coordinate
-   * @returns {boolean}
    */
-  contains(coordinate) {
+  contains(coordinate: Coordinate): boolean {
     const withinLatitude =
       this._sw.latitude <= coordinate.latitude &&
       coordinate.latitude <= this._ne.latitude;
@@ -101,9 +95,8 @@ class GeoBounds {
 
   /**
    * Extend the bounds if necessary so that the coordinate is contained by them.
-   * @param {module:@yext/components-geo~Coordinate} coordinate
    */
-  extend(coordinate) {
+  extend(coordinate: Coordinate) {
     this._ne.latitude = Math.max(this._ne.latitude, coordinate.latitude);
     this._sw.latitude = Math.min(this._sw.latitude, coordinate.latitude);
 
@@ -125,10 +118,8 @@ class GeoBounds {
    * Calculate the center of the bounds using the given projection.
    * To find the visual center on a Mercator map, use Projection.MERCATOR.
    * To find the center for geolocation or geosearch purposes, use Projection.SPHERICAL.
-   * @param {module:@yext/components-geo~Projection} [projection=Projection.SPHERICAL]
-   * @returns {module:@yext/components-geo~Coordinate}
    */
-  getCenter(projection = Projection.SPHERICAL) {
+  getCenter(projection = Projection.SPHERICAL): Coordinate {
     const nw = new Coordinate(this._ne.latitude, this._sw.longitude);
     const latDist = this._sw.distanceTo(nw, Unit.DEGREE, projection);
     const newLon =

@@ -26,7 +26,7 @@ describe("Map", () => {
   it("userMapContext in map child component", async () => {
     const MapChildComponent = () => {
       const map = useMapContext();
-      return <div>{map.getCenter()}</div>;
+      return <div>{map.getCenter() as unknown as string}</div>;
     };
 
     render(
