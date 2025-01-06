@@ -22,7 +22,10 @@ const validatePlainTextFAQ = (faq: any): faq is PlainTextFAQ => {
 };
 
 const validateRichTextFAQ = (faq: any): faq is RichTextFAQ => {
-  if (typeof faq === "object" && "question" in faq && "answerV2" in faq) {
+  if (typeof faq !== "object") {
+    return false;
+  }
+  if ("question" in faq && "answerV2" in faq) {
     return "json" in faq.answerV2 && typeof faq.answerV2.json === "object";
   }
   return false;
