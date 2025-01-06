@@ -25,7 +25,9 @@ const validateDayType = (hours: any): hours is DayType => {
       return true;
     }
     return hours.openIntervals.every((interval: any) => {
-      return typeof interval === "object" && "start" in interval && "end" in interval;
+      return (
+        typeof interval === "object" && "start" in interval && "end" in interval
+      );
     });
   }
   return false;
