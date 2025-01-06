@@ -8,7 +8,9 @@ const validateReview = (review: any): review is Review => {
   if (typeof review !== "object") {
     return false;
   }
-  return "ratingValue" in review || "bestRating" in review || "author" in review;
+  return (
+    "ratingValue" in review || "bestRating" in review || "author" in review
+  );
 };
 
 export type AggregateRating = {

@@ -24,11 +24,15 @@ const validateDayType = (hours: any): hours is DayType => {
     if (hours.openIntervals.length === 0) {
       return true;
     }
-    let result = true
-    hours.openIntervals.forEach((interval : any) => {
-      result = result && typeof interval === "object" && "start" in interval && "end" in interval
-    })
-    return result
+    let result = true;
+    hours.openIntervals.forEach((interval: any) => {
+      result =
+        result &&
+        typeof interval === "object" &&
+        "start" in interval &&
+        "end" in interval;
+    });
+    return result;
   }
   return false;
 };
