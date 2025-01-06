@@ -6,6 +6,13 @@ type Photo = {
   image: ImageType;
 };
 
+const validatePhoto = (photo: any): photo is Photo => {
+  if (typeof photo !== "object" || !("image" in photo)) {
+    return false;
+  }
+  return "url" in photo.image;
+};
+
 // takes in a list of Yext images and return a list of image urls
 export const PhotoGallerySchema = (gallery?: PhotoGallery) => {
   if (!gallery) {
@@ -15,7 +22,9 @@ export const PhotoGallerySchema = (gallery?: PhotoGallery) => {
   const imageArray = new Array<string>();
 
   for (const photo of gallery) {
-    imageArray.push(photo.image.url);
+    if (validatePhoto(photo)) {
+      imageArray.push(photo.image.url);
+    }
   }
 
   return {
@@ -26,7 +35,7 @@ export const PhotoGallerySchema = (gallery?: PhotoGallery) => {
 // takes in a single Yext image
 export const PhotoSchema = (photo?: Photo) => {
   return (
-    photo && {
+    validatePhoto(photo) && {
       image: photo.image.url,
     }
   );

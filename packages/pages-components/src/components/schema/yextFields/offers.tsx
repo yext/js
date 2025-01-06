@@ -7,9 +7,23 @@ export type Offer = {
   availability?: string;
 };
 
+const validateOffer = (offer: any): offer is Offer => {
+  if (typeof offer !== "object") {
+    return false;
+  }
+  return (
+    "url" in offer ||
+    "priceCurrency" in offer ||
+    "price" in offer ||
+    "priceValidUntil" in offer ||
+    "itemCondition" in offer ||
+    "availability" in offer
+  );
+};
+
 export const OfferSchema = (offer?: Offer) => {
   return (
-    offer && {
+    validateOffer(offer) && {
       offers: {
         "@type": "Offer",
         url: offer.url,

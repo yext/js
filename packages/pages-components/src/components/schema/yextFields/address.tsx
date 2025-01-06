@@ -5,9 +5,29 @@ export type Location = {
   address?: AddressType;
 };
 
+const validateLocation = (location: any): location is Location => {
+  if (typeof location !== "object") {
+    return false;
+  }
+  return "name" in location || "address" in location;
+};
+
+const validateAddress = (address: any): address is AddressType => {
+  if (typeof address !== "object") {
+    return false;
+  }
+  return (
+    "line1" in address ||
+    "city" in address ||
+    "region" in address ||
+    "postalCode" in address ||
+    "countryCode" in address
+  );
+};
+
 export const AddressSchema = (address?: AddressType) => {
   return (
-    address && {
+    validateAddress(address) && {
       address: {
         "@type": "PostalAddress",
         streetAddress: address.line1,
@@ -22,7 +42,7 @@ export const AddressSchema = (address?: AddressType) => {
 
 export const LocationSchema = (location?: Location) => {
   return (
-    location && {
+    validateLocation(location) && {
       "@type": "Place",
       name: location.name,
       ...AddressSchema(location.address),

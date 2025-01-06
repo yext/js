@@ -3,9 +3,20 @@ export type Organization = {
   url?: string;
 };
 
+const validateOrganization = (org: any): org is Organization => {
+  if (typeof org !== "object") {
+    return false;
+  }
+  return "url" in org || "name" in org;
+};
+
+const validatePerformers = (performers: any): performers is any[] => {
+  return Array.isArray(performers);
+};
+
 export const PerformerSchema = (performers?: string[]) => {
   return (
-    performers && {
+    validatePerformers(performers) && {
       performer: {
         "@type": "PerformingGroup",
         name: performers.join(" and "),
@@ -16,7 +27,7 @@ export const PerformerSchema = (performers?: string[]) => {
 
 export const OrganizationSchema = (org?: Organization) => {
   return (
-    org && {
+    validateOrganization(org) && {
       organizer: {
         "@type": "Organization",
         name: org.name,

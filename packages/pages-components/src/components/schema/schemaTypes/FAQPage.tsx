@@ -2,15 +2,31 @@ type RTF2 = {
   json?: Record<string, any>;
 };
 
-type FAQ =
-  | {
-      question: string;
-      answer: string;
-    }
-  | {
-      question: string;
-      answerV2: RTF2;
-    };
+type FAQ = PlainTextFAQ | RichTextFAQ;
+
+type PlainTextFAQ = {
+  question: string;
+  answer: string;
+};
+
+type RichTextFAQ = {
+  question: string;
+  answerV2: RTF2;
+};
+
+const validatePlainTextFAQ = (faq: any): faq is PlainTextFAQ => {
+  if (typeof faq !== "object") {
+    return false;
+  }
+  return "question" in faq && "answer" in faq;
+};
+
+const validateRichTextFAQ = (faq: any): faq is RichTextFAQ => {
+  if (typeof faq === "object" && "question" in faq && "answerV2" in faq) {
+    return "json" in faq.answerV2 && typeof faq.answerV2.json === "object";
+  }
+  return false;
+};
 
 function getTextNodesFromJson(
   rtfObject: Record<string, any>,
@@ -51,7 +67,7 @@ const FAQPage = (data: FAQ[]) => {
     "@context": "http://www.schema.org",
     "@type": "FAQPage",
     mainEntity: data.map((faq) => {
-      if (typeof faq !== "object") {
+      if (!(validatePlainTextFAQ(faq) || validateRichTextFAQ(faq))) {
         return undefined;
       }
       return {
