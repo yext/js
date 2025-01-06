@@ -50,14 +50,19 @@ const FAQPage = (data: FAQ[]) => {
   return {
     "@context": "http://www.schema.org",
     "@type": "FAQPage",
-    mainEntity: data.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "answer" in faq ? faq.answer : getRichTextContent(faq.answerV2),
-      },
-    })),
+    mainEntity: data.map((faq) => {
+      if (typeof faq !== "object") {
+        return undefined;
+      }
+      return {
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "answer" in faq ? faq.answer : getRichTextContent(faq.answerV2),
+        },
+      };
+    }),
   };
 };
 
