@@ -27,6 +27,18 @@ describe("Link", () => {
   it("throws an error when cta link is not set", () => {
     expect(() => render(<Link cta={{} as CTA} />)).toThrowError();
   });
+
+  it("renders with obfuscated email when using cta link", () => {
+    render(<Link cta={{ link: "mailto:test.com" }} />);
+    const link = screen.getByRole("link");
+    expect(link.getAttribute("href")).toEqual("bWFpbHRvOnRlc3QuY29t");
+  });
+
+  it("renders with obfuscated email when using href", () => {
+    render(<Link href="mailto:test.com" />);
+    const link = screen.getByRole("link");
+    expect(link.getAttribute("href")).toEqual("bWFpbHRvOnRlc3QuY29t");
+  });
 });
 
 vi.mock("../../components/analytics", () => {
@@ -71,7 +83,5 @@ describe("Link Component Handles Analytics Failures", () => {
 
 // TODO: Add tests
 // Check target="_blank" present on newTab
-// Check obfuscated label
-// Check obfuscated href
 // Check children is label if present
 // Check fallback to link for label

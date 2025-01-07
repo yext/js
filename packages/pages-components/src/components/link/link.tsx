@@ -110,7 +110,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
 
     // hydration warnings suppressed because they will show when the xYextDebug query param is used
     return (
-      <a {...attributes} {...rest} suppressHydrationWarning={true}>
+      <a {...rest} {...attributes} suppressHydrationWarning={true}>
         {children || link.label || renderedLink}
       </a>
     );
