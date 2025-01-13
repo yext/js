@@ -45,4 +45,23 @@ describe("Address", () => {
 
     expect(cityEl && regionEl).toBeFalsy();
   });
+
+  it("renders custom lines with separators without warnings", () => {
+    const originalError = console.error;
+    console.error = vi.fn();
+
+    render(
+      <Address
+        address={address}
+        lines={[
+          ["line1", ",", "line2"],
+          ["city", ",", "region", ",", "postalCode"],
+        ]}
+      />
+    );
+
+    expect(console.error).not.toHaveBeenCalled();
+
+    console.error = originalError;
+  });
 });
