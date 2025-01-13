@@ -50,10 +50,13 @@ const AddressLine = ({
   separator,
 }: AddressLineProps): JSX.Element => {
   const addressDOM: JSX.Element[] = [];
+  let separatorCount = 0;
 
   for (const field of line) {
     if (field === ",") {
-      addressDOM.push(<span key={field}>{separator}</span>);
+      addressDOM.push(
+        <span key={`separator-${separatorCount++}`}>{separator}</span>
+      );
       continue;
     }
 
