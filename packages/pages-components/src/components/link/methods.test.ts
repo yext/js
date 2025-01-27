@@ -1,6 +1,14 @@
 import { expect, test } from "vitest";
-import { getHref, isEmail } from "./methods.js";
-import { LinkTypes } from "./types.js";
+import {
+  CTA_EVENT,
+  determineEvent,
+  DRIVING_DIRECTIONS_EVENT,
+  getHref,
+  isEmail,
+  LINK_TO_CORPORATE_EVENT,
+  PHONE_CALL_EVENT,
+} from "./methods.js";
+import { LinkType, LinkTypes } from "./types.js";
 
 // getHref
 test("getHref: Url type", () => {
@@ -79,4 +87,17 @@ test.each<[string, boolean]>([
   ["ddjk-s-jk@asl-.com", expectInvalid],
 ])(`isEmail: %s`, (emailAddress, validity) => {
   expect(isEmail(emailAddress)).toEqual(validity);
+});
+
+// determineEvent
+test.each<[string | undefined, LinkType | undefined, string]>([
+  ["myEventName", "DrivingDirections", "myEventName"],
+  [undefined, "DrivingDirections", DRIVING_DIRECTIONS_EVENT],
+  [undefined, "Phone", PHONE_CALL_EVENT],
+  [undefined, "URL", CTA_EVENT],
+  [undefined, "Email", CTA_EVENT],
+  [undefined, "LinkToCorporate", LINK_TO_CORPORATE_EVENT],
+  [undefined, undefined, CTA_EVENT],
+])(`determineEvent: %s %s`, (inputEventName, linkType, outputEventName) => {
+  expect(determineEvent(inputEventName, linkType)).toEqual(outputEventName);
 });

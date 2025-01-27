@@ -7,6 +7,8 @@ export const LinkTypes = {
   URL: "URL",
   Email: "Email",
   Phone: "Phone",
+  DrivingDirections: "DrivingDirections",
+  LinkToCorporate: "LinkToCorporate",
 } as const;
 
 /**

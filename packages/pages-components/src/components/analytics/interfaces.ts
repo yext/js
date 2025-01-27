@@ -5,7 +5,8 @@ export type TrackProps = {
   action: Action;
   destinationUrl: string;
   scope?: string;
-  eventName?: string;
+  eventName: string;
+  isCustomEventName: boolean;
   amount?: number;
   currency?: string;
   customTags?: Record<string, string>;

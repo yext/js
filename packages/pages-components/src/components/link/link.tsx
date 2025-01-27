@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
-import { getHref, getLinkFromProps, isEmail } from "./methods.js";
+import { determineEvent, resolveCTA } from "./methods.js";
 import type { CTA, LinkProps } from "./types.js";
 
 /**
@@ -23,7 +23,6 @@ import type { CTA, LinkProps } from "./types.js";
  */
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const link: CTA = getLinkFromProps(props);
     const {
       children,
       onClick,
@@ -39,16 +38,13 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       ...rest
     } = props;
 
+    const resolvedCta: CTA = resolveCTA(props);
     const action = cta ? "CTA_CLICK" : "LINK";
-    const trackEvent = eventName ? eventName : cta ? "cta" : "link";
+    const resolvedEventName = determineEvent(eventName, resolvedCta.linkType);
     const analytics = useAnalytics();
 
-    if (!link?.link) {
-      throw new Error("CTA's link is undefined");
-    }
-
     const isObfuscate =
-      obfuscate || (obfuscate !== false && isEmail(link.link));
+      obfuscate || (obfuscate !== false && resolvedCta.linkType === "Email");
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
       const currentTarget = e.currentTarget;
@@ -68,8 +64,9 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         try {
           await analytics.track({
             action: action,
-            scope: props.scope,
-            eventName: trackEvent,
+            scope: scope,
+            eventName: resolvedEventName,
+            isCustomEventName: !!eventName,
             currency: currency,
             amount: amount,
             destinationUrl: decodedLink || currentTarget.href,
@@ -92,11 +89,11 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
 
     const renderedLink = isObfuscate
       ? "Obfuscated, set a label or child"
-      : link.link;
+      : resolvedCta.link;
 
     const attributes: any = {
       className: classNames("Link", className),
-      href: isObfuscate ? btoa(getHref(link)) : getHref(link),
+      href: isObfuscate ? btoa(resolvedCta.link) : resolvedCta.link,
       onClick: handleClick,
       rel: props.target && !props.rel ? "noopener" : undefined,
       ref: ref,
@@ -105,13 +102,14 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     if (analytics?.getDebugEnabled()) {
       attributes["data-ya-action"] = action;
       attributes["data-ya-scopeoverride"] = scope;
-      attributes["data-ya-eventname"] = trackEvent;
+      attributes["data-ya-eventname"] = resolvedEventName;
+      attributes["data-ya-iscustomeventname"] = !!eventName;
     }
 
     // hydration warnings suppressed because they will show when the xYextDebug query param is used
     return (
       <a {...rest} {...attributes} suppressHydrationWarning={true}>
-        {children || link.label || renderedLink}
+        {children || resolvedCta.label || renderedLink}
       </a>
     );
   }

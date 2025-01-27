@@ -128,7 +128,7 @@ describe("Analytics", () => {
 
     expect(payload.action).toBe("LINK");
     expect(payload.pages.scope).toBe(undefined);
-    expect(payload.pages.originalEventName).toBe("link");
+    expect(payload.pages.originalEventName).toBe("calltoactionclick");
   });
 
   it("should track a click with scoping", async () => {
@@ -146,10 +146,13 @@ describe("Analytics", () => {
             </AnalyticsScopeProvider>
             <AnalyticsScopeProvider name="drop down">
               <Link cta={{ link: "#" }}>two</Link>
+              <Link cta={{ link: "#" }} eventName="customEvent">
+                three
+              </Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>
           <Link href="#" eventName="fooclick">
-            three
+            four
           </Link>
         </AnalyticsProvider>
       );
@@ -167,20 +170,26 @@ describe("Analytics", () => {
       {
         expectedAction: "LINK",
         expectedScope: "header_menu",
-        expectedOriginalEventName: "header_menu_link",
+        expectedOriginalEventName: "calltoactionclick",
         matcher: /one/,
       },
       {
         expectedAction: "CTA_CLICK",
         expectedScope: "header_dropdown",
-        expectedOriginalEventName: "header_dropdown_cta",
+        expectedOriginalEventName: "calltoactionclick",
         matcher: /two/,
+      },
+      {
+        expectedAction: "CTA_CLICK",
+        expectedScope: "header_dropdown",
+        expectedOriginalEventName: "header_dropdown_customevent",
+        matcher: /three/,
       },
       {
         expectedAction: "LINK",
         expectedScope: undefined,
         expectedOriginalEventName: "fooclick",
-        matcher: /three/,
+        matcher: /four/,
       },
     ];
 
@@ -238,7 +247,7 @@ describe("Analytics", () => {
       >
         <AnalyticsScopeProvider name="header">
           <AnalyticsScopeProvider name="menu">
-            <Link href="#" scope="custom scope">
+            <Link href="#" scope="custom scope" eventName="link">
               one
             </Link>
           </AnalyticsScopeProvider>
