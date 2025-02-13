@@ -1,3 +1,4 @@
+// src/com/yext/profilefields/builtin/registration/StandardTypeCreator.java contains some of these built-in CTA types
 /**
  * Constants for available link types.
  *
@@ -5,10 +6,11 @@
  */
 export const LinkTypes = {
   URL: "URL",
-  Email: "Email",
-  Phone: "Phone",
-  DrivingDirections: "DrivingDirections",
-  LinkToCorporate: "LinkToCorporate",
+  EMAIL: "EMAIL",
+  PHONE: "PHONE",
+  DRIVING_DIRECTIONS: "DRIVING_DIRECTIONS",
+  CLICK_TO_WEBSITE: "CLICK_TO_WEBSITE",
+  OTHER: "OTHER",
 } as const;
 
 /**

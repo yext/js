@@ -128,7 +128,7 @@ describe("Analytics", () => {
 
     expect(payload.action).toBe("LINK");
     expect(payload.pages.scope).toBe(undefined);
-    expect(payload.pages.originalEventName).toBe("calltoactionclick");
+    expect(payload.pages.originalEventName).toBe("link");
   });
 
   it("should track a click with scoping", async () => {
@@ -170,17 +170,17 @@ describe("Analytics", () => {
       {
         expectedAction: "LINK",
         expectedScope: "header_menu",
-        expectedOriginalEventName: "calltoactionclick",
+        expectedOriginalEventName: "header_menu_link",
         matcher: /one/,
       },
       {
-        expectedAction: "CTA_CLICK",
+        expectedAction: "LINK",
         expectedScope: "header_dropdown",
-        expectedOriginalEventName: "calltoactionclick",
+        expectedOriginalEventName: "header_dropdown_link",
         matcher: /two/,
       },
       {
-        expectedAction: "CTA_CLICK",
+        expectedAction: "LINK",
         expectedScope: "header_dropdown",
         expectedOriginalEventName: "header_dropdown_customevent",
         matcher: /three/,

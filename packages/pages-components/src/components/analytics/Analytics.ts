@@ -145,7 +145,6 @@ export class Analytics implements AnalyticsMethods {
     const {
       action,
       scope,
-      isCustomEventName,
       eventName,
       currency,
       amount,
@@ -166,9 +165,7 @@ export class Analytics implements AnalyticsMethods {
       action,
       pages: {
         scope: slugify(scope) || undefined,
-        originalEventName: isCustomEventName
-          ? concatScopes(scope || "", slugify(eventName))
-          : eventName, // non-custom event names should not use a scope or be slugified since they are predefined/built-in
+        originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },
       value,
       destinationUrl,

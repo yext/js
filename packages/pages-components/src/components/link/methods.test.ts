@@ -1,14 +1,21 @@
 import { expect, test } from "vitest";
 import {
+  CLICK_TO_WEBSITE,
   CTA_EVENT,
   determineEvent,
+  determineLinkType,
   DRIVING_DIRECTIONS_EVENT,
   getHref,
   isEmail,
-  LINK_TO_CORPORATE_EVENT,
+  LEGACY_CTA_EVENT,
+  LEGACY_LINK_EVENT,
+  OTHER_EVENT,
   PHONE_CALL_EVENT,
+  resolveAction,
+  resolveCTA,
 } from "./methods.js";
-import { LinkType, LinkTypes } from "./types.js";
+import { LinkProps, LinkType, LinkTypes } from "./types.js";
+import { Action } from "@yext/analytics";
 
 // getHref
 test("getHref: Url type", () => {
@@ -26,7 +33,7 @@ test("getHref: Email type", () => {
     getHref({
       label: "",
       link: "email@test.com",
-      linkType: LinkTypes.Email,
+      linkType: LinkTypes.EMAIL,
     })
   ).toEqual("mailto:email@test.com");
 });
@@ -36,7 +43,7 @@ test("getHref: Telephone type", () => {
     getHref({
       label: "",
       link: "+11234567890",
-      linkType: LinkTypes.Phone,
+      linkType: LinkTypes.PHONE,
     })
   ).toEqual("tel:+11234567890");
 });
@@ -89,15 +96,86 @@ test.each<[string, boolean]>([
   expect(isEmail(emailAddress)).toEqual(validity);
 });
 
-// determineEvent
+// determineEvent cta false
 test.each<[string | undefined, LinkType | undefined, string]>([
-  ["myEventName", "DrivingDirections", "myEventName"],
-  [undefined, "DrivingDirections", DRIVING_DIRECTIONS_EVENT],
-  [undefined, "Phone", PHONE_CALL_EVENT],
-  [undefined, "URL", CTA_EVENT],
-  [undefined, "Email", CTA_EVENT],
-  [undefined, "LinkToCorporate", LINK_TO_CORPORATE_EVENT],
-  [undefined, undefined, CTA_EVENT],
+  ["myEventName", "DRIVING_DIRECTIONS", "myEventName"],
+  [undefined, "DRIVING_DIRECTIONS", LEGACY_LINK_EVENT],
+  [undefined, "PHONE", LEGACY_LINK_EVENT],
+  [undefined, "URL", LEGACY_LINK_EVENT],
+  [undefined, "EMAIL", LEGACY_LINK_EVENT],
+  [undefined, "CLICK_TO_WEBSITE", LEGACY_LINK_EVENT],
+  [undefined, "OTHER", LEGACY_LINK_EVENT],
+  [undefined, undefined, LEGACY_LINK_EVENT],
 ])(`determineEvent: %s %s`, (inputEventName, linkType, outputEventName) => {
-  expect(determineEvent(inputEventName, linkType)).toEqual(outputEventName);
+  expect(determineEvent(inputEventName, linkType, false)).toEqual(
+    outputEventName
+  );
+});
+
+// determineEvent cta true
+test.each<[string | undefined, LinkType | undefined, string]>([
+  ["myEventName", "DRIVING_DIRECTIONS", "myEventName"],
+  [undefined, "DRIVING_DIRECTIONS", DRIVING_DIRECTIONS_EVENT],
+  [undefined, "PHONE", PHONE_CALL_EVENT],
+  [undefined, "URL", LEGACY_LINK_EVENT],
+  [undefined, "EMAIL", CTA_EVENT],
+  [undefined, "CLICK_TO_WEBSITE", CLICK_TO_WEBSITE],
+  [undefined, "OTHER", OTHER_EVENT],
+  [undefined, undefined, LEGACY_CTA_EVENT],
+])(`determineEvent: %s %s`, (inputEventName, linkType, outputEventName) => {
+  expect(determineEvent(inputEventName, linkType, true)).toEqual(
+    outputEventName
+  );
+});
+
+// resolveAction cta false
+test.each<[LinkType | undefined, Action]>([
+  [LinkTypes.EMAIL, "CTA_CLICK"],
+  [LinkTypes.PHONE, "TAP_TO_CALL"],
+  [LinkTypes.CLICK_TO_WEBSITE, "WEBSITE"],
+  [LinkTypes.DRIVING_DIRECTIONS, "DRIVING_DIRECTIONS"],
+  [LinkTypes.OTHER, "CTA_CLICK"],
+  [LinkTypes.URL, "LINK"],
+  [undefined, "LINK"],
+])(`resolveAction: %s %s`, (linkType, action) => {
+  expect(resolveAction({ link: "", linkType }, false)).toEqual(action);
+});
+
+// resolveAction cta true
+test.each<[LinkType | undefined, Action]>([
+  [LinkTypes.EMAIL, "CTA_CLICK"],
+  [LinkTypes.PHONE, "TAP_TO_CALL"],
+  [LinkTypes.CLICK_TO_WEBSITE, "WEBSITE"],
+  [LinkTypes.DRIVING_DIRECTIONS, "DRIVING_DIRECTIONS"],
+  [LinkTypes.OTHER, "CTA_CLICK"],
+  [LinkTypes.URL, "LINK"],
+  [undefined, "CTA_CLICK"],
+])(`resolveAction: %s %s`, (linkType, action) => {
+  expect(resolveAction({ link: "", linkType }, true)).toEqual(action);
+});
+
+// determineLinkType
+test.each<[string, LinkType]>([
+  ["foo@yext.com", LinkTypes.EMAIL],
+  ["tel:5555555555", LinkTypes.PHONE],
+  ["https://yext.com", LinkTypes.URL],
+  ["", LinkTypes.URL],
+])(`determineLinkType: %s %s`, (href, linkType) => {
+  expect(determineLinkType(href)).toEqual(linkType);
+});
+
+// resolveCTA
+test("resolveCTA - error when no href and not cta", () => {
+  const linkProps = {} as unknown as LinkProps;
+  expect(() => resolveCTA(linkProps)).toThrowError("Link's href is undefined");
+});
+
+test("resolveCTA - error when cta and no link", () => {
+  const linkProps = {
+    cta: {
+      label: "",
+      linkType: LinkTypes.URL,
+    },
+  } as unknown as LinkProps;
+  expect(() => resolveCTA(linkProps)).toThrowError("CTA's link is undefined");
 });

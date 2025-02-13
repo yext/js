@@ -1,9 +1,13 @@
+import { Action } from "@yext/analytics";
 import { LinkProps, CTA, LinkType } from "./types.js";
 
 export const PHONE_CALL_EVENT = "phonecall";
 export const DRIVING_DIRECTIONS_EVENT = "drivingdirection";
 export const CTA_EVENT = "calltoactionclick";
-export const LINK_TO_CORPORATE_EVENT = "clicktowebsite";
+export const CLICK_TO_WEBSITE = "clicktowebsite"; // The platform description of this is "click to corporate page"
+export const OTHER_EVENT = "other";
+export const LEGACY_LINK_EVENT = "link";
+export const LEGACY_CTA_EVENT = "cta";
 
 /**
  * Resolves the final CTA object from the LinkProps since some of the props
@@ -30,48 +34,82 @@ export const resolveCTA = (linkProps: LinkProps): CTA => {
 };
 
 /**
+ * Resolves the action based on the cta's linkType.
+ *
+ * Note: If a custom eventName is used we may want to consider a C_ action in the future.
+ */
+export const resolveAction = (cta: CTA, isCTA: boolean): Action => {
+  switch (cta.linkType) {
+    case "EMAIL":
+      return "CTA_CLICK";
+    case "PHONE":
+      return "TAP_TO_CALL";
+    case "CLICK_TO_WEBSITE":
+      return "WEBSITE";
+    case "DRIVING_DIRECTIONS":
+      return "DRIVING_DIRECTIONS";
+    case "OTHER":
+      return "CTA_CLICK";
+    case "URL":
+      return "LINK";
+    default:
+      return isCTA ? "CTA_CLICK" : "LINK";
+  }
+};
+
+/**
  * Determine the event name for the link click, preferring the custom eventName.
  */
 export const determineEvent = (
   eventName: string | undefined,
-  linkType: LinkType | undefined
+  linkType: LinkType | undefined,
+  isCTA: boolean
 ): string => {
+  // Always prefer the custom eventName
   if (eventName) {
     return eventName;
   }
 
+  // If using href and not cta, default to legacy link event.
+  // This is for backwards compatibility before trying to map linkType to built-in platform events.
+  if (!isCTA) {
+    return LEGACY_LINK_EVENT;
+  }
+
   if (linkType) {
     switch (linkType) {
-      case "Phone":
+      case "PHONE":
         return PHONE_CALL_EVENT;
-      case "Email":
+      case "EMAIL":
         return CTA_EVENT;
       case "URL":
-        return CTA_EVENT;
-      case "DrivingDirections":
+        return LEGACY_LINK_EVENT;
+      case "DRIVING_DIRECTIONS":
         return DRIVING_DIRECTIONS_EVENT;
-      case "LinkToCorporate":
-        return LINK_TO_CORPORATE_EVENT;
+      case "CLICK_TO_WEBSITE":
+        return CLICK_TO_WEBSITE;
+      case "OTHER":
+        return OTHER_EVENT;
       default:
-        throw new Error(
-          `Can't determine eventName for unknown link type: ${linkType}`
-        );
+        return LEGACY_CTA_EVENT;
     }
   }
 
-  return CTA_EVENT;
+  // If cta and no linkType set, default to legacy cta event.
+  // This is for backwards compatibility before trying to map linkType to built-in platform events.
+  return LEGACY_CTA_EVENT;
 };
 
 /**
  * Determine the type of link based on the href.
  */
-const determineLinkType = (href: string): LinkType => {
+export const determineLinkType = (href: string): LinkType => {
   if (isEmail(href)) {
-    return "Email";
+    return "EMAIL";
   }
 
   if (href.startsWith("tel:")) {
-    return "Phone";
+    return "PHONE";
   }
 
   return "URL";
@@ -84,14 +122,14 @@ const determineLinkType = (href: string): LinkType => {
  * @returns a valid href tag
  */
 export const getHref = (cta: CTA): string => {
-  if (cta.linkType === "Email") {
+  if (cta.linkType === "EMAIL") {
     if (cta.link.startsWith("mailto:")) {
       return cta.link;
     }
     return `mailto:${cta.link}`;
   }
 
-  if (cta.linkType === "Phone") {
+  if (cta.linkType === "PHONE") {
     if (cta.link.startsWith("tel:")) {
       return cta.link;
     }

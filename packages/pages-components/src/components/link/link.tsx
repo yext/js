@@ -1,8 +1,9 @@
 import { forwardRef } from "react";
 import classNames from "classnames";
 import { useAnalytics } from "../analytics/index.js";
-import { determineEvent, resolveCTA } from "./methods.js";
+import { determineEvent, resolveAction, resolveCTA } from "./methods.js";
 import type { CTA, LinkProps } from "./types.js";
+import { Action } from "@yext/analytics";
 
 /**
  * Renders an anchor tag using either a directly provided HREF or from a field in the Yext Knowledge Graph.
@@ -39,12 +40,16 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     } = props;
 
     const resolvedCta: CTA = resolveCTA(props);
-    const action = cta ? "CTA_CLICK" : "LINK";
-    const resolvedEventName = determineEvent(eventName, resolvedCta.linkType);
+    const action: Action = resolveAction(resolvedCta, !!cta);
+    const resolvedEventName = determineEvent(
+      eventName,
+      resolvedCta.linkType,
+      !!cta
+    );
     const analytics = useAnalytics();
 
     const isObfuscate =
-      obfuscate || (obfuscate !== false && resolvedCta.linkType === "Email");
+      obfuscate || (obfuscate !== false && resolvedCta.linkType === "EMAIL");
 
     const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
       const currentTarget = e.currentTarget;
@@ -66,7 +71,6 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
             action: action,
             scope: scope,
             eventName: resolvedEventName,
-            isCustomEventName: !!eventName,
             currency: currency,
             amount: amount,
             destinationUrl: decodedLink || currentTarget.href,
@@ -103,7 +107,6 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       attributes["data-ya-action"] = action;
       attributes["data-ya-scopeoverride"] = scope;
       attributes["data-ya-eventname"] = resolvedEventName;
-      attributes["data-ya-iscustomeventname"] = !!eventName;
     }
 
     // hydration warnings suppressed because they will show when the xYextDebug query param is used

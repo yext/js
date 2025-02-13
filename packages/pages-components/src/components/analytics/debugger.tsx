@@ -41,14 +41,12 @@ const getEventData = (
   const scopeOverride = elem.dataset.yaScopeoverride!;
   const eventName = elem.dataset.yaEventname!;
   const effectiveScope = scopeOverride || scope;
-  const isCustomEventName = elem.dataset.yaIscustomeventname === "true";
 
   return {
     action: action,
-    originalEventName:
-      isCustomEventName && effectiveScope
-        ? `${effectiveScope}_${eventName}`
-        : eventName,
+    originalEventName: effectiveScope
+      ? `${effectiveScope}_${eventName}`
+      : eventName,
     scope: effectiveScope,
   };
 };
