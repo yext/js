@@ -2,13 +2,13 @@
 
 ##### Bug Fixes
 
-* **pages-components:**
-  *  schema type validation (#75) (fc562712)
-  *  link's href not obfuscated (#76) (8e102cc3)
+- **pages-components:**
+  - schema type validation (#75) (fc562712)
+  - link's href not obfuscated (#76) (8e102cc3)
 
 ##### Refactors
 
-* **pages-components:**  components/maps (#73) (09bf670b)
+- **pages-components:** components/maps (#73) (09bf670b)
 
 #### 1.0.4 (2024-12-03)
 

@@ -146,10 +146,13 @@ describe("Analytics", () => {
             </AnalyticsScopeProvider>
             <AnalyticsScopeProvider name="drop down">
               <Link cta={{ link: "#" }}>two</Link>
+              <Link cta={{ link: "#" }} eventName="customEvent">
+                three
+              </Link>
             </AnalyticsScopeProvider>
           </AnalyticsScopeProvider>
           <Link href="#" eventName="fooclick">
-            three
+            four
           </Link>
         </AnalyticsProvider>
       );
@@ -171,16 +174,22 @@ describe("Analytics", () => {
         matcher: /one/,
       },
       {
-        expectedAction: "CTA_CLICK",
+        expectedAction: "LINK",
         expectedScope: "header_dropdown",
-        expectedOriginalEventName: "header_dropdown_cta",
+        expectedOriginalEventName: "header_dropdown_link",
         matcher: /two/,
+      },
+      {
+        expectedAction: "LINK",
+        expectedScope: "header_dropdown",
+        expectedOriginalEventName: "header_dropdown_customevent",
+        matcher: /three/,
       },
       {
         expectedAction: "LINK",
         expectedScope: undefined,
         expectedOriginalEventName: "fooclick",
-        matcher: /three/,
+        matcher: /four/,
       },
     ];
 
@@ -238,7 +247,7 @@ describe("Analytics", () => {
       >
         <AnalyticsScopeProvider name="header">
           <AnalyticsScopeProvider name="menu">
-            <Link href="#" scope="custom scope">
+            <Link href="#" scope="custom scope" eventName="link">
               one
             </Link>
           </AnalyticsScopeProvider>

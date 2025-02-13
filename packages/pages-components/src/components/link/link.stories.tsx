@@ -34,7 +34,7 @@ Phone.args = {
   cta: {
     link: "2023013404",
     label: "Call us",
-    linkType: "Phone",
+    linkType: "PHONE",
   },
 };
 
@@ -44,7 +44,7 @@ Email.args = {
   cta: {
     link: "consulting-dev@yext.com",
     label: "Email Me",
-    linkType: "Email",
+    linkType: "EMAIL",
   },
 };
 

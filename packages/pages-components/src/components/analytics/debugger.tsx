@@ -151,7 +151,7 @@ export function AnalyticsDebuggerInternal() {
         setTooltips([]);
       });
 
-      const scopeOverride = eventEl.dataset.yaScopeoverride!;
+      const scopeOverride = eventEl.dataset.yaScopeoverride;
       if (scopeOverride) {
         addToData(scopeOverride, elemData, scope, eventEl);
       } else {
@@ -215,75 +215,91 @@ export function AnalyticsDebuggerInternal() {
   );
 }
 
-const getUniqueEvents = () => {
-  const events: Event[] = [];
-  Object.entries(data).map(([_, eventNode]) =>
-    eventNode.events.map((event) => {
-      if (
-        !events
-          .map((event) => event.eventData.originalEventName)
-          .includes(event.eventData.originalEventName)
-      ) {
-        events.push(event);
+/**
+ * Groups the events by their original event name.
+ */
+const getEventsGroupedByName = (): Record<string, Event[]> => {
+  const uniqueEvents: Record<string, Event[]> = {};
+
+  Object.values(data).forEach((eventNode) => {
+    eventNode.events.forEach((event) => {
+      const { originalEventName } = event.eventData;
+
+      if (!uniqueEvents[originalEventName]) {
+        uniqueEvents[originalEventName] = [];
       }
-    })
-  );
-  return events;
+
+      // Data is grouped by scope and repeats elements within children scopes. We need to avoid duplicates
+      // at the eventName level.
+      if (
+        uniqueEvents[originalEventName].find(
+          (uniqueEvent) => uniqueEvent.el === event.el
+        )
+      ) {
+        return;
+      }
+      uniqueEvents[originalEventName].push(event);
+    });
+  });
+
+  return uniqueEvents;
 };
 
 function EventsTab(props: TabProps) {
   const { setTooltips } = props;
 
-  const [activeEventEl, setActiveEventEl] = useState<HTMLElement>();
+  const [activeEventEls, setActiveEventEls] = useState<HTMLElement[]>([]);
   const [activeButton, setActiveButton] = useState("");
 
-  const handleClick = (
-    eventEl: HTMLElement,
-    eventData: EventData,
-    key: string
-  ) => {
-    eventEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    if (activeEventEl) {
-      activeEventEl.classList.remove("analytics-event-highlight");
-    }
+  const handleClick = (events: Event[], key: string) => {
+    // Scroll all related elements into view and highlight them
+    activeEventEls.forEach((el) =>
+      el.classList.remove("analytics-event-highlight")
+    );
 
-    setActiveEventEl(eventEl);
-    eventEl.classList.add("analytics-event-highlight");
+    const newActiveEls = events.map((event) => {
+      event.el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      event.el.classList.add("analytics-event-highlight");
+      return event.el;
+    });
 
+    setActiveEventEls(newActiveEls);
     setActiveButton(key);
 
-    setTooltips([
-      {
-        elem: eventEl,
-        key: key,
-        action: eventData.action,
-        originalEventName: eventData.originalEventName,
-        scope: eventData.scope,
-      },
-    ]);
+    // Set tooltips for all related events
+    setTooltips(
+      events.map((event, idx) => ({
+        elem: event.el,
+        key: `${event.eventData.originalEventName}_${idx}`,
+        action: event.eventData.action,
+        originalEventName: event.eventData.originalEventName,
+        scope: event.eventData.scope,
+      }))
+    );
   };
 
   return (
     <div className="analytics-debugger-tab">
       <h2 className="analytics-debugger-tab-title">Event Names</h2>
       <ul className="analytics-debugger-list">
-        {getUniqueEvents().map((event, idx) => {
-          const eventData = event.eventData;
-          const key = `${eventData.originalEventName}_${idx}`;
+        {Object.entries(getEventsGroupedByName()).map(
+          ([originalEventName, events], idx) => {
+            const key = `${originalEventName}_${idx}`;
 
-          return (
-            <li className="analytics-debugger-listItem" key={key}>
-              <button
-                className={c("analytics-debugger-button", {
-                  "is-active": key === activeButton,
-                })}
-                onClick={() => handleClick(event.el, eventData, key)}
-              >
-                {eventData.originalEventName}
-              </button>
-            </li>
-          );
-        })}
+            return (
+              <li className="analytics-debugger-listItem" key={key}>
+                <button
+                  className={c("analytics-debugger-button", {
+                    "is-active": key === activeButton,
+                  })}
+                  onClick={() => handleClick(events, key)}
+                >
+                  {originalEventName}
+                </button>
+              </li>
+            );
+          }
+        )}
       </ul>
     </div>
   );
