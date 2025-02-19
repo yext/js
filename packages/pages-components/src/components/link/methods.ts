@@ -70,12 +70,6 @@ export const determineEvent = (
     return eventName;
   }
 
-  // If using href and not cta, default to legacy link event.
-  // This is for backwards compatibility before trying to map linkType to built-in platform events.
-  if (!isCTA) {
-    return LEGACY_LINK_EVENT;
-  }
-
   if (linkType) {
     switch (linkType) {
       case "PHONE":
@@ -91,10 +85,12 @@ export const determineEvent = (
       case "OTHER":
         return OTHER_EVENT;
       default:
-        return LEGACY_CTA_EVENT;
+        return isCTA ? CTA_EVENT : LEGACY_LINK_EVENT;
     }
   }
 
+  // It should not be possible to get here since the caller of this should use the
+  // resolved CTA object which has a linkType, but it's optional on the CTA type.
   // If cta and no linkType set, default to legacy cta event.
   // This is for backwards compatibility before trying to map linkType to built-in platform events.
   return LEGACY_CTA_EVENT;
