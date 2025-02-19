@@ -1,20 +1,18 @@
-/**
- * Constants for available link types.
- *
- * @public
- */
-export const LinkTypes = {
-  URL: "URL",
-  Email: "Email",
-  Phone: "Phone",
-} as const;
-
+// src/com/yext/profilefields/builtin/registration/StandardTypeCreator.java contains some of these built-in CTA types
 /**
  * Type of link types that might be received from the platform.
  *
  * @public
  */
-export type LinkType = (typeof LinkTypes)[keyof typeof LinkTypes];
+export type LinkType =
+  | "URL"
+  | "Email" // keeping for backwards compatibility
+  | "EMAIL"
+  | "Phone" // keeping for backwards compatibility
+  | "PHONE"
+  | "DRIVING_DIRECTIONS"
+  | "CLICK_TO_WEBSITE"
+  | "OTHER";
 
 /**
  * Type for CTA field
