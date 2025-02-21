@@ -31,7 +31,7 @@
   },
   "types": "dist/index.d.ts",
   "engines": {
-    "node": "^17 || ^18 || ^20"
+    "node": "^18 || ^20 || ^22"
   },
   "scripts": {
     "dev": "pnpm run storybook",
