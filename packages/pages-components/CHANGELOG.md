@@ -1,3 +1,19 @@
+#### 1.1.0 (2025-02-21)
+
+##### Chores
+
+*  upgrade vitest (#82) (b15b8bbf)
+*  update yext/analytics and storybook (#83) (0e65ce48)
+*  update semgrep_check.yml to use ubuntu-latest (#81) (613773f2)
+
+##### New Features
+
+* **pages-components:**  add Node 22 support (#84) (03db3eab)
+
+##### Bug Fixes
+
+* **pages-components:**  unique key for address line separators (#79) (a704b131)
+
 #### 1.0.5 (2025-01-07)
 
 ##### Bug Fixes
