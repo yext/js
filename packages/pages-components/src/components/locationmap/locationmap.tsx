@@ -25,7 +25,11 @@ export const LocationMap = ({
         hasPinUrl={(pinUrl || "")?.length > 0}
       >
         {pinUrl ? (
-          <Link href={pinUrl} target={linkSameTab ? "_self" : "_blank"}>
+          <Link
+            href={pinUrl}
+            target={linkSameTab ? "_self" : "_blank"}
+            aria-label="map-marker"
+          >
             {children}
           </Link>
         ) : children ? (
