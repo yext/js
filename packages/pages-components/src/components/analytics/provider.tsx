@@ -33,6 +33,10 @@ export function AnalyticsProvider(
     enableDebugging,
   } = props;
 
+  if (!apiKey) {
+    throw new Error("API Key is required for AnalyticsProvider");
+  }
+
   const analyticsRef = useRef<AnalyticsMethods | null>(null);
   const [isClient, setIsClient] = useState(false);
 
