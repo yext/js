@@ -264,4 +264,17 @@ describe("Analytics", () => {
     expect(payload.pages.scope).toBe("customscope");
     expect(payload.pages.originalEventName).toBe("customscope_link");
   });
+
+  it("should throw when apiKey not set", () => {
+    expect(() =>
+      render(
+        <AnalyticsProvider
+          apiKey=""
+          currency="USD"
+          templateData={baseProps}
+          requireOptIn={false}
+        />
+      )
+    ).toThrowError("API Key is required for AnalyticsProvider");
+  });
 });
