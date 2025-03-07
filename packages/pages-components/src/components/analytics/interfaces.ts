@@ -95,6 +95,11 @@ export interface AnalyticsProviderProps {
    * and will NOT be fired/sent through the Analytics SDK.
    */
   enableDebugging?: boolean | undefined;
+
+  /**
+   * productionDomains marks that these domains are in production and analytics should run.
+   */
+  productionDomains?: string[];
 }
 
 /**

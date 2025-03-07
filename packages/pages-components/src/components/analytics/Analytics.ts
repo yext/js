@@ -40,6 +40,7 @@ export class Analytics implements AnalyticsMethods {
    * @param templateData - template data object from the pages system
    * @param requireOptIn - boolean, set to true if you require user opt in before tracking analytics
    * @param disableSessionTracking - turns off session tracking
+   * @param productionDomains - productionDomains in which to enable Yext analytics. Not required for Pages sites
    * @param enableDebugging - turns debug mode on meaning requests are logged instead
    */
   constructor(
@@ -48,6 +49,7 @@ export class Analytics implements AnalyticsMethods {
     private templateData: TemplateProps,
     requireOptIn?: boolean,
     disableSessionTracking?: boolean,
+    private productionDomains?: string[],
     private enableDebugging: boolean = false
   ) {
     this._optedIn = !requireOptIn;
@@ -65,7 +67,7 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (!isProduction() && !this.getDebugEnabled()) {
+    if (!isProduction(...(this.productionDomains ?? [])) && !this.getDebugEnabled()) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }

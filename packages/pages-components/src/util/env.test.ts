@@ -36,13 +36,31 @@ describe("isProduction", () => {
     windowSpy.mockRestore();
   });
 
-  it("returns false when IS_PRODUCTION is false and domains passed", async () => {
+  it("returns true when IS_PRODUCTION is false and domains contains current hostname", async () => {
+    const windowSpy = vi.spyOn(window, "window", "get") as unknown as any;
+    const hostName = "thisismyhostname.com";
+    windowSpy.mockImplementation(() => ({
+      IS_PRODUCTION: false,
+      location: {
+        hostname: hostName,
+      },
+    }));
+
+    expect(isProduction(hostName)).toBeTruthy();
+
+    windowSpy.mockRestore();
+  });
+
+  it("returns false when IS_PRODUCTION is false and domains doesn't contain current hostname", async () => {
     const windowSpy = vi.spyOn(window, "window", "get") as unknown as any;
     windowSpy.mockImplementation(() => ({
       IS_PRODUCTION: false,
+      location: {
+        hostname: "thisismyhostname.com",
+      },
     }));
 
-    expect(isProduction("random")).toBeFalsy();
+    expect(isProduction("anotherhost.com")).toBeFalsy();
 
     windowSpy.mockRestore();
   });
