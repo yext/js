@@ -1,3 +1,9 @@
+#### 1.1.2 (2025-03-07)
+
+##### Bug Fixes
+
+* **pages-components:**  sunday hours incrementing by 1 for Spring DST (#86) (b052fddb)
+
 #### 1.1.1 (2025-03-04)
 
 ##### New Features
