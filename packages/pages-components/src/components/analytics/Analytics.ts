@@ -67,7 +67,10 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (!isProduction(...(this.productionDomains ?? [])) && !this.getDebugEnabled()) {
+    if (
+      !isProduction(...(this.productionDomains ?? [])) &&
+      !this.getDebugEnabled()
+    ) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }

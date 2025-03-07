@@ -25,9 +25,7 @@ export const isProduction = (...domains: string[]): boolean => {
     // fallback to domains
     const currentHostname = window.location?.hostname;
 
-    return (
-        domains?.some(domain => domain?.includes(currentHostname))
-    );
+    return domains?.some((domain) => domain?.includes(currentHostname));
   }
 
   return false;
