@@ -31,6 +31,7 @@ export function AnalyticsProvider(
     requireOptIn,
     disableSessionTracking,
     enableDebugging,
+    productionDomains,
   } = props;
 
   if (!apiKey) {
@@ -51,6 +52,7 @@ export function AnalyticsProvider(
       templateData,
       requireOptIn,
       disableSessionTracking,
+      productionDomains,
       enableDebugging ?? debuggingParamDetected()
     );
   }

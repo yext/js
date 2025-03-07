@@ -5,7 +5,7 @@
  * rendering. The domains list has been deprecated and is no longer used.
  * A client-side variable, IS_PRODUCTION, is now injected at serving time.
  *
- * @param domains - Deprecated: The specified production domains of the site
+ * @param domains - The specified production domains of the site
  *
  * @public
  */
@@ -18,7 +18,15 @@ export const isProduction = (...domains: string[]): boolean => {
     // false. Now this global var is injected at serving time, so it is always correct.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return window.IS_PRODUCTION || false;
+    if (window.IS_PRODUCTION) {
+      return true;
+    }
+
+    // In the case of code running in a module, the IS_PRODUCTION env var is unavailable.
+    // Therefore, we use the productionDomains optional parameter to decide whether to run analytics.
+    const currentHostname = window.location?.hostname;
+
+    return domains?.some((domain) => domain?.includes(currentHostname));
   }
 
   return false;

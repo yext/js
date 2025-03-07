@@ -95,6 +95,11 @@ export interface AnalyticsProviderProps {
    * and will NOT be fired/sent through the Analytics SDK.
    */
   enableDebugging?: boolean | undefined;
+
+  /**
+   * productionDomains is an optional list of domains that analytics should fire on. If your production site is hosted by Yext then this field is not required. It is only necessary if this code is being run in the context of a Yext module.
+   */
+  productionDomains?: string[];
 }
 
 /**
