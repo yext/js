@@ -22,7 +22,8 @@ export const isProduction = (...domains: string[]): boolean => {
       return true;
     }
 
-    // fallback to domains
+    // In the case of code running in a module, the IS_PRODUCTION env var is unavailable.
+    // Therefore, we use the productionDomains optional parameter to decide whether to run analytics.
     const currentHostname = window.location?.hostname;
 
     return domains?.some((domain) => domain?.includes(currentHostname));

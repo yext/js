@@ -40,7 +40,7 @@ export class Analytics implements AnalyticsMethods {
    * @param templateData - template data object from the pages system
    * @param requireOptIn - boolean, set to true if you require user opt in before tracking analytics
    * @param disableSessionTracking - turns off session tracking
-   * @param productionDomains - productionDomains in which to enable Yext analytics. Not required for Pages sites
+   * @param productionDomains - the domains to fire Yext analytics on. Only necessary if this code is being run in the context of a Yext module.
    * @param enableDebugging - turns debug mode on meaning requests are logged instead
    */
   constructor(
