@@ -2,7 +2,7 @@
 
 ##### New Features
 
-* **pages-components:**  fail generation when apiKey missing (#85) (c08048f4)
+- **pages-components:** fail generation when apiKey missing (#85) (c08048f4)
 
 #### 1.1.0 (2025-02-21)
 

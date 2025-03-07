@@ -55,18 +55,21 @@ export class HoursInterval {
 
     const [startHour, startMinute] = interval.start.split(":");
     const [endHour, endMinute] = interval.end.split(":");
+
+    let dayIncrement = 0;
+    if (endHour < startHour) {
+      dayIncrement = 1;
+    }
+
     this.end = this.end.set({
       hour: Number(endHour),
       minute: Number(endMinute),
+      day: this.end.day + dayIncrement,
     });
     this.start = this.start.set({
       hour: Number(startHour),
       minute: Number(startMinute),
     });
-
-    if (this.end < this.start) {
-      this.end = this.end.plus({ days: 1 });
-    }
 
     if (this.end.minute === 59) {
       this.end = this.end.set({ minute: 60 });
