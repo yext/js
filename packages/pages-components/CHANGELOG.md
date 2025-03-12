@@ -2,7 +2,7 @@
 
 ##### New Features
 
-* **pages-components:**  restore productionDomains AnalyticsProvider prop (#87) (bd6b6765)
+- **pages-components:** restore productionDomains AnalyticsProvider prop (#87) (bd6b6765)
 
 #### 1.1.2 (2025-03-07)
 
