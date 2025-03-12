@@ -94,7 +94,7 @@ export class Analytics implements AnalyticsMethods {
         template: this.templateData.document.__.name,
       },
       entity: (this.templateData.document.uid as number) || undefined,
-      referrerUrl: document.referrer
+      referrerUrl: document.referrer !== "" ? document.referrer : undefined
     };
 
     this._analyticsEventService = analytics(config).with(defaultPayload);
