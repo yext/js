@@ -1,3 +1,10 @@
+#### 1.0.6 (2025-03-14)
+
+##### Bug Fixes
+
+*  add page url to events payload (#89) (8174dbc4)
+*  pass page referrer to Yext Events (#88) (c65809e8)
+
 #### 1.0.5 (2025-01-07)
 
 ##### Bug Fixes
