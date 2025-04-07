@@ -1,3 +1,9 @@
+#### 1.0.7 (2025-04-07)
+
+##### New Features
+
+* **pages-components:**  add enableYextAnalytics to window (#90) (3cfd6bc2)
+
 #### 1.0.6 (2025-03-14)
 
 ##### Bug Fixes
