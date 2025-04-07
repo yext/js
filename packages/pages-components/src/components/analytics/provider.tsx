@@ -53,6 +53,17 @@ export function AnalyticsProvider(
 
   const analytics = analyticsRef.current;
 
+  // Adds enableYextAnalytics to the window. Typically used during consent banner implementation.
+  useEffect(() => {
+    (window as any).enableYextAnalytics = () => {
+      analytics.optIn();
+    };
+
+    return () => {
+      delete (window as any).enableYextAnalytics;
+    };
+  }, [analytics]);
+
   return (
     <>
       <AnalyticsContext.Provider value={analytics}>
