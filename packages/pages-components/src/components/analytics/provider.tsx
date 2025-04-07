@@ -59,7 +59,7 @@ export function AnalyticsProvider(
 
   const analytics = analyticsRef.current;
 
-  // Add enableYextAnalytics to the window so consent banners can opt themselves in
+  // Adds enableYextAnalytics to the window. Typically used during consent banner implementation.
   useEffect(() => {
     (window as any).enableYextAnalytics = () => {
       analytics.optIn();
