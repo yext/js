@@ -134,11 +134,11 @@ export const validateRequiredProps = (
       return;
     }
 
-    if (width && width <= 0) {
+    if (width && width < 0) {
       console.warn(`Using fixed layout but width is invalid: ${width}.`);
     }
 
-    if (height && height <= 0) {
+    if (height && height < 0) {
       console.warn(`Using fixed layout but height is invalid: ${height}.`);
     }
 
