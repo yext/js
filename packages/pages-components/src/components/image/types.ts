@@ -60,6 +60,10 @@ export const ImageLayoutOption = {
   ASPECT: "aspect",
   /** Always fills the image to 100% of the container's width. */
   FILL: "fill",
+  /**
+   * Uses the image as-is, with minimal modification
+   */
+  RAW: "raw",
 } as const;
 
 /**

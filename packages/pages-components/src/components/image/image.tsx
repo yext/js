@@ -48,13 +48,7 @@ export const Image = ({
   );
 
   const imgWidth = Math.abs(imageData.width);
-  if (!imgWidth) {
-    console.warn(`Invalid image width.`);
-  }
   const imgHeight = Math.abs(imageData.height);
-  if (!imgHeight) {
-    console.warn(`Invalid image height.`);
-  }
 
   // The image is invalid, only try to load the placeholder
   if (!isValidHttpUrl(imageData.url)) {
@@ -140,11 +134,11 @@ export const validateRequiredProps = (
       return;
     }
 
-    if (width && width < 0) {
+    if (width && width <= 0) {
       console.warn(`Using fixed layout but width is invalid: ${width}.`);
     }
 
-    if (height && height < 0) {
+    if (height && height <= 0) {
       console.warn(`Using fixed layout but height is invalid: ${height}.`);
     }
 
@@ -222,6 +216,9 @@ export const handleLayout = (
         ? `${aspectRatio}`
         : `${imgWidth} / ${imgHeight}`;
 
+      break;
+    case ImageLayoutOption.RAW:
+      src = imgUrl;
       break;
     default:
       console.warn(`Unrecognized layout: ${layout}.`);
