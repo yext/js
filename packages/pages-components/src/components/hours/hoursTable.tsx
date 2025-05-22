@@ -198,9 +198,9 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
   );
 
   return (
-    <div className={c("HoursTable", props.className)} style={emptyStyle}>
-      {isClient && (
-        <div>
+    <>
+      {isClient ? (
+        <div className={c("HoursTable", props.className)}>
           {hoursDays.map((dayData) => {
             const intervalStringsBuilderFn =
               props.intervalStringsBuilderFn || defaultIntervalStringsBuilder;
@@ -226,8 +226,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
             );
           })}
         </div>
+      ) : (
+        <div style={emptyStyle}/>
       )}
-    </div>
+    </>
   );
 };
 
