@@ -179,7 +179,15 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
     ...props,
   };
 
-  return <>{isClient ? statusTemplateFn(statusParams, props) : (<div style={emptyStyle}/>)}</>;
+  return (
+    <>
+      {isClient ? (
+        statusTemplateFn(statusParams, props)
+      ) : (
+        <div style={emptyStyle} />
+      )}
+    </>
+  );
 };
 
 export {

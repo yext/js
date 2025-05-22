@@ -227,7 +227,7 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
           })}
         </div>
       ) : (
-        <div style={emptyStyle}/>
+        <div style={emptyStyle} />
       )}
     </>
   );
