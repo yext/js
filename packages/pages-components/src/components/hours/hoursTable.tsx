@@ -192,9 +192,14 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     hoursDays = collapseDays(hoursDays, props.dayOfWeekNames);
   }
 
+  const emptyStyle = React.useMemo(
+    () => ({ minHeight: `${hoursDays.length * 1.5}em` }),
+    [hoursDays.length]
+  );
+
   return (
     <>
-      {isClient && (
+      {isClient ? (
         <div className={c("HoursTable", props.className)}>
           {hoursDays.map((dayData) => {
             const intervalStringsBuilderFn =
@@ -221,6 +226,8 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
             );
           })}
         </div>
+      ) : (
+        <div style={emptyStyle} />
       )}
     </>
   );

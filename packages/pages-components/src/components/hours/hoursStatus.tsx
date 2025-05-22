@@ -131,6 +131,8 @@ function defaultStatusTemplate(
   );
 }
 
+const emptyStyle = { minHeight: `${1.5}em` };
+
 /*
  * The HoursStatus component uses Hours data to generate a status message
  *  describing the current Open/Closed status of the entity
@@ -177,7 +179,15 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
     ...props,
   };
 
-  return <>{isClient && statusTemplateFn(statusParams, props)}</>;
+  return (
+    <>
+      {isClient ? (
+        statusTemplateFn(statusParams, props)
+      ) : (
+        <div style={emptyStyle} />
+      )}
+    </>
+  );
 };
 
 export {

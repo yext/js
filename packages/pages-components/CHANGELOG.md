@@ -2,7 +2,7 @@
 
 ##### New Features
 
-* **pages-components:**  add enableYextAnalytics to window (#90) (2b50890d)
+- **pages-components:** add enableYextAnalytics to window (#90) (2b50890d)
 
 #### 1.1.4 (2025-03-13)
 
