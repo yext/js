@@ -2,7 +2,7 @@
 
 ##### New Features
 
-*  add min-height to HoursTable (#92) (ed5c4ac5)
+- add min-height to HoursTable (#92) (ed5c4ac5)
 
 #### 1.1.5 (2025-04-07)
 
