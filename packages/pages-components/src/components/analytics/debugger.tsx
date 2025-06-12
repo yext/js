@@ -126,9 +126,8 @@ export function AnalyticsDebuggerInternal() {
       if (abortController) {
         abortController.abort();
       }
-      const newController = new AbortController();
-      abortController = newController;
-      const signal = newController.signal;
+      abortController = new AbortController();
+      const signal = abortController.signal;
 
       document.documentElement.classList.add("xYextDebug");
 
