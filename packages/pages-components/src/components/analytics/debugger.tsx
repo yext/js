@@ -119,58 +119,88 @@ export function AnalyticsDebuggerInternal() {
   };
 
   useEffect(() => {
-    document.documentElement.classList.add("xYextDebug");
+    let abortController: AbortController | null = null;
 
-    const events: NodeListOf<HTMLElement> = document.querySelectorAll(
-      "[data-ya-eventname]"
-    );
-
-    events.forEach((eventEl, idx) => {
-      const scope = eventEl.closest("[data-ya-scope]") as
-        | HTMLElement
-        | undefined;
-      const scopeName = scope?.dataset.yaScope;
-
-      const elemData = getEventData(eventEl, scopeName);
-
-      // Add tooltip when element is hovered.
-      eventEl.addEventListener("mouseenter", () => {
-        setTooltips([
-          {
-            elem: eventEl,
-            key: `${elemData.originalEventName}_${idx}`,
-            action: elemData.action,
-            originalEventName: elemData.originalEventName,
-            scope: elemData.scope,
-          },
-        ]);
-      });
-
-      // Remove tooltip.
-      eventEl.addEventListener("mouseleave", () => {
-        setTooltips([]);
-      });
-
-      const scopeOverride = eventEl.dataset.yaScopeoverride;
-      if (scopeOverride) {
-        addToData(scopeOverride, elemData, scope, eventEl);
-      } else {
-        const scopeNames = [
-          scopeName,
-          ...getParents(eventEl, "[data-ya-scope]").map(
-            (scopeEl) => scopeEl.dataset.yaScope
-          ),
-        ];
-        scopeNames.forEach((curScope) => {
-          addToData(curScope || NO_SCOPE, elemData, scope, eventEl);
-        });
+    const loadData = () => {
+      // Remove existing event listeners.
+      if (abortController) {
+        abortController.abort();
       }
+      abortController = new AbortController();
+      const signal = abortController.signal;
+
+      document.documentElement.classList.add("xYextDebug");
+
+      const events: NodeListOf<HTMLElement> = document.querySelectorAll(
+        "[data-ya-eventname]"
+      );
+
+      events.forEach((eventEl, idx) => {
+        const scope = eventEl.closest("[data-ya-scope]") as
+          | HTMLElement
+          | undefined;
+        const scopeName = scope?.dataset.yaScope;
+
+        const elemData = getEventData(eventEl, scopeName);
+
+        // Add tooltip when element is hovered.
+        eventEl.addEventListener(
+          "mouseenter",
+          () => {
+            setTooltips([
+              {
+                elem: eventEl,
+                key: `${elemData.originalEventName}_${idx}`,
+                action: elemData.action,
+                originalEventName: elemData.originalEventName,
+                scope: elemData.scope,
+              },
+            ]);
+          },
+          { signal }
+        );
+
+        // Remove tooltip.
+        eventEl.addEventListener(
+          "mouseleave",
+          () => {
+            setTooltips([]);
+          },
+          { signal }
+        );
+
+        const scopeOverride = eventEl.dataset.yaScopeoverride;
+        if (scopeOverride) {
+          addToData(scopeOverride, elemData, scope, eventEl);
+        } else {
+          const scopeNames = [
+            scopeName,
+            ...getParents(eventEl, "[data-ya-scope]").map(
+              (scopeEl) => scopeEl.dataset.yaScope
+            ),
+          ];
+          scopeNames.forEach((curScope) => {
+            addToData(curScope || NO_SCOPE, elemData, scope, eventEl);
+          });
+        }
+      });
+
+      setDataLoaded(true);
+    };
+
+    // Run on initial load.
+    loadData();
+
+    // Watch for mutations to capture dynamically added analytics components.
+    const observer = new MutationObserver(loadData);
+    observer.observe(document, {
+      childList: true,
+      subtree: true,
     });
-
-    setDataLoaded(true);
-
     return () => {
       document.documentElement.classList.remove("xYextDebug");
+      observer.disconnect();
+      abortController?.abort();
     };
   }, []);
 
