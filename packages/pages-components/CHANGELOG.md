@@ -1,3 +1,9 @@
+#### 1.1.7 (2025-06-16)
+
+##### New Features
+
+*  load dynamic events in analytics debugger (#93) (b37f9b5e)
+
 #### 1.1.6 (2025-05-22)
 
 ##### New Features
