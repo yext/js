@@ -23,17 +23,6 @@ export const validateDayType = (hours: any): hours is DayType => {
   if (hours.isClosed) {
     return true;
   }
-  console.log(
-    hours,
-    "openIntervals" in hours,
-    Array.isArray(hours.openIntervals),
-    hours.openIntervals.length,
-    hours.openIntervals.every((interval: any) => {
-      return (
-        typeof interval === "object" && "start" in interval && "end" in interval
-      );
-    })
-  );
 
   if (
     "openIntervals" in hours &&

@@ -182,15 +182,9 @@ describe("LocalBusiness", () => {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       name: "Business with no extra data",
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
+      description: undefined,
+      email: undefined,
+      telephone: undefined,
     });
   });
 });

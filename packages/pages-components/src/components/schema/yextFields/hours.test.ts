@@ -133,9 +133,9 @@ describe("OpeningHoursSchema", () => {
     console.log(OpeningHoursSchema(hours));
     expect(OpeningHoursSchema(hours)).toEqual({
       openingHours: [
-        "Mo,Fr 00:00-00:00",
-        "Tu,We,Th,Sa,Su 10:00-22:00",
+        "Mo,Tu,We,Th,Sa,Su 10:00-22:00",
         "We 07:00-09:00",
+        "Fr 00:00-00:00",
       ],
     });
   });
