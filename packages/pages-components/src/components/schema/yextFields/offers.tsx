@@ -7,7 +7,7 @@ export type Offer = {
   availability?: string;
 };
 
-const validateOffer = (offer: any): offer is Offer => {
+export const validateOffer = (offer: any): offer is Offer => {
   if (typeof offer !== "object") {
     return false;
   }

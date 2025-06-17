@@ -5,14 +5,14 @@ export type Location = {
   address?: AddressType;
 };
 
-const validateLocation = (location: any): location is Location => {
+export const validateLocation = (location: any): location is Location => {
   if (typeof location !== "object") {
     return false;
   }
   return "name" in location || "address" in location;
 };
 
-const validateAddress = (address: any): address is AddressType => {
+export const validateAddress = (address: any): address is AddressType => {
   if (typeof address !== "object") {
     return false;
   }

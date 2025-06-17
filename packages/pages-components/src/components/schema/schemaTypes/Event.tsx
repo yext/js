@@ -10,10 +10,12 @@ const Event = (document: Record<string, any>, schemaType?: string) => {
   return {
     ...BaseSchema(document, schemaType ?? "Event"),
     ...PhotoGallerySchema(document.photoGallery),
-    ...LocationSchema({
-      name: document.geomodifier,
-      address: document.address,
-    }),
+    location: {
+      ...LocationSchema({
+        name: document.geomodifier,
+        address: document.address,
+      }),
+    },
     startDate: document.c_startDate,
     endDate: document.c_endDate,
     description: document.description,

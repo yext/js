@@ -4,7 +4,7 @@ export type Review = {
   author?: string;
 };
 
-const validateReview = (review: any): review is Review => {
+export const validateReview = (review: any): review is Review => {
   if (typeof review !== "object") {
     return false;
   }
@@ -18,7 +18,7 @@ export type AggregateRating = {
   reviewCount?: string;
 };
 
-const validateAggregateRating = (
+export const validateAggregateRating = (
   aggregateRating: any
 ): aggregateRating is AggregateRating => {
   if (typeof aggregateRating !== "object") {

@@ -15,14 +15,14 @@ type RichTextFAQ = {
 };
 
 const validatePlainTextFAQ = (faq: any): faq is PlainTextFAQ => {
-  if (typeof faq !== "object") {
+  if (!faq || typeof faq !== "object") {
     return false;
   }
   return "question" in faq && "answer" in faq;
 };
 
 const validateRichTextFAQ = (faq: any): faq is RichTextFAQ => {
-  if (typeof faq !== "object") {
+  if (!faq || typeof faq !== "object") {
     return false;
   }
   if ("question" in faq && "answerV2" in faq) {
@@ -85,4 +85,4 @@ const FAQPage = (data: FAQ[]) => {
   };
 };
 
-export { FAQPage };
+export { FAQPage, getRichTextContent };

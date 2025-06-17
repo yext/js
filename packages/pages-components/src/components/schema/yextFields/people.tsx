@@ -3,14 +3,14 @@ export type Organization = {
   url?: string;
 };
 
-const validateOrganization = (org: any): org is Organization => {
+export const validateOrganization = (org: any): org is Organization => {
   if (typeof org !== "object") {
     return false;
   }
   return "url" in org || "name" in org;
 };
 
-const validatePerformers = (performers: any): performers is any[] => {
+export const validatePerformers = (performers: any): performers is any[] => {
   return Array.isArray(performers);
 };
 
