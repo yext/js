@@ -8,9 +8,7 @@ export const validateReview = (review: any): review is Review => {
   if (typeof review !== "object") {
     return false;
   }
-  return (
-    "ratingValue" in review || "bestRating" in review || "author" in review
-  );
+  return "ratingValue" in review;
 };
 
 export type AggregateRating = {
@@ -24,7 +22,7 @@ export const validateAggregateRating = (
   if (typeof aggregateRating !== "object") {
     return false;
   }
-  return "ratingValue" in aggregateRating || "reviewCount" in aggregateRating;
+  return "ratingValue" in aggregateRating && "reviewCount" in aggregateRating;
 };
 
 export const ReviewSchema = (review?: Review) => {
@@ -37,10 +35,12 @@ export const ReviewSchema = (review?: Review) => {
           ratingValue: review.ratingValue,
           bestRating: review.bestRating,
         },
-        author: {
-          "@type": "Person",
-          name: review.author,
-        },
+        ...(review.author && {
+          author: {
+            "@type": "Person",
+            name: review.author,
+          },
+        }),
       },
     }
   );

@@ -21,8 +21,8 @@ const hours = {
   saturday: {
     openIntervals: [
       {
-        end: "22:00",
-        start: "10:00",
+        end: "23:59",
+        start: "00:00",
       },
     ],
   },
@@ -70,6 +70,7 @@ describe("validateHoursType", () => {
     expect(validateHoursType("{}")).toBe(false);
     expect(validateHoursType({})).toBe(false);
   });
+
   it("returns true for valid hours", () => {
     expect(validateHoursType(hours)).toBe(true);
     expect(validateHoursType({ monday: hours.monday })).toBe(true);
@@ -86,6 +87,7 @@ describe("validateDayType", () => {
     expect(validateDayType({ openIntervals: [] })).toBe(false);
     expect(validateDayType({ openIntervals: [1] })).toBe(false);
   });
+
   it("returns true for valid hours", () => {
     expect(validateDayType({ isClosed: true })).toBe(true);
     expect(validateDayType(hours.monday)).toBe(true);
@@ -100,6 +102,7 @@ describe("getHoursByDay", () => {
 
     expect(getHoursByDay(undefined, map, "Tu")).toBe(map);
   });
+
   it("adds 00:00-00:00 when closed", () => {
     const map1 = new Map();
     map1.set("00:00-23:59", ["Mo"]);
@@ -109,6 +112,7 @@ describe("getHoursByDay", () => {
 
     expect(getHoursByDay({ isClosed: true }, map1, "Tu")).toEqual(map2);
   });
+
   it("adds hours when open", () => {
     const map1 = new Map();
     map1.set("00:00-23:59", ["Mo"]);
@@ -129,13 +133,14 @@ describe("OpeningHoursSchema", () => {
     expect(OpeningHoursSchema({})).toEqual({});
     expect(OpeningHoursSchema("hours" as any)).toEqual({});
   });
+
   it("returns the correct schema", () => {
-    console.log(OpeningHoursSchema(hours));
     expect(OpeningHoursSchema(hours)).toEqual({
       openingHours: [
-        "Mo,Tu,We,Th,Sa,Su 10:00-22:00",
+        "Mo,Tu,We,Th,Su 10:00-22:00",
         "We 07:00-09:00",
         "Fr 00:00-00:00",
+        "Sa 00:00-23:59",
       ],
     });
   });

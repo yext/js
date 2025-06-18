@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { LocalBusiness } from "./LocalBusiness.js";
-import { validateHoursType } from "../yextFields/hours.js";
 
 const mockAddress = {
   city: "Arlington",
@@ -62,6 +61,7 @@ describe("LocalBusiness", () => {
   it("returns a basic LocalBusiness schema for a document with only a name", () => {
     const document = { name: "Test Business" };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -72,6 +72,7 @@ describe("LocalBusiness", () => {
   it("returns a LocalBusiness schema with address information", () => {
     const document = { name: "Test Business", address: mockAddress };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -90,6 +91,7 @@ describe("LocalBusiness", () => {
   it("returns a LocalBusiness schema with opening hours", () => {
     const document = { name: "Test Business", hours: mockHours };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -101,6 +103,7 @@ describe("LocalBusiness", () => {
   it("returns a LocalBusiness schema with photo gallery", () => {
     const document = { name: "Test Business", photoGallery: mockPhotoGallery };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -120,6 +123,7 @@ describe("LocalBusiness", () => {
       email: "test@example.com",
     };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -133,6 +137,7 @@ describe("LocalBusiness", () => {
   it("returns a specific schema type when provided", () => {
     const document = { name: "Test Medical Business" };
     const schema = LocalBusiness(document, "MedicalBusiness");
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "MedicalBusiness",
@@ -141,7 +146,6 @@ describe("LocalBusiness", () => {
   });
 
   it("returns a comprehensive LocalBusiness schema with all valid fields", () => {
-    console.log(validateHoursType(mockHours));
     const document = {
       name: "Comprehensive Test Business",
       address: mockAddress,
@@ -152,6 +156,7 @@ describe("LocalBusiness", () => {
       email: "comprehensive@example.com",
     };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -178,13 +183,11 @@ describe("LocalBusiness", () => {
   it("handles undefined or empty input", () => {
     const document = { name: "Business with no extra data" };
     const schema = LocalBusiness(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       name: "Business with no extra data",
-      description: undefined,
-      email: undefined,
-      telephone: undefined,
     });
   });
 });

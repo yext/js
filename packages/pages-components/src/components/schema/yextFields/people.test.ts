@@ -11,11 +11,11 @@ describe("validateOrganization", () => {
     expect(validateOrganization({})).toBe(false);
     expect(validateOrganization("string")).toBe(false);
     expect(validateOrganization({ key: "value" })).toBe(false);
+    expect(validateOrganization({ url: "https://google.com" })).toBe(false);
   });
 
   it("should return true for valid organizations", () => {
     expect(validateOrganization({ name: "Google" })).toBe(true);
-    expect(validateOrganization({ url: "https://google.com" })).toBe(true);
     expect(
       validateOrganization({ name: "Google", url: "https://google.com" })
     ).toBe(true);
@@ -27,10 +27,10 @@ describe("validatePerformers", () => {
     expect(validatePerformers(undefined)).toBe(false);
     expect(validatePerformers({})).toBe(false);
     expect(validatePerformers("string")).toBe(false);
+    expect(validatePerformers([])).toBe(false);
   });
 
   it("should return true for valid performers input (arrays)", () => {
-    expect(validatePerformers([])).toBe(true);
     expect(validatePerformers(["Performer One", "Performer Two"])).toBe(true);
     expect(validatePerformers([1, "Performer Two"])).toBe(true);
   });
@@ -41,30 +41,25 @@ describe("PerformerSchema", () => {
     expect(PerformerSchema(undefined)).toBe(false);
     expect(PerformerSchema({} as any)).toBe(false);
     expect(PerformerSchema("string" as any)).toBe(false);
+
+    const performers1: string[] = [];
+    expect(PerformerSchema(performers1)).toBe(false);
   });
 
   it("returns the correct schema for valid performers", () => {
-    const performers1 = ["Artist A"];
-    expect(PerformerSchema(performers1)).toEqual({
+    const performers2 = ["Artist A"];
+    expect(PerformerSchema(performers2)).toEqual({
       performer: {
         "@type": "PerformingGroup",
         name: "Artist A",
       },
     });
 
-    const performers2 = ["Artist B", "Artist C"];
-    expect(PerformerSchema(performers2)).toEqual({
-      performer: {
-        "@type": "PerformingGroup",
-        name: "Artist B and Artist C",
-      },
-    });
-
-    const performers3: string[] = [];
+    const performers3 = ["Artist B", "Artist C"];
     expect(PerformerSchema(performers3)).toEqual({
       performer: {
         "@type": "PerformingGroup",
-        name: "",
+        name: "Artist B and Artist C",
       },
     });
   });
@@ -75,24 +70,17 @@ describe("OrganizationSchema", () => {
     expect(OrganizationSchema(undefined)).toBe(false);
     expect(OrganizationSchema({})).toBe(false);
     expect(OrganizationSchema("string" as any)).toBe(false);
+
+    const org1 = { url: "https://example.com" };
+    expect(OrganizationSchema(org1)).toBe(false);
   });
 
   it("returns the correct schema for valid organizations", () => {
-    const org1 = { name: "Yext" };
-    expect(OrganizationSchema(org1)).toEqual({
-      organizer: {
-        "@type": "Organization",
-        name: "Yext",
-        url: undefined,
-      },
-    });
-
-    const org2 = { url: "https://example.com" };
+    const org2 = { name: "Yext" };
     expect(OrganizationSchema(org2)).toEqual({
       organizer: {
         "@type": "Organization",
-        name: undefined,
-        url: "https://example.com",
+        name: "Yext",
       },
     });
 

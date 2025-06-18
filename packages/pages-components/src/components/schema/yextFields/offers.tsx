@@ -4,20 +4,34 @@ export type Offer = {
   price?: string;
   priceValidUntil?: string;
   itemCondition?: string;
-  availability?: string;
+  availability?: (typeof availabilityOptions)[number];
 };
+
+const availabilityOptions = [
+  "BackOrder",
+  "Discontinued",
+  "InStock",
+  "InStoreOnly",
+  "LimitedAvailability",
+  "MadeToOrder",
+  "OnlineOnly",
+  "OutOfStock",
+  "PreOrder",
+  "PreSale",
+  "Reserved",
+  "SoldOut",
+];
 
 export const validateOffer = (offer: any): offer is Offer => {
   if (typeof offer !== "object") {
     return false;
   }
+
   return (
-    "url" in offer ||
-    "priceCurrency" in offer ||
-    "price" in offer ||
-    "priceValidUntil" in offer ||
-    "itemCondition" in offer ||
-    "availability" in offer
+    "priceCurrency" in offer &&
+    "price" in offer &&
+    "availability" in offer &&
+    availabilityOptions.includes(offer.availability)
   );
 };
 

@@ -9,7 +9,7 @@ export const validateLocation = (location: any): location is Location => {
   if (typeof location !== "object") {
     return false;
   }
-  return "name" in location || "address" in location;
+  return !!location.name || !!location.address;
 };
 
 export const validateAddress = (address: any): address is AddressType => {
@@ -17,11 +17,11 @@ export const validateAddress = (address: any): address is AddressType => {
     return false;
   }
   return (
-    "line1" in address ||
-    "city" in address ||
-    "region" in address ||
-    "postalCode" in address ||
-    "countryCode" in address
+    !!address.line1 ||
+    !!address.city ||
+    !!address.region ||
+    !!address.postalCode ||
+    !!address.countryCode
   );
 };
 

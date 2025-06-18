@@ -26,42 +26,19 @@ const mockOfferFields = {
   c_currency: "USD",
   price: "25.00",
   expirationDate: "2025-06-15",
-  stockStatus: "InStock",
-  availabilityDate: "2025-01-01",
+  availability: "InStock",
+  itemCondition: "Good",
 };
 
 describe("Event", () => {
   it("returns a basic Event schema for a document with only a name", () => {
     const document = { name: "Test Event" };
     const schema = Event(document);
-    console.log(BaseSchema(document, "Event"));
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
       name: "Test Event",
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
@@ -72,29 +49,11 @@ describe("Event", () => {
       address: mockAddress,
     };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
       name: "Concert in Central Park",
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
       location: {
         "@type": "Place",
         name: "Central Park",
@@ -113,34 +72,12 @@ describe("Event", () => {
   it("returns an Event schema with photo gallery", () => {
     const document = { name: "Art Exhibition", photoGallery: mockPhotoGallery };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
       name: "Art Exhibition",
       image: ["https://example.com/event-image1.jpg"],
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
@@ -151,33 +88,13 @@ describe("Event", () => {
       c_endDate: "2025-09-12T17:00:00",
     };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
       name: "Conference 2025",
       startDate: "2025-09-10T09:00:00",
       endDate: "2025-09-12T17:00:00",
-      description: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
@@ -189,6 +106,7 @@ describe("Event", () => {
       eventStatus: "https://schema.org/EventScheduled",
     };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
@@ -196,32 +114,13 @@ describe("Event", () => {
       description: "A workshop on web development.",
       eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
       eventStatus: "https://schema.org/EventScheduled",
-      endDate: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
   it("returns an Event schema with performers", () => {
     const document = { name: "Music Festival", performers: mockPerformers };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
@@ -230,35 +129,13 @@ describe("Event", () => {
         "@type": "PerformingGroup",
         name: "Band A and Singer B",
       },
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
   it("returns an Event schema with organizer information", () => {
     const document = { name: "Charity Gala", organizerName: "Charity Org" };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
@@ -266,24 +143,6 @@ describe("Event", () => {
       organizer: {
         "@type": "Organization",
         name: "Charity Org",
-      },
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
       },
     });
   });
@@ -294,10 +153,11 @@ describe("Event", () => {
       c_currency: mockOfferFields.c_currency,
       price: mockOfferFields.price,
       expirationDate: mockOfferFields.expirationDate,
-      stockStatus: mockOfferFields.stockStatus,
-      availabilityDate: mockOfferFields.availabilityDate,
+      stockStatus: mockOfferFields.availability,
+      condition: mockOfferFields.itemCondition,
     };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
@@ -308,56 +168,20 @@ describe("Event", () => {
         priceCurrency: "USD",
         price: "25.00",
         priceValidUntil: "2025-06-15",
-        itemCondition: "InStock",
-        availability: "2025-01-01",
+        itemCondition: "Good",
+        availability: "InStock",
       },
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
     });
   });
 
   it("returns a specific schema type when provided", () => {
     const document = { name: "Comedy Show" };
     const schema = Event(document, "ComedyEvent");
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "ComedyEvent",
       name: "Comedy Show",
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 
@@ -377,10 +201,11 @@ describe("Event", () => {
       c_currency: mockOfferFields.c_currency,
       price: mockOfferFields.price,
       expirationDate: mockOfferFields.expirationDate,
-      stockStatus: mockOfferFields.stockStatus,
-      availabilityDate: mockOfferFields.availabilityDate,
+      stockStatus: mockOfferFields.availability,
+      condition: mockOfferFields.itemCondition,
     };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
@@ -417,8 +242,8 @@ describe("Event", () => {
         priceCurrency: "USD",
         price: "25.00",
         priceValidUntil: "2025-06-15",
-        itemCondition: "InStock",
-        availability: "2025-01-01",
+        itemCondition: "Good",
+        availability: "InStock",
       },
     });
   });
@@ -426,33 +251,11 @@ describe("Event", () => {
   it("handles undefined or empty input", () => {
     const document = { name: "Event with minimal data" };
     const schema = Event(document);
+
     expect(schema).toEqual({
       "@context": "https://schema.org",
       "@type": "Event",
       name: "Event with minimal data",
-      description: undefined,
-      endDate: undefined,
-      eventAttendanceMode: undefined,
-      eventStatus: undefined,
-      organizer: {
-        "@type": "Organization",
-        name: undefined,
-        url: undefined,
-      },
-      location: {
-        "@type": "Place",
-        name: undefined,
-      },
-      startDate: undefined,
-      offers: {
-        "@type": "Offer",
-        availability: undefined,
-        itemCondition: undefined,
-        price: undefined,
-        priceCurrency: undefined,
-        priceValidUntil: undefined,
-        url: "",
-      },
     });
   });
 });

@@ -9,16 +9,31 @@ const offer = {
   availability: "InStock",
 };
 
+const basicOffer = {
+  priceCurrency: "USD",
+  price: "199.99",
+  availability: "InStock",
+};
+
 describe("validateOffer", () => {
   it("returns false for invalid offers", () => {
     expect(validateOffer(undefined)).toBe(false);
     expect(validateOffer({})).toBe(false);
     expect(validateOffer("{}")).toBe(false);
     expect(validateOffer({ key: "value" })).toBe(false);
+    expect(validateOffer({ itemCondition: "good" })).toBe(false);
+    expect(
+      validateOffer({
+        price: "100",
+        priceCurrency: "USD",
+        availability: "INVALID",
+      })
+    ).toBe(false);
   });
+
   it("should return true for valid offers", () => {
     expect(validateOffer(offer)).toBe(true);
-    expect(validateOffer({ itemCondition: "good" })).toBe(true);
+    expect(validateOffer(basicOffer)).toBe(true);
   });
 });
 
@@ -28,7 +43,9 @@ describe("OfferSchema", () => {
     expect(OfferSchema({})).toBe(false);
     expect(OfferSchema("{}" as any)).toBe(false);
     expect(OfferSchema({ key: "value" } as any)).toBe(false);
+    expect(OfferSchema({ url: offer.url, price: offer.price })).toBe(false);
   });
+
   it("returns the correct schema for valid offers", () => {
     expect(OfferSchema(offer)).toEqual({
       offers: {
@@ -41,10 +58,13 @@ describe("OfferSchema", () => {
         availability: "InStock",
       },
     });
-    expect(OfferSchema({ itemCondition: "good" })).toEqual({
+
+    expect(OfferSchema(basicOffer)).toEqual({
       offers: {
         "@type": "Offer",
-        itemCondition: "good",
+        priceCurrency: "USD",
+        price: "199.99",
+        availability: "InStock",
       },
     });
   });

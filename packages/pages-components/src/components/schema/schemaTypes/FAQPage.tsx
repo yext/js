@@ -66,10 +66,8 @@ function getRichTextContent(answer: RTF2) {
 
 // https://schema.org/FAQPage
 const FAQPage = (data: FAQ[]) => {
-  return {
-    "@context": "http://www.schema.org",
-    "@type": "FAQPage",
-    mainEntity: data.map((faq) => {
+  const faqs = data
+    .map((faq) => {
       if (!(validatePlainTextFAQ(faq) || validateRichTextFAQ(faq))) {
         return undefined;
       }
@@ -81,7 +79,17 @@ const FAQPage = (data: FAQ[]) => {
           text: "answer" in faq ? faq.answer : getRichTextContent(faq.answerV2),
         },
       };
-    }),
+    })
+    .filter(Boolean);
+
+  if (!faqs.length) {
+    return;
+  }
+
+  return {
+    "@context": "http://www.schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs,
   };
 };
 

@@ -144,13 +144,9 @@ describe("FAQPage", () => {
     });
   });
 
-  it("handles empty array input gracefully", () => {
+  it("returns undefined for empty array", () => {
     const schema = FAQPage([]);
-    expect(schema).toEqual({
-      "@context": "http://www.schema.org",
-      "@type": "FAQPage",
-      mainEntity: [],
-    });
+    expect(schema).toEqual(undefined);
   });
 
   it("handles invalid FAQ entries gracefully", () => {
@@ -184,7 +180,6 @@ describe("FAQPage", () => {
             text: "Valid answer",
           },
         },
-        undefined, // Invalid entry
         {
           "@type": "Question",
           name: "Another valid question",
@@ -193,10 +188,6 @@ describe("FAQPage", () => {
             text: "Another valid answer.",
           },
         },
-        undefined, // Invalid entry
-        undefined, // Invalid entry
-        undefined, // Invalid entry
-        undefined, // Invalid entry
       ],
     });
   });
