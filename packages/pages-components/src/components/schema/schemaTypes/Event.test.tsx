@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { Event } from "./Event.js";
-import { BaseSchema } from "./BaseSchema.js";
 
 const mockAddress = {
   city: "New York",
