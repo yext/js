@@ -6,11 +6,11 @@ type Photo = {
   image: ImageType;
 };
 
-const validatePhoto = (photo: any): photo is Photo => {
+export const validatePhoto = (photo: any): photo is Photo => {
   if (typeof photo !== "object" || !("image" in photo)) {
     return false;
   }
-  return "url" in photo.image;
+  return "url" in photo.image && typeof photo.image.url === "string";
 };
 
 // takes in a list of Yext images and return a list of image urls
