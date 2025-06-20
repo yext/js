@@ -1,3 +1,9 @@
+#### 1.1.8 (2025-06-20)
+
+##### Bug Fixes
+
+*  schema wrapper includes potentially undefined fields and hours always return as closed (#95) (9ccdac62)
+
 #### 1.1.7 (2025-06-16)
 
 ##### New Features
