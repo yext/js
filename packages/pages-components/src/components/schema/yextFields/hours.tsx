@@ -1,6 +1,6 @@
 import { HoursType, DayType } from "../../hours/types.js";
 
-const validateHoursType = (hours: any): hours is HoursType => {
+export const validateHoursType = (hours: any): hours is HoursType => {
   if (typeof hours !== "object") {
     return false;
   }
@@ -15,21 +15,27 @@ const validateHoursType = (hours: any): hours is HoursType => {
   );
 };
 
-const validateDayType = (hours: any): hours is DayType => {
+export const validateDayType = (hours: any): hours is DayType => {
+  if (typeof hours !== "object") {
+    return false;
+  }
+
+  if (hours.isClosed) {
+    return true;
+  }
+
   if (
-    typeof hours === "object" &&
-    "isClosed" in hours &&
-    Array.isArray(hours.openIntervals)
+    "openIntervals" in hours &&
+    Array.isArray(hours.openIntervals) &&
+    hours.openIntervals.length
   ) {
-    if (hours.openIntervals.length === 0) {
-      return true;
-    }
     return hours.openIntervals.every((interval: any) => {
       return (
         typeof interval === "object" && "start" in interval && "end" in interval
       );
     });
   }
+
   return false;
 };
 
@@ -62,12 +68,16 @@ export const OpeningHoursSchema = (hours?: HoursType) => {
   };
 };
 
-const getHoursByDay = (
+export const getHoursByDay = (
   hours: DayType | undefined,
   hoursMap: Map<string, Array<string>>,
   day: string
 ) => {
-  if (!validateDayType(hours) || hours.isClosed) {
+  if (!validateDayType(hours)) {
+    return hoursMap;
+  }
+
+  if (hours.isClosed || !hours.openIntervals) {
     const interval = "00:00-00:00";
     const days = hoursMap.get(interval) ?? [];
     days.push(day);

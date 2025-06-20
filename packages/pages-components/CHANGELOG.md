@@ -2,26 +2,26 @@
 
 ##### New Features
 
-* **pages-components:**  add enableYextAnalytics to window (#90) (3cfd6bc2)
+- **pages-components:** add enableYextAnalytics to window (#90) (3cfd6bc2)
 
 #### 1.0.6 (2025-03-14)
 
 ##### Bug Fixes
 
-*  add page url to events payload (#89) (8174dbc4)
-*  pass page referrer to Yext Events (#88) (c65809e8)
+- add page url to events payload (#89) (8174dbc4)
+- pass page referrer to Yext Events (#88) (c65809e8)
 
 #### 1.0.5 (2025-01-07)
 
 ##### Bug Fixes
 
-* **pages-components:**
-  *  schema type validation (#75) (fc562712)
-  *  link's href not obfuscated (#76) (8e102cc3)
+- **pages-components:**
+  - schema type validation (#75) (fc562712)
+  - link's href not obfuscated (#76) (8e102cc3)
 
 ##### Refactors
 
-* **pages-components:**  components/maps (#73) (09bf670b)
+- **pages-components:** components/maps (#73) (09bf670b)
 
 #### 1.0.4 (2024-12-03)
 

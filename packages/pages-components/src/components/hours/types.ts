@@ -11,8 +11,8 @@ export interface WeekType {
 }
 
 export interface DayType {
-  isClosed: boolean;
-  openIntervals: IntervalType[];
+  isClosed?: boolean;
+  openIntervals?: IntervalType[];
 }
 
 export interface HolidayType extends DayType {

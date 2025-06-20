@@ -238,7 +238,7 @@ export class Hours {
       theDate = theDate.plus({ days: i });
 
       const hours = this.getHours(theDate);
-      if (hours && !hours.isClosed) {
+      if (hours?.openIntervals && !hours.isClosed) {
         intervalsList.push(
           ...hours.openIntervals.map(
             (interval: IntervalType) =>

@@ -15,14 +15,14 @@ type RichTextFAQ = {
 };
 
 const validatePlainTextFAQ = (faq: any): faq is PlainTextFAQ => {
-  if (typeof faq !== "object") {
+  if (!faq || typeof faq !== "object") {
     return false;
   }
   return "question" in faq && "answer" in faq;
 };
 
 const validateRichTextFAQ = (faq: any): faq is RichTextFAQ => {
-  if (typeof faq !== "object") {
+  if (!faq || typeof faq !== "object") {
     return false;
   }
   if ("question" in faq && "answerV2" in faq) {
@@ -66,10 +66,8 @@ function getRichTextContent(answer: RTF2) {
 
 // https://schema.org/FAQPage
 const FAQPage = (data: FAQ[]) => {
-  return {
-    "@context": "http://www.schema.org",
-    "@type": "FAQPage",
-    mainEntity: data.map((faq) => {
+  const faqs = data
+    .map((faq) => {
       if (!(validatePlainTextFAQ(faq) || validateRichTextFAQ(faq))) {
         return undefined;
       }
@@ -81,8 +79,18 @@ const FAQPage = (data: FAQ[]) => {
           text: "answer" in faq ? faq.answer : getRichTextContent(faq.answerV2),
         },
       };
-    }),
+    })
+    .filter(Boolean);
+
+  if (!faqs.length) {
+    return;
+  }
+
+  return {
+    "@context": "http://www.schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs,
   };
 };
 
-export { FAQPage };
+export { FAQPage, getRichTextContent };

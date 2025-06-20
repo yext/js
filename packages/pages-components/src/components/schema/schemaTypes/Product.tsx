@@ -16,16 +16,18 @@ const Product = (document: Record<string, any>, schemaType?: string) => {
       priceCurrency: document.c_currency,
       price: document.price,
       priceValidUntil: document.expirationDate,
-      itemCondition: document.stockStatus,
-      availability: document.availabilityDate,
+      itemCondition: document.condition,
+      availability: document.stockStatus,
     }),
     description: document.description,
     sku: document.sku,
     mpn: document.mpn,
-    brand: {
-      "@type": "Brand",
-      name: document.brand,
-    },
+    ...(document.brand && {
+      brand: {
+        "@type": "Brand",
+        name: document.brand,
+      },
+    }),
   };
 };
 
