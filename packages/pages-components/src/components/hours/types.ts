@@ -59,8 +59,6 @@ export interface HoursTableIntervalTranslations {
   isClosed?: string;
   /** Displayed when an interval is marked as open 24 hours */
   open24Hours?: string;
-  /** Displayed when holiday hours are marked as same as regular hours */
-  regularHours?: string;
   /** Displayed when there is a reopen date set */
   reopenDate?: string;
   /** Sets the locale for time interval formatting */
@@ -73,7 +71,6 @@ export interface HoursTableDayData {
   isToday: boolean;
   startDay: Day; // used for 'collapseDays' logic
   endDay: Day; // used for 'collapseDays' logic
-  isHolidayRegularHours?: boolean;
 }
 
 export enum Day {

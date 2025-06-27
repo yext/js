@@ -202,18 +202,20 @@ const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const holidayHoursData: HoursTableDayData[] | undefined =
     hours.holidayHours?.map((holiday) => {
       const date = DateTime.fromFormat(holiday.date, "yyyy-MM-dd");
+      const day = luxonDateToDay(date);
       return {
         dayName: date
           .setLocale(intervalTranslations?.timeFormatLocale || "en-US")
           .toLocaleString(),
         isToday: false,
-        startDay: luxonDateToDay(date),
-        endDay: luxonDateToDay(date),
-        isHolidayRegularHours: holiday.isRegularHours,
+        startDay: day,
+        endDay: day,
         intervals:
-          holiday?.openIntervals?.map(
-            (interval) => new HoursInterval(date, interval, "UTC")
-          ) ?? [],
+          (holiday.isRegularHours
+            ? holiday.openIntervals?.map(
+                (interval) => new HoursInterval(date, interval, "UTC")
+              )
+            : hoursTableData.find((d) => (d.startDay = day))?.intervals) ?? [],
       };
     });
 
@@ -237,7 +239,11 @@ const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
           <span className="HoursTable-day">
             {intervalTranslations?.reopenDate || "Reopen Date"}
           </span>
-          <span className="HoursTable-intervals">{hours.reopenDate}</span>
+          <span className="HoursTable-intervals">
+            {DateTime.fromFormat(hours.reopenDate, "yyyy-MM-dd")
+              .setLocale(intervalTranslations?.timeFormatLocale || "en-US")
+              .toLocaleString()}
+          </span>
         </div>
       )}
     </>
@@ -302,9 +308,11 @@ const HoursTableComponent = (props: HoursTableComponentProps) => {
       {hoursData.map((dayData) => {
         const builderFn =
           intervalStringsBuilderFn || defaultIntervalStringsBuilder;
-        const intervalStrings = dayData.isHolidayRegularHours
-          ? [intervalTranslations?.regularHours || "Regular Hours"]
-          : builderFn(dayData, timeOptions, intervalTranslations);
+        const intervalStrings = builderFn(
+          dayData,
+          timeOptions,
+          intervalTranslations
+        );
 
         return (
           <div
