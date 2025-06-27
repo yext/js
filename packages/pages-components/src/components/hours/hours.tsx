@@ -1,5 +1,12 @@
 import { DateTime } from "luxon";
-import { Day, DayType, HolidayType, HoursType, IntervalType } from "./types.js";
+import {
+  Day,
+  DayType,
+  HolidayType,
+  HoursType,
+  IntervalType,
+  WeekType,
+} from "./types.js";
 
 export function luxonDateToDay(d: DateTime): Day {
   const dayMap: Record<number, Day> = {
@@ -32,6 +39,30 @@ export function defaultDayName(d: Day): string {
 
   return nameMap[d];
 }
+
+export function dayToDayKey(d: Day): keyof WeekType {
+  const nameMap: Record<Day, keyof WeekType> = {
+    [Day.Monday]: "monday",
+    [Day.Tuesday]: "tuesday",
+    [Day.Wednesday]: "wednesday",
+    [Day.Thursday]: "thursday",
+    [Day.Friday]: "friday",
+    [Day.Saturday]: "saturday",
+    [Day.Sunday]: "sunday",
+  };
+
+  return nameMap[d];
+}
+
+export const days: Day[] = [
+  Day.Monday,
+  Day.Tuesday,
+  Day.Wednesday,
+  Day.Thursday,
+  Day.Friday,
+  Day.Saturday,
+  Day.Sunday,
+];
 
 export class HoursInterval {
   end: DateTime;
