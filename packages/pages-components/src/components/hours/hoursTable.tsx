@@ -5,15 +5,18 @@ import {
   Day,
   DayOfWeekNames,
   HoursTableDayData,
+  HoursTableIntervalTranslations,
   HoursTableProps,
 } from "./types.js";
 import {
   Hours,
   HoursInterval,
   arrayShift,
+  dayToDayKey,
   defaultDayName,
   intervalsListsAreEqual,
   luxonDateToDay,
+  days,
 } from "./hours.js";
 import { DateTime, WeekdayNumbers } from "luxon";
 
@@ -53,12 +56,12 @@ export function collapseDays(
 
   return collapsedDays.map((day) => {
     const startDayName: string =
-      dayNames && defaultDayName(day.startDay) in dayNames
-        ? (dayNames as any)[defaultDayName(day.startDay)] || ""
+      dayNames && dayToDayKey(day.startDay) in dayNames
+        ? (dayNames as any)[dayToDayKey(day.startDay)] || ""
         : defaultDayName(day.startDay);
     const endDayName: string =
-      dayNames && defaultDayName(day.endDay) in dayNames
-        ? (dayNames as any)[defaultDayName(day.endDay)] || ""
+      dayNames && dayToDayKey(day.endDay) in dayNames
+        ? (dayNames as any)[dayToDayKey(day.endDay)] || ""
         : defaultDayName(day.endDay);
 
     return {
@@ -74,19 +77,26 @@ export function collapseDays(
 
 function defaultIntervalStringsBuilder(
   dayData: HoursTableDayData,
-  timeOptions?: Intl.DateTimeFormatOptions
+  timeOptions?: Intl.DateTimeFormatOptions,
+  translations?: HoursTableIntervalTranslations
 ): string[] {
   const intervalStrings: string[] = [];
   const isOpen24h =
     dayData.intervals.length > 0 && dayData.intervals[0].is24h();
   if (dayData.intervals.length === 0) {
-    intervalStrings.push("Closed");
+    intervalStrings.push(translations?.isClosed || "Closed");
   } else if (isOpen24h) {
-    intervalStrings.push("Open 24 hours");
+    intervalStrings.push(translations?.open24Hours || "Open 24 hours");
   } else {
     dayData.intervals.forEach((interval) => {
-      const startTime = interval.getStartTime("en-US", timeOptions);
-      const endTime = interval.getEndTime("en-US", timeOptions);
+      const startTime = interval.getStartTime(
+        translations?.timeFormatLocale || "en-US",
+        timeOptions
+      );
+      const endTime = interval.getEndTime(
+        translations?.timeFormatLocale || "en-US",
+        timeOptions
+      );
       intervalStrings.push(`${startTime} - ${endTime}`);
     });
   }
@@ -95,7 +105,7 @@ function defaultIntervalStringsBuilder(
 
 export function intervalsToHoursDays(
   intervals: HoursInterval[],
-  now: DateTime,
+  now?: DateTime,
   dayOfWeekNames?: DayOfWeekNames
 ): HoursTableDayData[] {
   // Split intervals into buckets by day of week
@@ -112,7 +122,7 @@ export function intervalsToHoursDays(
           ? (dayOfWeekNames as any)[defaultDayName(day).toLowerCase()] || ""
           : defaultDayName(day),
       intervals: intervals.filter((interval) => interval.start.weekday === i),
-      isToday: now.weekday === i,
+      isToday: now?.weekday === i,
     });
   }
 
@@ -129,10 +139,11 @@ export function intervalsToHoursDays(
  * @param {String} startOfWeek set the day of the first row of the table
  * @param {Boolean} collapseDays combine adjacent rows (days) with the same intervals
  * @param {Function} intervalStringsBuilderFn override rendering for the interval on each table row
+ * @param {HoursTableIntervalTranslations} intervalTranslations override hardcoded strings
  */
 const HoursTable: React.FC<HoursTableProps> = (props) => {
   // Use two rendering passes to avoid SSR issues where server & client rendered content is different
-  //  On the first pass, don't render any content in this component, only set `state.isClient`
+  //  On the first pass, render the hours statically without regard to the current date
   //  On the second pass (After the page has been loaded), render the content
   // https://reactjs.org/docs/react-dom.html#hydrate
   const [isClient, setIsClient] = useState(false);
@@ -140,6 +151,18 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  return (
+    <>
+      {isClient ? (
+        <ClientSideHoursTable {...props} />
+      ) : (
+        <ServerSideHoursTable {...props} />
+      )}
+    </>
+  );
+};
+
+const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const h = new Hours(
     props.hours,
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -150,13 +173,101 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
   const allIntervals = h.getIntervalsForNDays(7, now);
 
   // Split intervals into buckets by day of week
-  let hoursDays = intervalsToHoursDays(allIntervals, now, props.dayOfWeekNames);
+  const hoursDays = intervalsToHoursDays(
+    allIntervals,
+    now,
+    props.dayOfWeekNames
+  );
+
+  return <HoursTableComponent {...props} hoursData={hoursDays} isClient />;
+};
+
+const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
+  const { hours, dayOfWeekNames, intervalTranslations } = props;
+
+  const hoursTableData: HoursTableDayData[] = days.map((day) => {
+    const dayKey = dayToDayKey(day);
+    return {
+      dayName: dayOfWeekNames?.[dayKey] || defaultDayName(day),
+      startDay: day,
+      endDay: day,
+      isToday: false,
+      intervals:
+        hours[dayKey]?.openIntervals?.map(
+          (interval) => new HoursInterval(DateTime.now(), interval, "UTC")
+        ) ?? [],
+    };
+  });
+
+  const holidayHoursData: HoursTableDayData[] | undefined =
+    hours.holidayHours?.map((holiday) => {
+      const date = DateTime.fromFormat(holiday.date, "yyyy-MM-dd");
+      return {
+        dayName: date
+          .setLocale(intervalTranslations?.timeFormatLocale || "en-US")
+          .toLocaleString(),
+        isToday: false,
+        startDay: luxonDateToDay(date),
+        endDay: luxonDateToDay(date),
+        isHolidayRegularHours: holiday.isRegularHours,
+        intervals:
+          holiday?.openIntervals?.map(
+            (interval) => new HoursInterval(date, interval, "UTC")
+          ) ?? [],
+      };
+    });
+
+  return (
+    <>
+      <HoursTableComponent
+        {...props}
+        hoursData={hoursTableData}
+        isClient={false}
+      />
+      {holidayHoursData && holidayHoursData.length > 0 && (
+        <HoursTableComponent
+          {...props}
+          hoursData={holidayHoursData}
+          isClient={false}
+          isHolidayHours
+        />
+      )}
+      {hours.reopenDate && (
+        <div className="HoursTable-row">
+          <span className="HoursTable-day">
+            {intervalTranslations?.reopenDate || "Reopen Date"}
+          </span>
+          <span className="HoursTable-intervals">{hours.reopenDate}</span>
+        </div>
+      )}
+    </>
+  );
+};
+
+interface HoursTableComponentProps extends Omit<HoursTableProps, "hours"> {
+  hoursData: HoursTableDayData[];
+  isClient: boolean;
+  isHolidayHours?: boolean;
+}
+
+const HoursTableComponent = (props: HoursTableComponentProps) => {
+  const {
+    intervalStringsBuilderFn,
+    className,
+    timeOptions,
+    intervalTranslations,
+    dayOfWeekNames,
+    startOfWeek,
+    isClient,
+    isHolidayHours,
+  } = props;
+  let hoursData = props.hoursData;
 
   function startOfWeekOptionToDay(option: HoursTableProps["startOfWeek"]): Day {
     if (!option) return Day.Sunday;
 
     const map = {
-      today: luxonDateToDay(now),
+      today: luxonDateToDay(DateTime.now()),
       monday: Day.Monday,
       tuesday: Day.Tuesday,
       wednesday: Day.Wednesday,
@@ -169,67 +280,49 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
   }
 
   // Sort the days
-  let sortOrder = [
-    Day.Sunday,
-    Day.Monday,
-    Day.Tuesday,
-    Day.Wednesday,
-    Day.Thursday,
-    Day.Friday,
-    Day.Saturday,
-  ];
-  const startIndex = sortOrder.indexOf(
-    startOfWeekOptionToDay(props.startOfWeek)
+  const startIndex = days.indexOf(
+    startOfWeekOptionToDay(
+      isClient || startOfWeek !== "today" ? startOfWeek : "sunday"
+    )
   );
-  sortOrder = arrayShift(sortOrder, 7 - startIndex);
+  const sortOrder = arrayShift(days, 7 - startIndex);
 
-  hoursDays.sort(
-    (d1, d2) => sortOrder.indexOf(d1.startDay) - sortOrder.indexOf(d2.startDay)
-  );
-
-  // Collapse the days
-  if (props.collapseDays) {
-    hoursDays = collapseDays(hoursDays, props.dayOfWeekNames);
+  if (!isHolidayHours) {
+    hoursData.sort(
+      (d1, d2) =>
+        sortOrder.indexOf(d1.startDay) - sortOrder.indexOf(d2.startDay)
+    );
+    if (props.collapseDays) {
+      hoursData = collapseDays(hoursData, dayOfWeekNames);
+    }
   }
 
-  const emptyStyle = React.useMemo(
-    () => ({ minHeight: `${hoursDays.length * 1.5}em` }),
-    [hoursDays.length]
-  );
-
   return (
-    <>
-      {isClient ? (
-        <div className={c("HoursTable", props.className)}>
-          {hoursDays.map((dayData) => {
-            const intervalStringsBuilderFn =
-              props.intervalStringsBuilderFn || defaultIntervalStringsBuilder;
-            const intervalStrings = intervalStringsBuilderFn(
-              dayData,
-              props.timeOptions
-            );
+    <div className={c("HoursTable", className)}>
+      {hoursData.map((dayData) => {
+        const builderFn =
+          intervalStringsBuilderFn || defaultIntervalStringsBuilder;
+        const intervalStrings = dayData.isHolidayRegularHours
+          ? [intervalTranslations?.regularHours || "Regular Hours"]
+          : builderFn(dayData, timeOptions, intervalTranslations);
 
-            return (
-              <div
-                className={c("HoursTable-row", { "is-today": dayData.isToday })}
-                key={dayData.dayName}
-              >
-                <span className="HoursTable-day">{dayData.dayName}</span>
-                <span className="HoursTable-intervals">
-                  {intervalStrings.map((intervalString, idx) => (
-                    <span className="HoursTable-interval" key={idx}>
-                      {intervalString}
-                    </span>
-                  ))}
+        return (
+          <div
+            className={c("HoursTable-row", { "is-today": dayData.isToday })}
+            key={dayData.dayName}
+          >
+            <span className="HoursTable-day">{dayData.dayName}</span>
+            <span className="HoursTable-intervals">
+              {intervalStrings.map((intervalString, idx) => (
+                <span className="HoursTable-interval" key={idx}>
+                  {intervalString}
                 </span>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div style={emptyStyle} />
-      )}
-    </>
+              ))}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
