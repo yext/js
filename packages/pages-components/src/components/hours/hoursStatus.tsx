@@ -135,6 +135,10 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  if (!props.hours) {
+    return <></>;
+  }
+
   const statusTemplateFn = props.statusTemplate || defaultStatusTemplate;
   const h = new Hours(props.hours, props.timezone);
   const isOpen = h.isOpenNow();

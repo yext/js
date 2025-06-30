@@ -190,8 +190,8 @@ export const IntervalStringsBuilderFnCollapseDays: Story = {
   },
 };
 
-// export const MissingHours: Story = {
-//   args: {
-//     hours: undefined,
-//   },
-// };
+export const MissingHours: Story = {
+  args: {
+    hours: undefined,
+  },
+};

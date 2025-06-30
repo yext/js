@@ -140,6 +140,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  if (!props.hours) {
+    return <></>;
+  }
+
   const h = new Hours(
     props.hours,
     Intl.DateTimeFormat().resolvedOptions().timeZone
