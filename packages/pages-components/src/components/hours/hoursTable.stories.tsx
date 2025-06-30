@@ -1,4 +1,4 @@
-import { Meta, StoryFn, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 import { HoursTable } from "./hoursTable.js";
 import {
   CollapsableHoursData,
@@ -18,7 +18,6 @@ const meta: Meta<typeof HoursTable> = {
 
 export default meta;
 
-const Template: StoryFn<typeof HoursTable> = (args) => <HoursTable {...args} />;
 type Story = StoryObj<typeof meta>;
 
 export const NormalHours: Story = {
@@ -158,7 +157,7 @@ export const HolidayHours: Story = {
   },
 };
 
-const intervalFn = (h: HoursTableDayData, t?: Intl.DateTimeFormatOptions) => {
+const intervalFn = (h: HoursTableDayData, _t?: Intl.DateTimeFormatOptions) => {
   if (h.intervals.length === 0) {
     return ["⛔️"];
   }
@@ -191,8 +190,8 @@ export const IntervalStringsBuilderFnCollapseDays: Story = {
   },
 };
 
-export const MissingHours: Story = {
-  args: {
-    hours: undefined,
-  },
-};
+// export const MissingHours: Story = {
+//   args: {
+//     hours: undefined,
+//   },
+// };

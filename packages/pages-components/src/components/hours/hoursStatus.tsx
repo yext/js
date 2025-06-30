@@ -4,7 +4,6 @@ import { Hours } from "./hours.js";
 import { DateTime } from "luxon";
 import {
   HoursStatusProps,
-  HoursType,
   StatusParams,
   StatusTemplateParams,
 } from "./types.js";
