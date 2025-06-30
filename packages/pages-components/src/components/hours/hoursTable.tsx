@@ -11,6 +11,7 @@ import {
   Hours,
   HoursInterval,
   arrayShift,
+  dayToDayKey,
   defaultDayName,
   intervalsListsAreEqual,
   luxonDateToDay,
@@ -53,12 +54,12 @@ export function collapseDays(
 
   return collapsedDays.map((day) => {
     const startDayName: string =
-      dayNames && defaultDayName(day.startDay) in dayNames
-        ? (dayNames as any)[defaultDayName(day.startDay)] || ""
+      dayNames && dayToDayKey[day.startDay] in dayNames
+        ? (dayNames as any)[dayToDayKey[day.startDay]] || ""
         : defaultDayName(day.startDay);
     const endDayName: string =
-      dayNames && defaultDayName(day.endDay) in dayNames
-        ? (dayNames as any)[defaultDayName(day.endDay)] || ""
+      dayNames && dayToDayKey[day.endDay] in dayNames
+        ? (dayNames as any)[dayToDayKey[day.endDay]] || ""
         : defaultDayName(day.endDay);
 
     return {

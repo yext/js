@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { HoursStatus } from "./hoursStatus.js";
 import {
+  DSTHours,
   Hours247,
   HoursData,
   HoursTemporarilyClosed,
@@ -55,7 +56,18 @@ export const ClosedNowWithIntervals: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 6, hour: 14 } // Monday 2 PM
+      { year: 2025, month: 1, day: 6, hour: 13, minute: 30 } // Monday 1:30 PM
+    ),
+  },
+};
+
+export const OpenWithOvernightInterval: Story = {
+  args: {
+    hours: HoursWithMultipleIntervalsData,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 10, hour: 1, minute: 30 } // Friday 1:30 AM
     ),
   },
 };
@@ -104,6 +116,7 @@ export const Timezone: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
+      // Should be closed because it opens at 9:01 AM PT
       { year: 2025, month: 1, day: 7, hour: 10 } // Tuesday 10 AM ET
     ),
   },
@@ -206,6 +219,30 @@ export const CompleteTemplateOverrideClosed: Story = {
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
       { year: 2025, month: 1, day: 7, hour: 22 } // Tuesday 10 PM
+    ),
+  },
+};
+
+export const SpringDST: Story = {
+  args: {
+    hours: DSTHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // DST Day
+      { year: 2025, month: 3, day: 9, hour: 1 } // March 9, 2025 - Sunday
+    ),
+  },
+};
+
+export const SpringDST2: Story = {
+  args: {
+    hours: DSTHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // Day after DST
+      { year: 2025, month: 3, day: 10, hour: 1 } // March 10, 2025 - Monday
     ),
   },
 };

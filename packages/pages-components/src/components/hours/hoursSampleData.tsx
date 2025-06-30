@@ -85,7 +85,8 @@ export const HoursWithMultipleIntervalsData: HoursType = {
     openIntervals: [],
   },
   thursday: {
-    openIntervals: [{ end: "19:00", start: "10:00" }],
+    // overnight
+    openIntervals: [{ end: "2:00", start: "10:00" }],
   },
   tuesday: {
     openIntervals: [
@@ -213,5 +214,14 @@ export const Hours247: HoursType = {
   },
   sunday: {
     openIntervals: [{ start: "0:00", end: "23:59" }],
+  },
+};
+
+export const DSTHours: HoursType = {
+  saturday: {
+    openIntervals: [{ start: "10:00", end: "2:00" }],
+  },
+  sunday: {
+    openIntervals: [{ start: "10:00", end: "02:00" }],
   },
 };
