@@ -146,7 +146,7 @@ export const IndividualTemplatesOverrideOpen: Story = {
     futureTemplate: (params) => {
       return (
         <span className="HoursStatus-future">
-          {params.isOpen ? "Will be closing at" : "Will be opening at"}
+          {params.isOpen ? "Will be closing at " : "Will be opening at "}
         </span>
       );
     },
