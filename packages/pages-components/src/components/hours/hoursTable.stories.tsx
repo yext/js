@@ -156,6 +156,11 @@ export const HolidayHours: Story = {
   args: {
     hours: HoursWithHolidayHours, // includes active and inactive holidays
   },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 9, hour: 12 } // January 9, 2025 - Thursday
+    ),
+  },
 };
 
 const intervalFn = (h: HoursTableDayData, _t?: Intl.DateTimeFormatOptions) => {

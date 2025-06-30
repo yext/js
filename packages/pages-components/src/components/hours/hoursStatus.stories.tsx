@@ -5,6 +5,7 @@ import {
   Hours247,
   HoursData,
   HoursTemporarilyClosed,
+  HoursWithHolidayHours,
   HoursWithMultipleIntervalsData,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
@@ -123,6 +124,50 @@ export const Timezone: Story = {
     mockedLuxonDateTime: DateTime.fromObject(
       // Should be closed because it opens at 9:01 AM PT
       { year: 2025, month: 1, day: 7, hour: 10 } // Tuesday 10 AM ET
+    ),
+  },
+};
+
+export const HolidayHoursNormal: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 15, hour: 12 } // January 15, 2025 - Wednesday
+    ),
+  },
+};
+
+export const HolidayHoursClosed: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 13, hour: 12 } // January 13, 2025 - Monday
+    ),
+  },
+};
+
+export const HolidayHoursNextDayClosed: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 12, hour: 22 } // January 12, 2025 - Sunday
+    ),
+  },
+};
+
+export const HolidayHoursModified: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 18, hour: 17 } // January 18, 2025 - Saturday
     ),
   },
 };

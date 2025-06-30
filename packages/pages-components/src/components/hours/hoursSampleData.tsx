@@ -137,27 +137,27 @@ export const HoursWithHolidayHours: HoursType = {
   holidayHours: [
     // holiday in past
     {
-      date: now.minus({ weeks: 2 }).toFormat("yyyy-MM-dd"),
+      date: "2025-01-01",
       isClosed: true,
     },
     // current holiday - closed
     {
-      date: nextMonday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-13", // monday
       isClosed: true,
     },
     // current holiday - normal hours
     {
-      date: nextWednesday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-15", // wednesday
       isRegularHours: true,
     },
     // current holiday - different hours
     {
-      date: nextSaturday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-18", // saturday
       openIntervals: [{ end: "15:00", start: "08:00" }],
     },
     // holiday in future
     {
-      date: DateTime.now().plus({ weeks: 2 }).toFormat("yyyy-MM-dd"),
+      date: "2026-01-01",
       isClosed: true,
     },
   ],
