@@ -1,35 +1,13 @@
 import React, { useEffect, useState } from "react";
 import c from "classnames";
-import { Hours, HoursInterval } from "./hours.js";
+import { Hours } from "./hours.js";
 import { DateTime } from "luxon";
-import { HoursType } from "./types.js";
-
-export interface StatusParams {
-  isOpen: boolean;
-  currentInterval: HoursInterval | null;
-  futureInterval: HoursInterval | null;
-  timeOptions?: Intl.DateTimeFormatOptions;
-  dayOptions?: Intl.DateTimeFormatOptions;
-}
-
-export interface TemplateParams {
-  currentTemplate?: (s: StatusParams) => React.ReactNode;
-  separatorTemplate?: (s: StatusParams) => React.ReactNode;
-  futureTemplate?: (s: StatusParams) => React.ReactNode;
-  timeTemplate?: (s: StatusParams) => React.ReactNode;
-  dayOfWeekTemplate?: (s: StatusParams) => React.ReactNode;
-}
-
-export interface StatusTemplateParams extends StatusParams, TemplateParams {}
-
-export interface HoursStatusProps extends TemplateParams {
-  hours: HoursType;
-  timezone: string;
-  timeOptions?: Intl.DateTimeFormatOptions;
-  dayOptions?: Intl.DateTimeFormatOptions;
-  statusTemplate?: (s: StatusParams) => React.ReactNode;
-  className?: string;
-}
+import {
+  HoursStatusProps,
+  HoursType,
+  StatusParams,
+  StatusTemplateParams,
+} from "./types.js";
 
 function isOpen24h(params: StatusParams): boolean {
   return params?.currentInterval?.is24h?.() || false;
