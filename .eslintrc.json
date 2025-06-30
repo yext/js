@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "ignorePatterns": ["**/*/dist", "!.storybook"],
+  "ignorePatterns": ["**/*/dist", "!.storybook", "**/*/storybook-static/**"],
   "extends": [
     "@yext/eslint-config/typescript-react",
     "plugin:require-extensions/recommended",

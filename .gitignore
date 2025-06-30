@@ -80,5 +80,6 @@ out
 .turbo
 
 packages/*-components/dist
+packages/*-components/storybook-static/**
 
 .DS_Store

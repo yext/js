@@ -140,6 +140,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  if (!props.hours) {
+    return <></>;
+  }
+
   const h = new Hours(
     props.hours,
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -192,10 +196,7 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     hoursDays = collapseDays(hoursDays, props.dayOfWeekNames);
   }
 
-  const emptyStyle = React.useMemo(
-    () => ({ minHeight: `${hoursDays.length * 1.5}em` }),
-    [hoursDays.length]
-  );
+  const emptyStyle = { minHeight: `${hoursDays.length * 1.5}em` };
 
   return (
     <>
