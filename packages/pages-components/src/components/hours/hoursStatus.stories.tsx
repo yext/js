@@ -107,6 +107,11 @@ export const IndefinitelyClosedInactive: Story = {
 
 export const TwentyFourHourClock: Story = {
   args: { hours: HoursData, timeOptions: { hour12: false } },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 7, hour: 14 } // Tuesday 2 PM
+    ),
+  },
 };
 
 export const Timezone: Story = {
