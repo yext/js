@@ -200,7 +200,7 @@ export const SpringDST: Story = {
       // Day before DST
       { year: 2025, month: 3, day: 8 } // March 8, 2025 - Saturday
       // Saturday should go til 3AM because there is no 2AM
-      // Sunday should display 2Am
+      // Sunday should display 2AM
     ),
   },
 };
