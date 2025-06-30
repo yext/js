@@ -1,10 +1,4 @@
-import { DateTime } from "luxon";
 import { HoursType } from "./types.js";
-
-const now = DateTime.now();
-const nextMonday = now.plus({ days: (1 - now.weekday + 7) % 7 });
-const nextWednesday = now.plus({ days: (3 - now.weekday + 7) % 7 });
-const nextSaturday = now.plus({ days: (6 - now.weekday + 7) % 7 });
 
 export const HoursData: HoursType = {
   monday: {
