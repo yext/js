@@ -158,7 +158,7 @@ export const HolidayHours: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 9, hour: 12 } // January 9, 2025 - Thursday
+      { year: 2025, month: 1, day: 15, hour: 12 } // January 15, 2025 - Thursday
     ),
   },
 };
