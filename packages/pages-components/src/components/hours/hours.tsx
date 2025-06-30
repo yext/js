@@ -179,7 +179,7 @@ export class Hours {
 
     // Also need to check yesterday in case the interval crosses dates
     // (Assumes intervals will be no longer than 24 hours)
-    let priorDate = date.minus({ days: 1 });
+    const priorDate = date.minus({ days: 1 });
 
     for (const hoursDate of [priorDate, date]) {
       const hours = this.getHours(hoursDate);
