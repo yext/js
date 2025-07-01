@@ -1,7 +1,7 @@
 import type { Preview } from "@storybook/react";
 import { runOnly } from "./wcagConfig.ts";
 import { DateTime, Settings } from "luxon";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 const preview: Preview = {
   parameters: {
@@ -27,23 +27,33 @@ const preview: Preview = {
       const mockedLuxonDateTimeFromParams = context.parameters
         .mockedLuxonDateTime as DateTime | undefined;
 
-      useEffect(() => {
-        // When the component mounts, mock the DateTime if a date is provided
+      const overrideDateTime = useCallback(() => {
         if (mockedLuxonDateTimeFromParams) {
           Settings.now = () => mockedLuxonDateTimeFromParams.toMillis();
           Settings.defaultZone = "America/New_York";
         } else {
           Settings.now = originalLuxonSettings.current.now;
         }
-
-        // When the component unmounts, restore the real DateTime
-        return () => {
-          Settings.now = originalLuxonSettings.current.now;
-          Settings.defaultZone = originalLuxonSettings.current.defaultZone;
-        };
       }, [mockedLuxonDateTimeFromParams]);
 
-      return <Story />;
+      const cleanupDateTime = useCallback(() => {
+        Settings.now = originalLuxonSettings.current.now;
+        Settings.defaultZone = originalLuxonSettings.current.defaultZone;
+      }, []);
+
+      useEffect(() => {
+        // When the component mounts, re-mock the DateTime if a date is provided
+        overrideDateTime();
+        // When the component unmounts, restore the real DateTime
+        return cleanupDateTime;
+      }, [overrideDateTime, cleanupDateTime]);
+
+      // Mock the DateTime if a date is provided for initial render
+      overrideDateTime();
+      const component = <Story />;
+      cleanupDateTime();
+
+      return component;
     },
   ],
 };

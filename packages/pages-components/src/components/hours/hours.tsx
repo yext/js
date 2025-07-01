@@ -40,6 +40,16 @@ export function defaultDayName(d: Day): string {
   return nameMap[d];
 }
 
+export const days: Day[] = [
+  Day.Monday,
+  Day.Tuesday,
+  Day.Wednesday,
+  Day.Thursday,
+  Day.Friday,
+  Day.Saturday,
+  Day.Sunday,
+];
+
 export const dayToDayKey: Record<Day, keyof WeekType> = {
   [Day.Monday]: "monday",
   [Day.Tuesday]: "tuesday",
@@ -113,7 +123,10 @@ export class HoursInterval {
       ...opts,
     };
 
-    return this.start.setLocale(locale || "en-US").toLocaleString(timeOptions);
+    return this.start
+      .setLocale(locale || "en-US")
+      .toLocaleString(timeOptions)
+      .replace("\u202F", " "); // standardize spacing between server and client Intl
   }
 
   /**
@@ -128,7 +141,10 @@ export class HoursInterval {
       ...opts,
     };
 
-    return this.end.setLocale(locale || "en-US").toLocaleString(timeOptions);
+    return this.end
+      .setLocale(locale || "en-US")
+      .toLocaleString(timeOptions)
+      .replace("\u202F", " "); // standardize spacing between server and client Intl
   }
 
   /**

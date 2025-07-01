@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { HoursTable } from "./hoursTable.js";
+import { ClientSideHoursTable } from "./hoursTable.js";
 import {
   CollapsableHoursData,
   DSTHours,
@@ -8,13 +8,14 @@ import {
   HoursTemporarilyClosed,
   HoursWithHolidayHours,
   HoursWithMultipleIntervalsData,
+  TranslationHours,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
 import { HoursTableDayData } from "./types.js";
 
-const meta: Meta<typeof HoursTable> = {
+const meta: Meta<typeof ClientSideHoursTable> = {
   title: "components/Hours",
-  component: HoursTable,
+  component: ClientSideHoursTable,
 };
 
 export default meta;
@@ -210,8 +211,20 @@ export const SpringDST: Story = {
   },
 };
 
-export const MissingHours: Story = {
+export const Translations: Story = {
   args: {
-    hours: undefined,
+    hours: TranslationHours,
+    intervalTranslations: {
+      isClosed: "Cerrado",
+      open24Hours: "Abierto las 24 horas",
+      reopenDate: "Fecha de reapertura",
+      timeFormatLocale: "fr",
+    },
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // Temporarily closed but about to reopen
+      { year: 2025, month: 6, day: 29 } // Jun 29, 2025 - Sunday
+    ),
   },
 };

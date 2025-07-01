@@ -81,5 +81,6 @@ out
 
 packages/*-components/dist
 packages/*-components/storybook-static/**
+packages/*-components/.DS_Store
 
 .DS_Store
