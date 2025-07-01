@@ -149,6 +149,11 @@ export const HoursWithHolidayHours: HoursType = {
       date: "2025-01-18", // saturday
       openIntervals: [{ end: "15:00", start: "08:00" }],
     },
+    // current holiday - closed
+    {
+      date: "2025-01-16", // thursday
+      isClosed: true,
+    },
     // holiday in future
     {
       date: "2026-01-01",

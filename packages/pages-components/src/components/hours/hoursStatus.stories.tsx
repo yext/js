@@ -145,7 +145,7 @@ export const HolidayHoursClosed: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 13, hour: 12 } // January 13, 2025 - Monday
+      { year: 2025, month: 1, day: 16, hour: 12 } // January 16, 2025 - Thursday
     ),
   },
 };
