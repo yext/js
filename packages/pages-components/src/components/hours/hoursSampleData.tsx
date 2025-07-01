@@ -1,10 +1,4 @@
-import { DateTime } from "luxon";
 import { HoursType } from "./types.js";
-
-const now = DateTime.now();
-const nextMonday = now.plus({ days: (1 - now.weekday + 7) % 7 });
-const nextWednesday = now.plus({ days: (3 - now.weekday + 7) % 7 });
-const nextSaturday = now.plus({ days: (6 - now.weekday + 7) % 7 });
 
 export const HoursData: HoursType = {
   monday: {
@@ -85,7 +79,8 @@ export const HoursWithMultipleIntervalsData: HoursType = {
     openIntervals: [],
   },
   thursday: {
-    openIntervals: [{ end: "19:00", start: "10:00" }],
+    // overnight
+    openIntervals: [{ end: "2:00", start: "10:00" }],
   },
   tuesday: {
     openIntervals: [
@@ -136,27 +131,32 @@ export const HoursWithHolidayHours: HoursType = {
   holidayHours: [
     // holiday in past
     {
-      date: now.minus({ weeks: 2 }).toFormat("yyyy-MM-dd"),
+      date: "2025-01-01",
       isClosed: true,
     },
     // current holiday - closed
     {
-      date: nextMonday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-13", // monday
       isClosed: true,
     },
     // current holiday - normal hours
     {
-      date: nextWednesday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-15", // wednesday
       isRegularHours: true,
     },
     // current holiday - different hours
     {
-      date: nextSaturday.toFormat("yyyy-MM-dd"),
+      date: "2025-01-18", // saturday
       openIntervals: [{ end: "15:00", start: "08:00" }],
+    },
+    // current holiday - closed
+    {
+      date: "2025-01-16", // thursday
+      isClosed: true,
     },
     // holiday in future
     {
-      date: DateTime.now().plus({ weeks: 2 }).toFormat("yyyy-MM-dd"),
+      date: "2026-01-01",
       isClosed: true,
     },
   ],
@@ -213,5 +213,14 @@ export const Hours247: HoursType = {
   },
   sunday: {
     openIntervals: [{ start: "0:00", end: "23:59" }],
+  },
+};
+
+export const DSTHours: HoursType = {
+  saturday: {
+    openIntervals: [{ start: "10:00", end: "2:00" }],
+  },
+  sunday: {
+    openIntervals: [{ start: "10:00", end: "02:00" }],
   },
 };

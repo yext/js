@@ -1,5 +1,12 @@
 import { DateTime } from "luxon";
-import { Day, DayType, HolidayType, HoursType, IntervalType } from "./types.js";
+import {
+  Day,
+  DayType,
+  HolidayType,
+  HoursType,
+  IntervalType,
+  WeekType,
+} from "./types.js";
 
 export function luxonDateToDay(d: DateTime): Day {
   const dayMap: Record<number, Day> = {
@@ -33,6 +40,16 @@ export function defaultDayName(d: Day): string {
   return nameMap[d];
 }
 
+export const dayToDayKey: Record<Day, keyof WeekType> = {
+  [Day.Monday]: "monday",
+  [Day.Tuesday]: "tuesday",
+  [Day.Wednesday]: "wednesday",
+  [Day.Thursday]: "thursday",
+  [Day.Friday]: "friday",
+  [Day.Saturday]: "saturday",
+  [Day.Sunday]: "sunday",
+};
+
 export class HoursInterval {
   end: DateTime;
   start: DateTime;
@@ -53,8 +70,8 @@ export class HoursInterval {
       }
     });
 
-    const [startHour, startMinute] = interval.start.split(":");
-    const [endHour, endMinute] = interval.end.split(":");
+    const [startHour, startMinute] = interval.start.split(":").map(Number);
+    const [endHour, endMinute] = interval.end.split(":").map(Number);
 
     let dayIncrement = 0;
     if (endHour < startHour) {
@@ -62,13 +79,13 @@ export class HoursInterval {
     }
 
     this.end = this.end.set({
-      hour: Number(endHour),
-      minute: Number(endMinute),
+      hour: endHour,
+      minute: endMinute,
       day: this.end.day + dayIncrement,
     });
     this.start = this.start.set({
-      hour: Number(startHour),
-      minute: Number(startMinute),
+      hour: startHour,
+      minute: startMinute,
     });
 
     if (this.end.minute === 59) {
@@ -162,8 +179,7 @@ export class Hours {
 
     // Also need to check yesterday in case the interval crosses dates
     // (Assumes intervals will be no longer than 24 hours)
-    let priorDate = date;
-    priorDate = priorDate.minus({ days: 1 });
+    const priorDate = date.minus({ days: 1 });
 
     for (const hoursDate of [priorDate, date]) {
       const hours = this.getHours(hoursDate);

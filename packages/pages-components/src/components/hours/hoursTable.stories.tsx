@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { HoursTable } from "./hoursTable.js";
 import {
   CollapsableHoursData,
+  DSTHours,
   Hours247,
   HoursData,
   HoursTemporarilyClosed,
@@ -155,6 +156,11 @@ export const HolidayHours: Story = {
   args: {
     hours: HoursWithHolidayHours, // includes active and inactive holidays
   },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 15, hour: 12 } // January 15, 2025 - Thursday
+    ),
+  },
 };
 
 const intervalFn = (h: HoursTableDayData, _t?: Intl.DateTimeFormatOptions) => {
@@ -186,6 +192,20 @@ export const IntervalStringsBuilderFnCollapseDays: Story = {
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
       { year: 2025, month: 1, day: 8, hour: 12 } // January 8, 2025 - Wednesday
+    ),
+  },
+};
+
+export const SpringDST: Story = {
+  args: {
+    hours: DSTHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // Day before DST
+      { year: 2025, month: 3, day: 8 } // March 8, 2025 - Saturday
+      // Saturday should go til 3AM because there is no 2AM
+      // Sunday should display 2AM
     ),
   },
 };

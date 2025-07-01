@@ -1,9 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { HoursStatus } from "./hoursStatus.js";
 import {
+  DSTHours,
   Hours247,
   HoursData,
   HoursTemporarilyClosed,
+  HoursWithHolidayHours,
   HoursWithMultipleIntervalsData,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
@@ -55,7 +57,18 @@ export const ClosedNowWithIntervals: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 6, hour: 14 } // Monday 2 PM
+      { year: 2025, month: 1, day: 6, hour: 13, minute: 30 } // Monday 1:30 PM
+    ),
+  },
+};
+
+export const OpenWithOvernightInterval: Story = {
+  args: {
+    hours: HoursWithMultipleIntervalsData,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 10, hour: 1, minute: 30 } // Friday 1:30 AM
     ),
   },
 };
@@ -95,6 +108,11 @@ export const IndefinitelyClosedInactive: Story = {
 
 export const TwentyFourHourClock: Story = {
   args: { hours: HoursData, timeOptions: { hour12: false } },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 7, hour: 14 } // Tuesday 2 PM
+    ),
+  },
 };
 
 export const Timezone: Story = {
@@ -104,7 +122,52 @@ export const Timezone: Story = {
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
+      // Should be closed because it opens at 9:01 AM PT
       { year: 2025, month: 1, day: 7, hour: 10 } // Tuesday 10 AM ET
+    ),
+  },
+};
+
+export const HolidayHoursNormal: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 15, hour: 12 } // January 15, 2025 - Wednesday
+    ),
+  },
+};
+
+export const HolidayHoursClosed: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 16, hour: 12 } // January 16, 2025 - Thursday
+    ),
+  },
+};
+
+export const HolidayHoursNextDayClosed: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 12, hour: 22 } // January 12, 2025 - Sunday
+    ),
+  },
+};
+
+export const HolidayHoursModified: Story = {
+  args: {
+    hours: HoursWithHolidayHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 18, hour: 17 } // January 18, 2025 - Saturday
     ),
   },
 };
@@ -206,6 +269,30 @@ export const CompleteTemplateOverrideClosed: Story = {
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
       { year: 2025, month: 1, day: 7, hour: 22 } // Tuesday 10 PM
+    ),
+  },
+};
+
+export const SpringDST: Story = {
+  args: {
+    hours: DSTHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // DST Day
+      { year: 2025, month: 3, day: 9, hour: 1 } // March 9, 2025 - Sunday
+    ),
+  },
+};
+
+export const SpringDST2: Story = {
+  args: {
+    hours: DSTHours,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // Day after DST
+      { year: 2025, month: 3, day: 10, hour: 1 } // March 10, 2025 - Monday
     ),
   },
 };

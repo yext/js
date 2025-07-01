@@ -24,6 +24,8 @@ jobs:
           pnpm exec playwright install
       - name: Serve Storybook and run WCAG checks
         working-directory: packages/pages-components
+        env:
+          TZ: America/New_York
         run: |
           pnpm exec concurrently -k -s first -n "SB,TEST" \
             "pnpm run storybook -- --quiet --ci" \

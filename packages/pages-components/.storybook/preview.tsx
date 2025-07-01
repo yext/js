@@ -22,7 +22,7 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       // Store the real DateTime
-      const originalLuxonNow = useRef(Settings.now);
+      const originalLuxonSettings = useRef(Settings);
 
       const mockedLuxonDateTimeFromParams = context.parameters
         .mockedLuxonDateTime as DateTime | undefined;
@@ -31,13 +31,15 @@ const preview: Preview = {
         // When the component mounts, mock the DateTime if a date is provided
         if (mockedLuxonDateTimeFromParams) {
           Settings.now = () => mockedLuxonDateTimeFromParams.toMillis();
+          Settings.defaultZone = "America/New_York";
         } else {
-          Settings.now = originalLuxonNow.current;
+          Settings.now = originalLuxonSettings.current.now;
         }
 
         // When the component unmounts, restore the real DateTime
         return () => {
-          Settings.now = originalLuxonNow.current;
+          Settings.now = originalLuxonSettings.current.now;
+          Settings.defaultZone = originalLuxonSettings.current.defaultZone;
         };
       }, [mockedLuxonDateTimeFromParams]);
 
