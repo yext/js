@@ -219,7 +219,7 @@ export const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
             ? holiday.openIntervals?.map(
                 (interval) => new HoursInterval(date, interval, "UTC")
               )
-            : hoursTableData.find((d) => (d.startDay = day))?.intervals) ?? [],
+            : hoursTableData.find((d) => d.startDay === day)?.intervals) ?? [],
       };
     });
 
