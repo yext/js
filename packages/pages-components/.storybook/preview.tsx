@@ -27,23 +27,33 @@ const preview: Preview = {
       const mockedLuxonDateTimeFromParams = context.parameters
         .mockedLuxonDateTime as DateTime | undefined;
 
-      useEffect(() => {
-        // When the component mounts, mock the DateTime if a date is provided
+      const overrideDateTime = () => {
         if (mockedLuxonDateTimeFromParams) {
           Settings.now = () => mockedLuxonDateTimeFromParams.toMillis();
           Settings.defaultZone = "America/New_York";
         } else {
           Settings.now = originalLuxonSettings.current.now;
         }
+      };
 
+      const cleanupDateTime = () => {
+        Settings.now = originalLuxonSettings.current.now;
+        Settings.defaultZone = originalLuxonSettings.current.defaultZone;
+      };
+
+      useEffect(() => {
+        // When the component mounts, re-mock the DateTime if a date is provided
+        overrideDateTime();
         // When the component unmounts, restore the real DateTime
-        return () => {
-          Settings.now = originalLuxonSettings.current.now;
-          Settings.defaultZone = originalLuxonSettings.current.defaultZone;
-        };
+        return cleanupDateTime;
       }, [mockedLuxonDateTimeFromParams]);
 
-      return <Story />;
+      // Mock the DateTime if a date is provided for initial render
+      overrideDateTime();
+      const component = <Story />;
+      cleanupDateTime();
+
+      return component;
     },
   ],
 };

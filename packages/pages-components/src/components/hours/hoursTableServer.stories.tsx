@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { HoursTable } from "./hoursTable.js";
+import { ServerSideHoursTable } from "./hoursTable.js";
 import {
   CollapsableHoursData,
-  DSTHours,
   Hours247,
   HoursData,
   HoursTemporarilyClosed,
@@ -12,9 +11,22 @@ import {
 import { DateTime } from "luxon";
 import { HoursTableDayData } from "./types.js";
 
-const meta: Meta<typeof HoursTable> = {
-  title: "components/Hours",
-  component: HoursTable,
+// Creates a random DateTime in 2025
+const getRandomTime = () => {
+  const start = DateTime.utc(2025, 1, 1).toMillis();
+  const end = DateTime.utc(2025, 12, 31).toMillis();
+
+  const randomMillis = start + Math.random() * (end - start);
+
+  return DateTime.fromMillis(randomMillis);
+};
+
+const meta: Meta<typeof ServerSideHoursTable> = {
+  title: "components/ServerSideHoursTable",
+  component: ServerSideHoursTable,
+  parameters: {
+    mockedLuxonDateTime: getRandomTime(),
+  },
 };
 
 export default meta;
@@ -38,11 +50,6 @@ export const NormalHoursTodayStart: Story = {
   args: {
     hours: HoursData,
     startOfWeek: "today",
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 9, hour: 12 } // January 9, 2025 - Thursday
-    ),
   },
 };
 
@@ -114,11 +121,6 @@ export const CollapseDaysTodayStart: Story = {
     collapseDays: true,
     startOfWeek: "today",
   },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 7, hour: 12 } // January 7, 2025 - Tuesday
-    ),
-  },
 };
 
 export const NormalHours24HoursFormat: Story = {
@@ -130,36 +132,15 @@ export const NormalHours24HoursFormat: Story = {
   },
 };
 
-export const TemporarilyClosedActive: Story = {
+export const TemporarilyClosed: Story = {
   args: {
     hours: HoursTemporarilyClosed,
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 1, hour: 12 } // before reopenDate
-    ),
-  },
-};
-
-export const TemporarilyClosedInactive: Story = {
-  args: {
-    hours: HoursTemporarilyClosed,
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 8, day: 1, hour: 12 } // before reopenDate
-    ),
   },
 };
 
 export const HolidayHours: Story = {
   args: {
-    hours: HoursWithHolidayHours, // includes active and inactive holidays
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 15, hour: 12 } // January 15, 2025 - Thursday
-    ),
+    hours: HoursWithHolidayHours,
   },
 };
 
@@ -176,11 +157,6 @@ export const IntervalStringsBuilderFn: Story = {
     hours: CollapsableHoursData,
     intervalStringsBuilderFn: intervalFn,
   },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 8, hour: 12 } // January 8, 2025 - Wednesday
-    ),
-  },
 };
 
 export const IntervalStringsBuilderFnCollapseDays: Story = {
@@ -188,30 +164,5 @@ export const IntervalStringsBuilderFnCollapseDays: Story = {
     collapseDays: true,
     hours: CollapsableHoursData,
     intervalStringsBuilderFn: intervalFn,
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      { year: 2025, month: 1, day: 8, hour: 12 } // January 8, 2025 - Wednesday
-    ),
-  },
-};
-
-export const SpringDST: Story = {
-  args: {
-    hours: DSTHours,
-  },
-  parameters: {
-    mockedLuxonDateTime: DateTime.fromObject(
-      // Day before DST
-      { year: 2025, month: 3, day: 8 } // March 8, 2025 - Saturday
-      // Saturday should go til 3AM because there is no 2AM
-      // Sunday should display 2AM
-    ),
-  },
-};
-
-export const MissingHours: Story = {
-  args: {
-    hours: undefined,
   },
 };

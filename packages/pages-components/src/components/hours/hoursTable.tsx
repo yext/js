@@ -166,7 +166,7 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
   );
 };
 
-const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
+export const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const h = new Hours(
     props.hours,
     Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -186,9 +186,10 @@ const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
   return <HoursTableComponent {...props} hoursData={hoursDays} isClient />;
 };
 
-const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
+export const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const { hours, dayOfWeekNames, intervalTranslations } = props;
 
+  console.log(DateTime.now().toISO());
   const hoursTableData: HoursTableDayData[] = days.map((day) => {
     const dayKey = dayToDayKey[day];
     return {
