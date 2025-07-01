@@ -123,7 +123,10 @@ export class HoursInterval {
       ...opts,
     };
 
-    return this.start.setLocale(locale || "en-US").toLocaleString(timeOptions);
+    return this.start
+      .setLocale(locale || "en-US")
+      .toLocaleString(timeOptions)
+      .replace("\u202F", " "); // standardize spacing between server and client Intl
   }
 
   /**
@@ -138,7 +141,10 @@ export class HoursInterval {
       ...opts,
     };
 
-    return this.end.setLocale(locale || "en-US").toLocaleString(timeOptions);
+    return this.end
+      .setLocale(locale || "en-US")
+      .toLocaleString(timeOptions)
+      .replace("\u202F", " "); // standardize spacing between server and client Intl
   }
 
   /**

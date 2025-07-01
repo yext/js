@@ -165,7 +165,10 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
       {isClient ? (
         statusTemplateFn(statusParams, props)
       ) : (
-        <div style={emptyStyle} />
+        <div
+          style={emptyStyle}
+          className={c("HoursStatus", props?.className || "")}
+        />
       )}
     </>
   );
