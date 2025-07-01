@@ -189,7 +189,6 @@ export const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
 export const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const { hours, dayOfWeekNames, intervalTranslations } = props;
 
-  console.log(DateTime.now().toISO());
   const hoursTableData: HoursTableDayData[] = days.map((day) => {
     const dayKey = dayToDayKey[day];
     return {
