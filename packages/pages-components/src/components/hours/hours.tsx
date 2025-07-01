@@ -40,20 +40,6 @@ export function defaultDayName(d: Day): string {
   return nameMap[d];
 }
 
-export function dayToDayKey(d: Day): keyof WeekType {
-  const nameMap: Record<Day, keyof WeekType> = {
-    [Day.Monday]: "monday",
-    [Day.Tuesday]: "tuesday",
-    [Day.Wednesday]: "wednesday",
-    [Day.Thursday]: "thursday",
-    [Day.Friday]: "friday",
-    [Day.Saturday]: "saturday",
-    [Day.Sunday]: "sunday",
-  };
-
-  return nameMap[d];
-}
-
 export const days: Day[] = [
   Day.Monday,
   Day.Tuesday,
@@ -63,6 +49,16 @@ export const days: Day[] = [
   Day.Saturday,
   Day.Sunday,
 ];
+
+export const dayToDayKey: Record<Day, keyof WeekType> = {
+  [Day.Monday]: "monday",
+  [Day.Tuesday]: "tuesday",
+  [Day.Wednesday]: "wednesday",
+  [Day.Thursday]: "thursday",
+  [Day.Friday]: "friday",
+  [Day.Saturday]: "saturday",
+  [Day.Sunday]: "sunday",
+};
 
 export class HoursInterval {
   end: DateTime;
@@ -84,8 +80,8 @@ export class HoursInterval {
       }
     });
 
-    const [startHour, startMinute] = interval.start.split(":");
-    const [endHour, endMinute] = interval.end.split(":");
+    const [startHour, startMinute] = interval.start.split(":").map(Number);
+    const [endHour, endMinute] = interval.end.split(":").map(Number);
 
     let dayIncrement = 0;
     if (endHour < startHour) {
@@ -93,13 +89,13 @@ export class HoursInterval {
     }
 
     this.end = this.end.set({
-      hour: Number(endHour),
-      minute: Number(endMinute),
+      hour: endHour,
+      minute: endMinute,
       day: this.end.day + dayIncrement,
     });
     this.start = this.start.set({
-      hour: Number(startHour),
-      minute: Number(startMinute),
+      hour: startHour,
+      minute: startMinute,
     });
 
     if (this.end.minute === 59) {
@@ -193,8 +189,7 @@ export class Hours {
 
     // Also need to check yesterday in case the interval crosses dates
     // (Assumes intervals will be no longer than 24 hours)
-    let priorDate = date;
-    priorDate = priorDate.minus({ days: 1 });
+    const priorDate = date.minus({ days: 1 });
 
     for (const hoursDate of [priorDate, date]) {
       const hours = this.getHours(hoursDate);

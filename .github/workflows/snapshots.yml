@@ -30,10 +30,11 @@ jobs:
       - name: Install playwright browsers
         working-directory: packages/pages-components
         run: |
-          pnpm create playwright
           npx playwright install --with-deps
       - name: Serve Storybook and update snapshots
         working-directory: packages/pages-components
+        env:
+          TZ: America/New_York
         run: |
           pnpm exec concurrently -k -s first -n "SB,TEST" \
             "pnpm run storybook -- --quiet --ci" \

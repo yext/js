@@ -82,3 +82,45 @@ export enum Day {
   Saturday = "SATURDAY",
   Sunday = "SUNDAY",
 }
+
+export interface StatusParams {
+  /** Whether the entity is currently open */
+  isOpen: boolean;
+  /** The first interval that contains the current time */
+  currentInterval: HoursInterval | null;
+  /** The next interval that hasn't started */
+  futureInterval: HoursInterval | null;
+  /** Formatting intended for the "time" part of this component "Open Now - closes at [[5:00PM]] Monday" */
+  timeOptions?: Intl.DateTimeFormatOptions;
+  /** Formatting intended for the "day" part of this component "Open Now - closes at 5:00PM [[Monday]]" */
+  dayOptions?: Intl.DateTimeFormatOptions;
+}
+
+export interface TemplateParams {
+  /** Override rendering for the "current" part of this component "[[Open Now]] - closes at 5:00PM Monday" */
+  currentTemplate?: (s: StatusParams) => React.ReactNode;
+  /** Override rendering for the "separator" part of this component "Open Now [[-]] closes at 5:00PM Monday" */
+  separatorTemplate?: (s: StatusParams) => React.ReactNode;
+  /** FutureTemplate override rendering for the "future" part of this component "Open Now - [[closes at]] 5:00PM Monday" */
+  futureTemplate?: (s: StatusParams) => React.ReactNode;
+  /** Override rendering for the "time" part of this component "Open Now - closes at [[5:00PM]] Monday" */
+  timeTemplate?: (s: StatusParams) => React.ReactNode;
+  /** Override rendering for the "dayOfWeek" part of this component "Open Now - closes at 5:00PM [[Monday]]" */
+  dayOfWeekTemplate?: (s: StatusParams) => React.ReactNode;
+}
+
+export interface StatusTemplateParams extends StatusParams, TemplateParams {}
+
+export interface HoursStatusProps extends TemplateParams {
+  /** Hours data from Yext Streams */
+  hours: HoursType;
+  /** The IANA or UTC Offset timezone of the hours data from Yext Streams */
+  timezone: string;
+  /** Formatting for the "time" part of this component "Open Now - closes at [[5:00PM]] Monday" */
+  timeOptions?: Intl.DateTimeFormatOptions;
+  /** Formatting for the "day" part of this component "Open Now - closes at 5:00PM [[Monday]]" */
+  dayOptions?: Intl.DateTimeFormatOptions;
+  /** Completely override rendering for this component */
+  statusTemplate?: (s: StatusParams) => React.ReactNode;
+  className?: string;
+}

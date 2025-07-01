@@ -56,12 +56,12 @@ export function collapseDays(
 
   return collapsedDays.map((day) => {
     const startDayName: string =
-      dayNames && dayToDayKey(day.startDay) in dayNames
-        ? (dayNames as any)[dayToDayKey(day.startDay)] || ""
+      dayNames && dayToDayKey[day.startDay] in dayNames
+        ? (dayNames as any)[dayToDayKey[day.startDay]] || ""
         : defaultDayName(day.startDay);
     const endDayName: string =
-      dayNames && dayToDayKey(day.endDay) in dayNames
-        ? (dayNames as any)[dayToDayKey(day.endDay)] || ""
+      dayNames && dayToDayKey[day.endDay] in dayNames
+        ? (dayNames as any)[dayToDayKey[day.endDay]] || ""
         : defaultDayName(day.endDay);
 
     return {
@@ -151,6 +151,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  if (!props.hours) {
+    return <></>;
+  }
+
   return (
     <>
       {isClient ? (
@@ -186,7 +190,7 @@ const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
   const { hours, dayOfWeekNames, intervalTranslations } = props;
 
   const hoursTableData: HoursTableDayData[] = days.map((day) => {
-    const dayKey = dayToDayKey(day);
+    const dayKey = dayToDayKey[day];
     return {
       dayName: dayOfWeekNames?.[dayKey] || defaultDayName(day),
       startDay: day,
