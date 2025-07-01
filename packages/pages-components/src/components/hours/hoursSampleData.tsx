@@ -224,3 +224,19 @@ export const DSTHours: HoursType = {
     openIntervals: [{ start: "10:00", end: "02:00" }],
   },
 };
+
+export const TranslationHours: HoursType = {
+  reopenDate: "2025-07-01",
+  saturday: {
+    openIntervals: [{ start: "10:00", end: "2:00" }],
+  },
+  sunday: {
+    openIntervals: [{ start: "00:00", end: "23:59" }],
+  },
+  tuesday: {
+    openIntervals: [{ start: "10:00", end: "22:00" }],
+  },
+  wednesday: {
+    openIntervals: [{ start: "00:00", end: "23:59" }],
+  },
+};

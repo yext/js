@@ -7,6 +7,7 @@ import {
   HoursTemporarilyClosed,
   HoursWithHolidayHours,
   HoursWithMultipleIntervalsData,
+  TranslationHours,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
 import { HoursTableDayData } from "./types.js";
@@ -164,5 +165,17 @@ export const IntervalStringsBuilderFnCollapseDays: Story = {
     collapseDays: true,
     hours: CollapsableHoursData,
     intervalStringsBuilderFn: intervalFn,
+  },
+};
+
+export const Translations: Story = {
+  args: {
+    hours: TranslationHours,
+    intervalTranslations: {
+      isClosed: "Cerrado",
+      open24Hours: "Abierto las 24 horas",
+      reopenDate: "Fecha de reapertura",
+      timeFormatLocale: "fr",
+    },
   },
 };

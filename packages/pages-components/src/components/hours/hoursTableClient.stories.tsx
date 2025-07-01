@@ -8,6 +8,7 @@ import {
   HoursTemporarilyClosed,
   HoursWithHolidayHours,
   HoursWithMultipleIntervalsData,
+  TranslationHours,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
 import { HoursTableDayData } from "./types.js";
@@ -206,6 +207,24 @@ export const SpringDST: Story = {
       { year: 2025, month: 3, day: 8 } // March 8, 2025 - Saturday
       // Saturday should go til 3AM because there is no 2AM
       // Sunday should display 2AM
+    ),
+  },
+};
+
+export const Translations: Story = {
+  args: {
+    hours: TranslationHours,
+    intervalTranslations: {
+      isClosed: "Cerrado",
+      open24Hours: "Abierto las 24 horas",
+      reopenDate: "Fecha de reapertura",
+      timeFormatLocale: "fr",
+    },
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      // Temporarily closed but about to reopen
+      { year: 2025, month: 6, day: 29 } // Jun 29, 2025 - Sunday
     ),
   },
 };
