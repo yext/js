@@ -1,3 +1,21 @@
+#### 1.1.9 (2025-07-02)
+
+##### Chores
+
+*  add additional hours storybook tests (#97) (e01815bc)
+
+##### New Features
+
+*  render static hours server-side (#96) (c1dabdd1)
+
+##### Bug Fixes
+
+*  hoursStatus isOpen and hoursTable collapsed day of week names (#98) (20cf58d0)
+
+##### Refactors
+
+* **pages-components:**  make destinationUrl optional for analytics.track (#99) (4d462672)
+
 #### 1.1.8 (2025-06-20)
 
 ##### Bug Fixes
