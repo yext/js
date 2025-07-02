@@ -3,7 +3,7 @@ import { TemplateProps } from "./types.js";
 
 export type TrackProps = {
   action: Action;
-  destinationUrl: string;
+  destinationUrl?: string;
   scope?: string;
   eventName: string;
   amount?: number;
