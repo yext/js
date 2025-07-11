@@ -1,3 +1,9 @@
+#### 1.0.9 (2025-07-11)
+
+##### Bug Fixes
+
+* **pages-components:**  rel not propagating in Link (#101) (7430f071)
+
 #### 1.0.8 (2025-06-20)
 
 ##### Bug Fixes
