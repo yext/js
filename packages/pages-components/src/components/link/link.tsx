@@ -98,7 +98,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       className: classNames("Link", className),
       href: isObfuscate ? btoa(getHref(link)) : getHref(link),
       onClick: handleClick,
-      rel: props.target && !props.rel ? "noopener" : undefined,
+      rel: props.target && !props.rel ? "noopener" : props.rel,
       ref: ref,
     };
 
