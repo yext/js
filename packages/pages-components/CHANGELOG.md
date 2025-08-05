@@ -2,7 +2,7 @@
 
 ##### Bug Fixes
 
-* **pages-components:**  rel not propagating in Link (#101) (1506993c)
+- **pages-components:** rel not propagating in Link (#101) (1506993c)
 
 #### 1.1.9 (2025-07-02)
 

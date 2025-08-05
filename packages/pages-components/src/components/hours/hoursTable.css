@@ -5,6 +5,9 @@ html {
 
 .HoursTable-row {
   display: flex;
+  justify-content: space-between;
+  width: auto;
+  max-width: 100%;
 }
 
 .HoursTable-day {
@@ -15,4 +18,5 @@ html {
   display: flex;
   flex-direction: column;
   flex: 0 0 var(--yxt-hoursTable-col2-width);
+  text-align: right;
 }
