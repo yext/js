@@ -181,3 +181,14 @@ test("resolveCTA - error when cta and no link", () => {
   } as LinkProps;
   expect(() => resolveCTA(linkProps)).toThrowError("CTA's link is undefined");
 });
+
+test("resolveCTA - handles immutable object", () => {
+  const linkProps = {
+    cta: Object.freeze({
+      label: "",
+      link: "google.com",
+      linkType: "URL",
+    }),
+  } as LinkProps;
+  expect(() => resolveCTA(linkProps)).not.toThrowError();
+});
