@@ -15,6 +15,7 @@ import { Link } from "../link/index.js";
 import { AnalyticsProvider } from "./provider.js";
 import { AnalyticsScopeProvider } from "./scope.js";
 import { Action } from "@yext/analytics";
+import { useAnalytics } from "./hooks.js";
 
 vi.mock("../../util/runtime.js", () => {
   const runtime = {
@@ -276,5 +277,40 @@ describe("Analytics", () => {
         />
       )
     ).toThrowError("API Key is required for AnalyticsProvider");
+  });
+
+  it("strips empty string destinationUrl", () => {
+    const Button = () => {
+      const analytics = useAnalytics();
+      return (
+        <button
+          onClick={() => {
+            analytics?.track({
+              action: "CTA_CLICK",
+              destinationUrl: "",
+              eventName: "header_button",
+            });
+          }}
+        />
+      );
+    };
+
+    render(
+      <AnalyticsProvider
+        apiKey="key"
+        currency="USD"
+        templateData={baseProps}
+        requireOptIn={false}
+      >
+        <Button />
+      </AnalyticsProvider>
+    );
+
+    fireEvent.click(screen.getByRole("button"));
+    // @ts-ignore
+    const callstack = global.fetch.mock.calls;
+    const payload = JSON.parse(callstack[callstack.length - 1][1].body);
+
+    expect(payload.destinationUrl).toBeUndefined();
   });
 });

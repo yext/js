@@ -2,12 +2,12 @@
 
 ##### Bug Fixes
 
-* **pages-components:**  make a mutable copy of cta in resolveCTA (#104) (cd1d3c23)
-*  align HoursTable row to the right side (fda3622f)
+- **pages-components:** make a mutable copy of cta in resolveCTA (#104) (cd1d3c23)
+- align HoursTable row to the right side (fda3622f)
 
 ##### Other Changes
 
-*  align HoursTable row to the right side" (3eec61c1)
+- align HoursTable row to the right side" (3eec61c1)
 
 #### 1.1.10 (2025-07-11)
 
