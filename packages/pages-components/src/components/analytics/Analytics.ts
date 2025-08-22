@@ -175,7 +175,7 @@ export class Analytics implements AnalyticsMethods {
         originalEventName: concatScopes(scope || "", slugify(eventName) || ""),
       },
       value,
-      destinationUrl,
+      destinationUrl: destinationUrl || undefined,
       customTags,
       customValues,
     });
