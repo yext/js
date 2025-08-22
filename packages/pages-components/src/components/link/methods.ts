@@ -14,7 +14,8 @@ export const LEGACY_CTA_EVENT = "cta";
  * are optional.
  */
 export const resolveCTA = (linkProps: LinkProps): CTA => {
-  const cta = linkProps.cta ?? { link: linkProps.href };
+  // Create a mutable copy of the cta object
+  const cta = { ...(linkProps.cta ?? { link: linkProps.href }) };
 
   if (!cta.link) {
     if (linkProps.cta) {
