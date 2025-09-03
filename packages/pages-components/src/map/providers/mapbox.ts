@@ -1,9 +1,9 @@
-import {Coordinate} from "../coordinate.js";
-import {MapProviderOptions} from "../mapProvider.js";
-import {ProviderMap, ProviderMapOptions} from "../providerMap.js";
-import {HTMLProviderPin, ProviderPinOptions} from "../providerPin.js";
-import {Map} from "../map.js";
-import type {Map as MapType, Marker as MarkerType} from "mapbox-gl";
+import { Coordinate } from "../coordinate.js";
+import { MapProviderOptions } from "../mapProvider.js";
+import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
+import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
+import { Map } from "../map.js";
+import type { Map as MapType, Marker as MarkerType } from "mapbox-gl";
 import mapboxgl from "mapbox-gl";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
@@ -16,9 +16,12 @@ class MapboxMap extends ProviderMap {
   constructor(options: ProviderMapOptions) {
     super(options);
 
-    this.instance = (options.iframeWindow as Window & {
-      mapboxgl?: typeof mapboxgl
-    })?.mapboxgl ?? mapboxgl;
+    this.instance =
+      (
+        options.iframeWindow as Window & {
+          mapboxgl?: typeof mapboxgl;
+        }
+      )?.mapboxgl ?? mapboxgl;
 
     if (options.wrapper) {
       this.map = new this.instance.Map({
@@ -107,9 +110,12 @@ class MapboxPin extends HTMLProviderPin {
   constructor(options: ProviderPinOptions) {
     super(options);
 
-    this.instance = (options?.iframeWindow as Window & {
-      mapboxgl?: typeof mapboxgl
-    })?.mapboxgl ?? mapboxgl;
+    this.instance =
+      (
+        options?.iframeWindow as Window & {
+          mapboxgl?: typeof mapboxgl;
+        }
+      )?.mapboxgl ?? mapboxgl;
 
     if (this._wrapper) {
       this._wrapper.style.position = "relative";
@@ -165,7 +171,9 @@ function load(
 ) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
 
-  const mapboxInstance = (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
+  const mapboxInstance =
+    (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })
+      ?.mapboxgl ?? mapboxgl;
 
   const mapStyle = document.createElement("link");
   mapStyle.rel = "stylesheet";

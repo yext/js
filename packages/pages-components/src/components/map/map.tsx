@@ -11,7 +11,7 @@ import { Map as MapType, MapOptions } from "../../map/map.js";
 import { GeoBounds } from "../../map/geoBounds.js";
 import { Coordinate } from "../../map/coordinate.js";
 import type { MapProps, MapContextType } from "./types.js";
-import {MapProvider} from "../../map/mapProvider.js";
+import { MapProvider } from "../../map/mapProvider.js";
 
 export const MapContext = createContext<MapContextType | null>(null);
 
@@ -111,12 +111,12 @@ export const Map = ({
 
     if (provider instanceof MapProvider) {
       provider
-          .load(apiKey, {
-            ...providerOptions,
-            iframeWindow: iframeWindow,
-            ...(clientKey && {client: clientKey}),
-          })
-          .then(() => setLoaded(true));
+        .load(apiKey, {
+          ...providerOptions,
+          iframeWindow: iframeWindow,
+          ...(clientKey && { client: clientKey }),
+        })
+        .then(() => setLoaded(true));
     }
   }, []);
 
