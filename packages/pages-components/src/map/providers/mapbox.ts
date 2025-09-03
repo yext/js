@@ -1,21 +1,27 @@
-import { Coordinate } from "../coordinate.js";
-import { MapProviderOptions } from "../mapProvider.js";
-import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
-import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
-import { Map } from "../map.js";
-import type { Map as MapType, Marker as MarkerType } from "mapbox-gl";
+import {Coordinate} from "../coordinate.js";
+import {MapProviderOptions} from "../mapProvider.js";
+import {ProviderMap, ProviderMapOptions} from "../providerMap.js";
+import {HTMLProviderPin, ProviderPinOptions} from "../providerPin.js";
+import {Map} from "../map.js";
+import type {Map as MapType, Marker as MarkerType} from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
 
 // Map Class
 
 class MapboxMap extends ProviderMap {
+  instance: mapboxgl;
   map?: MapType;
   constructor(options: ProviderMapOptions) {
     super(options);
 
+    this.instance = (options.iframeWindow as Window & {
+      mapboxgl?: typeof mapboxgl
+    })?.mapboxgl ?? mapboxgl;
+
     if (options.wrapper) {
-      this.map = new mapboxgl.Map({
+      this.map = new this.instance.Map({
         container: options.wrapper,
         interactive: options.controlEnabled,
         style: "mapbox://styles/mapbox/streets-v9",
@@ -25,7 +31,7 @@ class MapboxMap extends ProviderMap {
 
     // Add the zoom control
     if (options.controlEnabled) {
-      const zoomControl = new mapboxgl.NavigationControl({
+      const zoomControl = new this.instance.NavigationControl({
         showCompass: false,
       });
       this.map?.addControl(zoomControl);
@@ -55,7 +61,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
-    const center = new mapboxgl.LngLat(
+    const center = new this.instance.LngLat(
       coordinate.longitude,
       coordinate.latitude
     );
@@ -80,7 +86,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.zetZoomCenter}
    */
   setZoomCenter(zoom: number, coordinate: Coordinate, animated: boolean) {
-    const center = new mapboxgl.LngLat(
+    const center = new this.instance.LngLat(
       coordinate.longitude,
       coordinate.latitude
     );
@@ -96,13 +102,18 @@ class MapboxMap extends ProviderMap {
 // Pin Class
 
 class MapboxPin extends HTMLProviderPin {
+  instance: mapboxgl;
   pin?: MarkerType;
   constructor(options: ProviderPinOptions) {
     super(options);
 
+    this.instance = (options?.iframeWindow as Window & {
+      mapboxgl?: typeof mapboxgl
+    })?.mapboxgl ?? mapboxgl;
+
     if (this._wrapper) {
       this._wrapper.style.position = "relative";
-      this.pin = new mapboxgl.Marker({
+      this.pin = new this.instance.Marker({
         anchor: "top-left",
         element: this._wrapper,
       });
@@ -149,9 +160,12 @@ function load(
   resolve: () => void,
   _: () => void,
   apiKey: string,
+  options: any,
   { version = "v1.13.0" } = {}
 ) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
+
+  const mapboxInstance = (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
 
   const mapStyle = document.createElement("link");
   mapStyle.rel = "stylesheet";
@@ -160,7 +174,7 @@ function load(
   const mapScript = document.createElement("script");
   mapScript.src = baseUrl + ".js";
   mapScript.onload = () => {
-    (mapboxgl as any).accessToken = apiKey;
+    mapboxInstance.accessToken = apiKey;
     resolve();
   };
 

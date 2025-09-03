@@ -16,6 +16,7 @@ class ProviderMapOptions {
   panHandler: PanHandler;
   panStartHandler: PanStartHandler;
   providerOptions: { [key: string]: any };
+  iframeWindow?: Window;
 
   constructor(provider: MapProvider, wrapper: HTMLElement | null) {
     assertInstance(provider, MapProvider);
