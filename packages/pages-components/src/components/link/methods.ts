@@ -25,6 +25,14 @@ export const resolveCTA = (linkProps: LinkProps): CTA => {
     }
   }
 
+  if (typeof cta.link !== 'string') {
+    if (linkProps.cta) {
+      throw new Error("CTA's link is invalid");
+    } else {
+      throw new Error("Link's href is invalid");
+    }
+  }
+
   if (!cta.linkType) {
     cta.linkType = determineLinkType(cta.link);
   }
