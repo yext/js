@@ -1,3 +1,9 @@
+#### 1.1.13 (2025-09-11)
+
+##### Bug Fixes
+
+* **pages-components:**  handle cta links that are not strings (#107) (92dd4e7)
+
 #### 1.1.12 (2025-08-22)
 
 ##### Bug Fixes
