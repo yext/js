@@ -8,7 +8,7 @@
 
 ##### Bug Fixes
 
-* **pages-components:**  strip empty destinationUrl (#105) (fc95a5d5)
+- **pages-components:** strip empty destinationUrl (#105) (fc95a5d5)
 
 #### 1.1.11 (2025-08-22)
 
