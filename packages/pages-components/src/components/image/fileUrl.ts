@@ -174,12 +174,13 @@ export const fileUrlToDynString = (
   const accountId =
     fileUrl.accountId !== undefined ? `${fileUrl.accountId}/` : "";
 
-  const cdnParamString = cdnParams
-    ? "," +
-      Object.entries(cdnParams)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(",")
-    : "";
+  const cdnParamString =
+    cdnParams && Object.keys(cdnParams).length
+      ? "," +
+        Object.entries(cdnParams)
+          .map(([key, value]) => `${key}=${value}`)
+          .join(",")
+      : "";
 
   return `${dynUrl}/${bucket}/${accountId}${fileUrl.contentHash}${
     fileUrl.extension

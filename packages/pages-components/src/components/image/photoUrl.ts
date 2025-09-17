@@ -169,12 +169,13 @@ export const photoUrlToDynString = (
     }
   }
 
-  const cdnParamString = cdnParams
-    ? "," +
-      Object.entries(cdnParams)
-        .map(([key, value]) => `${key}=${value}`)
-        .join(",")
-    : "";
+  const cdnParamString =
+    cdnParams && Object.keys(cdnParams).length
+      ? "," +
+        Object.entries(cdnParams)
+          .map(([key, value]) => `${key}=${value}`)
+          .join(",")
+      : "";
 
   // ,fit=cover,format=avif,quality=60
   return `${dynUrl}/${bucket}/${photoUrl.contentHash}/width=${Math.round(
