@@ -1,6 +1,11 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { ImageProps, ImageLayout, ImageLayoutOption } from "./types.js";
+import {
+  ImageProps,
+  ImageLayout,
+  ImageLayoutOption,
+  CDNParams,
+} from "./types.js";
 import { getImageUrl, isValidHttpUrl } from "./url.js";
 
 /**
@@ -25,6 +30,7 @@ export const Image = ({
   placeholder,
   imgOverrides,
   style = {},
+  cdnParams,
   loading = "lazy",
 }: ImageProps) => {
   const imgRef = useRef<HTMLImageElement>(null);
@@ -65,7 +71,7 @@ export const Image = ({
   const absWidth = width && width > 0 ? width : undefined;
   const absHeight = height && height > 0 ? height : undefined;
 
-  const { src, imgStyle, widths } = handleLayout(
+  const { src, imgStyle, widths, updatedCdnParams } = handleLayout(
     layout,
     imgWidth,
     imgHeight,
@@ -73,14 +79,15 @@ export const Image = ({
     imageData.url,
     absWidth,
     absHeight,
-    aspectRatio
+    aspectRatio,
+    cdnParams
   );
 
   // Generate Image Sourceset
   const srcSet: string = widths
     .map(
       (w) =>
-        `${getImageUrl(imageData.url, w, (imgHeight / imgWidth) * w)} ${w}w`
+        `${getImageUrl(imageData.url, w, (layout === ImageLayoutOption.ASPECT && aspectRatio ? 1 / aspectRatio : imgHeight / imgWidth) * w, updatedCdnParams)} ${w}w`
     )
     .join(", ");
 
@@ -176,11 +183,18 @@ export const handleLayout = (
   imgUrl: string,
   absWidth?: number,
   absHeight?: number,
-  aspectRatio?: number
-): { src?: string; imgStyle: React.CSSProperties; widths: number[] } => {
+  aspectRatio?: number,
+  cdnParams?: CDNParams
+): {
+  src?: string;
+  imgStyle: React.CSSProperties;
+  widths: number[];
+  updatedCdnParams: CDNParams;
+} => {
   let widths: number[] = [100, 320, 640, 960, 1280, 1920];
   let src = getImageUrl(imgUrl, 500, 500);
   const imgStyle = { ...style };
+  const updatedCdnParams = cdnParams ? { ...cdnParams } : {};
   imgStyle.objectFit = imgStyle.objectFit || "cover";
   imgStyle.objectPosition = imgStyle.objectPosition || "center";
 
@@ -206,7 +220,7 @@ export const handleLayout = (
       imgStyle.width = fixedWidth;
       imgStyle.height = fixedHeight;
       widths = fixedWidths;
-      src = getImageUrl(imgUrl, fixedWidth, fixedHeight);
+      src = getImageUrl(imgUrl, fixedWidth, fixedHeight, cdnParams);
 
       break;
     }
@@ -214,6 +228,7 @@ export const handleLayout = (
       imgStyle.aspectRatio = aspectRatio
         ? `${aspectRatio}`
         : `${imgWidth} / ${imgHeight}`;
+      updatedCdnParams && (updatedCdnParams.fit = cdnParams?.fit || "cover");
 
       break;
     case ImageLayoutOption.FILL:
@@ -228,7 +243,7 @@ export const handleLayout = (
       break;
   }
 
-  return { src, imgStyle, widths };
+  return { src, imgStyle, widths, updatedCdnParams };
 };
 
 // Returns the fixedWidth and fixedHeight for fixed layout

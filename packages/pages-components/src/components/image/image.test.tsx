@@ -239,6 +239,16 @@ describe("Image", () => {
 
     expect(img.getAttribute("loading")).toEqual("eager");
   });
+
+  it("properly renders the srcset based on the cdnParams", () => {
+    render(<Image image={image} cdnParams={{ quality: "50" }} />);
+
+    const img = screen.getByRole("img", {
+      name: /alt text/i,
+    });
+
+    expect(img.getAttribute("srcset")).toContain(",quality=50");
+  });
 });
 
 describe("handleLayout", () => {
@@ -321,6 +331,22 @@ describe("handleLayout", () => {
 
     expect(imgStyle.width).toEqual("100%");
     expect(imgStyle.aspectRatio).toEqual(aspectRatio.toString());
+  });
+
+  it(`properly sets updatedCDN params when layout is ${ImageLayoutOption.ASPECT} and aspectRatio is provided`, () => {
+    const { updatedCdnParams } = handleLayout(
+      ImageLayoutOption.ASPECT,
+      imgWidth,
+      imgHeight,
+      {},
+      "https://a.mktgcdn.com/p/uuid/20x10",
+      undefined,
+      undefined,
+      aspectRatio
+    );
+    console.log(updatedCdnParams);
+
+    expect(updatedCdnParams?.fit).toEqual("cover");
   });
 });
 

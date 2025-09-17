@@ -94,6 +94,8 @@ interface BaseImageProps {
   style?: React.CSSProperties;
   /** Set the loading state of the image. */
   loading?: "eager" | "lazy";
+  /** Cloudflare Image transformations */
+  cdnParams?: CDNParams;
 }
 
 /**
@@ -129,6 +131,21 @@ interface AspectImageProps extends BaseImageProps {
   /** The aspect ratio of the image. Only impacts if layout is set to "aspect". */
   aspectRatio: number;
 }
+
+/**
+ * Cloudflare Image transformations
+ * See: https://developers.cloudflare.com/images/transform-images/transform-via-url
+ */
+export type CDNParams = {
+  /** Affects interpretation of width and height */
+  fit?: "scale-down" | "contain" | "cover" | "crop" | "pad" | "squeeze";
+  /** Image file format. Defaults to undefined, which uses webp if supported, original extension otherwise. */
+  format?: "avif" | "webp" | "jpeg";
+  /** Specifies how an image should be cropped with fit=cover or fit=crop. */
+  gravity?: "auto" | "left" | "right" | "top" | "bottom";
+  /** Quality of the image. Between 1 and 100. Defaults to 85. */
+  quality?: string;
+};
 
 /**
  * The shape of the data passed to {@link Image}.
