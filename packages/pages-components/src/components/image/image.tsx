@@ -192,7 +192,12 @@ export const handleLayout = (
   updatedCdnParams: CDNParams;
 } => {
   let widths: number[] = [100, 320, 640, 960, 1280, 1920];
-  let src = getImageUrl(imgUrl, 500, 500);
+  let src = getImageUrl(
+    imgUrl,
+    500,
+    aspectRatio ? 500 / aspectRatio : 500,
+    cdnParams
+  );
   const imgStyle = { ...style };
   const updatedCdnParams = cdnParams ? { ...cdnParams } : {};
   imgStyle.objectFit = imgStyle.objectFit || "cover";
