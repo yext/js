@@ -1,4 +1,4 @@
-import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { Type, assertType, assertInstance, assertElement } from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
 import { PanHandler, PanStartHandler } from "./map.js";
 import { Coordinate } from "./coordinate.js";
@@ -16,12 +16,12 @@ class ProviderMapOptions {
   panHandler: PanHandler;
   panStartHandler: PanStartHandler;
   providerOptions: { [key: string]: any };
-  iframeWindow?: Window;
+  instance: typeof mapboxgl;
 
   constructor(provider: MapProvider, wrapper: HTMLElement | null) {
     assertInstance(provider, MapProvider);
     if (wrapper) {
-      assertInstance(wrapper, HTMLElement);
+      assertElement(wrapper);
     }
 
     this.providerMapClass = provider.getMapClass();
@@ -31,6 +31,7 @@ class ProviderMapOptions {
     this.panHandler = () => null;
     this.panStartHandler = () => null;
     this.providerOptions = {};
+    this.instance = mapboxgl;
   }
 
   /**
@@ -67,6 +68,11 @@ class ProviderMapOptions {
    */
   withProviderOptions(providerOptions: object): ProviderMapOptions {
     this.providerOptions = providerOptions;
+    return this;
+  }
+
+  withInstance(instance: typeof mapboxgl): ProviderMapOptions {
+    this.instance = instance;
     return this;
   }
 

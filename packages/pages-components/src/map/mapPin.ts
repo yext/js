@@ -24,6 +24,7 @@ class MapPinOptions {
   provider: MapProvider | null;
   type: string;
   hasPinUrl: boolean;
+  instance: typeof mapboxgl;
 
   constructor() {
     this.coordinate = new Coordinate(0, 0);
@@ -33,6 +34,7 @@ class MapPinOptions {
     this.provider = null;
     this.type = "";
     this.hasPinUrl = false;
+    this.instance = mapboxgl;
   }
 
   /**
@@ -95,6 +97,14 @@ class MapPinOptions {
     return this;
   }
 
+  /**
+   * @param instance - The mapboxgl instance to use, in case it's loaded in an iframe
+   */
+  withInstance(instance: typeof mapboxgl): MapPinOptions {
+    this.instance = instance;
+    return this;
+  }
+
   build(): MapPin {
     return new MapPin(this);
   }
@@ -120,6 +130,7 @@ class MapPin {
   _map: Map | null;
   _pin: ProviderPin;
   _status: object;
+  _instance: typeof mapboxgl;
 
   constructor(options: MapPinOptions) {
     assertInstance(options, MapPinOptions);
@@ -154,12 +165,15 @@ class MapPin {
       .withFocusHandler((focused: boolean) => this._focusHandler(focused))
       .withHoverHandler((hovered: boolean) => this._hoverHandler(hovered))
       .withHasPinUrl(options.hasPinUrl)
+      .withInstance(options.instance)
       .build();
 
     this._pin.setCoordinate(options.coordinate);
 
     this._status = {};
     this.setStatus(this._status);
+
+    this._instance = options.instance;
   }
 
   /**

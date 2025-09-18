@@ -11,17 +11,12 @@ import mapboxgl from "mapbox-gl";
 // Map Class
 
 class MapboxMap extends ProviderMap {
-  instance: mapboxgl;
+  instance: typeof mapboxgl;
   map?: MapType;
   constructor(options: ProviderMapOptions) {
     super(options);
 
-    this.instance =
-      (
-        options.iframeWindow as Window & {
-          mapboxgl?: typeof mapboxgl;
-        }
-      )?.mapboxgl ?? mapboxgl;
+    this.instance = options.instance;
 
     if (options.wrapper) {
       this.map = new this.instance.Map({
@@ -105,17 +100,12 @@ class MapboxMap extends ProviderMap {
 // Pin Class
 
 class MapboxPin extends HTMLProviderPin {
-  instance: mapboxgl;
+  instance: typeof mapboxgl;
   pin?: MarkerType;
   constructor(options: ProviderPinOptions) {
     super(options);
 
-    this.instance =
-      (
-        options?.iframeWindow as Window & {
-          mapboxgl?: typeof mapboxgl;
-        }
-      )?.mapboxgl ?? mapboxgl;
+    this.instance = options.instance;
 
     if (this._wrapper) {
       this._wrapper.style.position = "relative";
@@ -165,15 +155,10 @@ class MapboxPin extends HTMLProviderPin {
 function load(
   resolve: () => void,
   _: () => void,
-  apiKey: string,
-  options: any,
+  _apiKey: string,
   { version = "v1.13.0" } = {}
 ) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
-
-  const mapboxInstance =
-    (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })
-      ?.mapboxgl ?? mapboxgl;
 
   const mapStyle = document.createElement("link");
   mapStyle.rel = "stylesheet";
@@ -182,7 +167,6 @@ function load(
   const mapScript = document.createElement("script");
   mapScript.src = baseUrl + ".js";
   mapScript.onload = () => {
-    mapboxInstance.accessToken = apiKey;
     resolve();
   };
 

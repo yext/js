@@ -1,7 +1,7 @@
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 import { GeoBounds } from "./geoBounds.js";
-import { Type, assertType, assertInstance } from "./util/assertions.js";
+import { Type, assertType, assertInstance, assertElement } from "./util/assertions.js";
 import { MapPin, MapPinOptions } from "./mapPin.js";
 import { MapProvider } from "./mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "./providerMap.js";
@@ -60,6 +60,7 @@ class MapOptions {
   providerOptions: ProviderMapOptions | object;
   singlePinZoom: number;
   wrapper: HTMLElement | null;
+  instance: typeof mapboxgl;
   /**
    * Initialize with default options
    */
@@ -80,6 +81,7 @@ class MapOptions {
     this.providerOptions = {};
     this.singlePinZoom = 14;
     this.wrapper = null;
+    this.instance = mapboxgl;
   }
 
   /**
@@ -184,9 +186,14 @@ class MapOptions {
     if (!wrapper) {
       return this;
     }
-    assertInstance(wrapper, HTMLElement);
+    assertElement(wrapper);
 
     this.wrapper = wrapper;
+    return this;
+  }
+
+  withInstance(instance: typeof mapboxgl): MapOptions {
+    this.instance = instance;
     return this;
   }
 
@@ -223,6 +230,7 @@ class Map {
   _panHandler?: PanHandler;
   _panStartHandler?: PanStartHandler;
   _map: ProviderMap;
+  _instance: typeof mapboxgl;
 
   constructor(options: MapOptions) {
     assertInstance(options, MapOptions);
@@ -230,7 +238,7 @@ class Map {
       assertInstance(options.provider, MapProvider);
     }
     if (options.wrapper) {
-      assertInstance(options.wrapper, HTMLElement);
+      assertElement(options.wrapper);
     }
 
     if (!options.provider?.loaded) {
@@ -271,10 +279,13 @@ class Map {
       .withPanHandler(() => this.panHandler())
       .withPanStartHandler(() => this.panStartHandler())
       .withProviderOptions(options.providerOptions)
+      .withInstance(options.instance)
       .build();
 
     this.setZoomCenter(this._defaultZoom, this._defaultCenter);
     this._currentBounds = this.getBounds();
+
+    this._instance = options.instance;
   }
 
   /**
@@ -390,7 +401,7 @@ class Map {
    *   instance with the same provider as this map
    */
   newPinOptions(): MapPinOptions {
-    return new MapPinOptions().withProvider(this._provider);
+    return new MapPinOptions().withProvider(this._provider).withInstance(this._instance);
   }
 
   /**

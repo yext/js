@@ -28,6 +28,25 @@ function assertType(object: any, type: string) {
 }
 
 /**
+ * Asserts that a value is a DOM element, regardless of its source realm.
+ * Throws an error if the assertion fails.
+ *
+ * @param value The value to check.
+ * @throws {Error} If the value is not a DOM element.
+ */
+function assertElement(value: any): asserts value is HTMLElement {
+  const isValidElement =
+    value !== null &&
+    typeof value === 'object' &&
+    value.nodeType === 1 &&
+    typeof value.tagName === 'string';
+
+  if (!isValidElement) {
+    throw new Error(`Value with name ${value.constructor.name} is not a valid HTMLElement.`);
+  }
+};
+
+/**
  * Assert that an object is an instance of the given class. Returns nothing, but throws if the type
  * does not match.
  * @param object - An instance of some class
@@ -50,4 +69,4 @@ function assertInstance(object: object, instanceClass: any) {
   }
 }
 
-export { Type, assertType, assertInstance };
+export { Type, assertType, assertInstance, assertElement };

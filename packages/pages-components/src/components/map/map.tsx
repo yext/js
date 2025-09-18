@@ -41,7 +41,6 @@ export const Map = ({
   provider = GoogleMaps,
   providerOptions = {},
   singleZoom = 14,
-  iframeWindow,
 }: MapProps) => {
   const wrapper = useRef(null);
 
@@ -83,7 +82,13 @@ export const Map = ({
       return;
     }
 
-    const mapOptions = new MapOptions()
+    const iframeWindow = typeof document !== "undefined"
+        ? (document.getElementById("preview-frame") as HTMLIFrameElement).contentWindow ?? undefined
+        : undefined
+    const mapboxInstance = (iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
+    mapboxInstance.accessToken = apiKey ?? "";
+
+    const newMap = new MapOptions()
       .withControlEnabled(controls)
       .withDefaultCenter(center)
       .withDefaultZoom(zoom)
@@ -94,12 +99,13 @@ export const Map = ({
       .withProviderOptions(providerOptions)
       .withSinglePinZoom(singleZoom)
       .withWrapper(wrapper.current)
+      .withInstance(mapboxInstance)
       .build();
 
-    setMap(mapOptions);
+    setMap(newMap);
 
     if (mapRef) {
-      mapRef.current = mapOptions;
+      mapRef.current = newMap;
     }
   }, [loaded]);
 
@@ -113,7 +119,6 @@ export const Map = ({
       provider
         .load(apiKey, {
           ...providerOptions,
-          iframeWindow: iframeWindow,
           ...(clientKey && { client: clientKey }),
         })
         .then(() => setLoaded(true));
