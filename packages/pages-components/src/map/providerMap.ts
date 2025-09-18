@@ -16,7 +16,8 @@ class ProviderMapOptions {
   panHandler: PanHandler;
   panStartHandler: PanStartHandler;
   providerOptions: { [key: string]: any };
-  instance: typeof mapboxgl;
+  iframeWindow: Window | undefined;
+  apiKey: string | undefined;
 
   constructor(provider: MapProvider, wrapper: HTMLElement | null) {
     assertInstance(provider, MapProvider);
@@ -31,7 +32,6 @@ class ProviderMapOptions {
     this.panHandler = () => null;
     this.panStartHandler = () => null;
     this.providerOptions = {};
-    this.instance = mapboxgl;
   }
 
   /**
@@ -71,8 +71,20 @@ class ProviderMapOptions {
     return this;
   }
 
-  withInstance(instance: typeof mapboxgl): ProviderMapOptions {
-    this.instance = instance;
+  /**
+   * @param iframeWindow - The window of the iframe that the map will be rendered in.
+   *   This is only necessary if the map is being rendered in an iframe.
+   */
+  withIframeWindow(iframeWindow: Window | undefined): ProviderMapOptions {
+    this.iframeWindow = iframeWindow;
+    return this;
+  }
+
+  /**
+   * @param apiKey - The API key to use for the map provider, if required.
+   */
+  withApiKey(apiKey: string | undefined): ProviderMapOptions {
+    this.apiKey = apiKey;
     return this;
   }
 

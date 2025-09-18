@@ -84,9 +84,7 @@ export const Map = ({
 
     const iframeWindow = typeof document !== "undefined"
         ? (document.getElementById("preview-frame") as HTMLIFrameElement).contentWindow ?? undefined
-        : undefined
-    const mapboxInstance = (iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
-    mapboxInstance.accessToken = apiKey ?? "";
+        : undefined;
 
     const newMap = new MapOptions()
       .withControlEnabled(controls)
@@ -99,7 +97,8 @@ export const Map = ({
       .withProviderOptions(providerOptions)
       .withSinglePinZoom(singleZoom)
       .withWrapper(wrapper.current)
-      .withInstance(mapboxInstance)
+      .withIframeWindow(iframeWindow)
+      .withApiKey(apiKey)
       .build();
 
     setMap(newMap);

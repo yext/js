@@ -60,7 +60,8 @@ class MapOptions {
   providerOptions: ProviderMapOptions | object;
   singlePinZoom: number;
   wrapper: HTMLElement | null;
-  instance: typeof mapboxgl;
+  iframeWindow: Window | undefined;
+  apiKey: string | undefined;
   /**
    * Initialize with default options
    */
@@ -81,7 +82,6 @@ class MapOptions {
     this.providerOptions = {};
     this.singlePinZoom = 14;
     this.wrapper = null;
-    this.instance = mapboxgl;
   }
 
   /**
@@ -192,8 +192,20 @@ class MapOptions {
     return this;
   }
 
-  withInstance(instance: typeof mapboxgl): MapOptions {
-    this.instance = instance;
+  /**
+   * @param iframeWindow - The window of the iframe that the map will be rendered in.
+   *  This is only necessary if the map is being rendered in an iframe.
+   */
+  withIframeWindow(iframeWindow: Window | undefined): MapOptions {
+    this.iframeWindow = iframeWindow;
+    return this;
+  }
+
+  /**
+   * @param apiKey - The API key to use for the map provider, if required.
+   */
+  withApiKey(apiKey: string | undefined): MapOptions {
+    this.apiKey = apiKey;
     return this;
   }
 
@@ -230,7 +242,6 @@ class Map {
   _panHandler?: PanHandler;
   _panStartHandler?: PanStartHandler;
   _map: ProviderMap;
-  _instance: typeof mapboxgl;
 
   constructor(options: MapOptions) {
     assertInstance(options, MapOptions);
@@ -279,13 +290,12 @@ class Map {
       .withPanHandler(() => this.panHandler())
       .withPanStartHandler(() => this.panStartHandler())
       .withProviderOptions(options.providerOptions)
-      .withInstance(options.instance)
+      .withIframeWindow(options.iframeWindow)
+      .withApiKey(options.apiKey)
       .build();
 
     this.setZoomCenter(this._defaultZoom, this._defaultCenter);
     this._currentBounds = this.getBounds();
-
-    this._instance = options.instance;
   }
 
   /**
@@ -401,7 +411,7 @@ class Map {
    *   instance with the same provider as this map
    */
   newPinOptions(): MapPinOptions {
-    return new MapPinOptions().withProvider(this._provider).withInstance(this._instance);
+    return new MapPinOptions().withProvider(this._provider);
   }
 
   /**
