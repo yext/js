@@ -31,8 +31,8 @@ function assertType(object: any, type: string) {
  * Asserts that a value is a DOM element, regardless of its source realm.
  * Throws an error if the assertion fails.
  *
- * @param value The value to check.
- * @throws {Error} If the value is not a DOM element.
+ * @param value - The value to check.
+ * @throws If the value is not a DOM element.
  */
 function assertElement(value: any): asserts value is HTMLElement {
   const isValidElement =
