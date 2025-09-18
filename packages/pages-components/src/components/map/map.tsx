@@ -82,7 +82,6 @@ export const Map = ({
       return;
     }
 
-
     const iframeWindow =
       typeof document !== "undefined"
         ? ((document.getElementById("preview-frame") as HTMLIFrameElement)
