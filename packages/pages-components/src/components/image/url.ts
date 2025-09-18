@@ -47,3 +47,20 @@ export const isValidHttpUrl = (rawUrl: string) => {
 
   return url.protocol === "http:" || url.protocol === "https:";
 };
+
+export const getImageTransformationsString = (
+  imageTransformations: ImageTransformations | undefined
+): string => {
+  if (!imageTransformations || Object.keys(imageTransformations).length === 0) {
+    return "";
+  }
+
+  const imageTransformationsString = Object.entries(imageTransformations)
+    .filter(([_, value]) => value !== undefined)
+    .map(([key, value]) => `${key}=${value}`)
+    .join(",");
+
+  return imageTransformationsString.length > 0
+    ? `,${imageTransformationsString}`
+    : "";
+};

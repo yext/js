@@ -144,7 +144,7 @@ export type ImageTransformations = {
   /** Specifies how an image should be cropped with fit=cover or fit=crop. */
   gravity?: "auto" | "left" | "right" | "top" | "bottom";
   /** Quality of the image. Between 1 and 100. Defaults to 85. */
-  quality?: string;
+  quality?: number;
 };
 
 /**

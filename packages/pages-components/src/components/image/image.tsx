@@ -172,8 +172,8 @@ export const validateRequiredProps = (
 };
 
 /**
- * Returns the src, imgStyle and widths that will be set on the underlying img tag based on the
- * layout.
+ * Returns the src, imgStyle, widths, and imageTransformations
+ * that will be set on the underlying img tag based on the layout.
  */
 export const handleLayout = (
   layout: ImageLayout,
