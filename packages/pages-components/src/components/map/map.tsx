@@ -11,6 +11,7 @@ import { Map as MapType, MapOptions } from "../../map/map.js";
 import { GeoBounds } from "../../map/geoBounds.js";
 import { Coordinate } from "../../map/coordinate.js";
 import type { MapProps, MapContextType } from "./types.js";
+import { MapProvider } from "../../map/mapProvider.js";
 
 export const MapContext = createContext<MapContextType | null>(null);
 
@@ -40,6 +41,7 @@ export const Map = ({
   provider = GoogleMaps,
   providerOptions = {},
   singleZoom = 14,
+  iframeWindow,
 }: MapProps) => {
   const wrapper = useRef(null);
 
@@ -107,12 +109,15 @@ export const Map = ({
       return;
     }
 
-    provider
-      .load(apiKey, {
-        ...providerOptions,
-        ...(clientKey && { client: clientKey }),
-      })
-      .then(() => setLoaded(true));
+    if (provider instanceof MapProvider) {
+      provider
+        .load(apiKey, {
+          ...providerOptions,
+          iframeWindow: iframeWindow,
+          ...(clientKey && { client: clientKey }),
+        })
+        .then(() => setLoaded(true));
+    }
   }, []);
 
   return (
