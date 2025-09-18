@@ -1,7 +1,12 @@
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 import { GeoBounds } from "./geoBounds.js";
-import { Type, assertType, assertInstance, assertElement } from "./util/assertions.js";
+import {
+  Type,
+  assertType,
+  assertInstance,
+  assertElement,
+} from "./util/assertions.js";
 import { MapPin, MapPinOptions } from "./mapPin.js";
 import { MapProvider } from "./mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "./providerMap.js";

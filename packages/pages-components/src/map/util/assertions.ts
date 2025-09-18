@@ -37,14 +37,16 @@ function assertType(object: any, type: string) {
 function assertElement(value: any): asserts value is HTMLElement {
   const isValidElement =
     value !== null &&
-    typeof value === 'object' &&
+    typeof value === "object" &&
     value.nodeType === 1 &&
-    typeof value.tagName === 'string';
+    typeof value.tagName === "string";
 
   if (!isValidElement) {
-    throw new Error(`Value with name ${value.constructor.name} is not a valid HTMLElement.`);
+    throw new Error(
+      `Value with name ${value.constructor.name} is not a valid HTMLElement.`
+    );
   }
-};
+}
 
 /**
  * Assert that an object is an instance of the given class. Returns nothing, but throws if the type

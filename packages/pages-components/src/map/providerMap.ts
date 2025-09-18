@@ -1,4 +1,9 @@
-import { Type, assertType, assertInstance, assertElement } from "./util/assertions.js";
+import {
+  Type,
+  assertType,
+  assertInstance,
+  assertElement,
+} from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
 import { PanHandler, PanStartHandler } from "./map.js";
 import { Coordinate } from "./coordinate.js";

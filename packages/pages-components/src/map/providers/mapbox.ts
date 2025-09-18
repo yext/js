@@ -16,7 +16,9 @@ class MapboxMap extends ProviderMap {
   constructor(options: ProviderMapOptions) {
     super(options);
 
-    const mapboxInstance = (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
+    const mapboxInstance =
+      (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })
+        ?.mapboxgl ?? mapboxgl;
     mapboxInstance.accessToken = options?.apiKey ?? "";
     this.instance = mapboxInstance;
 
