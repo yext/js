@@ -1,4 +1,4 @@
-import { CDNParams } from "./types.js";
+import { ImageTransformations } from "./types.js";
 import { Env, isValidHttpUrl, Partition } from "./url.js";
 
 // FileURL is a URL for a file stored in the Yext CDN.
@@ -151,7 +151,7 @@ export const fileUrlToDynString = (
   fileUrl: FileUrl,
   width: number,
   height: number,
-  cdnParams?: CDNParams
+  imageTransformations?: ImageTransformations
 ) => {
   const dynUrl = `https://dyn${
     fileUrl.partition === "us" ? "" : `.${fileUrl.partition}`
@@ -174,15 +174,15 @@ export const fileUrlToDynString = (
   const accountId =
     fileUrl.accountId !== undefined ? `${fileUrl.accountId}/` : "";
 
-  const cdnParamString =
-    cdnParams && Object.keys(cdnParams).length
+  const imageTransformationsString =
+    imageTransformations && Object.keys(imageTransformations).length
       ? "," +
-        Object.entries(cdnParams)
+        Object.entries(imageTransformations)
           .map(([key, value]) => `${key}=${value}`)
           .join(",")
       : "";
 
   return `${dynUrl}/${bucket}/${accountId}${fileUrl.contentHash}${
     fileUrl.extension
-  }/width=${Math.round(width)},height=${Math.round(height)}${cdnParamString}`;
+  }/width=${Math.round(width)},height=${Math.round(height)}${imageTransformationsString}`;
 };

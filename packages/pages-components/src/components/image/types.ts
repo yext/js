@@ -95,7 +95,7 @@ interface BaseImageProps {
   /** Set the loading state of the image. */
   loading?: "eager" | "lazy";
   /** Cloudflare Image transformations */
-  cdnParams?: CDNParams;
+  imageTransformations?: ImageTransformations;
 }
 
 /**
@@ -136,7 +136,7 @@ interface AspectImageProps extends BaseImageProps {
  * Cloudflare Image transformations
  * See: https://developers.cloudflare.com/images/transform-images/transform-via-url
  */
-export type CDNParams = {
+export type ImageTransformations = {
   /** Affects interpretation of width and height */
   fit?: "scale-down" | "contain" | "cover" | "crop" | "pad" | "squeeze";
   /** Image file format. Defaults to undefined, which uses webp if supported, original extension otherwise. */

@@ -240,8 +240,8 @@ describe("Image", () => {
     expect(img.getAttribute("loading")).toEqual("eager");
   });
 
-  it("properly renders the srcset based on the cdnParams", () => {
-    render(<Image image={image} cdnParams={{ quality: "50" }} />);
+  it("properly renders the srcset based on the imageTransformations", () => {
+    render(<Image image={image} imageTransformations={{ quality: "50" }} />);
 
     const img = screen.getByRole("img", {
       name: /alt text/i,
@@ -334,7 +334,7 @@ describe("handleLayout", () => {
   });
 
   it(`properly sets updatedCDN params when layout is ${ImageLayoutOption.ASPECT} and aspectRatio is provided`, () => {
-    const { updatedCdnParams } = handleLayout(
+    const { updatedImageTransformations } = handleLayout(
       ImageLayoutOption.ASPECT,
       imgWidth,
       imgHeight,
@@ -344,9 +344,8 @@ describe("handleLayout", () => {
       undefined,
       aspectRatio
     );
-    console.log(updatedCdnParams);
 
-    expect(updatedCdnParams?.fit).toEqual("cover");
+    expect(updatedImageTransformations?.fit).toEqual("cover");
   });
 });
 

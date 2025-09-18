@@ -1,5 +1,5 @@
 import { FileUrl, fileUrlToDynString, parseFileUrl } from "./fileUrl.js";
-import { CDNParams } from "./types.js";
+import { ImageTransformations } from "./types.js";
 
 const validCases = [
   {
@@ -144,7 +144,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    cdnParams: { format: "avif" } as CDNParams,
+    imageTransformations: { format: "avif" } as ImageTransformations,
     dynUrl:
       "https://dyn.eu.mktgcdn.com/f/contentHash.pdf/width=126,height=164,format=avif",
   },
@@ -153,10 +153,10 @@ const validCases = [
 describe("parseFileUrl valid", () => {
   test.each(validCases)(
     `returns valid parsedFileUrl for $name - $input`,
-    ({ input, want, dynUrl, cdnParams }) => {
+    ({ input, want, dynUrl, imageTransformations }) => {
       expect(parseFileUrl(input)).toEqual(want);
       expect(
-        fileUrlToDynString(parseFileUrl(input)!, 126, 164, cdnParams)
+        fileUrlToDynString(parseFileUrl(input)!, 126, 164, imageTransformations)
       ).toEqual(dynUrl);
     }
   );

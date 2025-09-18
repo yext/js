@@ -1,6 +1,6 @@
 import { convertFileUrl, fileUrlToDynString } from "./fileUrl.js";
 import { convertPhotoUrl, photoUrlToDynString } from "./photoUrl.js";
-import { CDNParams } from "./types.js";
+import { ImageTransformations } from "./types.js";
 
 export type Env = "prod" | "sbx" | "qa" | "dev";
 export type Partition = "us" | "eu";
@@ -13,7 +13,7 @@ export const getImageUrl = (
   rawUrl: string,
   width: number,
   height: number,
-  cdnParams?: CDNParams
+  imageTransformations?: ImageTransformations
 ) => {
   if (!isValidHttpUrl(rawUrl)) {
     console.error(`Invalid image url: ${rawUrl}.`);
@@ -24,12 +24,12 @@ export const getImageUrl = (
   if (parsedUrl.pathname.startsWith("/p")) {
     const photoUrl = convertPhotoUrl(parsedUrl);
     if (photoUrl) {
-      return photoUrlToDynString(photoUrl, width, height, cdnParams);
+      return photoUrlToDynString(photoUrl, width, height, imageTransformations);
     }
   } else if (parsedUrl.pathname.startsWith("/f")) {
     const fileUrl = convertFileUrl(parsedUrl);
     if (fileUrl) {
-      return fileUrlToDynString(fileUrl, width, height, cdnParams);
+      return fileUrlToDynString(fileUrl, width, height, imageTransformations);
     }
   }
 
