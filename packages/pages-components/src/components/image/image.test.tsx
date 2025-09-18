@@ -241,7 +241,7 @@ describe("Image", () => {
   });
 
   it("properly renders the srcset based on the imageTransformations", () => {
-    render(<Image image={image} imageTransformations={{ quality: "50" }} />);
+    render(<Image image={image} imageTransformations={{ quality: 50 }} />);
 
     const img = screen.getByRole("img", {
       name: /alt text/i,
