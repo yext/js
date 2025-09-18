@@ -46,7 +46,8 @@
   },
   "peerDependencies": {
     "react": "^17.0.2 || ^18.2.0",
-    "react-dom": "^17.0.2 || ^18.2.0"
+    "react-dom": "^17.0.2 || ^18.2.0",
+    "mapbox-gl": "^2.9.2"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.5.8",
@@ -75,7 +76,6 @@
     "generate-license-file": "^3.0.1",
     "jest-image-snapshot": "^6.4.0",
     "jsdom": "^24.1.0",
-    "mapbox-gl": "^2.9.2",
     "@playwright/test": "^1.48.2",
     "playwright-core": "^1.48.2",
     "prop-types": "^15.8.1",

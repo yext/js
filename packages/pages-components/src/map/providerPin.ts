@@ -19,7 +19,6 @@ class ProviderPinOptions {
   hoverHandler: PinHoverHandler;
   icons: { [key: string]: string };
   hasPinUrl: boolean;
-  instance: typeof mapboxgl;
 
   constructor(provider: MapProvider) {
     assertInstance(provider, MapProvider);
@@ -31,7 +30,6 @@ class ProviderPinOptions {
     this.hoverHandler = (_: boolean) => null;
     this.icons = {};
     this.hasPinUrl = false;
-    this.instance = mapboxgl;
   }
 
   /**
@@ -83,14 +81,6 @@ class ProviderPinOptions {
    */
   withHasPinUrl(hasPinUrl: boolean) {
     this.hasPinUrl = hasPinUrl;
-    return this;
-  }
-
-  /**
-   * @param instance - The mapboxgl instance to use, in case it's loaded in an iframe
-   */
-  withInstance(instance: typeof mapboxgl): ProviderPinOptions {
-    this.instance = instance;
     return this;
   }
 

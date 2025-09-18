@@ -104,16 +104,13 @@ class MapboxMap extends ProviderMap {
 // Pin Class
 
 class MapboxPin extends HTMLProviderPin {
-  instance: typeof mapboxgl;
   pin?: MarkerType;
   constructor(options: ProviderPinOptions) {
     super(options);
 
-    this.instance = options.instance;
-
     if (this._wrapper) {
       this._wrapper.style.position = "relative";
-      this.pin = new this.instance.Marker({
+      this.pin = new mapboxgl.Marker({
         anchor: "top-left",
         element: this._wrapper,
       });
