@@ -1,4 +1,10 @@
-import { Env, isValidHttpUrl, Partition } from "./url.js";
+import { ImageTransformations } from "./types.js";
+import {
+  Env,
+  getImageTransformationsString,
+  isValidHttpUrl,
+  Partition,
+} from "./url.js";
 
 // FileURL is a URL for a file stored in the Yext CDN.
 //
@@ -149,7 +155,8 @@ export const convertFileUrl = (parsedUrl: URL): FileUrl | undefined => {
 export const fileUrlToDynString = (
   fileUrl: FileUrl,
   width: number,
-  height: number
+  height: number,
+  imageTransformations?: ImageTransformations
 ) => {
   const dynUrl = `https://dyn${
     fileUrl.partition === "us" ? "" : `.${fileUrl.partition}`
@@ -172,7 +179,10 @@ export const fileUrlToDynString = (
   const accountId =
     fileUrl.accountId !== undefined ? `${fileUrl.accountId}/` : "";
 
+  const imageTransformationsString =
+    getImageTransformationsString(imageTransformations);
+
   return `${dynUrl}/${bucket}/${accountId}${fileUrl.contentHash}${
     fileUrl.extension
-  }/width=${Math.round(width)},height=${Math.round(height)}`;
+  }/width=${Math.round(width)},height=${Math.round(height)}${imageTransformationsString}`;
 };
