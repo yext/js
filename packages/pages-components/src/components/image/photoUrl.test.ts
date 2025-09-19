@@ -1,4 +1,5 @@
 import { parsePhotoUrl, PhotoUrl, photoUrlToDynString } from "./photoUrl.js";
+import { ImageTransformations } from "./types.js";
 
 const validCases = [
   {
@@ -54,16 +55,39 @@ const validCases = [
     dynUrl:
       "https://dyn.mktgcdn.com/p-sandbox/contentHash/width=126,height=164",
   },
+  {
+    name: "CDN Params",
+    input: "https://a.mktgcdn.com/p/contentHash/126x164.jpg",
+    want: {
+      scheme: "https",
+      env: "prod",
+      contentHash: "contentHash",
+      aspectRatio: undefined,
+      name: "126x164",
+      extension: ".jpg",
+    } as PhotoUrl,
+    imageTransformations: {
+      format: "avif",
+      fit: "contain",
+    } as ImageTransformations,
+    dynUrl:
+      "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164,format=avif,fit=contain",
+  },
 ];
 
 describe("parsePhotoUrl valid", () => {
   test.each(validCases)(
     `returns valid parsedPhotoUrl for $name - $input`,
-    ({ input, want, dynUrl }) => {
+    ({ input, want, dynUrl, imageTransformations }) => {
       expect(parsePhotoUrl(input)).toEqual(want);
-      expect(photoUrlToDynString(parsePhotoUrl(input)!, 126, 164)).toEqual(
-        dynUrl
-      );
+      expect(
+        photoUrlToDynString(
+          parsePhotoUrl(input)!,
+          126,
+          164,
+          imageTransformations
+        )
+      ).toEqual(dynUrl);
     }
   );
 });

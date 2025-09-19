@@ -11,6 +11,7 @@ import { Map as MapType, MapOptions } from "../../map/map.js";
 import { GeoBounds } from "../../map/geoBounds.js";
 import { Coordinate } from "../../map/coordinate.js";
 import type { MapProps, MapContextType } from "./types.js";
+import { MapProvider } from "../../map/mapProvider.js";
 
 export const MapContext = createContext<MapContextType | null>(null);
 
@@ -40,6 +41,7 @@ export const Map = ({
   provider = GoogleMaps,
   providerOptions = {},
   singleZoom = 14,
+  iframeId,
 }: MapProps) => {
   const wrapper = useRef(null);
 
@@ -81,7 +83,16 @@ export const Map = ({
       return;
     }
 
-    const mapOptions = new MapOptions()
+    // Mapbox is unable to find the wrapper div when running in an iframe,
+    // since the document context is different, but we can pass in the iframe's
+    // window object to fix the issue.
+    const iframeWindow =
+      !!iframeId && typeof document !== "undefined"
+        ? ((document.getElementById(iframeId) as HTMLIFrameElement)
+            ?.contentWindow ?? undefined)
+        : undefined;
+
+    const newMap = new MapOptions()
       .withControlEnabled(controls)
       .withDefaultCenter(center)
       .withDefaultZoom(zoom)
@@ -92,12 +103,14 @@ export const Map = ({
       .withProviderOptions(providerOptions)
       .withSinglePinZoom(singleZoom)
       .withWrapper(wrapper.current)
+      .withIframeWindow(iframeWindow)
+      .withApiKey(apiKey)
       .build();
 
-    setMap(mapOptions);
+    setMap(newMap);
 
     if (mapRef) {
-      mapRef.current = mapOptions;
+      mapRef.current = newMap;
     }
   }, [loaded]);
 
@@ -107,12 +120,14 @@ export const Map = ({
       return;
     }
 
-    provider
-      .load(apiKey, {
-        ...providerOptions,
-        ...(clientKey && { client: clientKey }),
-      })
-      .then(() => setLoaded(true));
+    if (provider instanceof MapProvider) {
+      provider
+        .load(apiKey, {
+          ...providerOptions,
+          ...(clientKey && { client: clientKey }),
+        })
+        .then(() => setLoaded(true));
+    }
   }, []);
 
   return (

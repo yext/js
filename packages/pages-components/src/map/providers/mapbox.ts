@@ -4,18 +4,26 @@ import { ProviderMap, ProviderMapOptions } from "../providerMap.js";
 import { HTMLProviderPin, ProviderPinOptions } from "../providerPin.js";
 import { Map } from "../map.js";
 import type { Map as MapType, Marker as MarkerType } from "mapbox-gl";
+import mapboxgl from "mapbox-gl";
 
 // GENERATOR TODO: call map resize method when hidden/shown (CoreBev, used to be done in Core.js)
 
 // Map Class
 
 class MapboxMap extends ProviderMap {
+  instance: typeof mapboxgl;
   map?: MapType;
   constructor(options: ProviderMapOptions) {
     super(options);
 
+    const mapboxInstance =
+      (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })
+        ?.mapboxgl ?? mapboxgl;
+    mapboxInstance.accessToken = options?.apiKey ?? "";
+    this.instance = mapboxInstance;
+
     if (options.wrapper) {
-      this.map = new mapboxgl.Map({
+      this.map = new this.instance.Map({
         container: options.wrapper,
         interactive: options.controlEnabled,
         style: "mapbox://styles/mapbox/streets-v9",
@@ -25,7 +33,7 @@ class MapboxMap extends ProviderMap {
 
     // Add the zoom control
     if (options.controlEnabled) {
-      const zoomControl = new mapboxgl.NavigationControl({
+      const zoomControl = new this.instance.NavigationControl({
         showCompass: false,
       });
       this.map?.addControl(zoomControl);
@@ -55,7 +63,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
-    const center = new mapboxgl.LngLat(
+    const center = new this.instance.LngLat(
       coordinate.longitude,
       coordinate.latitude
     );
@@ -80,7 +88,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.zetZoomCenter}
    */
   setZoomCenter(zoom: number, coordinate: Coordinate, animated: boolean) {
-    const center = new mapboxgl.LngLat(
+    const center = new this.instance.LngLat(
       coordinate.longitude,
       coordinate.latitude
     );
@@ -148,7 +156,7 @@ class MapboxPin extends HTMLProviderPin {
 function load(
   resolve: () => void,
   _: () => void,
-  apiKey: string,
+  _apiKey: string,
   { version = "v1.13.0" } = {}
 ) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
@@ -160,7 +168,6 @@ function load(
   const mapScript = document.createElement("script");
   mapScript.src = baseUrl + ".js";
   mapScript.onload = () => {
-    (mapboxgl as any).accessToken = apiKey;
     resolve();
   };
 

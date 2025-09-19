@@ -1,4 +1,5 @@
 import { FileUrl, fileUrlToDynString, parseFileUrl } from "./fileUrl.js";
+import { ImageTransformations } from "./types.js";
 
 const validCases = [
   {
@@ -133,16 +134,30 @@ const validCases = [
     } as FileUrl,
     dynUrl: "https://dyn.mktgcdn.com/f-dev/contentHash/width=126,height=164",
   },
+  {
+    name: "ProdEU image",
+    input: "https://a.eu.mktgcdn.com/f/contentHash.pdf",
+    want: {
+      scheme: "https",
+      partition: "eu",
+      env: "prod",
+      contentHash: "contentHash",
+      extension: ".pdf",
+    } as FileUrl,
+    imageTransformations: { format: "avif" } as ImageTransformations,
+    dynUrl:
+      "https://dyn.eu.mktgcdn.com/f/contentHash.pdf/width=126,height=164,format=avif",
+  },
 ];
 
 describe("parseFileUrl valid", () => {
   test.each(validCases)(
     `returns valid parsedFileUrl for $name - $input`,
-    ({ input, want, dynUrl }) => {
+    ({ input, want, dynUrl, imageTransformations }) => {
       expect(parseFileUrl(input)).toEqual(want);
-      expect(fileUrlToDynString(parseFileUrl(input)!, 126, 164)).toEqual(
-        dynUrl
-      );
+      expect(
+        fileUrlToDynString(parseFileUrl(input)!, 126, 164, imageTransformations)
+      ).toEqual(dynUrl);
     }
   );
 });
