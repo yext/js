@@ -39,6 +39,7 @@ export interface MapProps {
   provider?: MapProvider;
   providerOptions?: { [key: string]: any };
   singleZoom?: number;
+  iframeId?: string;
 }
 
 // Marker

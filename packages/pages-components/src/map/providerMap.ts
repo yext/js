@@ -1,4 +1,9 @@
-import { Type, assertType, assertInstance } from "./util/assertions.js";
+import {
+  Type,
+  assertType,
+  assertInstance,
+  assertElement,
+} from "./util/assertions.js";
 import { MapProvider } from "./mapProvider.js";
 import { PanHandler, PanStartHandler } from "./map.js";
 import { Coordinate } from "./coordinate.js";
@@ -16,11 +21,13 @@ class ProviderMapOptions {
   panHandler: PanHandler;
   panStartHandler: PanStartHandler;
   providerOptions: { [key: string]: any };
+  iframeWindow: Window | undefined;
+  apiKey: string | undefined;
 
   constructor(provider: MapProvider, wrapper: HTMLElement | null) {
     assertInstance(provider, MapProvider);
     if (wrapper) {
-      assertInstance(wrapper, HTMLElement);
+      assertElement(wrapper);
     }
 
     this.providerMapClass = provider.getMapClass();
@@ -66,6 +73,23 @@ class ProviderMapOptions {
    */
   withProviderOptions(providerOptions: object): ProviderMapOptions {
     this.providerOptions = providerOptions;
+    return this;
+  }
+
+  /**
+   * @param iframeWindow - The window of the iframe that the map will be rendered in.
+   *   This is only necessary if the map is being rendered in an iframe.
+   */
+  withIframeWindow(iframeWindow: Window | undefined): ProviderMapOptions {
+    this.iframeWindow = iframeWindow;
+    return this;
+  }
+
+  /**
+   * @param apiKey - The API key to use for the map provider, if required.
+   */
+  withApiKey(apiKey: string | undefined): ProviderMapOptions {
+    this.apiKey = apiKey;
     return this;
   }
 
