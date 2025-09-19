@@ -83,11 +83,11 @@ export const Map = ({
       return;
     }
 
-    // Mapbox is unable to find the wrapper div when running in an iframe, 
-    // since the document context is different, but we can pass in the iframe's 
+    // Mapbox is unable to find the wrapper div when running in an iframe,
+    // since the document context is different, but we can pass in the iframe's
     // window object to fix the issue.
     const iframeWindow =
-      (!!iframeId && typeof document !== "undefined")
+      !!iframeId && typeof document !== "undefined"
         ? ((document.getElementById(iframeId) as HTMLIFrameElement)
             ?.contentWindow ?? undefined)
         : undefined;
