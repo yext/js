@@ -41,6 +41,7 @@ export const Map = ({
   provider = GoogleMaps,
   providerOptions = {},
   singleZoom = 14,
+  iframeId,
 }: MapProps) => {
   const wrapper = useRef(null);
 
@@ -83,12 +84,11 @@ export const Map = ({
     }
 
     // Mapbox is unable to find the wrapper div when running in an iframe, 
-    // since the document context is different. Puck's preview iframe has id 
-    // "preview-iframe", so we can use that to pass in the iframe's 
+    // since the document context is different, but we can pass in the iframe's 
     // window object to fix the issue.
     const iframeWindow =
-      typeof document !== "undefined"
-        ? ((document.getElementById("preview-frame") as HTMLIFrameElement)
+      (!!iframeId && typeof document !== "undefined")
+        ? ((document.getElementById(iframeId) as HTMLIFrameElement)
             ?.contentWindow ?? undefined)
         : undefined;
 
