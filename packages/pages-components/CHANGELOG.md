@@ -1,24 +1,3 @@
-#### 1.1.13 (2025-09-19)
-
-##### Continuous Integration
-
-*  support trusted publishing (#109) (8650b782)
-
-##### New Features
-
-* **pages-components:**  support cdn parameters and use cdn for aspect images (#108) (7dde1c51)
-
-##### Bug Fixes
-
-*  split on '@' in verifyPublish (#111) (f924fc6e)
-*  support LocationMap Mapbox in VLE iframe (#110) (0c70007d)
-*  block cta links that are not strings (#107) (3a03462f)
-
-##### Other Changes
-
-*  pages-components@1.1.13" (326031ec)
-*  pages-components@1.1.13 (721b8caf)
-
 #### 1.1.12 (2025-08-22)
 
 ##### Bug Fixes
