@@ -10,7 +10,7 @@
     "autofix": "npm run lint && npm run prettier",
     "test": "turbo run test",
     "generate-notices": "turbo run generate-notices && generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
-    "ci-publish": "tsx scripts/publishCI.ts",
+    "ci-verify-publish": "tsx scripts/verifyPublish.ts",
     "release": "tsx scripts/release.ts"
   },
   "devDependencies": {
