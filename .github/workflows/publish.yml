@@ -45,6 +45,5 @@ jobs:
 
       - name: Publish
         run: |
-          pnpm config set publish-branch ""
           cd packages/pages-components
           pnpm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
