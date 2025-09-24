@@ -20,6 +20,7 @@
 
 ##### Other Changes
 
+*  pages-components@1.1.13 (6287e0be)
 *  store tag correctly for publish step (#115)" (7bec74d9)
 *  pages-components@1.1.13" (69a9e328)
 *  pages-components@1.1.13 (e6e57d1a)
