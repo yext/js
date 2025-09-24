@@ -39,10 +39,12 @@ jobs:
 
       - name: Verify package version and get npm tag
         id: get_npm_tag
-        run: pnpm run ci-verify-publish ${{ github.ref_name }}
-
-      - name: Allow publishing from detached HEAD
-        run: pnpm config set publish-branch ""
+        run: |
+            TAG=$(pnpm run ci-verify-publish ${{ github.ref_name }} | tail -n 1)
+            echo "npm_tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: Publish
-        run: cd packages/pages-components && pnpm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
+        run: |
+          pnpm config set publish-branch ""
+          cd packages/pages-components
+          pnpm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
