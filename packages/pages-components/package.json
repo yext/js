@@ -8,6 +8,10 @@
     "Yext",
     "React"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yext/js.git"
+  },
   "sideEffects": false,
   "type": "module",
   "files": [

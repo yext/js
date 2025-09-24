@@ -2,38 +2,39 @@
 
 ##### Continuous Integration
 
-*  support trusted publishing (#109) (8650b782)
+*  support trusted publishing ([#109](https://github.com/yext/js/pull/109)) ([8650b782](https://github.com/yext/js/commit/8650b782671dd76e87f2e39455510026ab597bd8))
 
 ##### New Features
 
-* **pages-components:**  support cdn parameters and use cdn for aspect images (#108) (7dde1c51)
+* **pages-components:**  support cdn parameters and use cdn for aspect images ([#108](https://github.com/yext/js/pull/108)) ([7dde1c51](https://github.com/yext/js/commit/7dde1c5153657ef3e7e1dfdfa35c14e10a8cdab5))
 
 ##### Bug Fixes
 
-*  store tag correctly for publish step (#115) (0622c36e)
-*  provide correct tag for publish (#114) (f994b98a)
-*  pass correct tag to publish step (#113) (2953455a)
-*  checkout main branch before publishing (#112) (e10d7c12)
-*  split on '@' in verifyPublish (#111) (f924fc6e)
-*  support LocationMap Mapbox in VLE iframe (#110) (0c70007d)
-*  block cta links that are not strings (#107) (3a03462f)
+*  store tag correctly for publish step ([#115](https://github.com/yext/js/pull/115)) ([0622c36e](https://github.com/yext/js/commit/0622c36e77f5ce7d73e90efe4d7146a4684241d1))
+*  provide correct tag for publish ([#114](https://github.com/yext/js/pull/114)) ([f994b98a](https://github.com/yext/js/commit/f994b98a359f6df578cc0d44fbca408b6d4d4172))
+*  pass correct tag to publish step ([#113](https://github.com/yext/js/pull/113)) ([2953455a](https://github.com/yext/js/commit/2953455a83591443427c4cf8635c27386002d040))
+*  checkout main branch before publishing ([#112](https://github.com/yext/js/pull/112)) ([e10d7c12](https://github.com/yext/js/commit/e10d7c12417bc95c28f7bdcdefc0f961a92647c6))
+*  split on '@' in verifyPublish ([#111](https://github.com/yext/js/pull/111)) ([f924fc6e](https://github.com/yext/js/commit/f924fc6e50a5277ebdd502e4707b950f28eb6743))
+*  support LocationMap Mapbox in VLE iframe ([#110](https://github.com/yext/js/pull/110)) ([0c70007d](https://github.com/yext/js/commit/0c70007d6041c9bca7e8bbc26266128068c33a34))
+*  block cta links that are not strings ([#107](https://github.com/yext/js/pull/107)) ([3a03462f](https://github.com/yext/js/commit/3a03462f61823e49f236bf90b9e359665983dc08))
 
 ##### Other Changes
 
-*  pages-components@1.1.13 (6287e0be)
-*  store tag correctly for publish step (#115)" (7bec74d9)
-*  pages-components@1.1.13" (69a9e328)
-*  pages-components@1.1.13 (e6e57d1a)
-*  pages-components@1.1.13" (1d1bf855)
-*  pages-components@1.1.13 (c4420bdd)
-*  pages-components@1.1.13" (0369cda3)
-*  pages-components@1.1.13 (17a6db63)
-*  pages-components@1.1.13" (797c5c27)
-*  pages-components@1.1.13 (fedd33ba)
-*  pages-components@1.1.13" (ab3be7ce)
-*  pages-components@1.1.13 (333203a7)
-*  pages-components@1.1.13" (326031ec)
-*  pages-components@1.1.13 (721b8caf)
+*  pages-components@1.1.13 ([bfc928bf](https://github.com/yext/js/commit/bfc928bff2ffe880e6c19a48522722971a0c4e16))
+*  pages-components@1.1.13 ([6287e0be](https://github.com/yext/js/commit/6287e0bea4dc6ac7f6d16b05bed6d81baa88e239))
+*  store tag correctly for publish step ([#115](https://github.com/yext/js/pull/115))" ([7bec74d9](https://github.com/yext/js/commit/7bec74d9b4f668fe2d601bb10fbd84def11d6310))
+*  pages-components@1.1.13" ([69a9e328](https://github.com/yext/js/commit/69a9e328136e378495e2ea33bc97f68263eb7dc4))
+*  pages-components@1.1.13 ([e6e57d1a](https://github.com/yext/js/commit/e6e57d1a56670a811919e78ca40d45b28dac2005))
+*  pages-components@1.1.13" ([1d1bf855](https://github.com/yext/js/commit/1d1bf855761263ad96a5993ba8c52bf62eee90dd))
+*  pages-components@1.1.13 ([c4420bdd](https://github.com/yext/js/commit/c4420bdd470c0f45dbaaed9837f87e3e39da6511))
+*  pages-components@1.1.13" ([0369cda3](https://github.com/yext/js/commit/0369cda377095f78eaa3e7382745b71a00b15dfe))
+*  pages-components@1.1.13 ([17a6db63](https://github.com/yext/js/commit/17a6db6306ef02e8e6af4bb30022d6d848d8eec4))
+*  pages-components@1.1.13" ([797c5c27](https://github.com/yext/js/commit/797c5c275a8a2a384044fcb871a4a569e049f532))
+*  pages-components@1.1.13 ([fedd33ba](https://github.com/yext/js/commit/fedd33ba48f92bab59074550f98e4c095dc984d8))
+*  pages-components@1.1.13" ([ab3be7ce](https://github.com/yext/js/commit/ab3be7cef5c5df40074bc201a539aee4d17e2e16))
+*  pages-components@1.1.13 ([333203a7](https://github.com/yext/js/commit/333203a78d7b6deedad14f162c1ad299095ab562))
+*  pages-components@1.1.13" ([326031ec](https://github.com/yext/js/commit/326031ec7fc863735d011bfea419383b87e6e175))
+*  pages-components@1.1.13 ([721b8caf](https://github.com/yext/js/commit/721b8cafed50e61e4ac50bd03755c178a205048b))
 
 #### 1.1.12 (2025-08-22)
 
