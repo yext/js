@@ -23,6 +23,7 @@ import styles from "./lexical.module.css";
 export function LexicalRichText({
   serializedAST,
   nodeClassNames,
+  contentEditableProps,
 }: LexicalRichTextProps) {
   return (
     <LexicalComposer
@@ -35,6 +36,9 @@ export function LexicalRichText({
               <ContentEditable
                 className="editor-input"
                 ariaLabel="Lexical Rich Text"
+                role="article"
+                readOnly={true}
+                {...contentEditableProps}
               />
             }
             ErrorBoundary={LexicalErrorBoundary}

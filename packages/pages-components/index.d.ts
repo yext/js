@@ -3,7 +3,10 @@ declare module "@lexical/react/LexicalComposer" {
   export class LexicalComposer extends React.Component<any, any> {}
 }
 declare module "@lexical/react/LexicalRichTextPlugin";
-declare module "@lexical/react/LexicalContentEditable";
+declare module "@lexical/react/LexicalContentEditable" {
+  export type ContextEditableProps = any;
+  export class ContentEditable extends React.Component<any, any> {}
+}
 declare module "@lexical/react/LexicalErrorBoundary";
 declare module "@lexical/react/LexicalListPlugin";
 declare module "@lexical/react/LexicalLinkPlugin";
