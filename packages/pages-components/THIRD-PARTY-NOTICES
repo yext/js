@@ -135,15 +135,15 @@ MIT
 
 The following npm packages may be included in this product:
 
- - @lexical/code@0.12.6
- - @lexical/hashtag@0.12.6
- - @lexical/link@0.12.6
- - @lexical/list@0.12.6
- - @lexical/react@0.12.6
- - @lexical/rich-text@0.12.6
- - @lexical/table@0.12.6
- - @lexical/utils@0.12.6
- - lexical@0.12.6
+ - @lexical/code@0.12.5
+ - @lexical/hashtag@0.12.5
+ - @lexical/html@0.12.5
+ - @lexical/link@0.12.5
+ - @lexical/list@0.12.5
+ - @lexical/react@0.12.5
+ - @lexical/rich-text@0.12.5
+ - @lexical/table@0.12.5
+ - lexical@0.12.5
 
 These packages each contain the following license:
 
