@@ -1,5 +1,5 @@
 import { InitialConfigType } from "@lexical/react/LexicalComposer";
-import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
+import { TableNode, TableRowNode } from "@lexical/table";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
@@ -7,8 +7,9 @@ import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { HashtagNode } from "@lexical/hashtag";
 import { EditorThemeClasses } from "lexical";
 import DefaultNodeStyling from "./DefaultStyling.js";
-import { ImageNode } from "./imageNode/index.js";
+import { ImageNode } from "./imageNode/ImageNode.js";
 import { HorizontalRuleNode } from "@lexical/react/LexicalHorizontalRuleNode";
+import { CustomTableCellNode } from "./TableCellNode.js";
 
 /**
  * Configuration for the Lexical Editor that powers the {@link LexicalComposer}. There is
@@ -36,7 +37,7 @@ export function generateConfig(
       CodeNode,
       CodeHighlightNode,
       TableNode,
-      TableCellNode,
+      CustomTableCellNode,
       TableRowNode,
       AutoLinkNode,
       LinkNode,

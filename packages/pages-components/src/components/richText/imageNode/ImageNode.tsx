@@ -1,5 +1,11 @@
 import React from "react";
-import { EditorConfig, DecoratorNode, NodeKey } from "lexical";
+import {
+  EditorConfig,
+  DecoratorNode,
+  NodeKey,
+  DOMExportOutput,
+  LexicalEditor,
+} from "lexical";
 
 import LexicalImage from "./LexicalImage.js";
 import { SerializedImageNode } from "./types.js";
@@ -92,6 +98,35 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     }
 
     return span;
+  }
+
+  exportDOM(editor: LexicalEditor): DOMExportOutput {
+    const span = document.createElement("span");
+    const className = editor._config.theme.image;
+    if (className) {
+      span.className = className;
+    }
+
+    const img = document.createElement("img");
+    img.src = this.__src; // Use 'this' for instance properties
+    if (this.__altText) {
+      img.alt = this.__altText;
+    }
+    if (this.__width !== "inherit" && this.__width) {
+      img.width = Number(this.__width);
+    }
+    if (this.__height !== "inherit" && this.__height) {
+      img.height = Number(this.__height);
+    }
+    if (this.__maxWidth) {
+      img.style.maxWidth = `${this.__maxWidth}px`;
+    }
+    img.loading = "lazy";
+    img.decoding = "async";
+
+    span.appendChild(img);
+
+    return { element: span };
   }
 
   /**
