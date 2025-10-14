@@ -8,7 +8,9 @@ import { $generateHtmlFromNodes } from "@lexical/html";
 
 /**
  * @deprecated Use the stream's .html version instead with `dangerouslySetInnerHTML`.
+ * ```jsx
  * <div dangerouslySetInnerHTML={{ __html: c_lrt.html }} />
+ * ```
  *
  * Renders a read-only view of a Lexical Rich Text field. Styling for the various
  * types of Rich Text element can be optionally provided. If not provided, Yext default
