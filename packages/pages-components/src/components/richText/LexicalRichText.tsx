@@ -1,53 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
-import {
-  CodeHighlightPlugin,
-  ImagePlugin,
-  ListMaxIndentLevelPlugin,
-} from "./plugins/index.js";
 import { LexicalRichTextProps } from "./types.js";
 import { generateConfig } from "./methods.js";
 import styles from "./lexical.module.css";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { $generateHtmlFromNodes } from "@lexical/html";
 
 /**
+ * @deprecated Use the stream's .html version instead with `dangerouslySetInnerHTML`.
+ * ```jsx
+ * <div dangerouslySetInnerHTML={{ __html: c_lrt.html }} />
+ * ```
+ *
  * Renders a read-only view of a Lexical Rich Text field. Styling for the various
  * types of Rich Text element can be optionally provided. If not provided, Yext default
  * styling will be applied.
+ *
+ * Note: This component currently only supports rendering on the client side.
  */
 export function LexicalRichText({
   serializedAST,
   nodeClassNames,
 }: LexicalRichTextProps) {
+  const [html, setHtml] = useState("");
+
   return (
-    <LexicalComposer
-      initialConfig={generateConfig(serializedAST, nodeClassNames)}
-    >
-      <div className={`${styles["editor-inner"]} ${styles["no-border"]}`}>
-        <div className={styles["editor-inner"]}>
-          <RichTextPlugin
-            contentEditable={
-              <ContentEditable
-                className="editor-input"
-                ariaLabel="Lexical Rich Text"
-              />
-            }
-            ErrorBoundary={LexicalErrorBoundary}
-            placeholder={<div></div>}
-          />
-          <CodeHighlightPlugin />
-          <ListPlugin />
-          <LinkPlugin />
-          <TablePlugin />
-          <ImagePlugin />
-          <ListMaxIndentLevelPlugin maxDepth={7} />
+    <>
+      <LexicalComposer
+        initialConfig={generateConfig(serializedAST, nodeClassNames)}
+      >
+        <HtmlExportPlugin onHTML={setHtml} />
+        <div className={`${styles["editor-inner"]} ${styles["no-border"]}`}>
+          <div className={styles["editor-inner"]}>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
         </div>
-      </div>
-    </LexicalComposer>
+      </LexicalComposer>
+    </>
   );
+}
+
+function HtmlExportPlugin({ onHTML }: { onHTML: (html: string) => void }) {
+  const [editor] = useLexicalComposerContext();
+
+  useEffect(() => {
+    editor.update(() => {
+      const html = $generateHtmlFromNodes(editor);
+      onHTML(html);
+    });
+  }, [editor, onHTML]);
+
+  return null;
 }

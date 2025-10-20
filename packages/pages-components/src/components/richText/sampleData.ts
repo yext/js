@@ -158,6 +158,7 @@ export const LEXICAL_RICH_TEXT_SERIALIZED_AST = {
                 type: "tablecell",
                 version: 1,
                 headerState: 3,
+                width: 300,
               },
               {
                 children: [

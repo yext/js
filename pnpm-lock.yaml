@@ -84,28 +84,28 @@ importers:
   packages/pages-components:
     dependencies:
       '@lexical/code':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)
       '@lexical/hashtag':
-        specifier: ^0.12.5
+        specifier: 0.12.6
+        version: 0.12.6(lexical@0.12.6)
+      '@lexical/html':
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)
       '@lexical/link':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)
       '@lexical/list':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)
       '@lexical/react':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(yjs@13.6.23)
       '@lexical/rich-text':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(@lexical/clipboard@0.12.6(lexical@0.12.6))(@lexical/selection@0.12.6(lexical@0.12.6))(@lexical/utils@0.12.6(lexical@0.12.6))(lexical@0.12.6)
       '@lexical/table':
-        specifier: ^0.12.5
-        version: 0.12.6(lexical@0.12.6)
-      '@lexical/utils':
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6(lexical@0.12.6)
       '@yext/analytics':
         specifier: ^1.0.0
@@ -120,7 +120,7 @@ importers:
         specifier: ^4.0.0
         version: 4.1.0(encoding@0.1.13)
       lexical:
-        specifier: ^0.12.5
+        specifier: 0.12.6
         version: 0.12.6
       mapbox-gl:
         specifier: ^2.9.2
