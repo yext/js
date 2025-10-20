@@ -37,6 +37,10 @@ export class CustomTableCellNode extends TableCellNode {
     return cellNode;
   }
 
+  exportJSON(): SerializedTableCellNode {
+    return super.exportJSON();
+  }
+
   exportDOM(editor: LexicalEditor): DOMExportOutput {
     const domExported = super.exportDOM(editor);
     if (domExported.element) {
