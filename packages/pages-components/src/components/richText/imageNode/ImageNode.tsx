@@ -17,7 +17,7 @@ import { $createImageNode } from "./methods.js";
  * be used with a read-only Lexical Editor. As such, it does not have setters for its various
  * attributes.
  */
-export class ImageNode extends DecoratorNode<JSX.Element> {
+export class ImageNode extends DecoratorNode<React.ReactElement> {
   __src: string;
   __altText: string;
   __width: "inherit" | number;
@@ -137,7 +137,7 @@ export class ImageNode extends DecoratorNode<JSX.Element> {
     return false;
   }
 
-  decorate(): JSX.Element {
+  decorate(): React.ReactElement {
     return (
       <LexicalImage
         src={this.__src}

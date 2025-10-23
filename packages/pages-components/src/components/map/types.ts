@@ -45,10 +45,10 @@ export interface MapProps {
 // Marker
 
 export interface MarkerProps {
-  children?: React.ReactChild;
+  children?: React.ReactElement;
   coordinate: Coordinate;
   hideOffscreen?: boolean;
-  icon?: JSX.Element;
+  icon?: React.ReactElement;
   id: string;
   onClick?: (id: string) => void;
   onHover?: (hovered: boolean, id: string) => void;
@@ -66,8 +66,8 @@ export type ClusterTemplateProps = {
 
 export type ClustererProps = {
   clusterRadius?: number;
-  children: JSX.Element[] | JSX.Element;
-  ClusterTemplate?: (props: ClusterTemplateProps) => JSX.Element;
+  children: React.ReactElement[] | React.ReactElement;
+  ClusterTemplate?: (props: ClusterTemplateProps) => React.ReactElement;
 };
 
 export type PinStoreType = {
