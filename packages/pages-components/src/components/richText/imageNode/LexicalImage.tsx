@@ -12,7 +12,7 @@ export default function LexicalImage({
   width,
   height,
   maxWidth,
-}: LexicalImageProps): JSX.Element {
+}: LexicalImageProps): React.ReactElement {
   const style = useMemo(() => {
     return { height, width, maxWidth };
   }, [height, width, maxWidth]);

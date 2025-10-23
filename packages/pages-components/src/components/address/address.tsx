@@ -48,8 +48,8 @@ const AddressLine = ({
   address,
   line,
   separator,
-}: AddressLineProps): JSX.Element => {
-  const addressDOM: JSX.Element[] = [];
+}: AddressLineProps): React.ReactElement => {
+  const addressDOM: React.ReactElement[] = [];
   let separatorCount = 0;
 
   for (const field of line) {

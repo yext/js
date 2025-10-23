@@ -75,7 +75,7 @@ export const Clusterer = ({
   const [pinStore, setPinStore] = useState<PinStoreType[]>([]);
   const [clusters, setClusters] = useState<PinStoreType[][]>();
   const [clusterIds, setClusterIds] = useState<string[]>([]);
-  const [clustersToRender, setClustersToRender] = useState<JSX.Element[]>([]);
+  const [clustersToRender, setClustersToRender] = useState<React.ReactElement[]>([]);
 
   // Recalculate the clusters when either the pin store is updated or the map zoom level changes.
   useEffect(() => {
