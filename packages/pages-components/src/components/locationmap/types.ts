@@ -1,7 +1,7 @@
 import type { MapProps, Coordinate } from "../map/types.js";
 
 export interface LocationMapProps extends MapProps {
-  children?: React.ReactChild;
+  children?: React.ReactElement;
   coordinate: Coordinate;
   linkSameTab?: boolean;
   pinUrl?: string;
