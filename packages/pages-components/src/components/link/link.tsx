@@ -77,7 +77,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
             customTags: customTags,
             customValues: customValues,
           });
-        } catch (exception) {
+        } catch (_) {
           console.error("Failed to report click Analytics Event");
         }
       }

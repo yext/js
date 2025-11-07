@@ -69,7 +69,7 @@ function defaultDayOfWeekTemplate(params: StatusParams): React.ReactNode {
   }
   const dayOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",
-    ...(params.dayOptions ?? {}),
+    ...params.dayOptions,
   };
 
   let dayOfWeek = "";

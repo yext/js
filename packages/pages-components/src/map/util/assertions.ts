@@ -1,5 +1,6 @@
 enum Type {
   UNDEFINED = "undefined",
+  // oxlint-disable-next-line no-duplicate-enum-values
   NULL = "object", // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#null
   BOOLEAN = "boolean",
   NUMBER = "number",
@@ -58,7 +59,7 @@ function assertInstance(object: object, instanceClass: any) {
 
   try {
     isInstance = object instanceof instanceClass;
-  } catch (err) {
+  } catch (_) {
     throw new Error(
       "Assertion error: 'instanceClass' is not a valid constructor"
     );

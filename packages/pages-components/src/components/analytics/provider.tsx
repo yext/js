@@ -94,7 +94,7 @@ export function debuggingParamDetected(): boolean {
   if (getRuntime().name !== "browser") {
     return false;
   }
-  if (typeof window === undefined) {
+  if (typeof window === "undefined") {
     return false;
   }
   const currentUrl = new URL(window.location.href);
