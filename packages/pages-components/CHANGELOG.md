@@ -2,7 +2,7 @@
 
 ##### Chores
 
-*  upgrade to playwright 1.55.1 ([#119](https://github.com/yext/js/pull/119)) ([940cf85d](https://github.com/yext/js/commit/940cf85d36999aa59af67acf5fe5689eac8b0b1e))
+- upgrade to playwright 1.55.1 ([#119](https://github.com/yext/js/pull/119)) ([940cf85d](https://github.com/yext/js/commit/940cf85d36999aa59af67acf5fe5689eac8b0b1e))
 
 #### 1.1.14 (2025-10-20)
 
