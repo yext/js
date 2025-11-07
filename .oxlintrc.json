@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      { "caughtErrorsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ]
+  },
+  "ignorePatterns": ["**/*/dist", "!.storybook", "**/*/storybook-static/**"]
+}

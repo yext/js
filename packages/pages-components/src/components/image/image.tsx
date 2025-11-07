@@ -240,9 +240,8 @@ export const handleLayout = (
       imgStyle.aspectRatio = aspectRatio
         ? `${aspectRatio}`
         : `${imgWidth} / ${imgHeight}`;
-      updatedImageTransformations &&
-        (updatedImageTransformations.fit =
-          updatedImageTransformations?.fit || "cover");
+      updatedImageTransformations.fit =
+        updatedImageTransformations?.fit || "cover";
 
       break;
     case ImageLayoutOption.FILL:
