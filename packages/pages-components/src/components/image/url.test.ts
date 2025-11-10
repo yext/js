@@ -56,7 +56,7 @@ describe("getImageUrl", () => {
     const result = getImageUrl(unsplashUrl, width, height);
     expect(result).toBe(unsplashUrl);
   });
-  
+
   it("handles invalid URLs by logging an error", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */
