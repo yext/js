@@ -7,12 +7,10 @@ export type Partition = "us" | "eu";
 
 /**
  * Checks if a hostname is a Yext CDN host.
- * Pattern: a[.partition].mktgcdn.com
+ * Valid hosts include: a.mktgcdn.com, a.eu.mktgcdn.com, and other partition variants.
  */
 const isYextCdnHost = (hostname: string): boolean => {
-  return (
-    hostname === "a.mktgcdn.com" || /^a\.[a-z]+\.mktgcdn\.com$/.test(hostname)
-  );
+  return hostname.includes("mktgcdn.com");
 };
 
 /**
