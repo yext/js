@@ -10,7 +10,9 @@ export type Partition = "us" | "eu";
  * Pattern: a[.partition].mktgcdn.com
  */
 const isYextCdnHost = (hostname: string): boolean => {
-  return hostname === "a.mktgcdn.com" || /^a\.[a-z]+\.mktgcdn\.com$/.test(hostname);
+  return (
+    hostname === "a.mktgcdn.com" || /^a\.[a-z]+\.mktgcdn\.com$/.test(hostname)
+  );
 };
 
 /**
@@ -29,7 +31,7 @@ export const getImageUrl = (
   }
 
   const parsedUrl = new URL(rawUrl);
-  
+
   // Only attempt to convert Yext CDN URLs. For external URLs,
   // return them without attempting conversion.
   if (!isYextCdnHost(parsedUrl.hostname)) {
