@@ -22,7 +22,7 @@ const AnalyticsDebugger = lazy(() => import("./debugger.js"));
  */
 export function AnalyticsProvider(
   props: PropsWithChildren<AnalyticsProviderProps>
-): JSX.Element {
+): React.ReactElement {
   const {
     children,
     apiKey,
