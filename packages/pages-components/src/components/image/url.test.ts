@@ -57,6 +57,20 @@ describe("getImageUrl", () => {
     expect(result).toBe(unsplashUrl);
   });
 
+  it("rejects malicious hostnames that try to spoof Yext CDN domain", () => {
+    const maliciousUrl1 = "https://evil-mktgcdn.com.attacker.com/f/file.jpg";
+    const result1 = getImageUrl(maliciousUrl1, width, height);
+    expect(result1).toBe(maliciousUrl1);
+
+    const maliciousUrl2 = "https://mktgcdn.com.evil.com/p/photo.jpg";
+    const result2 = getImageUrl(maliciousUrl2, width, height);
+    expect(result2).toBe(maliciousUrl2);
+
+    const maliciousUrl3 = "https://attacker.com/mktgcdn.com/f/file.jpg";
+    const result3 = getImageUrl(maliciousUrl3, width, height);
+    expect(result3).toBe(maliciousUrl3);
+  });
+
   it("handles invalid URLs by logging an error", () => {
     const logMock = vi.spyOn(console, "error").mockImplementation(() => {
       /* do nothing */

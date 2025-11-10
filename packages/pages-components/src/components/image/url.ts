@@ -10,7 +10,7 @@ export type Partition = "us" | "eu";
  * Valid hosts include: a.mktgcdn.com, a.eu.mktgcdn.com, and other partition variants.
  */
 const isYextCdnHost = (hostname: string): boolean => {
-  return hostname.includes("mktgcdn.com");
+  return hostname.endsWith(".mktgcdn.com") || hostname === "mktgcdn.com";
 };
 
 /**
