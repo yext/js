@@ -1,12 +1,18 @@
+#### 1.1.15 (2025-11-03)
+
+##### Chores
+
+- upgrade to playwright 1.55.1 ([#119](https://github.com/yext/js/pull/119)) ([940cf85d](https://github.com/yext/js/commit/940cf85d36999aa59af67acf5fe5689eac8b0b1e))
+
 #### 1.1.14 (2025-10-20)
 
 ##### Chores
 
-*  clean up publish script ([21dc2cc4](https://github.com/yext/js/commit/21dc2cc45047c63e1f3822b2f2f916fc9be1383c))
+- clean up publish script ([21dc2cc4](https://github.com/yext/js/commit/21dc2cc45047c63e1f3822b2f2f916fc9be1383c))
 
 ##### Bug Fixes
 
-*  make LexicalRichText more accessible ([#116](https://github.com/yext/js/pull/116)) ([69a80166](https://github.com/yext/js/commit/69a80166a273ab1207be6eeb2d0c702f6116ae7b))
+- make LexicalRichText more accessible ([#116](https://github.com/yext/js/pull/116)) ([69a80166](https://github.com/yext/js/commit/69a80166a273ab1207be6eeb2d0c702f6116ae7b))
 
 #### 1.1.13 (2025-09-24)
 

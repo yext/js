@@ -56,7 +56,7 @@ export const getImageTransformationsString = (
   }
 
   const imageTransformationsString = Object.entries(imageTransformations)
-    .filter(([_, value]) => value !== undefined && String(value) !== "")
+    .filter(([, value]) => value !== undefined && String(value) !== "")
     .map(([key, value]) => `${key}=${value}`)
     .join(",");
 

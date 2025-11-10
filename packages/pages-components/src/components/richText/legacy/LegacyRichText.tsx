@@ -36,7 +36,7 @@ export const LegacyRichText = (props: { markdown: string }) => {
       if (!ReactMarkdown) {
         try {
           ReactMarkdown = (await import("react-markdown")).default;
-        } catch (err) {
+        } catch (_) {
           throw new Error(
             "Failed to import React Markdown, cannot properly render LegacyRichText."
           );
