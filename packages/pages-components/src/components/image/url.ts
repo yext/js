@@ -6,6 +6,14 @@ export type Env = "prod" | "sbx" | "qa" | "dev";
 export type Partition = "us" | "eu";
 
 /**
+ * Checks if a hostname is a Yext CDN host.
+ * Valid hosts include: a.mktgcdn.com, a.eu.mktgcdn.com, and other partition variants.
+ */
+const isYextCdnHost = (hostname: string): boolean => {
+  return hostname.endsWith(".mktgcdn.com") || hostname === "mktgcdn.com";
+};
+
+/**
  * Parses a raw a.mktgcdn.com type url and returns its corresponding dyn.mktgcdn.com version.
  * If the raw url cannot be parsed, it's simply returned as-is and used as a passthrough.
  */
@@ -21,6 +29,13 @@ export const getImageUrl = (
   }
 
   const parsedUrl = new URL(rawUrl);
+
+  // Only attempt to convert Yext CDN URLs. For external URLs,
+  // return them without attempting conversion.
+  if (!isYextCdnHost(parsedUrl.hostname)) {
+    return rawUrl;
+  }
+
   if (parsedUrl.pathname.startsWith("/p")) {
     const photoUrl = convertPhotoUrl(parsedUrl);
     if (photoUrl) {
