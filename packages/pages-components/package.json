@@ -18,17 +18,12 @@
     "dist",
     "THIRD-PARTY-NOTICES"
   ],
-  "main": "./dist/pages-components.cjs",
   "module": "./dist/pages-components.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/pages-components.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/pages-components.cjs"
       }
     },
     "./style.css": "./dist/style.css"
