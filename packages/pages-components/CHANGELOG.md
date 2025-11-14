@@ -1,3 +1,9 @@
+#### 1.2.1 (2025-11-14)
+
+##### Bug Fixes
+
+*  exclude react/jsx-runtime from build ([#124](https://github.com/yext/js/pull/124)) ([71212e76](https://github.com/yext/js/commit/71212e7679ba42d3b042d46dbedd9b51e24833f7))
+
 #### 1.2.0 (2025-11-11)
 
 ##### Chores
