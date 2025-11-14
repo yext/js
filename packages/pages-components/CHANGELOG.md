@@ -2,17 +2,17 @@
 
 ##### Chores
 
-*  swap to oxlint ([#121](https://github.com/yext/js/pull/121)) ([10c20cdb](https://github.com/yext/js/commit/10c20cdbc8233bb5fd8b93d6ca98ce10da8d00b0))
-*  update deps ([#120](https://github.com/yext/js/pull/120)) ([d6a7ba99](https://github.com/yext/js/commit/d6a7ba99c317e689024e3fd39ca1f5e79cbe7bad))
+- swap to oxlint ([#121](https://github.com/yext/js/pull/121)) ([10c20cdb](https://github.com/yext/js/commit/10c20cdbc8233bb5fd8b93d6ca98ce10da8d00b0))
+- update deps ([#120](https://github.com/yext/js/pull/120)) ([d6a7ba99](https://github.com/yext/js/commit/d6a7ba99c317e689024e3fd39ca1f5e79cbe7bad))
 
 ##### New Features
 
-*  drop CommonJS support ([#123](https://github.com/yext/js/pull/123)) ([7be6b189](https://github.com/yext/js/commit/7be6b189f41360f52960c718fe860b019018bb9d))
-*  add React 19 support while maintaining backward compatibility ([#118](https://github.com/yext/js/pull/118)) ([3bda0ab4](https://github.com/yext/js/commit/3bda0ab4c094b870c6095dfc024b372a960e14de))
+- drop CommonJS support ([#123](https://github.com/yext/js/pull/123)) ([7be6b189](https://github.com/yext/js/commit/7be6b189f41360f52960c718fe860b019018bb9d))
+- add React 19 support while maintaining backward compatibility ([#118](https://github.com/yext/js/pull/118)) ([3bda0ab4](https://github.com/yext/js/commit/3bda0ab4c094b870c6095dfc024b372a960e14de))
 
 ##### Bug Fixes
 
-*  resolve invalid host error for non-yext-cdn urls in image component ([#122](https://github.com/yext/js/pull/122)) ([c8a95554](https://github.com/yext/js/commit/c8a95554b905c29ce00b8f74e51c8f1545d8b49f))
+- resolve invalid host error for non-yext-cdn urls in image component ([#122](https://github.com/yext/js/pull/122)) ([c8a95554](https://github.com/yext/js/commit/c8a95554b905c29ce00b8f74e51c8f1545d8b49f))
 
 #### 1.1.15 (2025-11-03)
 
