@@ -1,6 +1,6 @@
 {
   "name": "@yext/pages-components",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A React component library that supports Yext Pages development",
   "author": "sumo@yext.com",
   "license": "BSD-3-Clause",
