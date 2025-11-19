@@ -17,8 +17,6 @@
     "@types/fs-extra": "^11.0.1",
     "@types/minimist": "^1.2.2",
     "@types/node": "^20.4.1",
-    "@types/luxon": "^3.4.1",
-    "luxon": "^3.4.4",
     "@types/prompts": "^2.4.4",
     "@types/semver": "^7.5.0",
     "execa": "^7.1.1",
