@@ -1,9 +1,3 @@
-#### 1.1.16 (2025-11-21)
-
-##### Bug Fixes
-
-*  resolve invalid host error for non-yext-cdn urls in image component ([#122](https://github.com/yext/js/pull/122)) ([0124d24d](https://github.com/yext/js/commit/0124d24d3f78c66b1c69fd08f881232b90eff5bc))
-
 #### 1.1.15 (2025-11-03)
 
 ##### Chores
