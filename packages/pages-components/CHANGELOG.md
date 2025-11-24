@@ -2,8 +2,8 @@
 
 ##### Bug Fixes
 
-*  jsx-runtime in Node 20+ ([#126](https://github.com/yext/js/pull/126)) ([08f37011](https://github.com/yext/js/commit/08f37011738e8e17947e5c0f88971a89e5eae74b))
-*  release tag sorting ([#125](https://github.com/yext/js/pull/125)) ([90b1d6c1](https://github.com/yext/js/commit/90b1d6c1e4af4eb4c9df14518ca7bfff91c5f49d))
+- jsx-runtime in Node 20+ ([#126](https://github.com/yext/js/pull/126)) ([08f37011](https://github.com/yext/js/commit/08f37011738e8e17947e5c0f88971a89e5eae74b))
+- release tag sorting ([#125](https://github.com/yext/js/pull/125)) ([90b1d6c1](https://github.com/yext/js/commit/90b1d6c1e4af4eb4c9df14518ca7bfff91c5f49d))
 
 #### 1.2.1 (2025-11-14)
 
