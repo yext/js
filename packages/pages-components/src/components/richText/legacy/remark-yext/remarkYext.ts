@@ -18,7 +18,7 @@ export default function remarkYext(this: Processor<any, Root, any, any>) {
     if (fieldData) {
       if (!Array.isArray(fieldData)) {
         throw new Error(
-          `Expected data.${field} to be an array but got: ${typeof fieldData} - ${fieldData}`
+          `Expected data.${field} to be an array but got: ${typeof fieldData} - ${JSON.stringify(fieldData)}`
         );
       }
       fieldData.push(value);
