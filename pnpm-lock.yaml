@@ -222,6 +222,9 @@ importers:
       jsdom:
         specifier: ^24.1.0
         version: 24.1.3
+      lightningcss-cli:
+        specifier: ^1.30.2
+        version: 1.30.2
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
@@ -245,7 +248,7 @@ importers:
         version: 8.5.8(prettier@3.5.1)
       tsup:
         specifier: ^8.0.1
-        version: 8.3.6(@swc/core@1.10.17)(postcss@8.5.6)(tsx@4.19.3)(typescript@5.7.3)
+        version: 8.3.6(@swc/core@1.10.17)(postcss@8.5.6)(tsx@4.19.3)(typescript@5.7.3)(yaml@2.8.1)
       typescript:
         specifier: ^5.3.3
         version: 5.7.3
@@ -2610,6 +2613,10 @@ packages:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
 
+  detect-libc@2.1.2:
+    resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
+    engines: {node: '>=8'}
+
   detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
@@ -3608,6 +3615,77 @@ packages:
 
   license-checker@25.0.1:
     resolution: {integrity: sha512-mET5AIwl7MR2IAKYYoVBBpV0OnkKQ1xGj2IMMeEFIs42QAkEVjRtFZGWmQ28WeU7MP779iAgOaOy93Mn44mn6g==}
+    hasBin: true
+
+  lightningcss-cli-android-arm64@1.30.2:
+    resolution: {integrity: sha512-CcntRK9yNjFRiZKwW9m4sf5WYYNOGxlD4ROymyIb+KPbsrEBAZSaknoUM1aIhuhvB/TUTtVmPKvt/Zu0LeSR7g==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [android]
+
+  lightningcss-cli-darwin-arm64@1.30.2:
+    resolution: {integrity: sha512-Z2STTSes07R2R5tOPY85HipU+z1SwUBV2Yp5emAcqL+o5RsOAE1JWbkloQWa++8R6b/gxzD11VPM3WtCCqL8Gg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [darwin]
+
+  lightningcss-cli-darwin-x64@1.30.2:
+    resolution: {integrity: sha512-N0IGWWsLnv81sDw9i/vvaisp55uDnhoapGBEJ8lMED064CsUHpLCK7L/5B8kFj8UI97zL+xb7KTTGOHkcC8skg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [darwin]
+
+  lightningcss-cli-freebsd-x64@1.30.2:
+    resolution: {integrity: sha512-17pN+hnxU2fPOGhGzMhPf2KZrIFFwEtrIZYshGDM/jhskJmDq57DAt5esh7PVDUjNkD7JDt3a7E9xJEVltc2Kg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [freebsd]
+
+  lightningcss-cli-linux-arm-gnueabihf@1.30.2:
+    resolution: {integrity: sha512-aaeEtZXqvNWDyHYCThugev1YPGlouvY9lE+o9QJg/Z5GTNb/1EM2TaTBGEwdG5m1ChYukc2lD5CPIEHjQ7qzSA==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm]
+    os: [linux]
+
+  lightningcss-cli-linux-arm64-gnu@1.30.2:
+    resolution: {integrity: sha512-XhgByx2H85MeEWGtI0XR+ugtQRBc/bvRN8gSGdXa3YqVONmACsLj7shatVHmqVOaPgtnevKVKl7wtqfN9pW96A==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  lightningcss-cli-linux-arm64-musl@1.30.2:
+    resolution: {integrity: sha512-UR7/N/33b8sG9e07TccxJvWxvNdlMFglesdgv1fi+wMa8sbN3tBPXOGj67B5nlVWHskYD9bHLPahemRWxnNuHQ==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [linux]
+
+  lightningcss-cli-linux-x64-gnu@1.30.2:
+    resolution: {integrity: sha512-W6U9LNo+4mCsEB22AIvtRVGp8NETN4by9U2AIRDzZbYZYb7W9+1H56xKzb/2ABQEAoDrh/7027I/XDheuGrlZg==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  lightningcss-cli-linux-x64-musl@1.30.2:
+    resolution: {integrity: sha512-Qe6hwTXmc37LnKPIyoY20EQgHsVoAeTUF389Bt7sJfK5JZPLm7EyVvqkO4DukCx4Dv4DSskU03o+qT1+s6UeVw==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [linux]
+
+  lightningcss-cli-win32-arm64-msvc@1.30.2:
+    resolution: {integrity: sha512-PZrkKHhYncBRh/Xe2Voa7t7ors+zUMU8hm5qOLgR0W5NfhbwwjLBXa3+fFF+BVdpTeyjLGF1ovzKIWSF1rMN/g==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [arm64]
+    os: [win32]
+
+  lightningcss-cli-win32-x64-msvc@1.30.2:
+    resolution: {integrity: sha512-5VUIS1Dcbkcy2SDr7vBlKfwpSx2BUlZwmvoRVWA+OkkLsQhVUtLUKheJJXsOFruBn9uV8FH8KPLkvTJzuGFLyQ==}
+    engines: {node: '>= 12.0.0'}
+    cpu: [x64]
+    os: [win32]
+
+  lightningcss-cli@1.30.2:
+    resolution: {integrity: sha512-vTm/775SqvQ74T0y4twiqjopXV6SnAFguuRpnbKUE9aXxqJGxWJoHS77ZRkJj3dKmnD61ejOawg3FBiTT8/3Tw==}
+    engines: {node: '>= 12.0.0'}
     hasBin: true
 
   lilconfig@2.1.0:
@@ -5480,6 +5558,11 @@ packages:
   yaml@2.3.1:
     resolution: {integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==}
     engines: {node: '>= 14'}
+
+  yaml@2.8.1:
+    resolution: {integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
 
   yargs-parser@18.1.3:
     resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}
@@ -8031,6 +8114,8 @@ snapshots:
 
   dequal@2.0.3: {}
 
+  detect-libc@2.1.2: {}
+
   detect-newline@3.1.0: {}
 
   devlop@1.1.0:
@@ -9346,6 +9431,55 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  lightningcss-cli-android-arm64@1.30.2:
+    optional: true
+
+  lightningcss-cli-darwin-arm64@1.30.2:
+    optional: true
+
+  lightningcss-cli-darwin-x64@1.30.2:
+    optional: true
+
+  lightningcss-cli-freebsd-x64@1.30.2:
+    optional: true
+
+  lightningcss-cli-linux-arm-gnueabihf@1.30.2:
+    optional: true
+
+  lightningcss-cli-linux-arm64-gnu@1.30.2:
+    optional: true
+
+  lightningcss-cli-linux-arm64-musl@1.30.2:
+    optional: true
+
+  lightningcss-cli-linux-x64-gnu@1.30.2:
+    optional: true
+
+  lightningcss-cli-linux-x64-musl@1.30.2:
+    optional: true
+
+  lightningcss-cli-win32-arm64-msvc@1.30.2:
+    optional: true
+
+  lightningcss-cli-win32-x64-msvc@1.30.2:
+    optional: true
+
+  lightningcss-cli@1.30.2:
+    dependencies:
+      detect-libc: 2.1.2
+    optionalDependencies:
+      lightningcss-cli-android-arm64: 1.30.2
+      lightningcss-cli-darwin-arm64: 1.30.2
+      lightningcss-cli-darwin-x64: 1.30.2
+      lightningcss-cli-freebsd-x64: 1.30.2
+      lightningcss-cli-linux-arm-gnueabihf: 1.30.2
+      lightningcss-cli-linux-arm64-gnu: 1.30.2
+      lightningcss-cli-linux-arm64-musl: 1.30.2
+      lightningcss-cli-linux-x64-gnu: 1.30.2
+      lightningcss-cli-linux-x64-musl: 1.30.2
+      lightningcss-cli-win32-arm64-msvc: 1.30.2
+      lightningcss-cli-win32-x64-msvc: 1.30.2
+
   lilconfig@2.1.0: {}
 
   lilconfig@3.1.3: {}
@@ -10379,12 +10513,13 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-load-config@6.0.1(postcss@8.5.6)(tsx@4.19.3):
+  postcss-load-config@6.0.1(postcss@8.5.6)(tsx@4.19.3)(yaml@2.8.1):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       postcss: 8.5.6
       tsx: 4.19.3
+      yaml: 2.8.1
 
   postcss-selector-parser@6.1.2:
     dependencies:
@@ -11131,7 +11266,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.3.6(@swc/core@1.10.17)(postcss@8.5.6)(tsx@4.19.3)(typescript@5.7.3):
+  tsup@8.3.6(@swc/core@1.10.17)(postcss@8.5.6)(tsx@4.19.3)(typescript@5.7.3)(yaml@2.8.1):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.24.2)
       cac: 6.7.14
@@ -11141,7 +11276,7 @@ snapshots:
       esbuild: 0.24.2
       joycon: 3.1.1
       picocolors: 1.1.1
-      postcss-load-config: 6.0.1(postcss@8.5.6)(tsx@4.19.3)
+      postcss-load-config: 6.0.1(postcss@8.5.6)(tsx@4.19.3)(yaml@2.8.1)
       resolve-from: 5.0.0
       rollup: 4.34.8
       source-map: 0.8.0-beta.0
@@ -11621,6 +11756,9 @@ snapshots:
     optional: true
 
   yaml@2.3.1: {}
+
+  yaml@2.8.1:
+    optional: true
 
   yargs-parser@18.1.3:
     dependencies:

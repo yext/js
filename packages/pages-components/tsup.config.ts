@@ -15,7 +15,6 @@ export default defineConfig({
   loader: {
     ".js": "jsx",
     ".ts": "tsx",
-    ".css": "css",
   },
 
   // Production mode (strips dev internals)
