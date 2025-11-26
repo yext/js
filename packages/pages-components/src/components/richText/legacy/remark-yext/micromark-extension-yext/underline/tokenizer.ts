@@ -1,4 +1,3 @@
-import { ok as assert } from "uvu/assert";
 import { classifyCharacter } from "micromark-util-classify-character";
 import { codes } from "micromark-util-symbol/codes.js";
 import { constants } from "micromark-util-symbol/constants.js";
@@ -21,7 +20,9 @@ export function tokenizeUnderline(
   return start;
 
   function start(code: Code): State | void {
-    assert(code === codes.plusSign, "expected `+`");
+    if (code !== codes.plusSign) {
+      throw new Error("expected code to be `+` but got: " + code);
+    }
     effects.enter("underlineSequenceTemporary");
     return sequence(code);
   }

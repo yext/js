@@ -18,15 +18,15 @@
     "dist",
     "THIRD-PARTY-NOTICES"
   ],
-  "module": "./dist/pages-components.js",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/pages-components.js"
+        "default": "./dist/index.js"
       }
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/index.css"
   },
   "types": "dist/index.d.ts",
   "engines": {
@@ -34,7 +34,8 @@
   },
   "scripts": {
     "dev": "pnpm run storybook",
-    "build": "tsc && vite build",
+    "build:vite": "tsc && vite build",
+    "build": "tsup",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run",
@@ -44,11 +45,12 @@
     "update-snapshots": "test-storybook -c .storybook/snapshots -u"
   },
   "peerDependencies": {
+    "mapbox-gl": "^2.9.2",
     "react": "^17.0.2 || ^18.2.0 || ^19.0.0",
-    "react-dom": "^17.0.2 || ^18.2.0 || ^19.0.0",
-    "mapbox-gl": "^2.9.2"
+    "react-dom": "^17.0.2 || ^18.2.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "@storybook/addon-a11y": "^8.5.8",
     "@storybook/addon-essentials": "^8.5.8",
     "@storybook/addon-interactions": "^8.5.8",
@@ -71,19 +73,22 @@
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.22",
     "axe-core": "^4.8.2",
     "axe-playwright": "^1.2.3",
     "generate-license-file": "^3.0.1",
     "jest-image-snapshot": "^6.4.0",
     "jsdom": "^24.1.0",
-    "@playwright/test": "^1.55.1",
+    "picocolors": "^1.1.1",
     "playwright-core": "^1.55.1",
+    "postcss": "^8.5.6",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^8.5.8",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
+    "unified": "11.0.4",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^4.2.2",
     "vitest": "^3.0.5"
@@ -110,10 +115,7 @@
     "micromark-util-resolve-all": "1.0.0",
     "micromark-util-symbol": "1.0.1",
     "micromark-util-types": "1.0.2",
-    "picocolors": "^1.1.1",
     "react-markdown": "^9.0.2",
-    "remark-rehype": "10.1.0",
-    "unified": "11.0.4",
-    "uvu": "0.5.6"
+    "remark-rehype": "10.1.0"
   }
 }

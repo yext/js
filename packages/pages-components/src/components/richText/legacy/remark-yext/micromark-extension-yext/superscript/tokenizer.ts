@@ -1,4 +1,3 @@
-import { ok as assert } from "uvu/assert";
 import { codes } from "micromark-util-symbol/codes.js";
 import { Effects, State, TokenizeContext, Code } from "micromark-util-types";
 
@@ -14,7 +13,10 @@ export function tokenizeSuperscript(
   return start;
 
   function start(code: Code): State | void {
-    assert(code === codes.caret, "expected `^`");
+    if (code !== codes.caret) {
+      throw new Error("expected code to be `^` but got: " + code);
+    }
+
     effects.enter("superscriptSequenceTemporary");
     return sequence(code);
   }
