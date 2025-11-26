@@ -13,8 +13,8 @@ export default defineConfig({
   external: ["react", "react-dom", "mapbox-gl"],
 
   loader: {
-    ".js": "jsx",
-    ".ts": "tsx",
+    ".ts": "ts",
+    ".tsx": "tsx",
   },
 
   // Production mode (strips dev internals)
