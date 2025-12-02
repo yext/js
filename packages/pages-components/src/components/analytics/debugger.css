@@ -1,18 +1,18 @@
-.xYextDebug {
-  @keyframes pulse {
-    0% {
-      background: transparent;
-    }
-
-    50% {
-      background: rgba(0, 0, 0, 0.15);
-    }
-
-    100% {
-      background: transparent;
-    }
+@keyframes pulse {
+  0% {
+    background: transparent;
   }
 
+  50% {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  100% {
+    background: transparent;
+  }
+}
+
+.xYextDebug {
   [data-ya-track] {
     outline: 1px dashed blue;
     scroll-margin: 32px;
