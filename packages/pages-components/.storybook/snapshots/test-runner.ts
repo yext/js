@@ -17,6 +17,7 @@ const renderFunctions: TestRunnerConfig = {
     expect.extend({ toMatchImageSnapshot });
   },
   async postVisit(page: Page, context: TestContext) {
+    await page.waitForLoadState("domcontentloaded", { timeout: 45000 });
     await waitForPageReady(page);
     await waitForImagesToLoad(page);
 
