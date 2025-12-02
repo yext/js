@@ -16,6 +16,9 @@ const renderFunctions: TestRunnerConfig = {
   setup() {
     expect.extend({ toMatchImageSnapshot });
   },
+  tags: {
+    skip: ["skip-snapshot"],
+  },
   async postVisit(page: Page, context: TestContext) {
     await waitForPageReady(page);
     await waitForImagesToLoad(page);

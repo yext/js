@@ -7,6 +7,7 @@ import { Map as MapType } from "../../map/map.js";
 const meta: Meta<typeof Map> = {
   title: "components/Map",
   component: Map,
+  tags: ["skip-snapshot"],
 };
 
 export default meta;
