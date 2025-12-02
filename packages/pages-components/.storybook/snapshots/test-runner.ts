@@ -1,9 +1,5 @@
 import { Page } from "playwright-core";
-import {
-  TestRunnerConfig,
-  waitForPageReady,
-  TestContext,
-} from "@storybook/test-runner";
+import { TestRunnerConfig, TestContext } from "@storybook/test-runner";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
 const customSnapshotsDir = `${process.cwd()}/.storybook/snapshots/__snapshots__`;
@@ -17,8 +13,7 @@ const renderFunctions: TestRunnerConfig = {
     expect.extend({ toMatchImageSnapshot });
   },
   async postVisit(page: Page, context: TestContext) {
-    await page.waitForLoadState("domcontentloaded", { timeout: 45000 });
-    await waitForPageReady(page);
+    await page.waitForLoadState("domcontentloaded", { timeout: 60000 });
     await waitForImagesToLoad(page);
 
     const image = await page.screenshot();
