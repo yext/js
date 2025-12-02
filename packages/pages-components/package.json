@@ -45,7 +45,7 @@
     "wcag": "test-storybook -c .storybook/wcag",
     "generate-notices": "generate-license-file --input package.json --output ./THIRD-PARTY-NOTICES --overwrite",
     "prepare": "pnpm build",
-    "update-snapshots": "test-storybook -c .storybook/snapshots -u"
+    "update-snapshots": "test-storybook -c .storybook/snapshots -u --testTimeout 120000"
   },
   "peerDependencies": {
     "mapbox-gl": "^2.9.2",
