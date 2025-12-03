@@ -253,7 +253,8 @@ export const IndividualTemplatesOverrideClosed: Story = {
 export const CompleteTemplateOverrideOpen: Story = {
   args: {
     hours: HoursData,
-    statusTemplate: (s: StatusParams) => (s.isOpen ? "We are open" : "We are closed"),
+    statusTemplate: (s: StatusParams) =>
+      s.isOpen ? "We are open" : "We are closed",
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
@@ -265,7 +266,8 @@ export const CompleteTemplateOverrideOpen: Story = {
 export const CompleteTemplateOverrideClosed: Story = {
   args: {
     hours: HoursData,
-    statusTemplate: (s: StatusParams) => (s.isOpen ? "We are open" : "We are closed"),
+    statusTemplate: (s: StatusParams) =>
+      s.isOpen ? "We are open" : "We are closed",
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
