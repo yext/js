@@ -9,6 +9,7 @@ import {
   HoursWithMultipleIntervalsData,
 } from "./hoursSampleData.js";
 import { DateTime } from "luxon";
+import { StatusParams } from "./types.js";
 
 const meta: Meta<typeof HoursStatus> = {
   title: "components/HoursStatus",
@@ -196,9 +197,9 @@ const green = { color: "green" };
 export const IndividualTemplatesOverrideOpen: Story = {
   args: {
     hours: HoursData,
-    currentTemplate: (s) => (s.isOpen ? "✅" : "⛔️"),
+    currentTemplate: (s: StatusParams) => (s.isOpen ? "✅" : "⛔️"),
     timeTemplate: () => <></>,
-    dayOfWeekTemplate: (s) => (
+    dayOfWeekTemplate: (s: StatusParams) => (
       <span style={green}>
         {s.isOpen
           ? s.currentInterval?.getEndTime()
@@ -206,7 +207,7 @@ export const IndividualTemplatesOverrideOpen: Story = {
       </span>
     ),
     separatorTemplate: () => " :: ",
-    futureTemplate: (params) => {
+    futureTemplate: (params: StatusParams) => {
       return (
         <span className="HoursStatus-future">
           {params.isOpen ? "Will be closing at " : "Will be opening at "}
@@ -224,9 +225,9 @@ export const IndividualTemplatesOverrideOpen: Story = {
 export const IndividualTemplatesOverrideClosed: Story = {
   args: {
     hours: HoursData,
-    currentTemplate: (s) => (s.isOpen ? "✅" : "⛔️"),
+    currentTemplate: (s: StatusParams) => (s.isOpen ? "✅" : "⛔️"),
     timeTemplate: () => <></>,
-    dayOfWeekTemplate: (s) => (
+    dayOfWeekTemplate: (s: StatusParams) => (
       <span style={green}>
         {s.isOpen
           ? s.currentInterval?.getEndTime()
@@ -234,7 +235,7 @@ export const IndividualTemplatesOverrideClosed: Story = {
       </span>
     ),
     separatorTemplate: () => " :: ",
-    futureTemplate: (params) => {
+    futureTemplate: (params: StatusParams) => {
       return (
         <span className="HoursStatus-future">
           {params.isOpen ? "Will be closing at " : "Will be opening at "}
@@ -252,7 +253,8 @@ export const IndividualTemplatesOverrideClosed: Story = {
 export const CompleteTemplateOverrideOpen: Story = {
   args: {
     hours: HoursData,
-    statusTemplate: (s) => (s.isOpen ? "We are open" : "We are closed"),
+    statusTemplate: (s: StatusParams) =>
+      s.isOpen ? "We are open" : "We are closed",
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
@@ -264,7 +266,8 @@ export const CompleteTemplateOverrideOpen: Story = {
 export const CompleteTemplateOverrideClosed: Story = {
   args: {
     hours: HoursData,
-    statusTemplate: (s) => (s.isOpen ? "We are open" : "We are closed"),
+    statusTemplate: (s: StatusParams) =>
+      s.isOpen ? "We are open" : "We are closed",
   },
   parameters: {
     mockedLuxonDateTime: DateTime.fromObject(
