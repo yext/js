@@ -1,3 +1,9 @@
+#### 1.1.17 (2025-12-03)
+
+##### Chores
+
+*  upgrade storybook/test-runner ([#128](https://github.com/yext/js/pull/128)) ([ecae7e3c](https://github.com/yext/js/commit/ecae7e3cddf35b4db0420a2df588118fcb75132f))
+
 #### 1.1.16 (2025-11-21)
 
 ##### Bug Fixes
