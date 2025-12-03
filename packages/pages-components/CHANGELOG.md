@@ -1,3 +1,9 @@
+#### 1.0.10 (2025-12-03)
+
+##### Chores
+
+*  upgrade storybook/test-runner (#128) (c76e9364)
+
 #### 1.0.9 (2025-07-11)
 
 ##### Bug Fixes
