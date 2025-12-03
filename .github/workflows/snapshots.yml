@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        # TODO: Add 22.x - removed since it caused infinite screenshot loops
+        node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v4.1.6
         with:

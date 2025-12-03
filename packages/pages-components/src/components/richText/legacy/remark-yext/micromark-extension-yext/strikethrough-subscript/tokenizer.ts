@@ -1,4 +1,3 @@
-import { ok as assert } from "uvu/assert";
 import { classifyCharacter } from "micromark-util-classify-character";
 import { codes } from "micromark-util-symbol/codes.js";
 import { constants } from "micromark-util-symbol/constants.js";
@@ -19,7 +18,9 @@ export function tokenizeStrikethroughSubscript(
   return start;
 
   function start(code: Code): State | void {
-    assert(code === codes.tilde, "expected `~`");
+    if (code !== codes.tilde) {
+      throw new Error("expected code to be `~` but got: " + code);
+    }
     effects.enter("tildeSequenceTemporary");
     return sequence(code);
   }
