@@ -1,5 +1,8 @@
 export { AddressSchema, LocationSchema, type Location } from "./address.js";
-export { OpeningHoursSchema } from "./hours.js";
+export {
+  OpeningHoursSchema,
+  OpeningHoursSpecificationSchema,
+} from "./hours.js";
 export { OfferSchema, type Offer } from "./offers.js";
 export {
   PerformerSchema,
