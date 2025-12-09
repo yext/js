@@ -133,12 +133,17 @@ const getHoursSpecificationByDay = (
   }
 
   return hours.openIntervals.map((interval) => {
-    return {
+    const specification: OpeningHoursSpecification = {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: day ? "https://schema.org/" + day : undefined,
       opens: interval.start,
       closes: interval.end,
     };
+
+    if (day) {
+      specification.dayOfWeek = `https://schema.org/${day}`;
+    }
+
+    return specification;
   });
 };
 
@@ -156,13 +161,11 @@ const getHolidayHoursSpecification = (
     }
 
     if (holiday.isClosed) {
-      {
-        holidayHoursSpecifications.push({
-          "@type": "OpeningHoursSpecification",
-          validFrom: holiday.date,
-          validThrough: holiday.date,
-        });
-      }
+      holidayHoursSpecifications.push({
+        "@type": "OpeningHoursSpecification",
+        validFrom: holiday.date,
+        validThrough: holiday.date,
+      });
     } else {
       holidayHoursSpecifications.push(
         ...getHoursSpecificationByDay(holiday, undefined).map(
