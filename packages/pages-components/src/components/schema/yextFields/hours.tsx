@@ -156,7 +156,7 @@ const getHolidayHoursSpecification = (
 
   const holidayHoursSpecifications: OpeningHoursSpecification[] = [];
   for (const holiday of holidayHours) {
-    if (holiday.isRegularHours) {
+    if (holiday.isRegularHours || !holiday.date) {
       continue;
     }
 
