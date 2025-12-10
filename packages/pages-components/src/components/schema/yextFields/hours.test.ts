@@ -170,19 +170,13 @@ describe("OpeningHoursSpecificationSchema", () => {
     const expectedRegularHours = [
       {
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: "https://schema.org/Monday",
-        opens: "10:00",
-        closes: "22:00",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "https://schema.org/Tuesday",
-        opens: "10:00",
-        closes: "22:00",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "https://schema.org/Wednesday",
+        dayOfWeek: [
+          "https://schema.org/Monday",
+          "https://schema.org/Tuesday",
+          "https://schema.org/Wednesday",
+          "https://schema.org/Thursday",
+          "https://schema.org/Sunday",
+        ],
         opens: "10:00",
         closes: "22:00",
       },
@@ -194,22 +188,15 @@ describe("OpeningHoursSpecificationSchema", () => {
       },
       {
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: "https://schema.org/Thursday",
-        opens: "10:00",
-        closes: "22:00",
+        dayOfWeek: "https://schema.org/Friday",
+        opens: "00:00",
+        closes: "00:00",
       },
-      // Friday is closed and should be omitted.
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: "https://schema.org/Saturday",
         opens: "00:00",
         closes: "23:59",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "https://schema.org/Sunday",
-        opens: "10:00",
-        closes: "22:00",
       },
     ];
 
@@ -239,8 +226,52 @@ describe("OpeningHoursSpecificationSchema", () => {
     expect(result.specialOpeningHoursSpecification).toEqual(
       expect.arrayContaining(expectedSpecialHours)
     );
-    expect(result?.openingHoursSpecification?.length).toBe(7);
+    expect(result?.openingHoursSpecification?.length).toBe(4);
     expect(result?.specialOpeningHoursSpecification?.length).toBe(2);
+  });
+
+  it("handles hours with all days closed", () => {
+    const allClosedHours = {
+      friday: {
+        isClosed: true,
+      },
+      monday: {
+        isClosed: true,
+      },
+      saturday: {
+        isClosed: true,
+      },
+      sunday: {
+        isClosed: true,
+      },
+      thursday: {
+        isClosed: true,
+      },
+      tuesday: {
+        isClosed: true,
+      },
+      wednesday: {
+        isClosed: true,
+      },
+    };
+    expect(OpeningHoursSpecificationSchema(allClosedHours)).toEqual({
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "https://schema.org/Monday",
+            "https://schema.org/Tuesday",
+            "https://schema.org/Wednesday",
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday",
+            "https://schema.org/Saturday",
+            "https://schema.org/Sunday",
+          ],
+          opens: "00:00",
+          closes: "00:00",
+        },
+      ],
+    });
   });
 
   it("returns empty when invalid data is provided", () => {

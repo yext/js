@@ -2,7 +2,7 @@ import { HoursType, DayType } from "../../hours/types.js";
 
 type OpeningHoursSpecification = {
   "@type": "OpeningHoursSpecification";
-  dayOfWeek?: string;
+  dayOfWeek?: string | string[];
   opens?: string;
   closes?: string;
   validFrom?: string;
@@ -87,30 +87,33 @@ export const OpeningHoursSpecificationSchema = (
     return {};
   }
 
-  const mondayHours = getHoursSpecificationByDay(hours.monday, "Monday");
-  const tuesdayHours = getHoursSpecificationByDay(hours.tuesday, "Tuesday");
-  const wednesdayHours = getHoursSpecificationByDay(
-    hours.wednesday,
-    "Wednesday"
-  );
-  const thursdayHours = getHoursSpecificationByDay(hours.thursday, "Thursday");
-  const fridayHours = getHoursSpecificationByDay(hours.friday, "Friday");
-  const saturdayHours = getHoursSpecificationByDay(hours.saturday, "Saturday");
-  const sundayHours = getHoursSpecificationByDay(hours.sunday, "Sunday");
+  let hoursMap = new Map<string, Array<string>>();
+  hoursMap = getHoursByDay(hours.monday, hoursMap, "Monday");
+  hoursMap = getHoursByDay(hours.tuesday, hoursMap, "Tuesday");
+  hoursMap = getHoursByDay(hours.wednesday, hoursMap, "Wednesday");
+  hoursMap = getHoursByDay(hours.thursday, hoursMap, "Thursday");
+  hoursMap = getHoursByDay(hours.friday, hoursMap, "Friday");
+  hoursMap = getHoursByDay(hours.saturday, hoursMap, "Saturday");
+  hoursMap = getHoursByDay(hours.sunday, hoursMap, "Sunday");
+
+  const specifications: OpeningHoursSpecification[] = [];
+  hoursMap.forEach((days, interval) => {
+    specifications.push({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek:
+        days.length === 1
+          ? `https://schema.org/${days[0]}`
+          : days.map((d) => `https://schema.org/${d}`),
+      opens: interval.split("-")[0],
+      closes: interval.split("-")[1],
+    });
+  });
 
   const openingHoursSpecificationSchema: {
     openingHoursSpecification?: OpeningHoursSpecification[];
     specialOpeningHoursSpecification?: OpeningHoursSpecification[];
   } = {
-    openingHoursSpecification: [
-      ...mondayHours,
-      ...tuesdayHours,
-      ...wednesdayHours,
-      ...thursdayHours,
-      ...fridayHours,
-      ...saturdayHours,
-      ...sundayHours,
-    ],
+    openingHoursSpecification: specifications,
   };
 
   const holidayHoursSpecifications = getHolidayHoursSpecification(
@@ -122,29 +125,6 @@ export const OpeningHoursSpecificationSchema = (
   }
 
   return openingHoursSpecificationSchema;
-};
-
-const getHoursSpecificationByDay = (
-  hours: DayType | undefined,
-  day?: string
-): OpeningHoursSpecification[] => {
-  if (!validateDayType(hours) || hours.isClosed || !hours.openIntervals) {
-    return [];
-  }
-
-  return hours.openIntervals.map((interval) => {
-    const specification: OpeningHoursSpecification = {
-      "@type": "OpeningHoursSpecification",
-      opens: interval.start,
-      closes: interval.end,
-    };
-
-    if (day) {
-      specification.dayOfWeek = `https://schema.org/${day}`;
-    }
-
-    return specification;
-  });
 };
 
 const getHolidayHoursSpecification = (
@@ -167,15 +147,15 @@ const getHolidayHoursSpecification = (
         validThrough: holiday.date,
       });
     } else {
-      holidayHoursSpecifications.push(
-        ...getHoursSpecificationByDay(holiday, undefined).map(
-          (holidayHours) => ({
-            ...holidayHours,
-            validFrom: holiday.date,
-            validThrough: holiday.date,
-          })
-        )
-      );
+      holiday.openIntervals?.forEach((interval) => {
+        holidayHoursSpecifications.push({
+          "@type": "OpeningHoursSpecification",
+          validFrom: holiday.date,
+          validThrough: holiday.date,
+          opens: interval.start,
+          closes: interval.end,
+        });
+      });
     }
   }
 
