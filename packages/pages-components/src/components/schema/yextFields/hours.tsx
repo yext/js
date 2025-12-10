@@ -145,6 +145,8 @@ const getHolidayHoursSpecification = (
         "@type": "OpeningHoursSpecification",
         validFrom: holiday.date,
         validThrough: holiday.date,
+        opens: "00:00",
+        closes: "00:00",
       });
     } else {
       holiday.openIntervals?.forEach((interval) => {

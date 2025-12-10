@@ -207,7 +207,8 @@ describe("OpeningHoursSpecificationSchema", () => {
         "@type": "OpeningHoursSpecification",
         validFrom: "2025-12-25",
         validThrough: "2025-12-25",
-        // opens/closes omitted to denote closure
+        opens: "00:00",
+        closes: "00:00",
       },
       // 2025-12-31 (Modified Hours)
       {
