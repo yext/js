@@ -98,6 +98,9 @@ export const OpeningHoursSpecificationSchema = (
 
   const specifications: OpeningHoursSpecification[] = [];
   hoursMap.forEach((days, interval) => {
+    if (interval.split("-").length !== 2) {
+      return;
+    }
     specifications.push({
       "@type": "OpeningHoursSpecification",
       dayOfWeek:
@@ -150,6 +153,10 @@ const getHolidayHoursSpecification = (
       });
     } else {
       holiday.openIntervals?.forEach((interval) => {
+        if (!interval.start || !interval.end) {
+          return;
+        }
+
         holidayHoursSpecifications.push({
           "@type": "OpeningHoursSpecification",
           validFrom: holiday.date,
