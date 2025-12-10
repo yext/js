@@ -1,6 +1,7 @@
 import {
   getHoursByDay,
   OpeningHoursSchema,
+  OpeningHoursSpecificationSchema,
   validateDayType,
   validateHoursType,
 } from "./hours.js";
@@ -62,6 +63,21 @@ const hours = {
       },
     ],
   },
+  holidayHours: [
+    {
+      date: "2025-12-25",
+      isClosed: true,
+    },
+    {
+      date: "2025-12-31",
+      isClosed: false,
+      openIntervals: [{ start: "09:00", end: "13:00" }],
+    },
+    {
+      date: "2026-01-01",
+      isRegularHours: true,
+    },
+  ],
 };
 
 describe("validateHoursType", () => {
@@ -141,6 +157,141 @@ describe("OpeningHoursSchema", () => {
         "We 07:00-09:00",
         "Fr 00:00-00:00",
         "Sa 00:00-23:59",
+      ],
+    });
+  });
+});
+
+describe("OpeningHoursSpecificationSchema", () => {
+  it("correctly builds openingHoursSpecification schema", () => {
+    const result = OpeningHoursSpecificationSchema(hours);
+
+    // Expected Regular Hours (openingHoursSpecification)
+    const expectedRegularHours = [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "https://schema.org/Monday",
+          "https://schema.org/Tuesday",
+          "https://schema.org/Wednesday",
+          "https://schema.org/Thursday",
+          "https://schema.org/Sunday",
+        ],
+        opens: "10:00",
+        closes: "22:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "https://schema.org/Wednesday",
+        opens: "07:00",
+        closes: "09:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "https://schema.org/Friday",
+        opens: "00:00",
+        closes: "00:00",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "https://schema.org/Saturday",
+        opens: "00:00",
+        closes: "23:59",
+      },
+    ];
+
+    // Expected Special Hours (specialOpeningHoursSpecification)
+    const expectedSpecialHours = [
+      // 2025-12-25 (Closed)
+      {
+        "@type": "OpeningHoursSpecification",
+        validFrom: "2025-12-25",
+        validThrough: "2025-12-25",
+        opens: "00:00",
+        closes: "00:00",
+      },
+      // 2025-12-31 (Modified Hours)
+      {
+        "@type": "OpeningHoursSpecification",
+        validFrom: "2025-12-31",
+        validThrough: "2025-12-31",
+        opens: "09:00",
+        closes: "13:00",
+      },
+      // 2026-01-01 (isRegularHours: true) is correctly omitted
+    ];
+
+    expect(result.openingHoursSpecification).toEqual(
+      expect.arrayContaining(expectedRegularHours)
+    );
+    expect(result.specialOpeningHoursSpecification).toEqual(
+      expect.arrayContaining(expectedSpecialHours)
+    );
+    expect(result?.openingHoursSpecification?.length).toBe(4);
+    expect(result?.specialOpeningHoursSpecification?.length).toBe(2);
+  });
+
+  it("handles hours with all days closed", () => {
+    const allClosedHours = {
+      friday: {
+        isClosed: true,
+      },
+      monday: {
+        isClosed: true,
+      },
+      saturday: {
+        isClosed: true,
+      },
+      sunday: {
+        isClosed: true,
+      },
+      thursday: {
+        isClosed: true,
+      },
+      tuesday: {
+        isClosed: true,
+      },
+      wednesday: {
+        isClosed: true,
+      },
+    };
+    expect(OpeningHoursSpecificationSchema(allClosedHours)).toEqual({
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: [
+            "https://schema.org/Monday",
+            "https://schema.org/Tuesday",
+            "https://schema.org/Wednesday",
+            "https://schema.org/Thursday",
+            "https://schema.org/Friday",
+            "https://schema.org/Saturday",
+            "https://schema.org/Sunday",
+          ],
+          opens: "00:00",
+          closes: "00:00",
+        },
+      ],
+    });
+  });
+
+  it("returns empty when invalid data is provided", () => {
+    expect(OpeningHoursSpecificationSchema(undefined)).toEqual({});
+    expect(OpeningHoursSpecificationSchema({})).toEqual({});
+    expect(OpeningHoursSpecificationSchema("hours" as any)).toEqual({});
+    expect(
+      OpeningHoursSpecificationSchema({
+        monday: hours.monday,
+        holidayHours: [1, 2, 3] as any,
+      })
+    ).toEqual({
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: "https://schema.org/Monday",
+          opens: "10:00",
+          closes: "22:00",
+        },
       ],
     });
   });
