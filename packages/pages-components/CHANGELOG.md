@@ -1,3 +1,9 @@
+#### 1.1.18 (2025-12-11)
+
+##### New Features
+
+* **pages-components:**  add openingHoursSpecification schema helper ([#129](https://github.com/yext/js/pull/129)) ([30275fc5](https://github.com/yext/js/commit/30275fc5f1a8e39c50ba786800d125ef11c2eac6))
+
 #### 1.1.17 (2025-12-03)
 
 ##### Chores
