@@ -24,6 +24,7 @@ export const config: TemplateConfig = {
       "meta",
       "name",
       "address",
+      "description",
       "slug",
       "hours",
       "photoGallery",
@@ -84,7 +85,7 @@ const Location: Template<TemplateRenderProps> = ({
       </div>
       <div>
         LRT via HTML:{" "}
-        {c_subfieldRTFTest.rtf.html && (
+        {c_subfieldRTFTest?.rtf?.html && (
           <div
             dangerouslySetInnerHTML={{ __html: c_subfieldRTFTest.rtf.html }}
           ></div>

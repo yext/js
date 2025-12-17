@@ -152,6 +152,7 @@
     },
     "title": "My title"
   },
+  "description": "Turtlehead Tacos in Chelsea, NYC serves fresh, made-to-order tacos with a variety of fillings and toppings in a vibrant atmosphere.",
   "hours": {
     "friday": {
       "openIntervals": [

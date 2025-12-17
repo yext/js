@@ -1,10 +1,10 @@
 buildConfiguration:
-  buildCommand: npm run build
+  buildCommand: pnpm run build
   installDependenciesStep:
-    command: npm install
+    command: pnpm install
     requiredFiles:
       - package.json
-      - package-lock.json
+      - pnpm-lock.json
       - .npmrc
 livePreviewConfiguration:
   setupCommand: ":"

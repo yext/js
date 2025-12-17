@@ -4,6 +4,11 @@ set -euo pipefail
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+if ! command -v nvm >/dev/null 2>&1; then
+  echo "❌ Error: nvm is not available. Please install nvm first."
+  exit 1
+fi
+
 NODE_VERSIONS=("18" "20" "22" "24")
 REACT_VERSIONS=("17.0.2" "18.2.0") # TODO: Add "19.2.1"
 
