@@ -14,24 +14,6 @@ jobs:
                 react: ["17.0.2", "18.2.0"] # TODO: Add "19.2.1" when ready
 
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js ${{ matrix.node }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node }}
-
-            - name: Install pnpm
-              uses: pnpm/action-setup@v4.0.0
-
-            - name: Install lib deps
-              working-directory: packages/pages-components
-              run: pnpm i --ignore-scripts concurrently@8 wait-on@7
-
-            - name: Build library (if needed)
-              run: pnpm run build
-
             - name: Pack library
               id: pack
               run: |
