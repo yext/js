@@ -1,0 +1,6 @@
+.artifact-output/
+dist/
+node_modules/
+playwright-report/
+sites-rendered-output/
+deno.lock

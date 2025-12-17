@@ -1,0 +1,41 @@
+{
+  "features": [
+    {
+      "name": "location",
+      "streamId": "location-stream-aaa",
+      "templateType": "JS",
+      "entityPageSet": {}
+    }
+  ],
+  "streams": [
+    {
+      "$id": "location-stream-aaa",
+      "filter": {
+        "entityTypes": [
+          "location"
+        ]
+      },
+      "fields": [
+        "id",
+        "uid",
+        "meta",
+        "name",
+        "address",
+        "slug",
+        "hours",
+        "photoGallery",
+        "c_lrt",
+        "c_subfieldRTFTest.title",
+        "c_subfieldRTFTest.rtf.html"
+      ],
+      "localization": {
+        "locales": [
+          "en"
+        ],
+        "primary": false
+      },
+      "source": "knowledgeGraph",
+      "destination": "pages"
+    }
+  ]
+}

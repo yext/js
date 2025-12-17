@@ -1,0 +1,16 @@
+@import "@yext/pages-components/style.css";
+
+.tailwind {
+  @tailwind base;
+}
+/* @tailwind base; */
+@tailwind components;
+@tailwind utilities;
+
+.centered-container {
+  @apply mx-auto px-5 md:px-14 max-w-screen-xl mt-8 mb-16;
+}
+
+.section {
+  @apply mt-8 mb-16;
+}
