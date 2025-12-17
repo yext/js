@@ -1,251 +1,251 @@
 {
-	"__": {
-		"entityPageSet": {},
-		"name": "location"
-	},
-	"_site": {
-		"id": "turtlehead-tacos-site",
-		"logo": {
-			"image": {
-				"height": 150,
-				"url": "http://a.mktgcdn.com/p/8esDUBrhKJnkaVztLihLsC3quv_5BjLFG9L6MJ0adcs/150x150.png",
-				"width": 150
-			}
-		},
-		"meta": {
-			"entityType": {
-				"id": "ce_site",
-				"uid": 137401
-			},
-			"locale": "en"
-		},
-		"name": "Turtlehead Tacos",
-		"uid": 97807072
-	},
-	"address": {
-		"city": "New York",
-		"countryCode": "US",
-		"line1": "60 W 23rd St",
-		"localizedCountryName": "United States",
-		"localizedRegionName": "New York",
-		"postalCode": "10010",
-		"region": "NY"
-	},
-	"businessId": 4026087,
-	"c_lrt": {
-		"json": {
-			"root": {
-				"children": [
-					{
-						"children": [
-							{
-								"detail": 0,
-								"format": 2,
-								"mode": "normal",
-								"style": "",
-								"text": "Hello",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 0,
-								"mode": "normal",
-								"style": "",
-								"text": " there ",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 1,
-								"mode": "normal",
-								"style": "",
-								"text": "buddy",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 0,
-								"mode": "normal",
-								"style": "",
-								"text": "! 2",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 64,
-								"mode": "normal",
-								"style": "",
-								"text": "2",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 0,
-								"mode": "normal",
-								"style": "",
-								"text": " = 4 I'm a ",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"children": [
-									{
-										"detail": 0,
-										"format": 0,
-										"mode": "normal",
-										"style": "",
-										"text": "link",
-										"type": "text",
-										"version": 1
-									}
-								],
-								"direction": "ltr",
-								"format": "",
-								"indent": 0,
-								"rel": "noopener",
-								"type": "link",
-								"url": "https://google.com",
-								"version": 1
-							},
-							{
-								"detail": 0,
-								"format": 0,
-								"mode": "normal",
-								"style": "",
-								"text": " boi'",
-								"type": "text",
-								"version": 1
-							},
-							{
-								"altText": "2023_porsche_718_cayman-pic-3078044859426994189-1024x768.jpeg",
-								"height": 114,
-								"maxWidth": 500,
-								"src": "https://a.mktgcdn.com/p/l2dQPue0b51fCD4RSbFZAT8jBHemei0BZMxphzBx3u0/1024x768.jpg",
-								"type": "image",
-								"version": 1,
-								"width": 176
-							}
-						],
-						"direction": "ltr",
-						"format": "",
-						"indent": 0,
-						"type": "paragraph",
-						"version": 1
-					}
-				],
-				"direction": "ltr",
-				"format": "",
-				"indent": 0,
-				"type": "root",
-				"version": 1
-			}
-		}
-	},
-	"c_subfieldRTFTest": {
-		"rtf": {
-			"html": "\u003cp dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; color: rgb(0, 0, 0); margin: 0; padding: 3px 2px 3px 2px; position: relative;\"\u003e\u003cspan\u003eHi \u003c/span\u003e\u003cu\u003e\u003cspan style=\"text-decoration: underline;\"\u003ethere\u003c/span\u003e\u003c/u\u003e\u003c/p\u003e"
-		},
-		"title": "My title"
-	},
-	"hours": {
-		"friday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"monday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"saturday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"sunday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"thursday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"tuesday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		},
-		"wednesday": {
-			"openIntervals": [
-				{
-					"end": "02:00",
-					"start": "10:00"
-				}
-			]
-		}
-	},
-	"id": "location6",
-	"locale": "en",
-	"meta": {
-		"entityType": {
-			"id": "location",
-			"uid": 0
-		},
-		"locale": "en"
-	},
-	"name": "Turtlehead Tacos 1",
-	"photoGallery": [
-		{
-			"image": {
-				"height": 800,
-				"url": "http://a.mktgcdn.com/p/EOfw4a7y-p7RwzI8oosYqgfE_gJuOIKx5tuGMa2uPOA/1200x800.jpg",
-				"width": 1200
-			}
-		},
-		{
-			"image": {
-				"height": 408,
-				"url": "http://a.mktgcdn.com/p/fmIYfJlt1p_XnjNI82SvWCff9eX8RWFI8jc78FH_bgo/612x408.jpg",
-				"width": 612
-			}
-		},
-		{
-			"image": {
-				"height": 1706,
-				"url": "http://a.mktgcdn.com/p/dEj7z6VxDoOpWmw1XyT2MxDAEsMaHDBNslgmhZGl4TE/2560x1706.jpg",
-				"width": 2560
-			}
-		}
-	],
-	"siteDomain": "wondrous-belekoy-b6f5eb.netlify.app/subdirectory",
-	"siteId": 0,
-	"siteInternalHostName": "",
-	"slug": "location6-chelsea",
-	"uid": 97807063
+  "__": {
+    "entityPageSet": {},
+    "name": "location"
+  },
+  "_site": {
+    "id": "turtlehead-tacos-site",
+    "logo": {
+      "image": {
+        "height": 150,
+        "url": "http://a.mktgcdn.com/p/8esDUBrhKJnkaVztLihLsC3quv_5BjLFG9L6MJ0adcs/150x150.png",
+        "width": 150
+      }
+    },
+    "meta": {
+      "entityType": {
+        "id": "ce_site",
+        "uid": 137401
+      },
+      "locale": "en"
+    },
+    "name": "Turtlehead Tacos",
+    "uid": 97807072
+  },
+  "address": {
+    "city": "New York",
+    "countryCode": "US",
+    "line1": "60 W 23rd St",
+    "localizedCountryName": "United States",
+    "localizedRegionName": "New York",
+    "postalCode": "10010",
+    "region": "NY"
+  },
+  "businessId": 4026087,
+  "c_lrt": {
+    "json": {
+      "root": {
+        "children": [
+          {
+            "children": [
+              {
+                "detail": 0,
+                "format": 2,
+                "mode": "normal",
+                "style": "",
+                "text": "Hello",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 0,
+                "mode": "normal",
+                "style": "",
+                "text": " there ",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 1,
+                "mode": "normal",
+                "style": "",
+                "text": "buddy",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 0,
+                "mode": "normal",
+                "style": "",
+                "text": "! 2",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 64,
+                "mode": "normal",
+                "style": "",
+                "text": "2",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 0,
+                "mode": "normal",
+                "style": "",
+                "text": " = 4 I'm a ",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "children": [
+                  {
+                    "detail": 0,
+                    "format": 0,
+                    "mode": "normal",
+                    "style": "",
+                    "text": "link",
+                    "type": "text",
+                    "version": 1
+                  }
+                ],
+                "direction": "ltr",
+                "format": "",
+                "indent": 0,
+                "rel": "noopener",
+                "type": "link",
+                "url": "https://google.com",
+                "version": 1
+              },
+              {
+                "detail": 0,
+                "format": 0,
+                "mode": "normal",
+                "style": "",
+                "text": " boi'",
+                "type": "text",
+                "version": 1
+              },
+              {
+                "altText": "2023_porsche_718_cayman-pic-3078044859426994189-1024x768.jpeg",
+                "height": 114,
+                "maxWidth": 500,
+                "src": "https://a.mktgcdn.com/p/l2dQPue0b51fCD4RSbFZAT8jBHemei0BZMxphzBx3u0/1024x768.jpg",
+                "type": "image",
+                "version": 1,
+                "width": 176
+              }
+            ],
+            "direction": "ltr",
+            "format": "",
+            "indent": 0,
+            "type": "paragraph",
+            "version": 1
+          }
+        ],
+        "direction": "ltr",
+        "format": "",
+        "indent": 0,
+        "type": "root",
+        "version": 1
+      }
+    }
+  },
+  "c_subfieldRTFTest": {
+    "rtf": {
+      "html": "\u003cp dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; color: rgb(0, 0, 0); margin: 0; padding: 3px 2px 3px 2px; position: relative;\"\u003e\u003cspan\u003eHi \u003c/span\u003e\u003cu\u003e\u003cspan style=\"text-decoration: underline;\"\u003ethere\u003c/span\u003e\u003c/u\u003e\u003c/p\u003e"
+    },
+    "title": "My title"
+  },
+  "hours": {
+    "friday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "monday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "saturday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "sunday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "thursday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "tuesday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    },
+    "wednesday": {
+      "openIntervals": [
+        {
+          "end": "02:00",
+          "start": "10:00"
+        }
+      ]
+    }
+  },
+  "id": "location6",
+  "locale": "en",
+  "meta": {
+    "entityType": {
+      "id": "location",
+      "uid": 0
+    },
+    "locale": "en"
+  },
+  "name": "Turtlehead Tacos 1",
+  "photoGallery": [
+    {
+      "image": {
+        "height": 800,
+        "url": "http://a.mktgcdn.com/p/EOfw4a7y-p7RwzI8oosYqgfE_gJuOIKx5tuGMa2uPOA/1200x800.jpg",
+        "width": 1200
+      }
+    },
+    {
+      "image": {
+        "height": 408,
+        "url": "http://a.mktgcdn.com/p/fmIYfJlt1p_XnjNI82SvWCff9eX8RWFI8jc78FH_bgo/612x408.jpg",
+        "width": 612
+      }
+    },
+    {
+      "image": {
+        "height": 1706,
+        "url": "http://a.mktgcdn.com/p/dEj7z6VxDoOpWmw1XyT2MxDAEsMaHDBNslgmhZGl4TE/2560x1706.jpg",
+        "width": 2560
+      }
+    }
+  ],
+  "siteDomain": "wondrous-belekoy-b6f5eb.netlify.app/subdirectory",
+  "siteId": 0,
+  "siteInternalHostName": "",
+  "slug": "location6-chelsea",
+  "uid": 97807063
 }
