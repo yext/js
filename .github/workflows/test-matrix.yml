@@ -27,6 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
       - name: Pack library
         id: pack
         working-directory: packages/pages-components
@@ -34,13 +35,13 @@ jobs:
           pnpm pack
           echo "package=$(ls *.tgz)" >> $GITHUB_OUTPUT
 
+      - name: Install packed library into consumer
+        working-directory: test-sites/pages-components-starter
+        run: pnpm add ../../packages/pages-components${{ steps.pack.outputs.package }}
+
       - name: Install consumer dependencies
         working-directory: test-sites/pages-components-starter
         run: pnpm install --frozen-lockfile
-
-      - name: Install packed library into consumer
-        working-directory: test-sites/pages-components-starter
-        run: pnpm add ../../${{ steps.pack.outputs.package }}
 
       - name: Override React version
         working-directory: test-sites/pages-components-starter
