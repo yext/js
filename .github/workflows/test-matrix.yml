@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: ${{ matrix.node }}
+          cache: "pnpm"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4.0.0
@@ -32,12 +33,12 @@ jobs:
         id: pack
         working-directory: packages/pages-components
         run: |
-          pnpm pack
-          echo "package=$(ls *.tgz)" >> $GITHUB_OUTPUT
+          PACKAGE=$(pnpm pack)
+          echo "package=$PACKAGE" >> $GITHUB_OUTPUT
 
       - name: Install packed library into consumer
         working-directory: test-sites/pages-components-starter
-        run: pnpm add ../../packages/pages-components${{ steps.pack.outputs.package }}
+        run: pnpm add ../../packages/pages-components/${{ steps.pack.outputs.package }}
 
       - name: Install consumer dependencies
         working-directory: test-sites/pages-components-starter
@@ -48,9 +49,24 @@ jobs:
         run: |
           pnpm add react@${{ matrix.react }} react-dom@${{ matrix.react }} --force
 
+      - name: Get Playwright version
+        id: playwright-version
+        working-directory: test-sites/pages-components-starter
+        run: echo "version=$(jq -r '.devDependencies["@playwright/test"]' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
       - name: Install Playwright browsers
         working-directory: test-sites/pages-components-starter
-        run: pnpm exec playwright install --with-deps
+        run: |
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+            pnpm exec playwright install --with-deps
+          fi
 
       - name: Run Playwright tests
         working-directory: test-sites/pages-components-starter
