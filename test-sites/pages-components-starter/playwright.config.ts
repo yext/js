@@ -36,7 +36,7 @@ export default defineConfig({
     command: "pnpm run dev --no-open-browser",
     url: "http://localhost:5173/",
     reuseExistingServer: !process.env.CI,
-    timeout: 5000, // ms
+    timeout: process.env.CI ? 15000 : 5000, // ms
     stdout: "ignore",
     stderr: "pipe",
   },
