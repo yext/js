@@ -32,8 +32,8 @@ jobs:
         id: pack
         working-directory: packages/pages-components
         run: |
-          PACKAGE=$(pnpm pack)
-          echo "package=$PACKAGE" >> $GITHUB_OUTPUT
+          pnpm pack
+          echo "package=$(ls *.tgz)" >> $GITHUB_OUTPUT
 
       - name: Install packed library into consumer
         working-directory: test-sites/pages-components-starter
