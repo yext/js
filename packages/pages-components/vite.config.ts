@@ -10,6 +10,7 @@ export default defineConfig(() => ({
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "pages-components",
+      fileName: "index",
       formats: ["es"] as LibraryFormats[], // typescript is unhappy without this forced type definition
     },
     rollupOptions: {
@@ -18,6 +19,13 @@ export default defineConfig(() => ({
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+        },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith(".css")) {
+            return "index.css";
+          }
+          // Keep default naming for other assets (fonts, images, etc.)
+          return "assets/[name]-[hash][extname]";
         },
       },
     },

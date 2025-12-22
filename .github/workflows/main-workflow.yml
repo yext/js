@@ -34,3 +34,6 @@ jobs:
     uses: ./.github/workflows/unit_test.yml
     with:
       package: "pages-components"
+  call_test_matrix:
+    needs: call_build
+    uses: ./.github/workflows/test-matrix.yml

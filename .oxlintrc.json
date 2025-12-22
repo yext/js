@@ -5,5 +5,10 @@
       { "caughtErrorsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
     ]
   },
-  "ignorePatterns": ["**/*/dist", "!.storybook", "**/*/storybook-static/**"]
+  "ignorePatterns": [
+    "**/*/dist",
+    "!.storybook",
+    "**/*/storybook-static/**",
+    "test-sites/**"
+  ]
 }

@@ -1,0 +1,82 @@
+name: Component Library Matrix Tests
+
+on: workflow_call
+
+jobs:
+  matrix-test:
+    name: Node ${{ matrix.node }} • React ${{ matrix.react }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false # Continue other combos even if one fails
+      matrix:
+        node: [18, 20, 22, 24]
+        react: ["17.0.2", "18.2.0"] # TODO: Add "19.2.1" when ready
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4.1.6
+
+      - name: Use Node.js ${{ matrix.node}}
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4.0.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Pack library
+        id: pack
+        working-directory: packages/pages-components
+        run: |
+          pnpm pack
+          echo "package=$(ls *.tgz)" >> $GITHUB_OUTPUT
+
+      - name: Install packed library into consumer
+        working-directory: test-sites/pages-components-starter
+        run: pnpm add ../../packages/pages-components/${{ steps.pack.outputs.package }}
+
+      - name: Install consumer dependencies
+        working-directory: test-sites/pages-components-starter
+        run: pnpm install --frozen-lockfile
+
+      - name: Override React version
+        working-directory: test-sites/pages-components-starter
+        run: |
+          pnpm add react@${{ matrix.react }} react-dom@${{ matrix.react }} --force
+
+      - name: Get Playwright version
+        id: playwright-version
+        working-directory: test-sites/pages-components-starter
+        run: echo "version=$(jq -r '.devDependencies["@playwright/test"]' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      - name: Install Playwright browsers
+        working-directory: test-sites/pages-components-starter
+        run: |
+          if [ "${{ steps.playwright-cache.outputs.cache-hit }}" != "true" ]; then
+            pnpm exec playwright install --with-deps
+          fi
+
+      - name: Run Playwright tests
+        working-directory: test-sites/pages-components-starter
+        run: pnpm test
+        env:
+          CI: true # Ensures Playwright runs in headless mode
+
+      - name: Upload Playwright Report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-node${{ matrix.node }}-react${{ matrix.react }}
+          path: test-sites/pages-components-starter/playwright-report/
+          retention-days: 14
