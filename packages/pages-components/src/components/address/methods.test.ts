@@ -11,7 +11,7 @@ import {
 const sampleAddress: AddressType = {
   city: "New York",
   countryCode: "US",
-  line1: "60 W 23rd St",
+  line1: "60 W 23rd St #1",
   postalCode: "10010",
   region: "NY",
 };
@@ -61,7 +61,7 @@ describe("getDirections()", () => {
         provider: MapProviderOption.APPLE,
       })
     ).toEqual(
-      "https://maps.apple.com/?address=60%20W%2023rd%20St,%20New%20York,%20NY,%2010010,%20US"
+      "https://maps.apple.com/?address=60%20W%2023rd%20St%20%231%2C%20New%20York%2C%20NY%2C%2010010%2C%20US"
     );
   });
 
@@ -71,7 +71,7 @@ describe("getDirections()", () => {
         provider: MapProviderOption.BING,
       })
     ).toEqual(
-      "https://bing.com/maps/default.aspx?where1=60%20W%2023rd%20St,%20New%20York,%20NY,%2010010"
+      "https://bing.com/maps/default.aspx?where1=60%20W%2023rd%20St%20%231%2C%20New%20York%2C%20NY%2C%2010010"
     );
   });
 
@@ -82,13 +82,13 @@ describe("getDirections()", () => {
         route: true,
       })
     ).toEqual(
-      "https://bing.com/maps/default.aspx?rtp=adr.60%20W%2023rd%20St,%20New%20York,%20NY,%2010010"
+      "https://bing.com/maps/default.aspx?rtp=adr.60%20W%2023rd%20St%20%231%2C%20New%20York%2C%20NY%2C%2010010"
     );
   });
 
   it("returns URL to Google Maps address query", () => {
     expect(getDirections(sampleAddress)).toEqual(
-      "https://maps.google.com/maps/search/?api=1&query=60%20W%2023rd%20St,%20New%20York,%20NY,%2010010,%20US"
+      "https://maps.google.com/maps/search/?api=1&query=60%20W%2023rd%20St%20%231%2C%20New%20York%2C%20NY%2C%2010010%2C%20US"
     );
   });
 
@@ -98,7 +98,7 @@ describe("getDirections()", () => {
         route: true,
       })
     ).toEqual(
-      "https://maps.google.com/maps/dir/?api=1&destination=60%20W%2023rd%20St,%20New%20York,%20NY,%2010010,%20US"
+      "https://maps.google.com/maps/dir/?api=1&destination=60%20W%2023rd%20St%20%231%2C%20New%20York%2C%20NY%2C%2010010%2C%20US"
     );
   });
 

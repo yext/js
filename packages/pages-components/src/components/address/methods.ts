@@ -220,5 +220,5 @@ const encodeArray = (substrings: (string | undefined)[] = []): string => {
   if (!substrings.length) return "";
 
   const str = substrings.filter(Boolean).join(", ");
-  return encodeURI(str);
+  return encodeURIComponent(str);
 };
