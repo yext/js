@@ -2,23 +2,23 @@
 
 ##### Chores
 
-*  upgrade storybook/test-runner ([#128](https://github.com/yext/js/pull/128)) ([c8730380](https://github.com/yext/js/commit/c87303805625f6615aa45ea7e711bc0805076420))
+- upgrade storybook/test-runner ([#128](https://github.com/yext/js/pull/128)) ([c8730380](https://github.com/yext/js/commit/c87303805625f6615aa45ea7e711bc0805076420))
 
 ##### New Features
 
-* **pages-components:**  add openingHoursSpecification schema helper ([#129](https://github.com/yext/js/pull/129)) ([8ad76b49](https://github.com/yext/js/commit/8ad76b4956210832b9ada6fe995bdaf34b5834a7))
+- **pages-components:** add openingHoursSpecification schema helper ([#129](https://github.com/yext/js/pull/129)) ([8ad76b49](https://github.com/yext/js/commit/8ad76b4956210832b9ada6fe995bdaf34b5834a7))
 
 ##### Bug Fixes
 
-*  update getDirections encoding ([#132](https://github.com/yext/js/pull/132)) ([b0b0dc7f](https://github.com/yext/js/commit/b0b0dc7fff5137329aa4be7cc4301a4982d946f2))
+- update getDirections encoding ([#132](https://github.com/yext/js/pull/132)) ([b0b0dc7f](https://github.com/yext/js/commit/b0b0dc7fff5137329aa4be7cc4301a4982d946f2))
 
 ##### Other Changes
 
-*  drop React 19 and add React/Node matrix tests ([#131](https://github.com/yext/js/pull/131)) ([ad28ab88](https://github.com/yext/js/commit/ad28ab88820c99f442664ac2cd7e7acb0a8b582e))
+- drop React 19 and add React/Node matrix tests ([#131](https://github.com/yext/js/pull/131)) ([ad28ab88](https://github.com/yext/js/commit/ad28ab88820c99f442664ac2cd7e7acb0a8b582e))
 
 ##### Reverts
 
-*  prior changes and build with React 18 ([#127](https://github.com/yext/js/pull/127)) ([5b2fd083](https://github.com/yext/js/commit/5b2fd0839cef7bffd14a316dfb101a8b38e7a1fb))
+- prior changes and build with React 18 ([#127](https://github.com/yext/js/pull/127)) ([5b2fd083](https://github.com/yext/js/commit/5b2fd0839cef7bffd14a316dfb101a8b38e7a1fb))
 
 #### 1.2.2 (2025-11-19)
 
