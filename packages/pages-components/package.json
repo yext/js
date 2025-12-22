@@ -50,8 +50,8 @@
   "peerDependencies": {
     "lexical": "~0.38.2",
     "mapbox-gl": "^2.9.2",
-    "react": "^17.0.2 || ^18.2.0",
-    "react-dom": "^17.0.2 || ^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",
