@@ -46,4 +46,4 @@ jobs:
       - name: Publish
         run: |
           cd packages/pages-components
-          pnpm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }}
+          pnpm publish --access public --tag ${{ steps.get_npm_tag.outputs.npm_tag }} --no-git-checks
