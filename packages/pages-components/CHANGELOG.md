@@ -1,3 +1,15 @@
+#### 1.2.4 (2025-12-23)
+
+##### Bug Fixes
+
+*  release script ([c8c09e2e](https://github.com/yext/js/commit/c8c09e2ed06e8afa312d904161a2d51a18c83b4d))
+*  add back cjs support ([#135](https://github.com/yext/js/pull/135)) ([61a4f603](https://github.com/yext/js/commit/61a4f6031d0ff8fcdb39eb0d742a2f71020048bf))
+
+##### Other Changes
+
+*  pages-components@1.2.4" ([0fe1041d](https://github.com/yext/js/commit/0fe1041d2c5ab8c6884595487847192d43986315))
+*  pages-components@1.2.4 ([01499df9](https://github.com/yext/js/commit/01499df931c8165453cd377aecc71a6fd151196b))
+
 #### 1.2.3 (2025-12-22)
 
 ##### Chores
