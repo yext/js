@@ -1,3 +1,9 @@
+#### 1.2.4 (2025-12-23)
+
+##### Bug Fixes
+
+*  add back cjs support ([#135](https://github.com/yext/js/pull/135)) ([61a4f603](https://github.com/yext/js/commit/61a4f6031d0ff8fcdb39eb0d742a2f71020048bf))
+
 #### 1.2.3 (2025-12-22)
 
 ##### Chores
