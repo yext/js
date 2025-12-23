@@ -4,6 +4,5 @@ export * from "./image/index.js";
 export * from "./link/index.js";
 export * from "./map/index.js";
 export * from "./locationmap/index.js";
-export * from "./richText/index.js";
 export * from "./hours/index.js";
 export * from "./schema/index.js";
