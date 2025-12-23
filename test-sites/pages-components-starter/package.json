@@ -13,7 +13,7 @@
     "test": "playwright test"
   },
   "engines": {
-    "node": "^18 || ^20.2.0 || ^22 || ^24"
+    "node": "^20.2.0 || ^22 || ^24"
   },
   "dependencies": {
     "@yext/pages-components": "workspace:*",

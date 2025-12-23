@@ -9,7 +9,7 @@ if ! command -v nvm >/dev/null 2>&1; then
   exit 1
 fi
 
-NODE_VERSIONS=("18" "20" "22" "24")
+NODE_VERSIONS=("20" "22" "24")
 REACT_VERSIONS=("18.2.0") # TODO: Add "19.2.1"
 
 INITIAL_NODE_VERSION=$(node -v)
