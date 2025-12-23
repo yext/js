@@ -11,7 +11,7 @@ export default defineConfig(() => ({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "pages-components",
       fileName: "index",
-      formats: ["es"] as LibraryFormats[], // typescript is unhappy without this forced type definition
+      formats: ["es", "cjs"] as LibraryFormats[], // typescript is unhappy without this forced type definition
     },
     rollupOptions: {
       external: ["react", "react-dom", "mapbox-gl"],
@@ -44,7 +44,7 @@ const dts = (): Plugin => ({
       return;
     }
 
-    exec("tsup src/index.ts --format esm --dts-only", (err) => {
+    exec("tsup src/index.ts --format esm,cjs --dts-only", (err) => {
       if (err) {
         throw new Error("Failed to generate declaration files");
       }
