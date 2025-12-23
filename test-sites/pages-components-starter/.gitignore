@@ -4,3 +4,4 @@ node_modules/
 playwright-report/
 sites-rendered-output/
 deno.lock
+test-results/
