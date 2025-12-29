@@ -10,7 +10,7 @@ if ! command -v nvm >/dev/null 2>&1; then
 fi
 
 NODE_VERSIONS=("20" "22" "24")
-REACT_VERSIONS=("18.2.0") # TODO: Add "19.2.1"
+REACT_VERSIONS=("18.2.0" "19.2.3")
 
 INITIAL_NODE_VERSION=$(node -v)
 echo "🔍 Detected initial Node version: $INITIAL_NODE_VERSION"
