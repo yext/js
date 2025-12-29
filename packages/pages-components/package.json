@@ -35,8 +35,8 @@
   },
   "scripts": {
     "dev": "pnpm run storybook",
-    "build": "tsc && vite build",
-    "build:tsup": "tsup && pnpm build:css",
+    "build:vite": "tsc && vite build",
+    "build": "tsup && pnpm build:css",
     "build:css": "lightningcss --minify --bundle --targets \">= 0.25%\" src/index.css -o dist/index.css",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
