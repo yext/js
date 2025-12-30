@@ -1,8 +1,4 @@
-import {
-  PhotoGallerySchema,
-  PhotoSchema,
-  validatePhoto,
-} from "./photoGallery.js";
+import { PhotoGallerySchema, PhotoSchema, validatePhoto } from "./photoGallery.js";
 
 describe("validatePhoto", () => {
   it("returns false for invalid photo objects", () => {
@@ -14,9 +10,7 @@ describe("validatePhoto", () => {
   });
 
   it("should return true for valid photo objects", () => {
-    expect(
-      validatePhoto({ image: { url: "https://example.com/image.jpg" } })
-    ).toBe(true);
+    expect(validatePhoto({ image: { url: "https://example.com/image.jpg" } })).toBe(true);
     expect(
       validatePhoto({
         image: {
@@ -57,10 +51,7 @@ describe("PhotoGallerySchema", () => {
       },
     ];
     expect(PhotoGallerySchema(gallery)).toEqual({
-      image: [
-        "https://example.com/photo1.jpg",
-        "https://example.com/photo2.png",
-      ],
+      image: ["https://example.com/photo1.jpg", "https://example.com/photo2.png"],
     });
   });
 

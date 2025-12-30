@@ -62,11 +62,7 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   };
 };
 
-const Location: Template<TemplateRenderProps> = ({
-  relativePrefixToRoot,
-  document,
-  __meta,
-}) => {
+const Location: Template<TemplateRenderProps> = ({ relativePrefixToRoot, document, __meta }) => {
   const { address, c_subfieldRTFTest } = document;
 
   return (
@@ -86,9 +82,7 @@ const Location: Template<TemplateRenderProps> = ({
       <div>
         LRT via HTML:{" "}
         {c_subfieldRTFTest?.rtf?.html && (
-          <div
-            dangerouslySetInnerHTML={{ __html: c_subfieldRTFTest.rtf.html }}
-          ></div>
+          <div dangerouslySetInnerHTML={{ __html: c_subfieldRTFTest.rtf.html }}></div>
         )}
       </div>
     </div>

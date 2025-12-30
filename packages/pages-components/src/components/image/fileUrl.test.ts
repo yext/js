@@ -25,8 +25,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/f/1234/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/f/1234/contentHash.pdf/width=126,height=164",
   },
   {
     name: "ProdEU",
@@ -51,8 +50,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.eu.mktgcdn.com/f/100001234/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.eu.mktgcdn.com/f/100001234/contentHash.pdf/width=126,height=164",
   },
   {
     name: "ProdEUAccountZero",
@@ -65,8 +63,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.eu.mktgcdn.com/f/0/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.eu.mktgcdn.com/f/0/contentHash.pdf/width=126,height=164",
   },
   {
     name: "USSandbox",
@@ -78,8 +75,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/f-sandbox/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/f-sandbox/contentHash.pdf/width=126,height=164",
   },
   {
     name: "USSandboxAccount",
@@ -92,8 +88,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/f-sandbox/1234/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/f-sandbox/1234/contentHash.pdf/width=126,height=164",
   },
   {
     name: "EUQA",
@@ -105,8 +100,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.eu.mktgcdn.com/f-qa/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.eu.mktgcdn.com/f-qa/contentHash.pdf/width=126,height=164",
   },
   {
     name: "EUQAAccount",
@@ -119,8 +113,7 @@ const validCases = [
       contentHash: "contentHash",
       extension: ".pdf",
     } as FileUrl,
-    dynUrl:
-      "https://dyn.eu.mktgcdn.com/f-qa/100001234/contentHash.pdf/width=126,height=164",
+    dynUrl: "https://dyn.eu.mktgcdn.com/f-qa/100001234/contentHash.pdf/width=126,height=164",
   },
   {
     name: "USDevNoExtension",
@@ -145,8 +138,7 @@ const validCases = [
       extension: ".pdf",
     } as FileUrl,
     imageTransformations: { format: "avif" } as ImageTransformations,
-    dynUrl:
-      "https://dyn.eu.mktgcdn.com/f/contentHash.pdf/width=126,height=164,format=avif",
+    dynUrl: "https://dyn.eu.mktgcdn.com/f/contentHash.pdf/width=126,height=164,format=avif",
   },
 ];
 
@@ -155,9 +147,9 @@ describe("parseFileUrl valid", () => {
     `returns valid parsedFileUrl for $name - $input`,
     ({ input, want, dynUrl, imageTransformations }) => {
       expect(parseFileUrl(input)).toEqual(want);
-      expect(
-        fileUrlToDynString(parseFileUrl(input)!, 126, 164, imageTransformations)
-      ).toEqual(dynUrl);
+      expect(fileUrlToDynString(parseFileUrl(input)!, 126, 164, imageTransformations)).toEqual(
+        dynUrl
+      );
     }
   );
 });
@@ -202,10 +194,7 @@ const invalidCases = [
 ];
 
 describe("parseFileUrl invalid", () => {
-  test.each(invalidCases)(
-    `returns invalid parsedFileUrl for $name - $input`,
-    ({ input }) => {
-      expect(parseFileUrl(input)).toEqual(undefined);
-    }
-  );
+  test.each(invalidCases)(`returns invalid parsedFileUrl for $name - $input`, ({ input }) => {
+    expect(parseFileUrl(input)).toEqual(undefined);
+  });
 });

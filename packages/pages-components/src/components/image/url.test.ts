@@ -39,17 +39,13 @@ describe("getImageUrl", () => {
   it("converts Yext CDN file URLs", () => {
     const yextFileUrl = "https://a.mktgcdn.com/f/contentHash.jpg";
     const result = getImageUrl(yextFileUrl, width, height);
-    expect(result).toBe(
-      "https://dyn.mktgcdn.com/f/contentHash.jpg/width=800,height=600"
-    );
+    expect(result).toBe("https://dyn.mktgcdn.com/f/contentHash.jpg/width=800,height=600");
   });
 
   it("converts Yext CDN EU URLs", () => {
     const yextEuUrl = "https://a.eu.mktgcdn.com/f/contentHash.jpg";
     const result = getImageUrl(yextEuUrl, width, height);
-    expect(result).toBe(
-      "https://dyn.eu.mktgcdn.com/f/contentHash.jpg/width=800,height=600"
-    );
+    expect(result).toBe("https://dyn.eu.mktgcdn.com/f/contentHash.jpg/width=800,height=600");
   });
 
   it("returns Unsplash URLs as-is without conversion", () => {

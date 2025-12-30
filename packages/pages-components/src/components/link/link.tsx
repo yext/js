@@ -22,98 +22,89 @@ import { Action } from "@yext/analytics";
  *
  * @public
  */
-export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  function Link(props, ref) {
-    const {
-      children,
-      onClick,
-      className,
-      eventName,
-      scope,
-      currency,
-      amount,
-      cta,
-      obfuscate,
-      customTags,
-      customValues,
-      ...rest
-    } = props;
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
+  const {
+    children,
+    onClick,
+    className,
+    eventName,
+    scope,
+    currency,
+    amount,
+    cta,
+    obfuscate,
+    customTags,
+    customValues,
+    ...rest
+  } = props;
 
-    const resolvedCta: CTA = resolveCTA(props);
-    const action: Action = resolveAction(resolvedCta, !!cta);
-    const resolvedEventName = determineEvent(
-      eventName,
-      resolvedCta.linkType,
-      !!cta
-    );
-    const analytics = useAnalytics();
+  const resolvedCta: CTA = resolveCTA(props);
+  const action: Action = resolveAction(resolvedCta, !!cta);
+  const resolvedEventName = determineEvent(eventName, resolvedCta.linkType, !!cta);
+  const analytics = useAnalytics();
 
-    const isObfuscate =
-      obfuscate || (obfuscate !== false && resolvedCta.linkType === "EMAIL");
+  const isObfuscate = obfuscate || (obfuscate !== false && resolvedCta.linkType === "EMAIL");
 
-    const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
-      const currentTarget = e.currentTarget;
-      let decodedLink = "";
+  const handleClick = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const currentTarget = e.currentTarget;
+    let decodedLink = "";
 
-      if (isObfuscate) {
-        // must happen before the async call
-        e.preventDefault();
+    if (isObfuscate) {
+      // must happen before the async call
+      e.preventDefault();
 
-        const encodedLink = currentTarget.href.split("/").at(-1);
-        if (encodedLink) {
-          decodedLink = atob(encodedLink);
-        }
+      const encodedLink = currentTarget.href.split("/").at(-1);
+      if (encodedLink) {
+        decodedLink = atob(encodedLink);
       }
-
-      if (analytics !== null) {
-        try {
-          await analytics.track({
-            action: action,
-            scope: scope,
-            eventName: resolvedEventName,
-            currency: currency,
-            amount: amount,
-            destinationUrl: decodedLink || currentTarget.href,
-            customTags: customTags,
-            customValues: customValues,
-          });
-        } catch (_) {
-          console.error("Failed to report click Analytics Event");
-        }
-      }
-
-      if (onClick) {
-        onClick(e);
-      }
-
-      if (decodedLink) {
-        window.location.href = decodedLink;
-      }
-    };
-
-    const renderedLink = isObfuscate
-      ? "Obfuscated, set a label or child"
-      : resolvedCta.link;
-
-    const attributes: any = {
-      className: classNames("Link", className),
-      href: isObfuscate ? btoa(resolvedCta.link) : resolvedCta.link,
-      onClick: handleClick,
-      rel: props.target && !props.rel ? "noopener" : props.rel,
-      ref: ref,
-    };
-
-    if (analytics?.getDebugEnabled()) {
-      attributes["data-ya-action"] = action;
-      attributes["data-ya-scopeoverride"] = scope;
-      attributes["data-ya-eventname"] = resolvedEventName;
     }
 
-    // hydration warnings suppressed because they will show when the xYextDebug query param is used
-    return (
-      <a {...rest} {...attributes} suppressHydrationWarning={true}>
-        {children || resolvedCta.label || renderedLink}
-      </a>
-    );
+    if (analytics !== null) {
+      try {
+        await analytics.track({
+          action: action,
+          scope: scope,
+          eventName: resolvedEventName,
+          currency: currency,
+          amount: amount,
+          destinationUrl: decodedLink || currentTarget.href,
+          customTags: customTags,
+          customValues: customValues,
+        });
+      } catch (_) {
+        console.error("Failed to report click Analytics Event");
+      }
+    }
+
+    if (onClick) {
+      onClick(e);
+    }
+
+    if (decodedLink) {
+      window.location.href = decodedLink;
+    }
+  };
+
+  const renderedLink = isObfuscate ? "Obfuscated, set a label or child" : resolvedCta.link;
+
+  const attributes: any = {
+    className: classNames("Link", className),
+    href: isObfuscate ? btoa(resolvedCta.link) : resolvedCta.link,
+    onClick: handleClick,
+    rel: props.target && !props.rel ? "noopener" : props.rel,
+    ref: ref,
+  };
+
+  if (analytics?.getDebugEnabled()) {
+    attributes["data-ya-action"] = action;
+    attributes["data-ya-scopeoverride"] = scope;
+    attributes["data-ya-eventname"] = resolvedEventName;
   }
-);
+
+  // hydration warnings suppressed because they will show when the xYextDebug query param is used
+  return (
+    <a {...rest} {...attributes} suppressHydrationWarning={true}>
+      {children || resolvedCta.label || renderedLink}
+    </a>
+  );
+});

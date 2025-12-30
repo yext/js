@@ -108,10 +108,7 @@ describe("LocalBusiness", () => {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       name: "Test Business",
-      image: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-      ],
+      image: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
     });
   });
 
@@ -170,10 +167,7 @@ describe("LocalBusiness", () => {
         addressCountry: "US",
       },
       openingHours: ["Mo,Tu,We,Th,Fr 09:00-17:00", "Sa,Su 00:00-00:00"],
-      image: [
-        "https://example.com/image1.jpg",
-        "https://example.com/image2.jpg",
-      ],
+      image: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
       description: "This is a comprehensive test business.",
       telephone: "987-654-3210",
       email: "comprehensive@example.com",

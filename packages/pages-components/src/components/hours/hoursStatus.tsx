@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import c from "classnames";
 import { Hours } from "./hours.js";
 import { DateTime } from "luxon";
-import {
-  HoursStatusProps,
-  StatusParams,
-  StatusTemplateParams,
-} from "./types.js";
+import { HoursStatusProps, StatusParams, StatusTemplateParams } from "./types.js";
 
 function isOpen24h(params: StatusParams): boolean {
   return params?.currentInterval?.is24h?.() || false;
@@ -23,11 +19,7 @@ function defaultCurrentTemplate(params: StatusParams): React.ReactNode {
   if (isIndefinitelyClosed(params)) {
     return <span className="HoursStatus-current">Temporarily Closed</span>;
   }
-  return (
-    <span className="HoursStatus-current">
-      {params.isOpen ? "Open Now" : "Closed"}
-    </span>
-  );
+  return <span className="HoursStatus-current">{params.isOpen ? "Open Now" : "Closed"}</span>;
 }
 
 function defaultSeparatorTemplate(params: StatusParams): React.ReactNode {
@@ -41,11 +33,7 @@ function defaultFutureTemplate(params: StatusParams): React.ReactNode {
   if (isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
-  return (
-    <span className="HoursStatus-future">
-      {params.isOpen ? "Closes at" : "Opens at"}
-    </span>
-  );
+  return <span className="HoursStatus-future">{params.isOpen ? "Closes at" : "Opens at"}</span>;
 }
 
 function defaultTimeTemplate(params: StatusParams): React.ReactNode {
@@ -75,12 +63,10 @@ function defaultDayOfWeekTemplate(params: StatusParams): React.ReactNode {
   let dayOfWeek = "";
   if (params.isOpen) {
     const interval = params.currentInterval;
-    dayOfWeek +=
-      interval?.end?.setLocale("en-US").toLocaleString(dayOptions) || "";
+    dayOfWeek += interval?.end?.setLocale("en-US").toLocaleString(dayOptions) || "";
   } else {
     const interval = params.futureInterval;
-    dayOfWeek +=
-      interval?.start?.setLocale("en-US").toLocaleString(dayOptions) || "";
+    dayOfWeek += interval?.start?.setLocale("en-US").toLocaleString(dayOptions) || "";
   }
   return <span className="HoursStatus-dayOfWeek"> {dayOfWeek}</span>;
 }
@@ -90,12 +76,10 @@ function defaultStatusTemplate(
   props?: HoursStatusProps
 ): React.ReactNode {
   const currentTemplate = params.currentTemplate || defaultCurrentTemplate;
-  const separatorTemplate =
-    params.separatorTemplate || defaultSeparatorTemplate;
+  const separatorTemplate = params.separatorTemplate || defaultSeparatorTemplate;
   const futureTemplate = params.futureTemplate || defaultFutureTemplate;
   const timeTemplate = params.timeTemplate || defaultTimeTemplate;
-  const dayOfWeekTemplate =
-    params.dayOfWeekTemplate || defaultDayOfWeekTemplate;
+  const dayOfWeekTemplate = params.dayOfWeekTemplate || defaultDayOfWeekTemplate;
 
   return (
     <div className={c("HoursStatus", props?.className || "")}>
@@ -165,10 +149,7 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
       {isClient ? (
         statusTemplateFn(statusParams, props)
       ) : (
-        <div
-          style={emptyStyle}
-          className={c("HoursStatus", props?.className || "")}
-        />
+        <div style={emptyStyle} className={c("HoursStatus", props?.className || "")} />
       )}
     </>
   );

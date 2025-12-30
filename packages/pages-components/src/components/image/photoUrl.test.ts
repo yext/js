@@ -52,8 +52,7 @@ const validCases = [
       name: "126x164",
       extension: ".jpg",
     } as PhotoUrl,
-    dynUrl:
-      "https://dyn.mktgcdn.com/p-sandbox/contentHash/width=126,height=164",
+    dynUrl: "https://dyn.mktgcdn.com/p-sandbox/contentHash/width=126,height=164",
   },
   {
     name: "CDN Params",
@@ -70,8 +69,7 @@ const validCases = [
       format: "avif",
       fit: "contain",
     } as ImageTransformations,
-    dynUrl:
-      "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164,format=avif,fit=contain",
+    dynUrl: "https://dyn.mktgcdn.com/p/contentHash/width=126,height=164,format=avif,fit=contain",
   },
 ];
 
@@ -80,14 +78,9 @@ describe("parsePhotoUrl valid", () => {
     `returns valid parsedPhotoUrl for $name - $input`,
     ({ input, want, dynUrl, imageTransformations }) => {
       expect(parsePhotoUrl(input)).toEqual(want);
-      expect(
-        photoUrlToDynString(
-          parsePhotoUrl(input)!,
-          126,
-          164,
-          imageTransformations
-        )
-      ).toEqual(dynUrl);
+      expect(photoUrlToDynString(parsePhotoUrl(input)!, 126, 164, imageTransformations)).toEqual(
+        dynUrl
+      );
     }
   );
 });
@@ -119,16 +112,12 @@ const invalidCases = [
   },
   {
     name: "InvalidPath",
-    input:
-      "https://a.mktgcdn.com/p/1234/too/many/segments/contentHash/126x164.jpg",
+    input: "https://a.mktgcdn.com/p/1234/too/many/segments/contentHash/126x164.jpg",
   },
 ];
 
 describe("parsePhotoUrl invalid", () => {
-  test.each(invalidCases)(
-    `returns invalid parsedPhotoUrl for $name - $input`,
-    ({ input }) => {
-      expect(parsePhotoUrl(input)).toEqual(undefined);
-    }
-  );
+  test.each(invalidCases)(`returns invalid parsedPhotoUrl for $name - $input`, ({ input }) => {
+    expect(parsePhotoUrl(input)).toEqual(undefined);
+  });
 });

@@ -48,10 +48,8 @@ function initPinOverlayClass() {
     }
 
     onLoad() {
-      this._viewChangeEventHandler = Microsoft.Maps.Events.addHandler(
-        this._map,
-        "viewchange",
-        () => this.updatePinPositions()
+      this._viewChangeEventHandler = Microsoft.Maps.Events.addHandler(this._map, "viewchange", () =>
+        this.updatePinPositions()
       );
       this.updatePinPositions();
     }
@@ -120,12 +118,8 @@ class BingMap extends ProviderMap {
     this.pinOverlay = new PinOverlay(this.map);
     this.map.layers.insert(this.pinOverlay);
 
-    Microsoft.Maps.Events.addHandler(this.map, "viewchangestart", () =>
-      this._panStartHandler()
-    );
-    Microsoft.Maps.Events.addHandler(this.map, "viewchangeend", () =>
-      this._panHandler()
-    );
+    Microsoft.Maps.Events.addHandler(this.map, "viewchangestart", () => this._panStartHandler());
+    Microsoft.Maps.Events.addHandler(this.map, "viewchangeend", () => this._panHandler());
   }
 
   /**
@@ -146,10 +140,7 @@ class BingMap extends ProviderMap {
    * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, _: boolean) {
-    const center = new Microsoft.Maps.Location(
-      coordinate.latitude,
-      coordinate.longitude
-    );
+    const center = new Microsoft.Maps.Location(coordinate.latitude, coordinate.longitude);
     this.map?.setView({ center });
     this.pinOverlay.updatePinPositions();
   }
@@ -190,15 +181,10 @@ class BingPin extends HTMLProviderPin {
    * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
-    this._location = new Microsoft.Maps.Location(
-      coordinate.latitude,
-      coordinate.longitude
-    );
+    this._location = new Microsoft.Maps.Location(coordinate.latitude, coordinate.longitude);
 
     if (this._map) {
-      (this._map.getProviderMap() as BingMap).pinOverlay.updatePinPosition(
-        this
-      );
+      (this._map.getProviderMap() as BingMap).pinOverlay.updatePinPosition(this);
     }
   }
 
@@ -234,12 +220,7 @@ const baseUrl = "https://www.bing.com/api/maps/mapcontrol";
  * options.params=\{\} - Additional API params
  * @see ProviderLoadFunction
  */
-function load(
-  resolve: () => void,
-  _: () => void,
-  apiKey: string,
-  { params = {} } = {}
-) {
+function load(resolve: () => void, _: () => void, apiKey: string, { params = {} } = {}) {
   window[globalCallback] = () => {
     initPinOverlayClass();
     resolve();

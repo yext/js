@@ -20,22 +20,10 @@ import "./address.css";
  *
  * @public
  */
-export const Address = ({
-  address,
-  lines,
-  separator = ",",
-  ...props
-}: AddressProps) => {
-  const renderedLines = (lines || localeAddressFormat(address.countryCode)).map(
-    (line) => (
-      <AddressLine
-        key={line.toString()}
-        address={address}
-        line={line}
-        separator={separator}
-      />
-    )
-  );
+export const Address = ({ address, lines, separator = ",", ...props }: AddressProps) => {
+  const renderedLines = (lines || localeAddressFormat(address.countryCode)).map((line) => (
+    <AddressLine key={line.toString()} address={address} line={line} separator={separator} />
+  ));
 
   return (
     <div {...props} key={address.toString()}>
@@ -44,19 +32,13 @@ export const Address = ({
   );
 };
 
-const AddressLine = ({
-  address,
-  line,
-  separator,
-}: AddressLineProps): React.ReactElement => {
+const AddressLine = ({ address, line, separator }: AddressLineProps): React.ReactElement => {
   const addressDOM: React.ReactElement[] = [];
   let separatorCount = 0;
 
   for (const field of line) {
     if (field === ",") {
-      addressDOM.push(
-        <span key={`separator-${separatorCount++}`}>{separator}</span>
-      );
+      addressDOM.push(<span key={`separator-${separatorCount++}`}>{separator}</span>);
       continue;
     }
 

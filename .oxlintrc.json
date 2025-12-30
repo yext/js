@@ -1,14 +1,6 @@
 {
   "rules": {
-    "no-unused-vars": [
-      "error",
-      { "caughtErrorsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
-    ]
+    "no-unused-vars": ["error", { "caughtErrorsIgnorePattern": "^_", "argsIgnorePattern": "^_" }]
   },
-  "ignorePatterns": [
-    "**/*/dist",
-    "!.storybook",
-    "**/*/storybook-static/**",
-    "test-sites/**"
-  ]
+  "ignorePatterns": ["**/*/dist", "!.storybook", "**/*/storybook-static/**", "test-sites/**"]
 }

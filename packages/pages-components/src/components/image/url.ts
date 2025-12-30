@@ -75,7 +75,5 @@ export const getImageTransformationsString = (
     .map(([key, value]) => `${key}=${value}`)
     .join(",");
 
-  return imageTransformationsString.length > 0
-    ? `,${imageTransformationsString}`
-    : "";
+  return imageTransformationsString.length > 0 ? `,${imageTransformationsString}` : "";
 };

@@ -1,12 +1,5 @@
 import { DateTime } from "luxon";
-import {
-  Day,
-  DayType,
-  HolidayType,
-  HoursType,
-  IntervalType,
-  WeekType,
-} from "./types.js";
+import { Day, DayType, HolidayType, HoursType, IntervalType, WeekType } from "./types.js";
 
 export function luxonDateToDay(d: DateTime): Day {
   const dayMap: Record<number, Day> = {
@@ -74,9 +67,7 @@ export class HoursInterval {
 
     [interval.start, interval.end].forEach((time) => {
       if (time.split(":").length !== 2) {
-        throw new Error(
-          `expected interval start and end data to be in the format "HH:MM"`
-        );
+        throw new Error(`expected interval start and end data to be in the format "HH:MM"`);
       }
     });
 
@@ -162,8 +153,7 @@ export class HoursInterval {
   is24h(): boolean {
     const startIs00 = this.start.minute === 0 && this.start.hour === 0;
     const endIs00 = this.end.minute === 0 && this.end.hour === 0;
-    const daysAreConsecutive =
-      this.end.day - this.start.day === 1 || this.end.day === 1;
+    const daysAreConsecutive = this.end.day - this.start.day === 1 || this.end.day === 1;
     return startIs00 && endIs00 && daysAreConsecutive;
   }
 }
@@ -202,11 +192,7 @@ export class Hours {
 
       if (hours && !hours.isClosed) {
         for (const interval of hours.openIntervals || []) {
-          const hoursInterval = new HoursInterval(
-            hoursDate,
-            interval,
-            this.timezone
-          );
+          const hoursInterval = new HoursInterval(hoursDate, interval, this.timezone);
 
           if (hoursInterval.contains(date)) {
             return hoursInterval;
@@ -276,8 +262,7 @@ export class Hours {
       if (hours?.openIntervals && !hours.isClosed) {
         intervalsList.push(
           ...hours.openIntervals.map(
-            (interval: IntervalType) =>
-              new HoursInterval(theDate, interval, this.timezone)
+            (interval: IntervalType) => new HoursInterval(theDate, interval, this.timezone)
           )
         );
       }
@@ -296,9 +281,7 @@ export class Hours {
       return null;
     }
 
-    return (
-      this.holidayHoursByDate[(date.toISO() || "").replace(/T.*/, "")] || null
-    );
+    return this.holidayHoursByDate[(date.toISO() || "").replace(/T.*/, "")] || null;
   }
 
   /**
@@ -405,10 +388,7 @@ export function arrayShift(arr: Array<any>, n: number): Array<any> {
 /**
  * @returns boolean whether the two intervals lists are equal
  */
-export function intervalsListsAreEqual(
-  il1: HoursInterval[],
-  il2: HoursInterval[]
-): boolean {
+export function intervalsListsAreEqual(il1: HoursInterval[], il2: HoursInterval[]): boolean {
   if (il1.length !== il2.length) {
     return false;
   }

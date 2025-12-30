@@ -59,12 +59,9 @@ export const Map_With_Current_Center_And_Zoom = () => {
       mapRef={mapRef}
       panHandler={panHandler}
     >
-      <div
-        style={{ position: "absolute", backgroundColor: "white", padding: 4 }}
-      >
+      <div style={{ position: "absolute", backgroundColor: "white", padding: 4 }}>
         <div>
-          lat: {currentCenter.latitude.toFixed(2)}, long:{" "}
-          {currentCenter.longitude.toFixed(2)}
+          lat: {currentCenter.latitude.toFixed(2)}, long: {currentCenter.longitude.toFixed(2)}
         </div>
         <div>zoom: {currentZoom}</div>
       </div>
@@ -89,20 +86,14 @@ export const Multiple_Maps = () => {
         bounds={[{ latitude: 38.8974, longitude: -77.0638 }]}
         singleZoom={16}
       >
-        <Marker
-          id="1"
-          coordinate={{ latitude: 38.8974, longitude: -77.0638 }}
-        />
+        <Marker id="1" coordinate={{ latitude: 38.8974, longitude: -77.0638 }} />
       </Map>
       <Map
         clientKey="gme-yextinc"
         defaultCenter={{ latitude: 38.8974, longitude: -77.0638 }}
         defaultZoom={16}
       >
-        <Marker
-          id="1"
-          coordinate={{ latitude: 38.8974, longitude: -77.0638 }}
-        />
+        <Marker id="1" coordinate={{ latitude: 38.8974, longitude: -77.0638 }} />
       </Map>
     </div>
   );
@@ -137,12 +128,8 @@ export const Map_With_Single_Interactive_Marker = () => {
         coordinate={{ latitude: 38.8954, longitude: -77.0698 }}
         id="123"
         onClick={(id: string) => setClicked(id)}
-        onFocus={(focused: boolean, id: string) =>
-          setFocused(focused ? id : "")
-        }
-        onHover={(hovered: boolean, id: string) =>
-          setHovered(hovered ? id : "")
-        }
+        onFocus={(focused: boolean, id: string) => setFocused(focused ? id : "")}
+        onHover={(hovered: boolean, id: string) => setHovered(hovered ? id : "")}
       >
         <svg
           width={clicked ? 50 : hovered || focused ? 35 : 30}
@@ -197,11 +184,7 @@ export const Map_With_Multiple_Interactive_Markers = () => {
               x="50%"
               y="40%"
               d="M30 15.0882C30 23.4212 23.3333 30.7353 15 38C7.22222 31.2941 0 23.4212 0 15.0882C0 6.75523 6.71573 0 15 0C23.2843 0 30 6.75523 30 15.0882Z"
-              stroke={
-                location.id === focusedId || location.id === hoveredId
-                  ? "white"
-                  : "none"
-              }
+              stroke={location.id === focusedId || location.id === hoveredId ? "white" : "none"}
             />
             <text
               x="50%"

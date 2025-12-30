@@ -67,17 +67,12 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (
-      !isProduction(...(this.productionDomains ?? [])) &&
-      !this.getDebugEnabled()
-    ) {
+    if (!isProduction(...(this.productionDomains ?? [])) && !this.getDebugEnabled()) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }
 
-    const region = getPartition(
-      this.templateData.document.businessId
-    ) as Region;
+    const region = getPartition(this.templateData.document.businessId) as Region;
 
     const config: AnalyticsConfig = {
       authorizationType: "apiKey",
@@ -102,11 +97,7 @@ export class Analytics implements AnalyticsMethods {
   }
 
   private canTrack(): boolean {
-    return (
-      getRuntime().name === "browser" &&
-      this._optedIn &&
-      !!this._analyticsEventService
-    );
+    return getRuntime().name === "browser" && this._optedIn && !!this._analyticsEventService;
   }
 
   /** {@inheritDoc AnalyticsMethods.identify} */
@@ -149,16 +140,8 @@ export class Analytics implements AnalyticsMethods {
       return Promise.resolve();
     }
 
-    const {
-      action,
-      scope,
-      eventName,
-      currency,
-      amount,
-      destinationUrl,
-      customTags,
-      customValues,
-    } = props;
+    const { action, scope, eventName, currency, amount, destinationUrl, customTags, customValues } =
+      props;
 
     let value;
     if (amount) {

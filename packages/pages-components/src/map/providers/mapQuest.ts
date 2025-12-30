@@ -43,12 +43,7 @@ class MapQuestPin extends LeafletPin {}
  * options.version='v1.3.2' - API version
  * @see ProviderLoadFunction
  */
-function load(
-  resolve: () => void,
-  _: () => void,
-  apiKey: string,
-  { version = "v1.3.2" } = {}
-) {
+function load(resolve: () => void, _: () => void, apiKey: string, { version = "v1.3.2" } = {}) {
   const baseUrl = `https://api.mqcdn.com/sdk/mapquest-js/${version}/mapquest-maps`;
 
   const mapStyle = document.createElement("link");

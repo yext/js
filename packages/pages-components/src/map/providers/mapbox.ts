@@ -17,8 +17,7 @@ class MapboxMap extends ProviderMap {
     super(options);
 
     const mapboxInstance =
-      (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })
-        ?.mapboxgl ?? mapboxgl;
+      (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
     mapboxInstance.accessToken = options?.apiKey ?? "";
     this.instance = mapboxInstance;
 
@@ -63,10 +62,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
-    const center = new this.instance.LngLat(
-      coordinate.longitude,
-      coordinate.latitude
-    );
+    const center = new this.instance.LngLat(coordinate.longitude, coordinate.latitude);
 
     if (this.map) {
       this.map[animated ? "panTo" : "setCenter"](center);
@@ -88,10 +84,7 @@ class MapboxMap extends ProviderMap {
    * {@inheritDoc ProviderMap.zetZoomCenter}
    */
   setZoomCenter(zoom: number, coordinate: Coordinate, animated: boolean) {
-    const center = new this.instance.LngLat(
-      coordinate.longitude,
-      coordinate.latitude
-    );
+    const center = new this.instance.LngLat(coordinate.longitude, coordinate.latitude);
 
     // Our standard zoom: at level 0, the world is 256 pixels wide and doubles each level
     // Mapbox zoom: at level 0, the world is 512 pixels wide and doubles each level
@@ -121,9 +114,7 @@ class MapboxPin extends HTMLProviderPin {
    * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
-    this.pin?.setLngLat(
-      new mapboxgl.LngLat(coordinate.longitude, coordinate.latitude)
-    );
+    this.pin?.setLngLat(new mapboxgl.LngLat(coordinate.longitude, coordinate.latitude));
   }
 
   /**
@@ -153,12 +144,7 @@ class MapboxPin extends HTMLProviderPin {
  * options.version='v1.13.0' - API version
  * @see ProviderLoadFunction
  */
-function load(
-  resolve: () => void,
-  _: () => void,
-  _apiKey: string,
-  { version = "v1.13.0" } = {}
-) {
+function load(resolve: () => void, _: () => void, _apiKey: string, { version = "v1.13.0" } = {}) {
   const baseUrl = `https://api.mapbox.com/mapbox-gl-js/${version}/mapbox-gl`;
 
   const mapStyle = document.createElement("link");

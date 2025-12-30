@@ -108,9 +108,7 @@ test.each<[string | undefined, LinkType | undefined, string]>([
   [undefined, "BadLinkType" as LinkType, LEGACY_LINK_EVENT],
   [undefined, undefined, LEGACY_CTA_EVENT],
 ])(`determineEvent: %s %s`, (inputEventName, linkType, outputEventName) => {
-  expect(determineEvent(inputEventName, linkType, false)).toEqual(
-    outputEventName
-  );
+  expect(determineEvent(inputEventName, linkType, false)).toEqual(outputEventName);
 });
 
 // determineEvent cta true
@@ -125,9 +123,7 @@ test.each<[string | undefined, LinkType | undefined, string]>([
   [undefined, "BadLinkType" as LinkType, CTA_EVENT],
   [undefined, undefined, LEGACY_CTA_EVENT],
 ])(`determineEvent: %s %s`, (inputEventName, linkType, outputEventName) => {
-  expect(determineEvent(inputEventName, linkType, true)).toEqual(
-    outputEventName
-  );
+  expect(determineEvent(inputEventName, linkType, true)).toEqual(outputEventName);
 });
 
 // resolveAction cta false

@@ -55,8 +55,7 @@ export const ListingPublisherOption = {
  *
  * @public
  */
-export type ListingPublisher =
-  (typeof ListingPublisherOption)[keyof typeof ListingPublisherOption];
+export type ListingPublisher = (typeof ListingPublisherOption)[keyof typeof ListingPublisherOption];
 
 /**
  * The type definition for a Listing
@@ -84,8 +83,7 @@ export const MapProviderOption = {
  *
  * @public
  */
-export type MapProvider =
-  (typeof MapProviderOption)[keyof typeof MapProviderOption];
+export type MapProvider = (typeof MapProviderOption)[keyof typeof MapProviderOption];
 
 /**
  * The Yext profile fields used to create a getDirections URL

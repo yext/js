@@ -69,10 +69,7 @@ class GoogleMap extends ProviderMap {
    * {@inheritDoc ProviderMap.setCenter}
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
-    const latLng = new google.maps.LatLng(
-      coordinate.latitude,
-      coordinate.longitude
-    );
+    const latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
 
     if (animated) {
       this.map?.panTo(latLng);
@@ -122,9 +119,7 @@ class GooglePin extends HTMLProviderPin {
         this.pin = pin;
       }
       draw() {
-        const position = this.getProjection()?.fromLatLngToDivPixel(
-          this.pin._latLng ?? null
-        );
+        const position = this.getProjection()?.fromLatLngToDivPixel(this.pin._latLng ?? null);
 
         if (position && this.pin._wrapper) {
           this.pin._wrapper.style.left = position.x + "px";
@@ -150,10 +145,7 @@ class GooglePin extends HTMLProviderPin {
    * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
-    this._latLng = new google.maps.LatLng(
-      coordinate.latitude,
-      coordinate.longitude
-    );
+    this._latLng = new google.maps.LatLng(coordinate.latitude, coordinate.longitude);
     this.pin.draw();
   }
 

@@ -30,11 +30,10 @@ export interface CTA {
 /**
  * Configuration options available for any usages of the Link component.
  */
-interface LinkConfig
-  extends React.DetailedHTMLProps<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > {
+interface LinkConfig extends React.DetailedHTMLProps<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
+> {
   /** Obfuscates the href and label. */
   obfuscate?: boolean;
   /** The custom name of the event. */

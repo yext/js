@@ -31,10 +31,7 @@ const validateRichTextFAQ = (faq: any): faq is RichTextFAQ => {
   return false;
 };
 
-function getTextNodesFromJson(
-  rtfObject: Record<string, any>,
-  textNodes: string[]
-) {
+function getTextNodesFromJson(rtfObject: Record<string, any>, textNodes: string[]) {
   for (const key in rtfObject) {
     if (typeof rtfObject[key] === "object") {
       if (Array.isArray(rtfObject[key])) {

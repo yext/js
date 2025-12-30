@@ -15,10 +15,7 @@ describe("Map", () => {
   it("renders with Markers", async () => {
     render(
       <Map clientKey="gme-yextinc">
-        <Marker
-          id="1"
-          coordinate={{ latitude: 38.8974, longitude: -97.0638 }}
-        />
+        <Marker id="1" coordinate={{ latitude: 38.8974, longitude: -97.0638 }} />
       </Map>
     );
   });
@@ -56,14 +53,8 @@ describe("Map", () => {
     render(
       <Map clientKey="gme-yextinc">
         <Clusterer>
-          <Marker
-            id="1"
-            coordinate={{ latitude: 38.8974, longitude: -97.0638 }}
-          />
-          <Marker
-            id="1"
-            coordinate={{ latitude: 38.9974, longitude: -97.1638 }}
-          />
+          <Marker id="1" coordinate={{ latitude: 38.8974, longitude: -97.0638 }} />
+          <Marker id="1" coordinate={{ latitude: 38.9974, longitude: -97.1638 }} />
         </Clusterer>
       </Map>
     );

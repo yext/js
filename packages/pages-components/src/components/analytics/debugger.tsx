@@ -22,10 +22,7 @@ declare global {
 
 export default function AnalyticsDebugger() {
   // If multiple AnalyticsProviders are rendered, ensure that only one debugger is created.
-  if (
-    getRuntime().name !== "browser" ||
-    window.hasOwnProperty("debuggerInitialized")
-  ) {
+  if (getRuntime().name !== "browser" || window.hasOwnProperty("debuggerInitialized")) {
     return null;
   }
 
@@ -33,10 +30,7 @@ export default function AnalyticsDebugger() {
   return createPortal(<AnalyticsDebuggerInternal />, document.body);
 }
 
-const getEventData = (
-  elem: HTMLElement,
-  scope: string | undefined
-): EventData => {
+const getEventData = (elem: HTMLElement, scope: string | undefined): EventData => {
   const action = elem.dataset.yaAction!;
   const scopeOverride = elem.dataset.yaScopeoverride!;
   const eventName = elem.dataset.yaEventname!;
@@ -44,9 +38,7 @@ const getEventData = (
 
   return {
     action: action,
-    originalEventName: effectiveScope
-      ? `${effectiveScope}_${eventName}`
-      : eventName,
+    originalEventName: effectiveScope ? `${effectiveScope}_${eventName}` : eventName,
     scope: effectiveScope,
   };
 };
@@ -131,14 +123,10 @@ export function AnalyticsDebuggerInternal() {
 
       document.documentElement.classList.add("xYextDebug");
 
-      const events: NodeListOf<HTMLElement> = document.querySelectorAll(
-        "[data-ya-eventname]"
-      );
+      const events: NodeListOf<HTMLElement> = document.querySelectorAll("[data-ya-eventname]");
 
       events.forEach((eventEl, idx) => {
-        const scope = eventEl.closest("[data-ya-scope]") as
-          | HTMLElement
-          | undefined;
+        const scope = eventEl.closest("[data-ya-scope]") as HTMLElement | undefined;
         const scopeName = scope?.dataset.yaScope;
 
         const elemData = getEventData(eventEl, scopeName);
@@ -175,9 +163,7 @@ export function AnalyticsDebuggerInternal() {
         } else {
           const scopeNames = [
             scopeName,
-            ...getParents(eventEl, "[data-ya-scope]").map(
-              (scopeEl) => scopeEl.dataset.yaScope
-            ),
+            ...getParents(eventEl, "[data-ya-scope]").map((scopeEl) => scopeEl.dataset.yaScope),
           ];
           scopeNames.forEach((curScope) => {
             addToData(curScope || NO_SCOPE, elemData, scope, eventEl);
@@ -261,11 +247,7 @@ const getEventsGroupedByName = (): Record<string, Event[]> => {
 
       // Data is grouped by scope and repeats elements within children scopes. We need to avoid duplicates
       // at the eventName level.
-      if (
-        uniqueEvents[originalEventName].find(
-          (uniqueEvent) => uniqueEvent.el === event.el
-        )
-      ) {
+      if (uniqueEvents[originalEventName].find((uniqueEvent) => uniqueEvent.el === event.el)) {
         return;
       }
       uniqueEvents[originalEventName].push(event);
@@ -283,9 +265,7 @@ function EventsTab(props: TabProps) {
 
   const handleClick = (events: Event[], key: string) => {
     // Scroll all related elements into view and highlight them
-    activeEventEls.forEach((el) =>
-      el.classList.remove("analytics-event-highlight")
-    );
+    activeEventEls.forEach((el) => el.classList.remove("analytics-event-highlight"));
 
     const newActiveEls = events.map((event) => {
       event.el.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -312,24 +292,22 @@ function EventsTab(props: TabProps) {
     <div className="analytics-debugger-tab">
       <h2 className="analytics-debugger-tab-title">Event Names</h2>
       <ul className="analytics-debugger-list">
-        {Object.entries(getEventsGroupedByName()).map(
-          ([originalEventName, events], idx) => {
-            const key = `${originalEventName}_${idx}`;
+        {Object.entries(getEventsGroupedByName()).map(([originalEventName, events], idx) => {
+          const key = `${originalEventName}_${idx}`;
 
-            return (
-              <li className="analytics-debugger-listItem" key={key}>
-                <button
-                  className={c("analytics-debugger-button", {
-                    "is-active": key === activeButton,
-                  })}
-                  onClick={() => handleClick(events, key)}
-                >
-                  {originalEventName}
-                </button>
-              </li>
-            );
-          }
-        )}
+          return (
+            <li className="analytics-debugger-listItem" key={key}>
+              <button
+                className={c("analytics-debugger-button", {
+                  "is-active": key === activeButton,
+                })}
+                onClick={() => handleClick(events, key)}
+              >
+                {originalEventName}
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
@@ -436,17 +414,10 @@ function TooltipHandler(props: TooltipHandlerProps) {
 }
 
 // Find tooltip position that is in the window bounds and doesn't overlap with other tooltips.
-function setTooltipPosition(
-  item: TooltipsRefItem,
-  instances: HTMLDivElement[]
-) {
+function setTooltipPosition(item: TooltipsRefItem, instances: HTMLDivElement[]) {
   for (let i = 0; i < 9; i++) {
     // Get base position and position the tooltip.
-    const position = positionFinder(
-      item.tooltip.elem.getBoundingClientRect(),
-      item.el,
-      i
-    );
+    const position = positionFinder(item.tooltip.elem.getBoundingClientRect(), item.el, i);
     item.el.style.inset = `${position.top} auto auto ${position.left}`;
 
     // Check if tooltip is in the window bounds.
@@ -471,10 +442,7 @@ function setTooltipPosition(
 }
 
 // Check if two tooltips are overlapping with each other.
-function isOverlapping(
-  tooltip: HTMLDivElement,
-  futureNeighbor: HTMLDivElement
-): boolean {
+function isOverlapping(tooltip: HTMLDivElement, futureNeighbor: HTMLDivElement): boolean {
   const y1 = tooltip.getBoundingClientRect().top + window.scrollY;
   const x1 = tooltip.getBoundingClientRect().left;
   const y2 = y1 + tooltip.clientHeight;
@@ -503,20 +471,12 @@ function isOverlapping(
     );
   };
 
-  return (
-    check(x1, y1, a1, b1, x2, y2, a2, b2) ||
-    check(a1, b1, x1, y1, a2, b2, x2, y2)
-  );
+  return check(x1, y1, a1, b1, x2, y2, a2, b2) || check(a1, b1, x1, y1, a2, b2, x2, y2);
 }
 
 // Check if a tooltip is within the window bounds.
 function inWindowBounds(x1: number, y1: number, x2: number, y2: number) {
-  return (
-    x1 < 0 ||
-    x2 > window.innerWidth ||
-    y1 < 0 ||
-    y2 > document.documentElement.scrollHeight
-  );
+  return x1 < 0 || x2 > window.innerWidth || y1 < 0 || y2 > document.documentElement.scrollHeight;
 }
 
 // Possible positions for a given tooltip around it's target element.

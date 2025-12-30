@@ -2,20 +2,20 @@
 
 ##### New Features
 
-*  swap to tsup for builds ([#139](https://github.com/yext/js/pull/139)) ([43a77a0b](https://github.com/yext/js/commit/43a77a0bec7554670c0ccb525d05b4de4dc9f1ad))
-*  support React 19 ([#138](https://github.com/yext/js/pull/138)) ([5f5bfaf3](https://github.com/yext/js/commit/5f5bfaf3b711d8f28e4a4500e40d030da4e40495))
+- swap to tsup for builds ([#139](https://github.com/yext/js/pull/139)) ([43a77a0b](https://github.com/yext/js/commit/43a77a0bec7554670c0ccb525d05b4de4dc9f1ad))
+- support React 19 ([#138](https://github.com/yext/js/pull/138)) ([5f5bfaf3](https://github.com/yext/js/commit/5f5bfaf3b711d8f28e4a4500e40d030da4e40495))
 
 ##### Bug Fixes
 
-*  storybook env parsing vulnerability ([#140](https://github.com/yext/js/pull/140)) ([c69d6912](https://github.com/yext/js/commit/c69d69126157a17e5944037e19bc0187e91d1328))
-*  exports resolution ([#136](https://github.com/yext/js/pull/136)) ([80f77284](https://github.com/yext/js/commit/80f77284ab5243fb8112377441083566a60d6b23))
-*  release script ([00f0f279](https://github.com/yext/js/commit/00f0f279e42e0678ec51a9438a520fb68c5ffe74))
+- storybook env parsing vulnerability ([#140](https://github.com/yext/js/pull/140)) ([c69d6912](https://github.com/yext/js/commit/c69d69126157a17e5944037e19bc0187e91d1328))
+- exports resolution ([#136](https://github.com/yext/js/pull/136)) ([80f77284](https://github.com/yext/js/commit/80f77284ab5243fb8112377441083566a60d6b23))
+- release script ([00f0f279](https://github.com/yext/js/commit/00f0f279e42e0678ec51a9438a520fb68c5ffe74))
 
 ##### Other Changes
 
-*  drop Node 18 support ([#137](https://github.com/yext/js/pull/137)) ([69a1ec05](https://github.com/yext/js/commit/69a1ec05d40869a812bfc89c88f3963632597bfc))
-*  drop support for React 17 ([#134](https://github.com/yext/js/pull/134)) ([1e812b55](https://github.com/yext/js/commit/1e812b55d12a6324d987c814724d9af7e309b2a9))
-*  drop LexicalRichText and LegacyRichText ([#133](https://github.com/yext/js/pull/133)) ([57eb25e6](https://github.com/yext/js/commit/57eb25e69b1a1b5bf81cabebcb0b942932c1162d))
+- drop Node 18 support ([#137](https://github.com/yext/js/pull/137)) ([69a1ec05](https://github.com/yext/js/commit/69a1ec05d40869a812bfc89c88f3963632597bfc))
+- drop support for React 17 ([#134](https://github.com/yext/js/pull/134)) ([1e812b55](https://github.com/yext/js/commit/1e812b55d12a6324d987c814724d9af7e309b2a9))
+- drop LexicalRichText and LegacyRichText ([#133](https://github.com/yext/js/pull/133)) ([57eb25e6](https://github.com/yext/js/commit/57eb25e69b1a1b5bf81cabebcb0b942932c1162d))
 
 #### 1.2.3 (2025-12-22)
 

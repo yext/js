@@ -1,9 +1,5 @@
 import { Page } from "playwright-core";
-import {
-  TestRunnerConfig,
-  waitForPageReady,
-  TestContext,
-} from "@storybook/test-runner";
+import { TestRunnerConfig, waitForPageReady, TestContext } from "@storybook/test-runner";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
 const customSnapshotsDir = `${process.cwd()}/.storybook/snapshots/__snapshots__`;
