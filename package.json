@@ -35,7 +35,7 @@
     "*.{ts,js,tsx,jsx}": "oxlint --fix"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^20 || ^22 || ^24"
   },
   "packageManager": "pnpm@9.12.3"
 }
