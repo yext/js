@@ -31,7 +31,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install deps
-        run: pnpm install --ignore-scripts --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Update npm
         # npm version npm 11.5.1 or later needed for Trusted Publishing
