@@ -78,10 +78,7 @@ export async function dryRun(
   args: string[],
   opts?: ExecaOptions<string>
 ): Promise<void> {
-  return console.log(
-    colors.blue(`[dryrun] ${bin} ${args.join(" ")}`),
-    opts || ""
-  );
+  return console.log(colors.blue(`[dryrun] ${bin} ${args.join(" ")}`), opts || "");
 }
 
 export const runIfNotDry = isDryRun ? dryRun : run;
@@ -178,9 +175,7 @@ export async function getLatestTag(pkgName: string): Promise<string> {
   const allTags = result.stdout.trim().split(/\n/).filter(Boolean);
   const packageTags = allTags.filter((tag) => tag.startsWith(`${pkgName}@`));
   // Strip the package name prefix to get clean version strings.
-  const versionStrings = packageTags.map((tag) =>
-    tag.replace(`${pkgName}@`, "")
-  );
+  const versionStrings = packageTags.map((tag) => tag.replace(`${pkgName}@`, ""));
   const sortedVersions = semver.rsort(versionStrings);
 
   return `${pkgName}@${sortedVersions[0]}`;
@@ -201,14 +196,7 @@ export async function logRecentCommits(pkgName: string): Promise<void> {
   );
   await run(
     "git",
-    [
-      "--no-pager",
-      "log",
-      `${sha}..HEAD`,
-      "--oneline",
-      "--",
-      `packages/${pkgName}`,
-    ],
+    ["--no-pager", "log", `${sha}..HEAD`, "--oneline", "--", `packages/${pkgName}`],
     { stdio: "inherit" }
   );
   console.log();

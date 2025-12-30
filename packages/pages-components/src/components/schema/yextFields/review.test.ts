@@ -39,9 +39,7 @@ describe("validateAggregateRating", () => {
   });
 
   it("should return true for valid aggregate rating objects", () => {
-    expect(
-      validateAggregateRating({ ratingValue: "4.2", reviewCount: "50" })
-    ).toBe(true);
+    expect(validateAggregateRating({ ratingValue: "4.2", reviewCount: "50" })).toBe(true);
   });
 });
 

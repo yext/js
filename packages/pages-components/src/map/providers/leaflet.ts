@@ -172,12 +172,7 @@ class LeafletPin extends ProviderPin {
  * options.version='1.7.1' - API version
  * @see ProviderLoadFunction
  */
-function load(
-  resolve: () => void,
-  _: () => void,
-  apiKey: string,
-  { version = "1.7.1" } = {}
-) {
+function load(resolve: () => void, _: () => void, apiKey: string, { version = "1.7.1" } = {}) {
   const baseUrl = `https://unpkg.com/leaflet@${version}/dist/leaflet`;
 
   LeafletMap.apiKey = apiKey;

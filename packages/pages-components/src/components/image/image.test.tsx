@@ -1,10 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import {
-  Image,
-  validateRequiredProps,
-  handleLayout,
-  getImageSizeForFixedLayout,
-} from "./image.js";
+import { Image, validateRequiredProps, handleLayout, getImageSizeForFixedLayout } from "./image.js";
 import { ImageLayoutOption } from "./types.js";
 import { render, screen } from "@testing-library/react";
 
@@ -43,10 +38,7 @@ describe("Image", () => {
 
     expect(screen.getByRole("img").style.objectFit).toEqual(overrideObjectFit);
     expect(screen.getByRole("img")).toHaveProperty("src", overrideSrc);
-    expect(screen.getByRole("img")).toHaveProperty(
-      "alt",
-      image.image.alternateText
-    );
+    expect(screen.getByRole("img")).toHaveProperty("alt", image.image.alternateText);
   });
 
   it("properly renders non-complex image field", () => {
@@ -66,10 +58,7 @@ describe("Image", () => {
 
     expect(screen.getByRole("img").style.objectFit).toEqual(overrideObjectFit);
     expect(screen.getByRole("img")).toHaveProperty("src", overrideSrc);
-    expect(screen.getByRole("img")).toHaveProperty(
-      "alt",
-      simpleImage.alternateText
-    );
+    expect(screen.getByRole("img")).toHaveProperty("alt", simpleImage.alternateText);
   });
 
   it("properly renders non-complex image field with EU url", () => {
@@ -92,10 +81,7 @@ describe("Image", () => {
 
     expect(screen.getByRole("img").style.objectFit).toEqual(overrideObjectFit);
     expect(screen.getByRole("img")).toHaveProperty("src", overrideSrc);
-    expect(screen.getByRole("img")).toHaveProperty(
-      "alt",
-      simpleImage.alternateText
-    );
+    expect(screen.getByRole("img")).toHaveProperty("alt", simpleImage.alternateText);
   });
 
   it("properly renders the placeholder before the image is loaded", () => {
@@ -104,11 +90,7 @@ describe("Image", () => {
     const onLoad = vi.fn();
 
     render(
-      <Image
-        image={image}
-        placeholder={placeholder}
-        imgOverrides={{ onLoad: () => onLoad() }}
-      />
+      <Image image={image} placeholder={placeholder} imgOverrides={{ onLoad: () => onLoad() }} />
     );
 
     expect(screen.getByText(placeholderText)).toBeTruthy();
@@ -202,14 +184,7 @@ describe("Image", () => {
   });
 
   it("properly renders the sizes for a fixed width", () => {
-    render(
-      <Image
-        image={image}
-        layout={ImageLayoutOption.FIXED}
-        width={width}
-        height={height}
-      />
-    );
+    render(<Image image={image} layout={ImageLayoutOption.FIXED} width={width} height={height} />);
 
     const img = screen.getByRole("img", {
       name: /alt text/i,
@@ -294,9 +269,7 @@ describe("handleLayout", () => {
       undefined
     );
 
-    expect(src).toEqual(
-      `https://dyn.mktgcdn.com/p/${imgUUID}/width=${width},height=${height}`
-    );
+    expect(src).toEqual(`https://dyn.mktgcdn.com/p/${imgUUID}/width=${width},height=${height}`);
     expect(imgStyle.width).toEqual(width);
     expect(imgStyle.height).toEqual(height);
     expect(widths).toEqual([width]);
@@ -459,36 +432,32 @@ describe("validateRequiredProps", () => {
     );
 
     expect(logMock.mock.calls.length).toBe(1);
-    expect(logMock.mock.calls[0][0]).toBe(
-      `Invalid image width: ${invalidImgWidth}.`
-    );
+    expect(logMock.mock.calls[0][0]).toBe(`Invalid image width: ${invalidImgWidth}.`);
     vi.clearAllMocks();
   });
 });
 
 describe("getImageSizeForFixedLayout", () => {
   it("properly sets fixedWidth and fixedHeight", () => {
-    expect(
-      getImageSizeForFixedLayout(
-        imgWidth,
-        imgHeight,
-        widths,
-        undefined,
-        undefined
-      )
-    ).toEqual({
+    expect(getImageSizeForFixedLayout(imgWidth, imgHeight, widths, undefined, undefined)).toEqual({
       fixedWidth: imgWidth,
       fixedHeight: imgHeight,
       fixedWidths: widths,
     });
-    expect(
-      getImageSizeForFixedLayout(imgWidth, imgHeight, widths, width, undefined)
-    ).toEqual({ fixedWidth: width, fixedHeight: height, fixedWidths: [width] });
-    expect(
-      getImageSizeForFixedLayout(imgWidth, imgHeight, widths, undefined, height)
-    ).toEqual({ fixedWidth: width, fixedHeight: height, fixedWidths: [width] });
-    expect(
-      getImageSizeForFixedLayout(imgWidth, imgHeight, widths, width, height)
-    ).toEqual({ fixedWidth: width, fixedHeight: height, fixedWidths: [width] });
+    expect(getImageSizeForFixedLayout(imgWidth, imgHeight, widths, width, undefined)).toEqual({
+      fixedWidth: width,
+      fixedHeight: height,
+      fixedWidths: [width],
+    });
+    expect(getImageSizeForFixedLayout(imgWidth, imgHeight, widths, undefined, height)).toEqual({
+      fixedWidth: width,
+      fixedHeight: height,
+      fixedWidths: [width],
+    });
+    expect(getImageSizeForFixedLayout(imgWidth, imgHeight, widths, width, height)).toEqual({
+      fixedWidth: width,
+      fixedHeight: height,
+      fixedWidths: [width],
+    });
   });
 });

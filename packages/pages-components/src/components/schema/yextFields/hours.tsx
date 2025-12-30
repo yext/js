@@ -39,9 +39,7 @@ export const validateDayType = (hours: any): hours is DayType => {
     hours.openIntervals.length
   ) {
     return hours.openIntervals.every((interval: any) => {
-      return (
-        typeof interval === "object" && "start" in interval && "end" in interval
-      );
+      return typeof interval === "object" && "start" in interval && "end" in interval;
     });
   }
 
@@ -119,12 +117,9 @@ export const OpeningHoursSpecificationSchema = (
     openingHoursSpecification: specifications,
   };
 
-  const holidayHoursSpecifications = getHolidayHoursSpecification(
-    hours.holidayHours
-  );
+  const holidayHoursSpecifications = getHolidayHoursSpecification(hours.holidayHours);
   if (holidayHoursSpecifications?.length) {
-    openingHoursSpecificationSchema.specialOpeningHoursSpecification =
-      holidayHoursSpecifications;
+    openingHoursSpecificationSchema.specialOpeningHoursSpecification = holidayHoursSpecifications;
   }
 
   return openingHoursSpecificationSchema;
@@ -190,8 +185,7 @@ export const getHoursByDay = (
   }
 
   for (let i = 0; i < hours.openIntervals.length; i++) {
-    const interval =
-      hours.openIntervals[i].start + "-" + hours.openIntervals[i].end;
+    const interval = hours.openIntervals[i].start + "-" + hours.openIntervals[i].end;
     const days = hoursMap.get(interval) ?? [];
     days.push(day);
     hoursMap.set(interval, days);

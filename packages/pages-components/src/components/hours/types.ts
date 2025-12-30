@@ -45,10 +45,7 @@ export interface HoursTableProps {
   /** Combine adjacent rows (days) with the same intervals */
   collapseDays?: boolean;
   /** Override rendering for the interval on each table row */
-  intervalStringsBuilderFn?: (
-    h: HoursTableDayData,
-    t?: Intl.DateTimeFormatOptions
-  ) => string[];
+  intervalStringsBuilderFn?: (h: HoursTableDayData, t?: Intl.DateTimeFormatOptions) => string[];
   /** Override values for hardcoded strings */
   intervalTranslations?: HoursTableIntervalTranslations;
   className?: string;

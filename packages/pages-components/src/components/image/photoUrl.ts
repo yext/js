@@ -169,8 +169,7 @@ export const photoUrlToDynString = (
     }
   }
 
-  const imageTransformationsString =
-    getImageTransformationsString(imageTransformations);
+  const imageTransformationsString = getImageTransformationsString(imageTransformations);
 
   return `${dynUrl}/${bucket}/${photoUrl.contentHash}/width=${Math.round(
     width

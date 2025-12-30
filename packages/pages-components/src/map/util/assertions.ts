@@ -22,9 +22,7 @@ function assertType(object: any, type: string) {
   }
 
   if (typeof object !== type) {
-    throw new Error(
-      `Expected an object of type '${type}' but received '${typeof object}'`
-    );
+    throw new Error(`Expected an object of type '${type}' but received '${typeof object}'`);
   }
 }
 
@@ -43,9 +41,7 @@ function assertElement(value: any): asserts value is HTMLElement {
     typeof value.tagName === "string";
 
   if (!isValidElement) {
-    throw new Error(
-      `Value with name ${value.constructor.name} is not a valid HTMLElement.`
-    );
+    throw new Error(`Value with name ${value.constructor.name} is not a valid HTMLElement.`);
   }
 }
 
@@ -60,9 +56,7 @@ function assertInstance(object: object, instanceClass: any) {
   try {
     isInstance = object instanceof instanceClass;
   } catch (_) {
-    throw new Error(
-      "Assertion error: 'instanceClass' is not a valid constructor"
-    );
+    throw new Error("Assertion error: 'instanceClass' is not a valid constructor");
   }
 
   if (!isInstance) {

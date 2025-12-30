@@ -1,11 +1,6 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import {
-  ImageProps,
-  ImageLayout,
-  ImageLayoutOption,
-  ImageTransformations,
-} from "./types.js";
+import { ImageProps, ImageLayout, ImageLayoutOption, ImageTransformations } from "./types.js";
 import { getImageUrl, isValidHttpUrl } from "./url.js";
 
 /**
@@ -44,14 +39,7 @@ export const Image = ({
     }
   }, []);
 
-  validateRequiredProps(
-    layout,
-    imageData.width,
-    imageData.height,
-    width,
-    height,
-    aspectRatio
-  );
+  validateRequiredProps(layout, imageData.width, imageData.height, width, height, aspectRatio);
 
   const imgWidth = Math.abs(imageData.width);
   if (!imgWidth) {
@@ -95,9 +83,7 @@ export const Image = ({
   const maxWidthBreakpoints = [640, 768, 1024, 1280, 1536];
   const sizes: string = widths
     .map((w, i) =>
-      i === widths.length - 1
-        ? `${w}px`
-        : `(max-width: ${maxWidthBreakpoints[i]}px) ${w}px`
+      i === widths.length - 1 ? `${w}px` : `(max-width: ${maxWidthBreakpoints[i]}px) ${w}px`
     )
     .join(", ");
 
@@ -140,9 +126,7 @@ export const validateRequiredProps = (
 
   if (layout === ImageLayoutOption.FIXED) {
     if (!width && !height) {
-      console.warn(
-        "Using fixed layout but neither width nor height is passed as props."
-      );
+      console.warn("Using fixed layout but neither width nor height is passed as props.");
 
       return;
     }
@@ -165,9 +149,7 @@ export const validateRequiredProps = (
   }
 
   if (layout === ImageLayoutOption.ASPECT && !aspectRatio) {
-    console.warn(
-      "Using aspect layout but aspectRatio is not passed as a prop."
-    );
+    console.warn("Using aspect layout but aspectRatio is not passed as a prop.");
   }
 };
 
@@ -192,16 +174,9 @@ export const handleLayout = (
   updatedImageTransformations: ImageTransformations;
 } => {
   let widths: number[] = [100, 320, 640, 960, 1280, 1920];
-  let src = getImageUrl(
-    imgUrl,
-    500,
-    aspectRatio ? 500 / aspectRatio : 500,
-    imageTransformations
-  );
+  let src = getImageUrl(imgUrl, 500, aspectRatio ? 500 / aspectRatio : 500, imageTransformations);
   const imgStyle = { ...style };
-  const updatedImageTransformations = imageTransformations
-    ? { ...imageTransformations }
-    : {};
+  const updatedImageTransformations = imageTransformations ? { ...imageTransformations } : {};
   imgStyle.objectFit = imgStyle.objectFit || "cover";
   imgStyle.objectPosition = imgStyle.objectPosition || "center";
 
@@ -210,45 +185,32 @@ export const handleLayout = (
       // Don't let image be wider than its intrinsic width
       imgStyle.maxWidth = imgWidth;
       imgStyle.width = "100%";
-      imgStyle.aspectRatio = aspectRatio
-        ? `${aspectRatio}`
-        : `${imgWidth} / ${imgHeight}`;
+      imgStyle.aspectRatio = aspectRatio ? `${aspectRatio}` : `${imgWidth} / ${imgHeight}`;
 
       break;
     case ImageLayoutOption.FIXED: {
-      const { fixedWidth, fixedHeight, fixedWidths } =
-        getImageSizeForFixedLayout(
-          imgWidth,
-          imgHeight,
-          widths,
-          absWidth,
-          absHeight
-        );
+      const { fixedWidth, fixedHeight, fixedWidths } = getImageSizeForFixedLayout(
+        imgWidth,
+        imgHeight,
+        widths,
+        absWidth,
+        absHeight
+      );
       imgStyle.width = fixedWidth;
       imgStyle.height = fixedHeight;
       widths = fixedWidths;
-      src = getImageUrl(
-        imgUrl,
-        fixedWidth,
-        fixedHeight,
-        updatedImageTransformations
-      );
+      src = getImageUrl(imgUrl, fixedWidth, fixedHeight, updatedImageTransformations);
 
       break;
     }
     case ImageLayoutOption.ASPECT:
-      imgStyle.aspectRatio = aspectRatio
-        ? `${aspectRatio}`
-        : `${imgWidth} / ${imgHeight}`;
-      updatedImageTransformations.fit =
-        updatedImageTransformations?.fit || "cover";
+      imgStyle.aspectRatio = aspectRatio ? `${aspectRatio}` : `${imgWidth} / ${imgHeight}`;
+      updatedImageTransformations.fit = updatedImageTransformations?.fit || "cover";
 
       break;
     case ImageLayoutOption.FILL:
       imgStyle.width = "100%";
-      imgStyle.aspectRatio = aspectRatio
-        ? `${aspectRatio}`
-        : `${imgWidth} / ${imgHeight}`;
+      imgStyle.aspectRatio = aspectRatio ? `${aspectRatio}` : `${imgWidth} / ${imgHeight}`;
 
       break;
     default:

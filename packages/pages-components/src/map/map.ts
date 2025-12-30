@@ -1,22 +1,14 @@
 import { Unit, Projection } from "./constants.js";
 import { Coordinate } from "./coordinate.js";
 import { GeoBounds } from "./geoBounds.js";
-import {
-  Type,
-  assertType,
-  assertInstance,
-  assertElement,
-} from "./util/assertions.js";
+import { Type, assertType, assertInstance, assertElement } from "./util/assertions.js";
 import { MapPin, MapPinOptions } from "./mapPin.js";
 import { MapProvider } from "./mapProvider.js";
 import { ProviderMap, ProviderMapOptions } from "./providerMap.js";
 
 export type PaddingFunction = () => number;
 
-export type PanHandler = (
-  previousBounds?: GeoBounds,
-  currentBounds?: GeoBounds
-) => void;
+export type PanHandler = (previousBounds?: GeoBounds, currentBounds?: GeoBounds) => void;
 
 export type PanStartHandler = (currentBounds?: GeoBounds) => void;
 
@@ -43,10 +35,7 @@ const MAX_PADDING = 0.98;
  * @param basis - The pixel measurement that the padding will be a fraction of
  * @returns The padding value as a fraction of basis
  */
-function normalizePadding(
-  value: number | PaddingFunction | undefined,
-  basis: number
-): number {
+function normalizePadding(value: number | PaddingFunction | undefined, basis: number): number {
   return Math.max(value instanceof Function ? value() : value || 0, 0) / basis;
 }
 
@@ -316,12 +305,7 @@ class Map {
     maxZoom: number = this._singlePinZoom
   ) {
     if (coordinates.length) {
-      this.setBounds(
-        GeoBounds.fit(coordinates),
-        animated,
-        this._padding,
-        maxZoom
-      );
+      this.setBounds(GeoBounds.fit(coordinates), animated, this._padding, maxZoom);
     } else {
       this.setZoomCenter(this._defaultZoom, this._defaultCenter, animated);
     }
@@ -344,18 +328,8 @@ class Map {
       const height = pixelHeight * degreesPerPixel;
 
       this._cachedBounds = new GeoBounds(center, center);
-      this._cachedBounds.ne.add(
-        height / 2,
-        width / 2,
-        Unit.DEGREE,
-        Projection.MERCATOR
-      );
-      this._cachedBounds.sw.add(
-        -height / 2,
-        -width / 2,
-        Unit.DEGREE,
-        Projection.MERCATOR
-      );
+      this._cachedBounds.ne.add(height / 2, width / 2, Unit.DEGREE, Projection.MERCATOR);
+      this._cachedBounds.sw.add(-height / 2, -width / 2, Unit.DEGREE, Projection.MERCATOR);
 
       this.moving().then(() => (this._cachedBounds = null));
     }
@@ -544,11 +518,9 @@ class Map {
     // Fit the bounds within the area of the map like object-fit:contain then extend the bounds
     // to fill the remaining area within the padding.
     let newHeight =
-      Math.max(height, (width * paddingInnerHeight) / paddingInnerWidth) /
-      (1 - verticalPadding);
+      Math.max(height, (width * paddingInnerHeight) / paddingInnerWidth) / (1 - verticalPadding);
     let newWidth =
-      Math.max(width, (height * paddingInnerWidth) / paddingInnerHeight) /
-      (1 - horizontalPadding);
+      Math.max(width, (height * paddingInnerWidth) / paddingInnerHeight) / (1 - horizontalPadding);
 
     // Calculate the zoom based on the pixel width of the map and the degree width of the bounds.
     let zoom = Math.log2((pixelWidth * 360) / newWidth) - 8;
@@ -640,9 +612,7 @@ class Map {
    */
   _setIdle() {
     this._resolveMoving();
-    this._movingPromise = new Promise(
-      (resolve) => (this._resolveMoving = resolve)
-    );
+    this._movingPromise = new Promise((resolve) => (this._resolveMoving = resolve));
     this._resolveIdle();
   }
 

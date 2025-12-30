@@ -57,10 +57,7 @@ describe("Product", () => {
       "@context": "https://schema.org",
       "@type": "Product",
       name: "Test Product",
-      image: [
-        "https://example.com/product-image1.jpg",
-        "https://example.com/product-image2.jpg",
-      ],
+      image: ["https://example.com/product-image1.jpg", "https://example.com/product-image2.jpg"],
     });
   });
 
@@ -190,10 +187,7 @@ describe("Product", () => {
       "@context": "https://schema.org",
       "@type": "Product",
       name: "Comprehensive Product",
-      image: [
-        "https://example.com/product-image1.jpg",
-        "https://example.com/product-image2.jpg",
-      ],
+      image: ["https://example.com/product-image1.jpg", "https://example.com/product-image2.jpg"],
       review: {
         "@type": "Review",
         reviewRating: {

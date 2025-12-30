@@ -60,14 +60,7 @@ export function localeAddressFormat(locale: string): AddressLine[] {
       return [["line1"], ["line2"], ["postalCode", "city"], ["countryCode"]];
     case "AF":
     case "IR":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city"],
-        ["region"],
-        ["postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city"], ["region"], ["postalCode"], ["countryCode"]];
     case "AG":
     case "AO":
     case "AW":
@@ -105,12 +98,7 @@ export function localeAddressFormat(locale: string): AddressLine[] {
     case "IS":
       return [["line1"], ["line2"], ["postalCode", "city"]];
     case "AR":
-      return [
-        ["line1"],
-        ["line2"],
-        ["postalCode", "city", ",", "region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["postalCode", "city", ",", "region"], ["countryCode"]];
     case "AS":
     case "BB":
     case "BD":
@@ -148,20 +136,10 @@ export function localeAddressFormat(locale: string): AddressLine[] {
     case "SZ":
     case "US":
     case "VI":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city", ",", "region", "postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city", ",", "region", "postalCode"], ["countryCode"]];
     case "BE":
     case "PE":
-      return [
-        ["line1"],
-        ["line2"],
-        ["postalCode", "sublocality", "city"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["postalCode", "sublocality", "city"], ["countryCode"]];
     case "BF":
     case "BI":
     case "BQ":
@@ -201,27 +179,12 @@ export function localeAddressFormat(locale: string): AddressLine[] {
     case "OM":
     case "SK":
     case "VA":
-      return [
-        ["line1"],
-        ["line2"],
-        ["postalCode", "city", "region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["postalCode", "city", "region"], ["countryCode"]];
     case "CL":
     case "PF":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city", "postalCode", "region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city", "postalCode", "region"], ["countryCode"]];
     case "CN":
-      return [
-        ["region", "city", "sublocality"],
-        ["line1"],
-        ["line2"],
-        ["countryCode"],
-      ];
+      return [["region", "city", "sublocality"], ["line1"], ["line2"], ["countryCode"]];
     case "CO":
     case "ID":
     case "IQ":
@@ -230,12 +193,7 @@ export function localeAddressFormat(locale: string): AddressLine[] {
     case "NP":
     case "PW":
     case "UA":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city", "region", "postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city", "region", "postalCode"], ["countryCode"]];
     case "EG":
       return [
         ["line1"],
@@ -245,44 +203,19 @@ export function localeAddressFormat(locale: string): AddressLine[] {
       ];
     case "ES":
     case "IL":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city", "postalCode"],
-        ["region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city", "postalCode"], ["region"], ["countryCode"]];
     case "GB":
     case "MN":
     case "ZA":
-      return [
-        ["line1"],
-        ["line2"],
-        ["sublocality", "city", "postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["sublocality", "city", "postalCode"], ["countryCode"]];
     case "GG":
     case "IM":
     case "JE":
-      return [
-        ["line1"],
-        ["line2"],
-        ["sublocality"],
-        ["city"],
-        ["postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["sublocality"], ["city"], ["postalCode"], ["countryCode"]];
     case "GN":
       return [["line1", "line2", "city"], ["countryCode"]];
     case "HK":
-      return [
-        ["line1"],
-        ["line2"],
-        ["sublocality"],
-        ["city"],
-        ["region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["sublocality"], ["city"], ["region"], ["countryCode"]];
     case "HR":
       return [["line1"], ["postalCode", "city", "region"], ["countryCode"]];
     case "HU":
@@ -298,13 +231,7 @@ export function localeAddressFormat(locale: string): AddressLine[] {
       ];
     case "IN":
     case "VE":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city", "postalCode"],
-        ["region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city", "postalCode"], ["region"], ["countryCode"]];
     case "JP":
       return [
         ["line2"],
@@ -323,23 +250,13 @@ export function localeAddressFormat(locale: string): AddressLine[] {
     case "KY":
       return [["line1"], ["line2"], ["postalCode"], ["countryCode"]];
     case "LT":
-      return [
-        ["line1"],
-        ["postalCode", "city", "sublocality", "region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["postalCode", "city", "sublocality", "region"], ["countryCode"]];
     case "LV":
       return [["line1"], ["city", ",", "postalCode"], ["countryCode"]];
     case "MO":
       return [["line1"], ["line2"], ["sublocality"], ["city"], ["countryCode"]];
     case "MU":
-      return [
-        ["line1"],
-        ["line2"],
-        ["city"],
-        ["region", "postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["city"], ["region", "postalCode"], ["countryCode"]];
     case "MX":
       return [
         ["line1"],
@@ -350,23 +267,9 @@ export function localeAddressFormat(locale: string): AddressLine[] {
       ];
     case "NE":
     case "SD":
-      return [
-        ["line1"],
-        ["line2"],
-        ["postalCode"],
-        ["city"],
-        ["region"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["postalCode"], ["city"], ["region"], ["countryCode"]];
     case "NZ":
-      return [
-        ["line1"],
-        ["line2"],
-        ["sublocality"],
-        ["city"],
-        ["postalCode"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["sublocality"], ["city"], ["postalCode"], ["countryCode"]];
     case "PH":
     case "TW":
     case "VN":
@@ -388,20 +291,10 @@ export function localeAddressFormat(locale: string): AddressLine[] {
       return [["line1"], ["line2"], ["city", ",", "region"], ["countryCode"]];
     case "TH":
     case "TR":
-      return [
-        ["line1"],
-        ["line2"],
-        ["sublocality"],
-        ["postalCode", "city"],
-        ["countryCode"],
-      ];
+      return [["line1"], ["line2"], ["sublocality"], ["postalCode", "city"], ["countryCode"]];
     case "UZ":
       return [["line1"], ["line2"], ["region", "postalCode"], ["countryCode"]];
   }
 
-  return [
-    ["line1", "line2"],
-    ["city", "region", "postalCode"],
-    ["countryCode"],
-  ];
+  return [["line1", "line2"], ["city", "region", "postalCode"], ["countryCode"]];
 }

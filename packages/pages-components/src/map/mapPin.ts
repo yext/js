@@ -62,9 +62,7 @@ class MapPinOptions {
     return this;
   }
 
-  withPropertiesForStatus(
-    propertiesForStatus: PropertiesForStatus
-  ): MapPinOptions {
+  withPropertiesForStatus(propertiesForStatus: PropertiesForStatus): MapPinOptions {
     assertType(propertiesForStatus, Type.FUNCTION);
 
     this.propertiesForStatus = propertiesForStatus;

@@ -41,16 +41,14 @@ const sampleListings: ListingType[] = [
 const sampleListingsLowerCase: ListingType[] = [
   {
     listingUrl: "https://maps.google.com/maps?cid=3287244376840534043",
-    publisher:
-      ListingPublisherOption.GOOGLEMYBUSINESS.toLowerCase() as "GOOGLEMYBUSINESS",
+    publisher: ListingPublisherOption.GOOGLEMYBUSINESS.toLowerCase() as "GOOGLEMYBUSINESS",
   },
 ];
 
 const sampleListingsUpperCase: ListingType[] = [
   {
     listingUrl: "https://maps.google.com/maps?cid=3287244376840534043",
-    publisher:
-      ListingPublisherOption.GOOGLEMYBUSINESS.toUpperCase() as "GOOGLEMYBUSINESS",
+    publisher: ListingPublisherOption.GOOGLEMYBUSINESS.toUpperCase() as "GOOGLEMYBUSINESS",
   },
 ];
 
@@ -121,9 +119,7 @@ describe("getDirections()", () => {
   });
 
   it("returns URL to Google Maps Place ID with route", () => {
-    expect(
-      getDirections(undefined, undefined, "someID", { route: true })
-    ).toEqual(
+    expect(getDirections(undefined, undefined, "someID", { route: true })).toEqual(
       "https://maps.google.com/maps/dir/?api=1&destination_place_id=someID&destination=direct"
     );
   });
@@ -135,38 +131,18 @@ describe("getDirections()", () => {
   });
   it("returns URL to Apple Maps coordinates query", () => {
     expect(
-      getDirections(
-        undefined,
-        undefined,
-        undefined,
-        { provider: "apple" },
-        sampleCoordinate
-      )
+      getDirections(undefined, undefined, undefined, { provider: "apple" }, sampleCoordinate)
     ).toEqual("https://maps.apple.com/?address=32.747594,-97.082073");
   });
   it("returns URL to Bing Maps coordinates query", () => {
     expect(
-      getDirections(
-        undefined,
-        undefined,
-        undefined,
-        { provider: "bing" },
-        sampleCoordinate
-      )
+      getDirections(undefined, undefined, undefined, { provider: "bing" }, sampleCoordinate)
     ).toEqual("https://bing.com/maps/default.aspx?where1=32.747594,-97.082073");
   });
   it("returns URL to Google Maps coordinates query", () => {
     expect(
-      getDirections(
-        undefined,
-        undefined,
-        undefined,
-        { provider: "google" },
-        sampleCoordinate
-      )
-    ).toEqual(
-      "https://maps.google.com/maps/search/?api=1&query=32.747594,-97.082073"
-    );
+      getDirections(undefined, undefined, undefined, { provider: "google" }, sampleCoordinate)
+    ).toEqual("https://maps.google.com/maps/search/?api=1&query=32.747594,-97.082073");
   });
 });
 

@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import classnames from "classnames";
 import { GoogleMaps } from "../../map/providers/google.js";
 import { Map as MapType, MapOptions } from "../../map/map.js";
@@ -88,8 +82,7 @@ export const Map = ({
     // window object to fix the issue.
     const iframeWindow =
       !!iframeId && typeof document !== "undefined"
-        ? ((document.getElementById(iframeId) as HTMLIFrameElement)
-            ?.contentWindow ?? undefined)
+        ? ((document.getElementById(iframeId) as HTMLIFrameElement)?.contentWindow ?? undefined)
         : undefined;
 
     const newMap = new MapOptions()
@@ -142,11 +135,7 @@ export const Map = ({
       ref={wrapper}
       data-testid="map"
     >
-      {map && (
-        <MapContext.Provider value={{ map, provider }}>
-          {children}
-        </MapContext.Provider>
-      )}
+      {map && <MapContext.Provider value={{ map, provider }}>{children}</MapContext.Provider>}
     </div>
   );
 };

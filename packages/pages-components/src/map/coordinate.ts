@@ -1,9 +1,4 @@
-import {
-  Unit,
-  Projection,
-  EARTH_RADIUS_MILES,
-  EARTH_RADIUS_KILOMETERS,
-} from "./constants.js";
+import { Unit, Projection, EARTH_RADIUS_MILES, EARTH_RADIUS_KILOMETERS } from "./constants.js";
 
 /**
  * An array of property names to check in a Coordinate-like object for a value of or function that evaluates to degrees latitude
@@ -78,9 +73,7 @@ function haversineDistance(source: Coordinate, dest: Coordinate): number {
 
   const a =
     Math.pow(Math.sin(deltaLat / 2), 2) +
-    Math.cos(lat1Rads) *
-      Math.cos(lat2Rads) *
-      Math.pow(Math.sin(deltaLon / 2), 2);
+    Math.cos(lat1Rads) * Math.cos(lat2Rads) * Math.pow(Math.sin(deltaLon / 2), 2);
   return 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -92,10 +85,7 @@ function haversineDistance(source: Coordinate, dest: Coordinate): number {
  * @param latitudeB - The destination latitude in degrees
  * @returns Distance in radians of longitude
  */
-function mercatorLatDistanceInRadians(
-  latitudeA: number,
-  latitudeB: number
-): number {
+function mercatorLatDistanceInRadians(latitudeA: number, latitudeB: number): number {
   const aTan = Math.tan((Math.PI / 360) * (latitudeA + 90));
   const bTan = Math.tan((Math.PI / 360) * (latitudeB + 90));
 
@@ -196,14 +186,9 @@ class Coordinate {
     unit = Unit.DEGREE,
     projection = Projection.SPHERICAL
   ): void {
-    if (
-      projection === Projection.MERCATOR &&
-      (unit === Unit.DEGREE || unit === Unit.RADIAN)
-    ) {
-      const latDistRad =
-        unit === Unit.DEGREE ? degreesToRadians(latDist) : latDist;
-      const lonDistDeg =
-        unit === Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
+    if (projection === Projection.MERCATOR && (unit === Unit.DEGREE || unit === Unit.RADIAN)) {
+      const latDistRad = unit === Unit.DEGREE ? degreesToRadians(latDist) : latDist;
+      const lonDistDeg = unit === Unit.DEGREE ? lonDist : radiansToDegrees(lonDist);
 
       this.latitude = mercatorLatAddRadians(this.latitude, latDistRad);
       this.longitude += lonDistDeg;
@@ -243,23 +228,11 @@ class Coordinate {
    * @param projection - The projection of Earth (not relevant when using a physical distance unit, e.g. Mile)
    * @returns Distance in the requested unit
    */
-  distanceTo(
-    coordinate: Coordinate,
-    unit = Unit.MILE,
-    projection = Projection.SPHERICAL
-  ): number {
-    if (
-      projection === Projection.MERCATOR &&
-      (unit === Unit.DEGREE || unit === Unit.RADIAN)
-    ) {
-      const latDist = mercatorLatDistanceInRadians(
-        this.latitude,
-        coordinate.latitude
-      );
+  distanceTo(coordinate: Coordinate, unit = Unit.MILE, projection = Projection.SPHERICAL): number {
+    if (projection === Projection.MERCATOR && (unit === Unit.DEGREE || unit === Unit.RADIAN)) {
+      const latDist = mercatorLatDistanceInRadians(this.latitude, coordinate.latitude);
       const absoluteLonDist = Math.abs(coordinate.normalLon - this.normalLon);
-      const lonDist = degreesToRadians(
-        Math.min(absoluteLonDist, 360 - absoluteLonDist)
-      );
+      const lonDist = degreesToRadians(Math.min(absoluteLonDist, 360 - absoluteLonDist));
 
       const radianDist = Math.sqrt(Math.pow(latDist, 2) + Math.pow(lonDist, 2));
 
@@ -294,9 +267,7 @@ class Coordinate {
    */
   equals(coordinate: Coordinate): boolean {
     return (
-      coordinate &&
-      coordinate.latitude === this.latitude &&
-      coordinate.longitude === this.longitude
+      coordinate && coordinate.latitude === this.latitude && coordinate.longitude === this.longitude
     );
   }
 

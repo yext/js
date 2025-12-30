@@ -2,8 +2,8 @@
   "name": "pages-components-starter",
   "version": "0.0.0",
   "description": "A consumer of @yext/pages-components to test React/Node matrices",
-  "author": "sumo@yext.com",
   "license": "BSD-3-Clause",
+  "author": "sumo@yext.com",
   "type": "module",
   "scripts": {
     "dev": "pages dev --local --no-prod-url --noInit",
@@ -11,9 +11,6 @@
     "build": "pages build",
     "smoke": "./scripts/test-matrix-local.sh",
     "test": "playwright test"
-  },
-  "engines": {
-    "node": "^20.2.0 || ^22 || ^24"
   },
   "dependencies": {
     "@yext/pages-components": "workspace:*",
@@ -29,5 +26,8 @@
     "@yext/pages": "^1.2.7",
     "typescript": "^5.3.3",
     "vite": "^5.4.19"
+  },
+  "engines": {
+    "node": "^20.2.0 || ^22 || ^24"
   }
 }

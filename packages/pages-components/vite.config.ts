@@ -14,13 +14,7 @@ export default defineConfig(() => ({
       formats: ["es"] as LibraryFormats[], // typescript is unhappy without this forced type definition
     },
     rollupOptions: {
-      external: [
-        "react",
-        "react-dom",
-        "mapbox-gl",
-        "react/jsx-runtime",
-        "react/jsx-dev-runtime",
-      ],
+      external: ["react", "react-dom", "mapbox-gl", "react/jsx-runtime", "react/jsx-dev-runtime"],
       output: {
         globals: {
           react: "React",

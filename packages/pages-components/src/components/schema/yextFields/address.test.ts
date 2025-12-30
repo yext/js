@@ -1,10 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  AddressSchema,
-  LocationSchema,
-  validateAddress,
-  validateLocation,
-} from "./address.js";
+import { AddressSchema, LocationSchema, validateAddress, validateLocation } from "./address.js";
 
 const address = {
   city: "Arlington",
@@ -18,17 +13,13 @@ const address = {
 
 describe("validateLocation", () => {
   it("returns true for valid locations", () => {
-    expect(validateLocation({ name: "Business Name", address: address })).toBe(
-      true
-    );
+    expect(validateLocation({ name: "Business Name", address: address })).toBe(true);
     expect(validateLocation({ name: "Business Name" })).toBe(true);
     expect(validateLocation({ address: address })).toBe(true);
   });
 
   it("returns false for invalid locations", () => {
-    expect(
-      validateLocation('{ name: "Business Name", address: address }')
-    ).toBe(false);
+    expect(validateLocation('{ name: "Business Name", address: address }')).toBe(false);
     expect(validateLocation(undefined)).toBe(false);
     expect(validateLocation(1)).toBe(false);
     expect(validateLocation({ key: "value" })).toBe(false);

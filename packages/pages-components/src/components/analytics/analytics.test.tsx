@@ -1,13 +1,4 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeAll,
-  afterAll,
-  afterEach,
-  Mock,
-} from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll, afterEach, Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TemplateProps } from "./types.js";
@@ -99,12 +90,7 @@ describe("Analytics", () => {
 
   it("should not fire a page view when opt in is required", () => {
     render(
-      <AnalyticsProvider
-        apiKey="key"
-        currency="USD"
-        templateData={baseProps}
-        requireOptIn={true}
-      />
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={true} />
     );
 
     expect(global.fetch).toHaveBeenCalledTimes(0);
@@ -112,12 +98,7 @@ describe("Analytics", () => {
 
   it("should track a click", () => {
     render(
-      <AnalyticsProvider
-        apiKey="key"
-        currency="USD"
-        templateData={baseProps}
-        requireOptIn={false}
-      >
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={false}>
         <Link href="#">Click Me</Link>
       </AnalyticsProvider>
     );
@@ -240,12 +221,7 @@ describe("Analytics", () => {
 
   it("overrides AnalyticsScopeProvider", () => {
     render(
-      <AnalyticsProvider
-        apiKey="key"
-        currency="USD"
-        templateData={baseProps}
-        requireOptIn={false}
-      >
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={false}>
         <AnalyticsScopeProvider name="header">
           <AnalyticsScopeProvider name="menu">
             <Link href="#" scope="custom scope" eventName="link">
@@ -269,12 +245,7 @@ describe("Analytics", () => {
   it("should throw when apiKey not set", () => {
     expect(() =>
       render(
-        <AnalyticsProvider
-          apiKey=""
-          currency="USD"
-          templateData={baseProps}
-          requireOptIn={false}
-        />
+        <AnalyticsProvider apiKey="" currency="USD" templateData={baseProps} requireOptIn={false} />
       )
     ).toThrowError("API Key is required for AnalyticsProvider");
   });
@@ -296,12 +267,7 @@ describe("Analytics", () => {
     };
 
     render(
-      <AnalyticsProvider
-        apiKey="key"
-        currency="USD"
-        templateData={baseProps}
-        requireOptIn={false}
-      >
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={false}>
         <Button />
       </AnalyticsProvider>
     );

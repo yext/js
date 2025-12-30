@@ -65,8 +65,7 @@ async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
       const coordinates: Coordinate[] = ([] as Coordinate[]).concat(
         ...requests.map((request) => request.coordinates)
       );
-      const callback =
-        gcj02ToBD09GlobalCallback + "_" + gcj02ToBD09CallbackCounter++;
+      const callback = gcj02ToBD09GlobalCallback + "_" + gcj02ToBD09CallbackCounter++;
       const script = document.createElement("script");
 
       window[callback] = (data: {
@@ -83,17 +82,12 @@ async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
           requests.forEach((request) => request.reject(err));
         }
 
-        const convertedCoords = data.result.map(
-          (point) => new Coordinate(point.y, point.x)
-        );
+        const convertedCoords = data.result.map((point) => new Coordinate(point.y, point.x));
         let currentIndex = 0;
 
         requests.forEach((request) => {
           request.resolve(
-            convertedCoords.slice(
-              currentIndex,
-              (currentIndex += request.coordinates.length)
-            )
+            convertedCoords.slice(currentIndex, (currentIndex += request.coordinates.length))
           );
         });
 
@@ -106,9 +100,7 @@ async function gcj02ToBD09(coordinates: Coordinate[]): Promise<Coordinate[]> {
           ak,
           callback,
           coords: coordinates
-            .map(
-              (coordinate) => `${coordinate.longitude},${coordinate.latitude}`
-            )
+            .map((coordinate) => `${coordinate.longitude},${coordinate.latitude}`)
             .join(";"),
           from: 3,
           to: 5,
@@ -202,10 +194,7 @@ class BaiduMap extends ProviderMap {
    */
   setCenter(coordinate: Coordinate, animated: boolean) {
     this._centerReady = gcj02ToBD09([coordinate]).then(([convertedCoord]) => {
-      const point = new BMap.Point(
-        convertedCoord.longitude,
-        convertedCoord.latitude
-      );
+      const point = new BMap.Point(convertedCoord.longitude, convertedCoord.latitude);
       this.map.panTo(point, { noAnimation: !animated });
     });
   }
@@ -267,8 +256,7 @@ class BaiduPin extends HTMLProviderPin {
 
         if (this.pin._wrapper) {
           this.pin._wrapper.style.zIndex = this.pin._zIndex.toString();
-          this.pin._originalWrapperClass =
-            this.pin._wrapper.getAttribute("class") ?? "";
+          this.pin._originalWrapperClass = this.pin._wrapper.getAttribute("class") ?? "";
           this.pin._wrapper.setAttribute("class", this.pin._getClass());
           this.pin._wrapper.appendChild(this.pin._element);
           this.pin.addListeners();
@@ -318,25 +306,21 @@ class BaiduPin extends HTMLProviderPin {
    * {@inheritDoc HTMLProviderPin.setCoordinate}
    */
   setCoordinate(coordinate: Coordinate) {
-    this._coordinateReady = gcj02ToBD09([coordinate]).then(
-      ([convertedCoord]) => {
-        // To avoid Baidu's glitched rendering of pins with negative longitude, this will set the pin to a
-        // longitude exactly halfway around the world, and CSS will translate it to its correct position.
-        this._negativeLngFix = convertedCoord.longitude < 0;
-        this.pin.setPosition(
-          new BMap.Point(
-            convertedCoord.longitude + (this._negativeLngFix ? 180 : 0),
-            convertedCoord.latitude
-          )
-        );
+    this._coordinateReady = gcj02ToBD09([coordinate]).then(([convertedCoord]) => {
+      // To avoid Baidu's glitched rendering of pins with negative longitude, this will set the pin to a
+      // longitude exactly halfway around the world, and CSS will translate it to its correct position.
+      this._negativeLngFix = convertedCoord.longitude < 0;
+      this.pin.setPosition(
+        new BMap.Point(
+          convertedCoord.longitude + (this._negativeLngFix ? 180 : 0),
+          convertedCoord.latitude
+        )
+      );
 
-        if (this._wrapper) {
-          this._wrapper.classList[this._negativeLngFix ? "add" : "remove"](
-            negativeLngPinClass
-          );
-        }
+      if (this._wrapper) {
+        this._wrapper.classList[this._negativeLngFix ? "add" : "remove"](negativeLngPinClass);
       }
-    );
+    });
   }
 
   /**

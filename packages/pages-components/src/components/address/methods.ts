@@ -66,16 +66,11 @@ export const getDirections = (
   switch (config.provider) {
     case MapProviderOption.APPLE: {
       if (!!coordinate?.latitude && !!coordinate?.longitude) {
-        return getDirectionsApple(
-          `${coordinate.latitude},${coordinate.longitude}`,
-          config.route
-        );
+        return getDirectionsApple(`${coordinate.latitude},${coordinate.longitude}`, config.route);
       }
       // Apple Maps requires a query string
       if (!query) {
-        console.warn(
-          `${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`
-        );
+        console.warn(`${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`);
         break;
       }
 
@@ -83,25 +78,14 @@ export const getDirections = (
     }
     case MapProviderOption.BING: {
       if (!!coordinate?.latitude && !!coordinate?.longitude) {
-        return getDirectionsBing(
-          `${coordinate.latitude},${coordinate.longitude}`,
-          config.route
-        );
+        return getDirectionsBing(`${coordinate.latitude},${coordinate.longitude}`, config.route);
       }
       query =
-        address &&
-        encodeArray([
-          address.line1,
-          address.city,
-          address.region,
-          address.postalCode,
-        ]);
+        address && encodeArray([address.line1, address.city, address.region, address.postalCode]);
 
       // Bing Maps requires a query
       if (!query) {
-        console.warn(
-          `${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`
-        );
+        console.warn(`${NO_QUERY_WARNING} Check that you've provided a valid Yext Address.`);
         break;
       }
 
@@ -109,15 +93,10 @@ export const getDirections = (
     }
     default: {
       if (!!coordinate?.latitude && !!coordinate?.longitude) {
-        return getDirectionsGoogle(
-          `${coordinate.latitude},${coordinate.longitude}`,
-          config.route
-        );
+        return getDirectionsGoogle(`${coordinate.latitude},${coordinate.longitude}`, config.route);
       }
       const gmbListing = listings.find(
-        (listing) =>
-          listing?.publisher?.toUpperCase() ===
-          ListingPublisherOption.GOOGLEMYBUSINESS
+        (listing) => listing?.publisher?.toUpperCase() === ListingPublisherOption.GOOGLEMYBUSINESS
       );
 
       if (gmbListing?.listingUrl) {
@@ -179,11 +158,7 @@ const getDirectionsBing = (query: string, route?: boolean): string => {
  * @param route - Enable driving directions
  * @returns Google maps url
  */
-const getDirectionsGooglePlaceID = (
-  placeId: string,
-  query?: string,
-  route?: boolean
-): string => {
+const getDirectionsGooglePlaceID = (placeId: string, query?: string, route?: boolean): string => {
   const queryParam = query ? `&query=${query}` : ``;
   if (route) {
     return `https://maps.google.com/maps/dir/?api=1${queryParam}&destination_place_id=${placeId}&destination=direct`;

@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  Fragment,
-} from "react";
+import React, { createContext, useContext, useEffect, useState, Fragment } from "react";
 import { MapContext } from "./map.js";
 import { Marker } from "./marker.js";
 import type {
@@ -20,27 +14,10 @@ import { GeoBounds } from "../../map/geoBounds.js";
 
 const defaultClusterTemplate = ({ count }: ClusterTemplateProps) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
-      viewBox="0 0 22 22"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
       <g fill="none" fillRule="evenodd">
-        <circle
-          fill="red"
-          fillRule="nonzero"
-          stroke="white"
-          cx="11"
-          cy="11"
-          r="11"
-        />
-        <text
-          fill="white"
-          fontFamily="Arial-BoldMT,Arial"
-          fontSize="12"
-          fontWeight="bold"
-        >
+        <circle fill="red" fillRule="nonzero" stroke="white" cx="11" cy="11" r="11" />
+        <text fill="white" fontFamily="Arial-BoldMT,Arial" fontSize="12" fontWeight="bold">
           <tspan x="50%" y="15" textAnchor="middle">
             {count}
           </tspan>
@@ -50,17 +27,13 @@ const defaultClusterTemplate = ({ count }: ClusterTemplateProps) => {
   );
 };
 
-export const ClustererContext = createContext<ClustererContextType | null>(
-  null
-);
+export const ClustererContext = createContext<ClustererContextType | null>(null);
 
 export function useClusterContext() {
   const ctx = useContext(ClustererContext);
 
   if (!ctx) {
-    throw new Error(
-      "Attempted to call useClustererContext() outside of <Clusterer>."
-    );
+    throw new Error("Attempted to call useClustererContext() outside of <Clusterer>.");
   }
 
   return ctx;
@@ -75,9 +48,7 @@ export const Clusterer = ({
   const [pinStore, setPinStore] = useState<PinStoreType[]>([]);
   const [clusters, setClusters] = useState<PinStoreType[][]>();
   const [clusterIds, setClusterIds] = useState<string[]>([]);
-  const [clustersToRender, setClustersToRender] = useState<
-    React.ReactElement[]
-  >([]);
+  const [clustersToRender, setClustersToRender] = useState<React.ReactElement[]>([]);
 
   // Recalculate the clusters when either the pin store is updated or the map zoom level changes.
   useEffect(() => {
@@ -161,11 +132,7 @@ export const Clusterer = ({
  * @param clusterRadius - pixels from the center of the cluster, and each cluster
  * has at least one pin.
  */
-const _generateClusters = (
-  pins: PinStoreType[],
-  zoom: number,
-  clusterRadius: number
-) => {
+const _generateClusters = (pins: PinStoreType[], zoom: number, clusterRadius: number) => {
   const clusterRadiusRadians = (clusterRadius * Math.PI) / 2 ** (zoom + 7);
   const pinsInRadius = pins.map((_, index) => [index]);
   const pinClusters = [];
@@ -220,10 +187,7 @@ const _generateClusters = (
       cluster.push(pins[index]);
       pinsInRadius[index] = [];
       pinGroup.forEach((otherIndex) =>
-        pinsInRadius[otherIndex].splice(
-          pinsInRadius[otherIndex].indexOf(index),
-          1
-        )
+        pinsInRadius[otherIndex].splice(pinsInRadius[otherIndex].indexOf(index), 1)
       );
     }
 

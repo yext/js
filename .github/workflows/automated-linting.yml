@@ -24,14 +24,14 @@ jobs:
         # This is a temporary fix to allow the workflow continue providing
         # autofixes while these errors are being addressed.
         continue-on-error: true
-      - run: pnpm run prettier
-        name: Running prettier
+      - run: pnpm run fmt
+        name: Running formatter
 
       - name: Push changes
         id: push-changes
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Automated linting/prettier update"
+          message: "Automated linting/formatter update"
           add: "*"
           push: true
           pull: --rebase --autostash
@@ -42,7 +42,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            core.setFailed('Linting/Prettier changes were made. A new commit with autofixes was pushed.')
+            core.setFailed('Linting/formatter changes were made. A new commit with autofixes was pushed.')
       - name: Fail job on linting error
         if: steps.oxlint.outcome == 'failure'
         uses: actions/github-script@v3

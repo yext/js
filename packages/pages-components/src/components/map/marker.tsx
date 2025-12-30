@@ -8,13 +8,7 @@ import { HTMLProviderPin } from "../../map/providerPin.js";
 import { Coordinate } from "../../map/coordinate.js";
 
 const defaultMarkerIcon = (
-  <svg
-    width="30"
-    height="38"
-    viewBox="0 0 30 38"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="30" height="38" viewBox="0 0 30 38" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M30 15.0882C30 23.4212 23.3333 30.7353 15 38C7.22222 31.2941 0 23.4212 0 15.0882C0 6.75523 6.71573 0 15 0C23.2843 0 30 6.75523 30 15.0882Z"
       fill="red"
@@ -82,9 +76,7 @@ export const Marker = ({
       marker.setMap(null);
 
       if (cluster) {
-        cluster.setPinStore((pinStore) =>
-          pinStore.filter((pin) => pin.id !== id)
-        );
+        cluster.setPinStore((pinStore) => pinStore.filter((pin) => pin.id !== id));
       }
     };
   }, []);

@@ -24,8 +24,9 @@ const preview: Preview = {
       // Store the real DateTime
       const originalLuxonSettings = useRef(Settings);
 
-      const mockedLuxonDateTimeFromParams = context.parameters
-        .mockedLuxonDateTime as DateTime | undefined;
+      const mockedLuxonDateTimeFromParams = context.parameters.mockedLuxonDateTime as
+        | DateTime
+        | undefined;
 
       const overrideDateTime = useCallback(() => {
         if (mockedLuxonDateTimeFromParams) {

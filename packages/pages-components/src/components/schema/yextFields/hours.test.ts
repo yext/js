@@ -221,9 +221,7 @@ describe("OpeningHoursSpecificationSchema", () => {
       // 2026-01-01 (isRegularHours: true) is correctly omitted
     ];
 
-    expect(result.openingHoursSpecification).toEqual(
-      expect.arrayContaining(expectedRegularHours)
-    );
+    expect(result.openingHoursSpecification).toEqual(expect.arrayContaining(expectedRegularHours));
     expect(result.specialOpeningHoursSpecification).toEqual(
       expect.arrayContaining(expectedSpecialHours)
     );

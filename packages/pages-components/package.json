@@ -2,25 +2,26 @@
   "name": "@yext/pages-components",
   "version": "2.0.0",
   "description": "A React component library that supports Yext Pages development",
-  "author": "sumo@yext.com",
-  "license": "BSD-3-Clause",
   "keywords": [
-    "Yext",
-    "React"
+    "React",
+    "Yext"
   ],
+  "license": "BSD-3-Clause",
+  "author": "sumo@yext.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/yext/js.git"
   },
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "type": "module",
   "files": [
     "dist",
     "THIRD-PARTY-NOTICES"
   ],
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "module": "./dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -28,10 +29,6 @@
       "default": "./dist/index.js"
     },
     "./style.css": "./dist/index.css"
-  },
-  "types": "dist/index.d.ts",
-  "engines": {
-    "node": "^20 || ^22 || ^24"
   },
   "scripts": {
     "dev": "pnpm run storybook",
@@ -46,11 +43,11 @@
     "prepare": "pnpm build",
     "update-snapshots": "test-storybook -c .storybook/snapshots -u"
   },
-  "peerDependencies": {
-    "lexical": "~0.38.2",
-    "mapbox-gl": "^2.9.2",
-    "react": "^18.2.0 || ^19.2.3",
-    "react-dom": "^18.2.0 || ^19.2.3"
+  "dependencies": {
+    "@yext/analytics": "^1.0.0",
+    "browser-or-node": "^3.0.0",
+    "classnames": "^2.5.1",
+    "luxon": "^3.7.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",
@@ -95,10 +92,13 @@
     "vite-tsconfig-paths": "^4.2.2",
     "vitest": "^3.0.5"
   },
-  "dependencies": {
-    "@yext/analytics": "^1.0.0",
-    "browser-or-node": "^3.0.0",
-    "classnames": "^2.5.1",
-    "luxon": "^3.7.2"
+  "peerDependencies": {
+    "lexical": "~0.38.2",
+    "mapbox-gl": "^2.9.2",
+    "react": "^18.2.0 || ^19.2.3",
+    "react-dom": "^18.2.0 || ^19.2.3"
+  },
+  "engines": {
+    "node": "^20 || ^22 || ^24"
   }
 }

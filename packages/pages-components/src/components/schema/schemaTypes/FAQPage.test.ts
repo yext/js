@@ -100,10 +100,7 @@ describe("FAQPage", () => {
           name: "What are your business hours?",
           acceptedAnswer: {
             "@type": "Answer",
-            text:
-              "Monday - Friday: 9 AM - 5 PM" +
-              "Saturday: 10 AM - 2 PM" +
-              "Sunday: Closed",
+            text: "Monday - Friday: 9 AM - 5 PM" + "Saturday: 10 AM - 2 PM" + "Sunday: Closed",
           },
         },
       ],

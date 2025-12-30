@@ -16,9 +16,7 @@ describe("validateOrganization", () => {
 
   it("should return true for valid organizations", () => {
     expect(validateOrganization({ name: "Google" })).toBe(true);
-    expect(
-      validateOrganization({ name: "Google", url: "https://google.com" })
-    ).toBe(true);
+    expect(validateOrganization({ name: "Google", url: "https://google.com" })).toBe(true);
   });
 });
 
