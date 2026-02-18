@@ -13,30 +13,3 @@ import { AnalyticsMethods } from "./interfaces.js";
 export function useAnalytics(): AnalyticsMethods | null {
   return useContext(AnalyticsContext);
 }
-
-/**
- * Simpler hook that just returns the analytics track() method.
- *
- * @public
- */
-export const useTrack = () => {
-  return useAnalytics()?.track;
-};
-
-/**
- * Simpler hook that just returns the analytics pageView method
- *
- * @public
- */
-export const usePageView = () => {
-  return useAnalytics()?.pageView;
-};
-
-/**
- * Simpler hook that just returns the analytics identify method
- *
- * @public
- */
-export const useIdentify = () => {
-  return useAnalytics()?.identify;
-};
