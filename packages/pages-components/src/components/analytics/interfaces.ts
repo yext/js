@@ -45,9 +45,18 @@ export interface AnalyticsMethods {
   optIn(): Promise<void>;
 
   /**
+   * Allows you to opt a user out of analytics tracking, for example if they withdraw
+   * consent via a Consent Management Banner or other opt-out method.
+   */
+  optOut(): void;
+
+  /**
    * Use the getDebugEnabled method to retrieve whether debugging is on or off.
    */
   getDebugEnabled(): boolean;
+
+  /** Returns whether analytics reporting is currently enabled */
+  isYextAnalyticsEnabled(): boolean;
 }
 
 /**
