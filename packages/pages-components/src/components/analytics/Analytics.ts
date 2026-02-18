@@ -174,6 +174,7 @@ export class Analytics implements AnalyticsMethods {
     return this.enableDebugging || debuggingParamDetected();
   }
 
+  /** {@inheritDoc AnalyticsMethods.isYextAnalyticsEnabled} */
   isYextAnalyticsEnabled(): boolean {
     return this._optedIn;
   }

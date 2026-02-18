@@ -60,7 +60,9 @@ export function AnalyticsProvider(
     };
 
     const optIn = () => {
-      void analytics.optIn();
+      analytics.optIn().catch((err) => {
+        console.error("Yext Analytics optIn failed:", err);
+      });
     };
 
     globalWindow.enableYextAnalytics = optIn;
