@@ -111,7 +111,7 @@ export class Analytics implements AnalyticsMethods {
     }
   }
 
-  /** {@inheritDoc AnalyticsMethods.async} */
+  /** {@inheritDoc AnalyticsMethods.optIn} */
   async optIn(): Promise<void> {
     this._optedIn = true;
     this.makeReporter();
@@ -121,7 +121,12 @@ export class Analytics implements AnalyticsMethods {
     }
   }
 
-  /** {@inheritDoc AnalyticsMethods.async} */
+  /** {@inheritDoc AnalyticsMethods.optOut} */
+  optOut(): void {
+    this._optedIn = false;
+  }
+
+  /** {@inheritDoc AnalyticsMethods.pageView} */
   async pageView(): Promise<void> {
     if (!this.canTrack()) {
       return Promise.resolve(undefined);
@@ -167,5 +172,10 @@ export class Analytics implements AnalyticsMethods {
   /** {@inheritDoc AnalyticsMethods.getDebugEnabled} */
   getDebugEnabled(): boolean {
     return this.enableDebugging || debuggingParamDetected();
+  }
+
+  /** {@inheritDoc AnalyticsMethods.isYextAnalyticsEnabled} */
+  isYextAnalyticsEnabled(): boolean {
+    return this._optedIn;
   }
 }

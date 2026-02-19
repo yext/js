@@ -52,14 +52,22 @@ export function AnalyticsProvider(
 
   const analytics = analyticsRef.current;
 
-  // Adds enableYextAnalytics to the window. Typically used during consent banner implementation.
+  // Adds global callbacks typically used during consent banner implementation.
   useEffect(() => {
-    (window as any).enableYextAnalytics = () => {
-      analytics.optIn();
+    const globalWindow = window as Window & {
+      enableYextAnalytics?: () => void;
     };
 
+    const optIn = () => {
+      analytics.optIn().catch((err) => {
+        console.error("Yext Analytics optIn failed:", err);
+      });
+    };
+
+    globalWindow.enableYextAnalytics = optIn;
+
     return () => {
-      delete (window as any).enableYextAnalytics;
+      delete globalWindow.enableYextAnalytics;
     };
   }, [analytics]);
 
