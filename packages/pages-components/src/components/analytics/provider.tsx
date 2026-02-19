@@ -1,4 +1,11 @@
-import { PropsWithChildren, useRef, lazy, Suspense, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  useRef,
+  lazy,
+  Suspense,
+  useEffect,
+  useState,
+} from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
 import { AnalyticsMethods, AnalyticsProviderProps } from "./interfaces.js";
@@ -14,7 +21,7 @@ const AnalyticsDebugger = lazy(() => import("./debugger.js"));
  * @public
  */
 export function AnalyticsProvider(
-  props: PropsWithChildren<AnalyticsProviderProps>
+  props: PropsWithChildren<AnalyticsProviderProps>,
 ): React.ReactElement {
   const {
     children,
@@ -46,7 +53,7 @@ export function AnalyticsProvider(
       requireOptIn,
       disableSessionTracking,
       productionDomains,
-      enableDebugging ?? debuggingParamDetected()
+      enableDebugging ?? debuggingParamDetected(),
     );
   }
 
@@ -56,7 +63,6 @@ export function AnalyticsProvider(
   useEffect(() => {
     const globalWindow = window as Window & {
       enableYextAnalytics?: () => void;
-      setAnalyticsOptIn?: () => void;
     };
 
     const optIn = () => {
@@ -66,17 +72,17 @@ export function AnalyticsProvider(
     };
 
     globalWindow.enableYextAnalytics = optIn;
-    globalWindow.setAnalyticsOptIn = optIn;
 
     return () => {
       delete globalWindow.enableYextAnalytics;
-      delete globalWindow.setAnalyticsOptIn;
     };
   }, [analytics]);
 
   return (
     <>
-      <AnalyticsContext.Provider value={analytics}>{children}</AnalyticsContext.Provider>
+      <AnalyticsContext.Provider value={analytics}>
+        {children}
+      </AnalyticsContext.Provider>
       {isClient &&
       (enableDebugging || debuggingParamDetected()) &&
       getRuntime().name === "browser" ? (
