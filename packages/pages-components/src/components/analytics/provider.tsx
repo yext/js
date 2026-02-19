@@ -1,11 +1,4 @@
-import {
-  PropsWithChildren,
-  useRef,
-  lazy,
-  Suspense,
-  useEffect,
-  useState,
-} from "react";
+import { PropsWithChildren, useRef, lazy, Suspense, useEffect, useState } from "react";
 import { getRuntime } from "../../util/index.js";
 import { Analytics } from "./Analytics.js";
 import { AnalyticsMethods, AnalyticsProviderProps } from "./interfaces.js";
@@ -21,7 +14,7 @@ const AnalyticsDebugger = lazy(() => import("./debugger.js"));
  * @public
  */
 export function AnalyticsProvider(
-  props: PropsWithChildren<AnalyticsProviderProps>,
+  props: PropsWithChildren<AnalyticsProviderProps>
 ): React.ReactElement {
   const {
     children,
@@ -53,7 +46,7 @@ export function AnalyticsProvider(
       requireOptIn,
       disableSessionTracking,
       productionDomains,
-      enableDebugging ?? debuggingParamDetected(),
+      enableDebugging ?? debuggingParamDetected()
     );
   }
 
@@ -80,9 +73,7 @@ export function AnalyticsProvider(
 
   return (
     <>
-      <AnalyticsContext.Provider value={analytics}>
-        {children}
-      </AnalyticsContext.Provider>
+      <AnalyticsContext.Provider value={analytics}>{children}</AnalyticsContext.Provider>
       {isClient &&
       (enableDebugging || debuggingParamDetected()) &&
       getRuntime().name === "browser" ? (
