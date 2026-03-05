@@ -1,8 +1,31 @@
 import * as React from "react";
+import type { AddressLine } from "./types.js";
 import { AddressProps, AddressLineProps } from "./types.js";
 import { localeAddressFormat } from "./i18n.js";
 import { getUnabbreviated } from "./methods.js";
 import "./address.css";
+
+const cleanupAddressLine = (line: AddressLine): AddressLine => {
+  const trimmed = [...line];
+
+  while (trimmed[0] === ",") {
+    trimmed.shift();
+  }
+
+  while (trimmed[trimmed.length - 1] === ",") {
+    trimmed.pop();
+  }
+
+  const cleaned: AddressLine = [];
+  for (const token of trimmed) {
+    if (token === "," && cleaned[cleaned.length - 1] === ",") {
+      continue;
+    }
+    cleaned.push(token);
+  }
+
+  return cleaned;
+};
 
 /**
  * Renders an HTML address based from the Yext Knowledge Graph. Example of using the component to render
@@ -16,12 +39,42 @@ import "./address.css";
  *       US
  * const customAddress = (<Address address={document.address} lines={[['line1', 'city', 'region']]} />);
  *   --> 1101 Wilson Blvd., Arlington, VA
+ * const addressWithoutCountryOrRegion = (<Address address={document.address} showCountry={false} showRegion={false} />);
+ *   --> 1101 Wilson Blvd., Suite 2300,
+ *       Arlington, 22201
  * ```
+ *
+ * `showCountry` and `showRegion` only apply when using locale-based default formatting (no custom `lines`).
  *
  * @public
  */
-export const Address = ({ address, lines, separator = ",", ...props }: AddressProps) => {
-  const renderedLines = (lines || localeAddressFormat(address.countryCode)).map((line) => (
+export const Address = ({
+  address,
+  lines,
+  separator = ",",
+  showCountry = true,
+  showRegion = true,
+  ...props
+}: AddressProps) => {
+  const baseLines = lines || localeAddressFormat(address.countryCode);
+  const renderedLinesToUse = lines
+    ? baseLines
+    : baseLines
+        .map((line) =>
+          line.filter((field) => {
+            if (!showCountry && field === "countryCode") {
+              return false;
+            }
+            if (!showRegion && field === "region") {
+              return false;
+            }
+            return true;
+          })
+        )
+        .map(cleanupAddressLine)
+        .filter((line) => line.length > 0);
+
+  const renderedLines = renderedLinesToUse.map((line) => (
     <AddressLine key={line.toString()} address={address} line={line} separator={separator} />
   ));
 

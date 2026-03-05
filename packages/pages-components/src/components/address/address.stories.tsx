@@ -94,3 +94,28 @@ export const Address_SanFrancisco: StoryFn<typeof AddressComponent> = Template.b
 Address_SanFrancisco.args = {
   address: SanFrancisco,
 };
+
+// Address with country hidden (default formatting only)
+export const Address_HideCountry: StoryFn<typeof AddressComponent> = Template.bind({});
+
+Address_HideCountry.args = {
+  address: Arlington,
+  showCountry: false,
+};
+
+// Address with region hidden (default formatting only)
+export const Address_HideRegion: StoryFn<typeof AddressComponent> = Template.bind({});
+
+Address_HideRegion.args = {
+  address: Arlington,
+  showRegion: false,
+};
+
+// Address with both country and region hidden (default formatting only)
+export const Address_HideCountryAndRegion: StoryFn<typeof AddressComponent> = Template.bind({});
+
+Address_HideCountryAndRegion.args = {
+  address: Arlington,
+  showCountry: false,
+  showRegion: false,
+};
