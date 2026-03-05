@@ -101,7 +101,14 @@ describe("Address", () => {
   });
 
   it("does not apply showCountry/showRegion when custom lines are provided", () => {
-    render(<Address address={address} showCountry={false} showRegion={false} lines={[["region"], ["countryCode"]]} />);
+    render(
+      <Address
+        address={address}
+        showCountry={false}
+        showRegion={false}
+        lines={[["region"], ["countryCode"]]}
+      />
+    );
 
     const countryEl = screen.queryByText("US");
     const regionEl = screen.queryByText("AL");
