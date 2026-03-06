@@ -1,3 +1,9 @@
+#### 2.0.2 (2026-03-06)
+
+##### New Features
+
+*  add showRegion, showCountry props for Address ([#143](https://github.com/yext/js/pull/143)) ([3305d430](https://github.com/yext/js/commit/3305d430d155c9aa10a044454b3874f5eac3bfc3))
+
 #### 2.0.1 (2026-02-19)
 
 ##### Chores
