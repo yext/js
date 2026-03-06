@@ -19,7 +19,7 @@ import "./address.css";
  *   --> 1101 Wilson Blvd., Arlington, VA
  * const addressWithoutCountryOrRegion = (<Address address={document.address} showCountry={false} showRegion={false} />);
  *   --> 1101 Wilson Blvd., Suite 2300,
- *       Arlington, 22201
+ *       Arlington 22201
  * ```
  *
  * `showCountry` and `showRegion` apply to both locale-based default formatting and custom `lines`.
