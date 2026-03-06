@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { AddressLine } from "./types.js";
 import { AddressProps, AddressLineProps } from "./types.js";
 import { localeAddressFormat } from "./i18n.js";
 import { getUnabbreviated } from "./methods.js";
@@ -16,12 +17,54 @@ import "./address.css";
  *       US
  * const customAddress = (<Address address={document.address} lines={[['line1', 'city', 'region']]} />);
  *   --> 1101 Wilson Blvd., Arlington, VA
+ * const addressWithoutCountryOrRegion = (<Address address={document.address} showCountry={false} showRegion={false} />);
+ *   --> 1101 Wilson Blvd., Suite 2300,
+ *       Arlington 22201
  * ```
+ *
+ * `showCountry` and `showRegion` apply to both locale-based default formatting and custom `lines`.
+ * Only separators immediately before hidden fields are removed.
  *
  * @public
  */
-export const Address = ({ address, lines, separator = ",", ...props }: AddressProps) => {
-  const renderedLines = (lines || localeAddressFormat(address.countryCode)).map((line) => (
+export const Address = ({
+  address,
+  lines,
+  separator = ",",
+  showCountry = true,
+  showRegion = true,
+  ...props
+}: AddressProps) => {
+  const baseLines = lines || localeAddressFormat(address.countryCode);
+  const isHiddenField = (field: AddressLine[number]): boolean => {
+    if (field === "countryCode") {
+      return !showCountry;
+    }
+
+    if (field === "region") {
+      return !showRegion;
+    }
+
+    return false;
+  };
+
+  const renderedLinesToUse = baseLines
+    .map((line) =>
+      line.filter((field, index) => {
+        if (isHiddenField(field)) {
+          return false;
+        }
+
+        if (field === "," && isHiddenField(line[index + 1])) {
+          return false;
+        }
+
+        return true;
+      })
+    )
+    .filter((line) => line.length > 0);
+
+  const renderedLines = renderedLinesToUse.map((line) => (
     <AddressLine key={line.toString()} address={address} line={line} separator={separator} />
   ));
 

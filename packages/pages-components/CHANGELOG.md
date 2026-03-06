@@ -2,11 +2,11 @@
 
 ##### Chores
 
-*  swap from prettier to oxlint ([#141](https://github.com/yext/js/pull/141)) ([07f698ad](https://github.com/yext/js/commit/07f698ad55f9464289ea3cc5d0a0e5b8bb0e40d6))
+- swap from prettier to oxlint ([#141](https://github.com/yext/js/pull/141)) ([07f698ad](https://github.com/yext/js/commit/07f698ad55f9464289ea3cc5d0a0e5b8bb0e40d6))
 
 ##### New Features
 
-*  expose optOut and isYextAnalyticsEnabled functions ([#142](https://github.com/yext/js/pull/142)) ([d0c3010a](https://github.com/yext/js/commit/d0c3010a16e84b6f8a4b7959f9cf7aeadcaa6a52))
+- expose optOut and isYextAnalyticsEnabled functions ([#142](https://github.com/yext/js/pull/142)) ([d0c3010a](https://github.com/yext/js/commit/d0c3010a16e84b6f8a4b7959f9cf7aeadcaa6a52))
 
 #### 2.0.0 (2025-12-30)
 

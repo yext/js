@@ -13,6 +13,16 @@ const address: AddressType = {
   region: "AL",
 };
 
+const argentinianAddress: AddressType = {
+  city: "Buenos Aires",
+  countryCode: "AR",
+  line1: "Av. Corrientes 1234",
+  localizedCountryName: "Argentina",
+  localizedRegionName: "Buenos Aires",
+  postalCode: "C1043",
+  region: "B",
+};
+
 describe("Address", () => {
   it("renders a default US Address", () => {
     render(<Address address={address} />);
@@ -63,5 +73,70 @@ describe("Address", () => {
     expect(console.error).not.toHaveBeenCalled();
 
     console.error = originalError;
+  });
+
+  it("hides country in default format when showCountry is false", () => {
+    render(<Address address={address} showCountry={false} />);
+
+    const countryEl = screen.queryByText("US");
+
+    expect(countryEl).toBeFalsy();
+  });
+
+  it("hides region in default format when showRegion is false", () => {
+    render(<Address address={address} showRegion={false} />);
+
+    const regionEl = screen.queryByText("AL");
+
+    expect(regionEl).toBeFalsy();
+  });
+
+  it("hides both country and region in default format when both are false", () => {
+    render(<Address address={address} showCountry={false} showRegion={false} />);
+
+    const countryEl = screen.queryByText("US");
+    const regionEl = screen.queryByText("AL");
+
+    expect(countryEl && regionEl).toBeFalsy();
+  });
+
+  it("applies showCountry/showRegion when custom lines are provided", () => {
+    render(
+      <Address
+        address={address}
+        showCountry={false}
+        showRegion={false}
+        lines={[["region"], ["countryCode"]]}
+      />
+    );
+
+    const countryEl = screen.queryByText("US");
+    const regionEl = screen.queryByText("AL");
+
+    expect(countryEl || regionEl).toBeFalsy();
+  });
+
+  it("does not render a trailing comma in AR default format when showRegion is false", () => {
+    render(<Address address={argentinianAddress} showRegion={false} />);
+
+    const separatorEl = screen.queryByText(",");
+
+    expect(separatorEl).toBeFalsy();
+  });
+
+  it("removes commas immediately before hidden fields in custom lines", () => {
+    render(<Address address={address} showRegion={false} lines={[["city", ",", "region"]]} />);
+
+    const separatorEl = screen.queryByText(",");
+
+    expect(separatorEl).toBeFalsy();
+  });
+
+  it("keeps commas after hidden fields in custom lines", () => {
+    render(<Address address={address} showRegion={false} lines={[["region", ",", "city"]]} />);
+
+    const separatorEl = screen.queryByText(",");
+
+    expect(separatorEl).toBeTruthy();
   });
 });

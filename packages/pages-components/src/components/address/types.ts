@@ -28,6 +28,8 @@ export interface AddressProps extends React.HTMLProps<HTMLDivElement> {
   address: AddressType;
   lines?: AddressLine[];
   separator?: string;
+  showCountry?: boolean;
+  showRegion?: boolean;
 }
 
 /**
