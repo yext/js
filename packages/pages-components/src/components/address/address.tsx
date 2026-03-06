@@ -60,17 +60,12 @@ export const Address = ({
         }
 
         return true;
-      }),
+      })
     )
     .filter((line) => line.length > 0);
 
   const renderedLines = renderedLinesToUse.map((line) => (
-    <AddressLine
-      key={line.toString()}
-      address={address}
-      line={line}
-      separator={separator}
-    />
+    <AddressLine key={line.toString()} address={address} line={line} separator={separator} />
   ));
 
   return (
@@ -80,19 +75,13 @@ export const Address = ({
   );
 };
 
-const AddressLine = ({
-  address,
-  line,
-  separator,
-}: AddressLineProps): React.ReactElement => {
+const AddressLine = ({ address, line, separator }: AddressLineProps): React.ReactElement => {
   const addressDOM: React.ReactElement[] = [];
   let separatorCount = 0;
 
   for (const field of line) {
     if (field === ",") {
-      addressDOM.push(
-        <span key={`separator-${separatorCount++}`}>{separator}</span>,
-      );
+      addressDOM.push(<span key={`separator-${separatorCount++}`}>{separator}</span>);
       continue;
     }
 
@@ -108,7 +97,7 @@ const AddressLine = ({
         <React.Fragment key={field}>
           {" "}
           <abbr title={unabbreviated}>{value}</abbr>
-        </React.Fragment>,
+        </React.Fragment>
       );
       continue;
     }

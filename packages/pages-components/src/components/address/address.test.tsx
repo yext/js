@@ -67,7 +67,7 @@ describe("Address", () => {
           ["line1", ",", "line2"],
           ["city", ",", "region", ",", "postalCode"],
         ]}
-      />,
+      />
     );
 
     expect(console.error).not.toHaveBeenCalled();
@@ -92,9 +92,7 @@ describe("Address", () => {
   });
 
   it("hides both country and region in default format when both are false", () => {
-    render(
-      <Address address={address} showCountry={false} showRegion={false} />,
-    );
+    render(<Address address={address} showCountry={false} showRegion={false} />);
 
     const countryEl = screen.queryByText("US");
     const regionEl = screen.queryByText("AL");
@@ -109,7 +107,7 @@ describe("Address", () => {
         showCountry={false}
         showRegion={false}
         lines={[["region"], ["countryCode"]]}
-      />,
+      />
     );
 
     const countryEl = screen.queryByText("US");
@@ -127,13 +125,7 @@ describe("Address", () => {
   });
 
   it("removes commas immediately before hidden fields in custom lines", () => {
-    render(
-      <Address
-        address={address}
-        showRegion={false}
-        lines={[["city", ",", "region"]]}
-      />,
-    );
+    render(<Address address={address} showRegion={false} lines={[["city", ",", "region"]]} />);
 
     const separatorEl = screen.queryByText(",");
 
@@ -141,13 +133,7 @@ describe("Address", () => {
   });
 
   it("keeps commas after hidden fields in custom lines", () => {
-    render(
-      <Address
-        address={address}
-        showRegion={false}
-        lines={[["region", ",", "city"]]}
-      />,
-    );
+    render(<Address address={address} showRegion={false} lines={[["region", ",", "city"]]} />);
 
     const separatorEl = screen.queryByText(",");
 
