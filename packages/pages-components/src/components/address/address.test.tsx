@@ -67,7 +67,7 @@ describe("Address", () => {
           ["line1", ",", "line2"],
           ["city", ",", "region", ",", "postalCode"],
         ]}
-      />
+      />,
     );
 
     expect(console.error).not.toHaveBeenCalled();
@@ -92,7 +92,9 @@ describe("Address", () => {
   });
 
   it("hides both country and region in default format when both are false", () => {
-    render(<Address address={address} showCountry={false} showRegion={false} />);
+    render(
+      <Address address={address} showCountry={false} showRegion={false} />,
+    );
 
     const countryEl = screen.queryByText("US");
     const regionEl = screen.queryByText("AL");
@@ -100,20 +102,20 @@ describe("Address", () => {
     expect(countryEl && regionEl).toBeFalsy();
   });
 
-  it("does not apply showCountry/showRegion when custom lines are provided", () => {
+  it("applies showCountry/showRegion when custom lines are provided", () => {
     render(
       <Address
         address={address}
         showCountry={false}
         showRegion={false}
         lines={[["region"], ["countryCode"]]}
-      />
+      />,
     );
 
     const countryEl = screen.queryByText("US");
     const regionEl = screen.queryByText("AL");
 
-    expect(countryEl && regionEl).toBeTruthy();
+    expect(countryEl || regionEl).toBeFalsy();
   });
 
   it("does not render a trailing comma in AR default format when showRegion is false", () => {
@@ -122,5 +124,33 @@ describe("Address", () => {
     const separatorEl = screen.queryByText(",");
 
     expect(separatorEl).toBeFalsy();
+  });
+
+  it("removes commas immediately before hidden fields in custom lines", () => {
+    render(
+      <Address
+        address={address}
+        showRegion={false}
+        lines={[["city", ",", "region"]]}
+      />,
+    );
+
+    const separatorEl = screen.queryByText(",");
+
+    expect(separatorEl).toBeFalsy();
+  });
+
+  it("keeps commas after hidden fields in custom lines", () => {
+    render(
+      <Address
+        address={address}
+        showRegion={false}
+        lines={[["region", ",", "city"]]}
+      />,
+    );
+
+    const separatorEl = screen.queryByText(",");
+
+    expect(separatorEl).toBeTruthy();
   });
 });

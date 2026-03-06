@@ -5,28 +5,6 @@ import { localeAddressFormat } from "./i18n.js";
 import { getUnabbreviated } from "./methods.js";
 import "./address.css";
 
-const cleanupAddressLine = (line: AddressLine): AddressLine => {
-  const trimmed = [...line];
-
-  while (trimmed[0] === ",") {
-    trimmed.shift();
-  }
-
-  while (trimmed[trimmed.length - 1] === ",") {
-    trimmed.pop();
-  }
-
-  const cleaned: AddressLine = [];
-  for (const token of trimmed) {
-    if (token === "," && cleaned[cleaned.length - 1] === ",") {
-      continue;
-    }
-    cleaned.push(token);
-  }
-
-  return cleaned;
-};
-
 /**
  * Renders an HTML address based from the Yext Knowledge Graph. Example of using the component to render
  * a location entity's address from Yext Knowledge Graph:
@@ -44,7 +22,8 @@ const cleanupAddressLine = (line: AddressLine): AddressLine => {
  *       Arlington, 22201
  * ```
  *
- * `showCountry` and `showRegion` only apply when using locale-based default formatting (no custom `lines`).
+ * `showCountry` and `showRegion` apply to both locale-based default formatting and custom `lines`.
+ * Only separators immediately before hidden fields are removed.
  *
  * @public
  */
@@ -57,25 +36,41 @@ export const Address = ({
   ...props
 }: AddressProps) => {
   const baseLines = lines || localeAddressFormat(address.countryCode);
-  const renderedLinesToUse = lines
-    ? baseLines
-    : baseLines
-        .map((line) =>
-          line.filter((field) => {
-            if (!showCountry && field === "countryCode") {
-              return false;
-            }
-            if (!showRegion && field === "region") {
-              return false;
-            }
-            return true;
-          })
-        )
-        .map(cleanupAddressLine)
-        .filter((line) => line.length > 0);
+  const isHiddenField = (field: AddressLine[number]): boolean => {
+    if (field === "countryCode") {
+      return !showCountry;
+    }
+
+    if (field === "region") {
+      return !showRegion;
+    }
+
+    return false;
+  };
+
+  const renderedLinesToUse = baseLines
+    .map((line) =>
+      line.filter((field, index) => {
+        if (isHiddenField(field)) {
+          return false;
+        }
+
+        if (field === "," && isHiddenField(line[index + 1])) {
+          return false;
+        }
+
+        return true;
+      }),
+    )
+    .filter((line) => line.length > 0);
 
   const renderedLines = renderedLinesToUse.map((line) => (
-    <AddressLine key={line.toString()} address={address} line={line} separator={separator} />
+    <AddressLine
+      key={line.toString()}
+      address={address}
+      line={line}
+      separator={separator}
+    />
   ));
 
   return (
@@ -85,13 +80,19 @@ export const Address = ({
   );
 };
 
-const AddressLine = ({ address, line, separator }: AddressLineProps): React.ReactElement => {
+const AddressLine = ({
+  address,
+  line,
+  separator,
+}: AddressLineProps): React.ReactElement => {
   const addressDOM: React.ReactElement[] = [];
   let separatorCount = 0;
 
   for (const field of line) {
     if (field === ",") {
-      addressDOM.push(<span key={`separator-${separatorCount++}`}>{separator}</span>);
+      addressDOM.push(
+        <span key={`separator-${separatorCount++}`}>{separator}</span>,
+      );
       continue;
     }
 
@@ -107,7 +108,7 @@ const AddressLine = ({ address, line, separator }: AddressLineProps): React.Reac
         <React.Fragment key={field}>
           {" "}
           <abbr title={unabbreviated}>{value}</abbr>
-        </React.Fragment>
+        </React.Fragment>,
       );
       continue;
     }
