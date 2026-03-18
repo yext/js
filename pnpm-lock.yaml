@@ -129,9 +129,6 @@ importers:
       '@types/luxon':
         specifier: ^3.7.1
         version: 3.7.1
-      '@types/mapbox-gl':
-        specifier: ^3.5.0
-        version: 3.5.0
       '@types/node':
         specifier: ^20.10.4
         version: 20.17.19
@@ -1944,10 +1941,6 @@ packages:
 
   '@types/luxon@3.7.1':
     resolution: {integrity: sha512-H3iskjFIAn5SlJU7OuxUmTEpebK6TKB8rxZShDslBMZJ5u9S//KM1sbdAisiSrqwLQncVjnpi2OK2J51h+4lsg==}
-
-  '@types/mapbox-gl@3.5.0':
-    resolution: {integrity: sha512-3wVAUTC6q1UKatLP9YxFBnGJWi3neJUF9OKeyRdUf/BsYjZAP35xmZkL4zogVJbO3vdExuSVYCAkzUXjpjdhOg==}
-    deprecated: This is a stub types definition. mapbox-gl provides its own type definitions, so you do not need this installed.
 
   '@types/markdown-it@14.1.2':
     resolution: {integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==}
@@ -7907,10 +7900,6 @@ snapshots:
   '@types/linkify-it@5.0.0': {}
 
   '@types/luxon@3.7.1': {}
-
-  '@types/mapbox-gl@3.5.0':
-    dependencies:
-      mapbox-gl: 3.20.0
 
   '@types/markdown-it@14.1.2':
     dependencies:
