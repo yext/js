@@ -18,7 +18,6 @@ class MapboxMap extends ProviderMap {
 
     const mapboxInstance =
       (options?.iframeWindow as Window & { mapboxgl?: typeof mapboxgl })?.mapboxgl ?? mapboxgl;
-    mapboxInstance.accessToken = options?.apiKey ?? "";
     this.instance = mapboxInstance;
 
     if (options.wrapper) {
@@ -26,6 +25,7 @@ class MapboxMap extends ProviderMap {
         container: options.wrapper,
         interactive: options.controlEnabled,
         style: "mapbox://styles/mapbox/streets-v9",
+        accessToken: options?.apiKey ?? "",
         ...options.providerOptions,
       });
     }
