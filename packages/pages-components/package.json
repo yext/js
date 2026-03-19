@@ -67,7 +67,6 @@
     "@types/jest-image-snapshot": "^6.4.0",
     "@types/leaflet": "^1.9.12",
     "@types/luxon": "^3.7.1",
-    "@types/mapbox-gl": "^3.4.0",
     "@types/node": "^20.10.4",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.17",
@@ -94,7 +93,7 @@
   },
   "peerDependencies": {
     "lexical": "~0.38.2",
-    "mapbox-gl": "^2.9.2",
+    "mapbox-gl": "^3.20.0",
     "react": "^18.2.0 || ^19.2.3",
     "react-dom": "^18.2.0 || ^19.2.3"
   },
