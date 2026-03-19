@@ -25,7 +25,7 @@ class MapboxMap extends ProviderMap {
         container: options.wrapper,
         interactive: options.controlEnabled,
         style: "mapbox://styles/mapbox/streets-v9",
-        accessToken: options?.apiKey ?? "",
+        accessToken: options.apiKey ?? "",
         ...options.providerOptions,
       });
     }
