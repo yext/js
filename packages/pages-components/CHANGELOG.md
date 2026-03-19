@@ -1,3 +1,10 @@
+#### 2.1.0 (2026-03-19)
+
+##### Chores
+
+*  upgrade mapbox versions for accessibility issues ([#145](https://github.com/yext/js/pull/145)) ([3f0c63cd](https://github.com/yext/js/commit/3f0c63cd8b9ca9136a14effb578fefc79bc8b484))
+*  upgrade storybook and vite ([#144](https://github.com/yext/js/pull/144)) ([f717519d](https://github.com/yext/js/commit/f717519d9780033184d912ab3d7fcdac3851c836))
+
 #### 2.0.2 (2026-03-06)
 
 ##### New Features
