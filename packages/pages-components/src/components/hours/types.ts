@@ -16,17 +16,21 @@ export interface DayType {
 }
 
 export interface HolidayType extends DayType {
+  /** Holiday date in `yyyy-MM-dd` format. */
   date: string;
   isRegularHours?: boolean;
 }
 
 export interface IntervalType {
+  /** Start time in 24-hour `HH:MM` format. */
   start: string;
+  /** End time in 24-hour `HH:MM` format. Overnight intervals end on the next day. */
   end: string;
 }
 
 export interface HoursType extends WeekType {
   holidayHours?: HolidayType[];
+  /** Reopen date in `yyyy-MM-dd` format. Dates before this are treated as temporarily closed. */
   reopenDate?: string;
 }
 

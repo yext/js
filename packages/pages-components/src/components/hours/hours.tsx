@@ -1,5 +1,12 @@
 import { DateTime } from "luxon";
-import { Day, DayType, HolidayType, HoursType, IntervalType, WeekType } from "./types.js";
+import {
+  Day,
+  DayType,
+  HolidayType,
+  HoursType,
+  IntervalType,
+  WeekType,
+} from "./types.js";
 
 export function luxonDateToDay(d: DateTime): Day {
   const dayMap: Record<number, Day> = {
@@ -53,6 +60,7 @@ export const dayToDayKey: Record<Day, keyof WeekType> = {
   [Day.Sunday]: "sunday",
 };
 
+/** Represents a single open interval in a specific timezone. */
 export class HoursInterval {
   end: DateTime;
   start: DateTime;
@@ -60,6 +68,8 @@ export class HoursInterval {
   /**
    * @param date - DateTime the DateTime for the day on which the interval starts
    * @param interval - the Yext Streams interval data
+   * Intervals use `HH:MM` strings. If the end time is earlier than the start time,
+   * the interval is treated as ending on the next day.
    */
   constructor(date: DateTime, interval: IntervalType, zone: string) {
     this.end = date.setZone(zone);
@@ -67,7 +77,9 @@ export class HoursInterval {
 
     [interval.start, interval.end].forEach((time) => {
       if (time.split(":").length !== 2) {
-        throw new Error(`expected interval start and end data to be in the format "HH:MM"`);
+        throw new Error(
+          `expected interval start and end data to be in the format "HH:MM"`,
+        );
       }
     });
 
@@ -153,11 +165,13 @@ export class HoursInterval {
   is24h(): boolean {
     const startIs00 = this.start.minute === 0 && this.start.hour === 0;
     const endIs00 = this.end.minute === 0 && this.end.hour === 0;
-    const daysAreConsecutive = this.end.day - this.start.day === 1 || this.end.day === 1;
+    const daysAreConsecutive =
+      this.end.day - this.start.day === 1 || this.end.day === 1;
     return startIs00 && endIs00 && daysAreConsecutive;
   }
 }
 
+/** Provides helpers for reading and querying Yext hours data. */
 export class Hours {
   holidayHoursByDate: Record<string, HolidayType>;
   hours: HoursType;
@@ -168,7 +182,7 @@ export class Hours {
    */
   constructor(hours: HoursType, timezone: string) {
     this.holidayHoursByDate = Object.fromEntries(
-      (hours.holidayHours || []).map((hours) => [hours.date, hours])
+      (hours.holidayHours || []).map((hours) => [hours.date, hours]),
     );
     this.hours = hours;
     this.timezone = timezone;
@@ -176,6 +190,8 @@ export class Hours {
 
   /**
    * @param date - A moment in time
+   * Checks the current day and the prior day so overnight intervals can be matched.
+   * Returns `null` when the location is temporarily closed via `reopenDate`.
    * @returns HoursInterval? The first interval that contains the given moment, null if none
    */
   getInterval(date: DateTime): HoursInterval | null {
@@ -192,7 +208,11 @@ export class Hours {
 
       if (hours && !hours.isClosed) {
         for (const interval of hours.openIntervals || []) {
-          const hoursInterval = new HoursInterval(hoursDate, interval, this.timezone);
+          const hoursInterval = new HoursInterval(
+            hoursDate,
+            interval,
+            this.timezone,
+          );
 
           if (hoursInterval.contains(date)) {
             return hoursInterval;
@@ -213,6 +233,7 @@ export class Hours {
 
   /**
    * @param date - A moment in time
+   * Looks ahead up to 8 days to find the next upcoming interval.
    * @returns HoursInterval? The next interval that hasn't started as of the given moment
    */
   getIntervalAfter(date: DateTime): HoursInterval | null {
@@ -247,10 +268,9 @@ export class Hours {
     return null;
   }
 
-  /*
-   * @param {number} n number of days to check
-   * @param {DateTime} startDate first day to check
-   * @returns {HoursInterval[]} list of intervals in range [startDate, startDate+7]
+  /**
+   * Collects intervals for `n` consecutive days starting at `startDate`.
+   * Overnight intervals are returned as `HoursInterval` instances whose end time may fall on the next day.
    */
   getIntervalsForNDays(n: number, startDate: DateTime): HoursInterval[] {
     const intervalsList: HoursInterval[] = [];
@@ -262,8 +282,9 @@ export class Hours {
       if (hours?.openIntervals && !hours.isClosed) {
         intervalsList.push(
           ...hours.openIntervals.map(
-            (interval: IntervalType) => new HoursInterval(theDate, interval, this.timezone)
-          )
+            (interval: IntervalType) =>
+              new HoursInterval(theDate, interval, this.timezone),
+          ),
         );
       }
     }
@@ -273,6 +294,7 @@ export class Hours {
 
   /**
    * @param date - The day to get the hours for
+   * Holiday hours are suppressed while the location is temporarily closed via `reopenDate`.
    * @returns Object? The daily holiday hours object from the original Streams response for the
    *   given date, null if none
    */
@@ -281,7 +303,9 @@ export class Hours {
       return null;
     }
 
-    return this.holidayHoursByDate[(date.toISO() || "").replace(/T.*/, "")] || null;
+    return (
+      this.holidayHoursByDate[(date.toISO() || "").replace(/T.*/, "")] || null
+    );
   }
 
   /**
@@ -300,6 +324,7 @@ export class Hours {
 
   /**
    * @param date - The day to get the hours for
+   * Holiday hours take precedence over regular weekly hours unless `isRegularHours` is set.
    * @returns Object? The daily hours object from the original Streams response for the given
    *   date, null if none
    */
@@ -328,7 +353,9 @@ export class Hours {
 
   /**
    * Yext platform uses the field `hours.reopenDate` to indicate an entity is
-   *  temporarily closed for more than one day.
+   * temporarily closed for more than one day. A target date before `reopenDate`
+   * is treated as closed in the configured timezone, and the reopen date itself
+   * is treated as open again.
    * @returns Boolean True if the given date is before 'reopenDate'
    */
   isTemporarilyClosedAt(targetDate: DateTime): boolean {
@@ -341,7 +368,7 @@ export class Hours {
       const [year, month, date] = reopenDateParts;
       const reopenDate = DateTime.fromObject(
         { year: Number(year), month: Number(month), day: Number(date) },
-        { zone: this.timezone }
+        { zone: this.timezone },
       );
       if (targetDate < reopenDate) {
         return true;
@@ -388,7 +415,10 @@ export function arrayShift(arr: Array<any>, n: number): Array<any> {
 /**
  * @returns boolean whether the two intervals lists are equal
  */
-export function intervalsListsAreEqual(il1: HoursInterval[], il2: HoursInterval[]): boolean {
+export function intervalsListsAreEqual(
+  il1: HoursInterval[],
+  il2: HoursInterval[],
+): boolean {
   if (il1.length !== il2.length) {
     return false;
   }

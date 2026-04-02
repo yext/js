@@ -94,19 +94,13 @@ function defaultStatusTemplate(
 
 const emptyStyle = { minHeight: `${1.5}em` };
 
-/*
- * The HoursStatus component uses Hours data to generate a status message
- *  describing the current Open/Closed status of the entity
+/**
+ * Renders the current open or closed status for a location.
  *
- * @param {HoursType} hours data from Yext Streams
- * @param {Intl.DateTimeFormatOptions} timeOptions
- * @param {Intl.DateTimeFormatOptions} dayOptions
- * @param {Function} statusTemplate completely override rendering for this component
- * @param {Function} currentTemplate override rendering for the "current" part of this component "[[Open Now]] - closes at 5:00PM Monday"
- * @param {Function} separatorTemplate override rendering for the "separator" part of this component "Open Now [[-]] closes at 5:00PM Monday"
- * @param {Function} futureTemplate override rendering for the "future" part of this component "Open Now - [[closes at]] 5:00PM Monday"
- * @param {Function} timeTemplate override rendering for the "time" part of this component "Open Now - closes at [[5:00PM]] Monday"
- * @param {Function} dayOfWeekTemplate override rendering for the "dayOfWeek" part of this component "Open Now - closes at 5:00PM [[Monday]]"
+ * The component renders an empty placeholder on the server and then re-renders
+ * on the client to avoid SSR hydration mismatches from time-dependent output.
+ * Status calculations are driven by the provided `timezone`, so the same hours
+ * data can produce different results if a different timezone is passed in.
  */
 const HoursStatus: React.FC<HoursStatusProps> = (props) => {
   const [hasStatusTimeout, setHasStatusTimeout] = useState(false);
