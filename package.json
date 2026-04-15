@@ -34,13 +34,13 @@
     "*": "oxfmt",
     "*.{ts,js,tsx,jsx}": "oxlint --fix"
   },
+  "engines": {
+    "node": "^20 || ^22 || ^24"
+  },
+  "packageManager": "pnpm@9.12.3",
   "pnpm": {
     "overrides": {
       "axios": "1.15.0"
     }
-  },
-  "engines": {
-    "node": "^20 || ^22 || ^24"
-  },
-  "packageManager": "pnpm@9.12.3"
+  }
 }
