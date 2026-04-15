@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  axios: 1.15.0
+
 importers:
 
   .:
@@ -228,7 +231,7 @@ importers:
         version: 4.3.4(vite@5.4.21(@types/node@20.17.19))
       '@yext/pages':
         specifier: ^1.2.7
-        version: 1.2.7(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.7.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)(vite@5.4.21(@types/node@20.17.19))
+        version: 1.2.7(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.15.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)(vite@5.4.21(@types/node@20.17.19))
       typescript:
         specifier: ^5.3.3
         version: 5.7.3
@@ -2124,7 +2127,7 @@ packages:
     resolution: {integrity: sha512-5fzRl0apQWrDezmobchoiGTkGw238VWESxZHazfhP3RM7pDSiyXy18QbfYkILoYNTd23HPAfQTJpkUc5QbkwTw==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1
+      axios: 1.15.0
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -2342,8 +2345,8 @@ packages:
     peerDependencies:
       playwright: '>1.0.0'
 
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.15.0:
+    resolution: {integrity: sha512-wWyJDlAatxk30ZJer+GeCWS209sA42X+N5jU2jy6oHTp7ufw8uzUTVFBX9+wTfAlhiJXGS0Bq7X6efruWjuK9Q==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -3241,8 +3244,8 @@ packages:
   focus-trap@7.6.6:
     resolution: {integrity: sha512-v/Z8bvMCajtx4mEXmOo7QEsIzlIOqRXTIwgUfsFOF9gEsespdbD0AkPIka1bSXZ8Y8oZ+2IVDQZePkTfEHZl7Q==}
 
-  follow-redirects@1.15.9:
-    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+  follow-redirects@1.16.0:
+    resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -3264,6 +3267,10 @@ packages:
 
   form-data@4.0.2:
     resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
+    engines: {node: '>= 6'}
+
+  form-data@4.0.5:
+    resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
   forwarded@0.2.0:
@@ -4948,8 +4955,9 @@ packages:
     resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
     engines: {node: '>= 0.10'}
 
-  proxy-from-env@1.1.0:
-    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+  proxy-from-env@2.1.0:
+    resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
+    engines: {node: '>=10'}
 
   psl@1.15.0:
     resolution: {integrity: sha512-JZd3gMVBAVQkSs6HdNZo9Sdo0LNcQeMNP3CozBJb3JYC/QUYZTnKxP+f8oWRX4rHP5EurWxqAHTSwUCjlNKa1w==}
@@ -8146,13 +8154,13 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.3.0(axios@1.7.9)(focus-trap@7.6.6)(vue@3.5.25(typescript@5.7.3))':
+  '@vueuse/integrations@11.3.0(axios@1.15.0)(focus-trap@7.6.6)(vue@3.5.25(typescript@5.7.3))':
     dependencies:
       '@vueuse/core': 11.3.0(vue@3.5.25(typescript@5.7.3))
       '@vueuse/shared': 11.3.0(vue@3.5.25(typescript@5.7.3))
       vue-demi: 0.14.10(vue@3.5.25(typescript@5.7.3))
     optionalDependencies:
-      axios: 1.7.9
+      axios: 1.15.0
       focus-trap: 7.6.6
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -8171,7 +8179,7 @@ snapshots:
     dependencies:
       ulidx: 2.4.1
 
-  '@yext/pages@1.2.7(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.7.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)(vite@5.4.21(@types/node@20.17.19))':
+  '@yext/pages@1.2.7(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.15.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)(vite@5.4.21(@types/node@20.17.19))':
     dependencies:
       ansi-to-html: 0.7.2
       browser-or-node: 2.1.1
@@ -8197,7 +8205,7 @@ snapshots:
       ts-morph: 22.0.0
       vite: 5.4.21(@types/node@20.17.19)
       vite-plugin-node-polyfills: 0.17.0(rollup@4.59.0)(vite@5.4.21(@types/node@20.17.19))
-      vitepress: 1.5.0(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.7.9)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)
+      vitepress: 1.5.0(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.15.0)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3)
       yaml: 2.8.2
     transitivePeerDependencies:
       - '@algolia/client-search'
@@ -8387,11 +8395,11 @@ snapshots:
       picocolors: 1.1.1
       playwright: 1.57.0
 
-  axios@1.7.9:
+  axios@1.15.0:
     dependencies:
-      follow-redirects: 1.15.9
-      form-data: 4.0.2
-      proxy-from-env: 1.1.0
+      follow-redirects: 1.16.0
+      form-data: 4.0.5
+      proxy-from-env: 2.1.0
     transitivePeerDependencies:
       - debug
 
@@ -9459,7 +9467,7 @@ snapshots:
     dependencies:
       tabbable: 6.3.0
 
-  follow-redirects@1.15.9: {}
+  follow-redirects@1.16.0: {}
 
   for-each@0.3.5:
     dependencies:
@@ -9480,6 +9488,14 @@ snapshots:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       es-set-tostringtag: 2.1.0
+      mime-types: 2.1.35
+
+  form-data@4.0.5:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
       mime-types: 2.1.35
 
   forwarded@0.2.0: {}
@@ -11484,7 +11500,7 @@ snapshots:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
 
-  proxy-from-env@1.1.0: {}
+  proxy-from-env@2.1.0: {}
 
   psl@1.15.0:
     dependencies:
@@ -12536,7 +12552,7 @@ snapshots:
       '@types/node': 20.17.19
       fsevents: 2.3.3
 
-  vitepress@1.5.0(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.7.9)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3):
+  vitepress@1.5.0(@algolia/client-search@5.46.0)(@types/node@20.17.19)(@types/react@18.3.27)(axios@1.15.0)(postcss@8.5.6)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)(typescript@5.7.3):
     dependencies:
       '@docsearch/css': 3.9.0
       '@docsearch/js': 3.9.0(@algolia/client-search@5.46.0)(@types/react@18.3.27)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(search-insights@2.17.3)
@@ -12549,7 +12565,7 @@ snapshots:
       '@vue/devtools-api': 7.7.9
       '@vue/shared': 3.5.25
       '@vueuse/core': 11.3.0(vue@3.5.25(typescript@5.7.3))
-      '@vueuse/integrations': 11.3.0(axios@1.7.9)(focus-trap@7.6.6)(vue@3.5.25(typescript@5.7.3))
+      '@vueuse/integrations': 11.3.0(axios@1.15.0)(focus-trap@7.6.6)(vue@3.5.25(typescript@5.7.3))
       focus-trap: 7.6.6
       mark.js: 8.11.1
       minisearch: 7.2.0
@@ -12645,7 +12661,7 @@ snapshots:
 
   wait-on@7.2.0:
     dependencies:
-      axios: 1.7.9
+      axios: 1.15.0
       joi: 17.13.3
       lodash: 4.17.21
       minimist: 1.2.8
