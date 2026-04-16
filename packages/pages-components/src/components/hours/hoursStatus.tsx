@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import c from "classnames";
 import { Hours } from "./hours.js";
 import { DateTime } from "luxon";
 import { HoursStatusProps, StatusParams, StatusTemplateParams } from "./types.js";
+
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function isOpen24h(params: StatusParams): boolean {
   return params?.currentInterval?.is24h?.() || false;
@@ -115,7 +118,7 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
   // https://reactjs.org/docs/react-dom.html#hydrate
   const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setIsClient(true);
   }, []);
 

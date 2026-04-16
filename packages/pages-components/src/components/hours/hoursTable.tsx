@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import c from "classnames";
 import "./hoursTable.css";
 import {
@@ -19,6 +19,9 @@ import {
   days,
 } from "./hours.js";
 import { DateTime, WeekdayNumbers } from "luxon";
+
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
  *
@@ -140,7 +143,7 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
   //  On the second pass (After the page has been loaded), render the content
   // https://reactjs.org/docs/react-dom.html#hydrate
   const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setIsClient(true);
   }, []);
 
