@@ -32,14 +32,14 @@ describe("HoursTable hydration", () => {
     Settings.defaultZone = "America/New_York";
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-    vi.spyOn(Intl.DateTimeFormat.prototype, "resolvedOptions").mockImplementation(function (
-      this: Intl.DateTimeFormat
-    ) {
-      return {
-        ...originalResolvedOptions.call(this),
-        timeZone: "America/New_York",
-      };
-    });
+    vi.spyOn(Intl.DateTimeFormat.prototype, "resolvedOptions").mockImplementation(
+      function (this: Intl.DateTimeFormat) {
+        return {
+          ...originalResolvedOptions.call(this),
+          timeZone: "America/New_York",
+        };
+      }
+    );
 
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const serverHtml = renderToString(

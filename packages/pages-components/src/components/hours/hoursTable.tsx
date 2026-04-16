@@ -20,8 +20,7 @@ import {
 } from "./hours.js";
 import { DateTime, WeekdayNumbers } from "luxon";
 
-const useIsomorphicLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 /**
  *

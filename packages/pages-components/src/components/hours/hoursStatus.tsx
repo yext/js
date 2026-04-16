@@ -4,8 +4,7 @@ import { Hours } from "./hours.js";
 import { DateTime } from "luxon";
 import { HoursStatusProps, StatusParams, StatusTemplateParams } from "./types.js";
 
-const useIsomorphicLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 function isOpen24h(params: StatusParams): boolean {
   return params?.currentInterval?.is24h?.() || false;
