@@ -1,3 +1,10 @@
+#### 2.1.1 (2026-04-21)
+
+##### Bug Fixes
+
+*  render hours using useIsomorphicLayoutEffect ([#147](https://github.com/yext/js/pull/147)) ([bdf6dcf0](https://github.com/yext/js/commit/bdf6dcf0a824f02f9c16e752998d5879622ba0c0))
+*  force secure version of axios ([#146](https://github.com/yext/js/pull/146)) ([66b06574](https://github.com/yext/js/commit/66b06574d468d13a1d7e71aa2e24b64276b42d3b))
+
 #### 2.1.0 (2026-03-19)
 
 ##### Chores
