@@ -50,7 +50,7 @@ export class Analytics implements AnalyticsMethods {
     requireOptIn?: boolean,
     disableSessionTracking?: boolean,
     private productionDomains?: string[],
-    private enableDebugging: boolean = false,
+    private enableDebugging: boolean = false
   ) {
     this._optedIn = !requireOptIn;
     this._sessionTrackingEnabled = !disableSessionTracking;
@@ -67,17 +67,12 @@ export class Analytics implements AnalyticsMethods {
     }
 
     // Don't fire analytics for non-production domains, unless debug enabled
-    if (
-      !isProduction(...(this.productionDomains ?? [])) &&
-      !this.getDebugEnabled()
-    ) {
+    if (!isProduction(...(this.productionDomains ?? [])) && !this.getDebugEnabled()) {
       console.warn("Yext Analytics disabled for non-production domains");
       return;
     }
 
-    const region = getPartition(
-      this.templateData.document.businessId,
-    ) as Region;
+    const region = getPartition(this.templateData.document.businessId) as Region;
 
     const config: AnalyticsConfig = {
       authorizationType: "apiKey",
@@ -102,11 +97,7 @@ export class Analytics implements AnalyticsMethods {
   }
 
   private canTrack(): boolean {
-    return (
-      getRuntime().name === "browser" &&
-      this._optedIn &&
-      !!this._analyticsEventService
-    );
+    return getRuntime().name === "browser" && this._optedIn && !!this._analyticsEventService;
   }
 
   /** {@inheritDoc AnalyticsMethods.identify} */
