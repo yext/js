@@ -1,3 +1,13 @@
+#### 2.1.2 (2026-05-06)
+
+##### Chores
+
+*  prevent shell injection in github action (vuln-44056) ([#148](https://github.com/yext/js/pull/148)) ([62edc854](https://github.com/yext/js/commit/62edc8541bb93c17941dc8c58e7f4bddb1ebc758))
+
+##### New Features
+
+* **pages-components:**  expose entity prop to the analytics track method ([#149](https://github.com/yext/js/pull/149)) ([5e5932ab](https://github.com/yext/js/commit/5e5932abd2346475be18091a2f99a3dd50665122))
+
 #### 2.1.1 (2026-04-21)
 
 ##### Bug Fixes
