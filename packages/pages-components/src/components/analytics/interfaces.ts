@@ -10,6 +10,12 @@ export type TrackProps = {
   currency?: string;
   customTags?: Record<string, string>;
   customValues?: Record<string, number>;
+  /**
+   * The Yext entity to which the event corresponds. If passed as a string, the value is
+   * the mutable, customer-settable entity ID for the entity associated with the event.
+   * If passed as a number, it is the immutable internal entity ID (UID) set by the system.
+   */
+  entity?: string | number;
 };
 
 /**

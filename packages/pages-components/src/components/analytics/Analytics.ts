@@ -145,8 +145,17 @@ export class Analytics implements AnalyticsMethods {
       return Promise.resolve();
     }
 
-    const { action, scope, eventName, currency, amount, destinationUrl, customTags, customValues } =
-      props;
+    const {
+      action,
+      scope,
+      eventName,
+      currency,
+      amount,
+      destinationUrl,
+      customTags,
+      customValues,
+      entity,
+    } = props;
 
     let value;
     if (amount) {
@@ -166,6 +175,8 @@ export class Analytics implements AnalyticsMethods {
       destinationUrl: destinationUrl || undefined,
       customTags,
       customValues,
+      // only overwrite the default entity value when explicitly provided to track
+      ...(entity !== undefined && { entity }),
     });
   }
 
