@@ -31,7 +31,9 @@ describe("HoursStatus hydration", () => {
     Settings.defaultZone = "America/New_York";
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-    vi.spyOn(globalThis, "setTimeout").mockImplementation((() => 0) as unknown as typeof setTimeout);
+    vi.spyOn(globalThis, "setTimeout").mockImplementation(
+      (() => 0) as unknown as typeof setTimeout
+    );
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const container = document.createElement("div");
@@ -47,11 +49,7 @@ describe("HoursStatus hydration", () => {
     await act(async () => {
       root = hydrateRoot(
         container,
-        <HoursStatus
-          hours={HoursData}
-          timezone="America/New_York"
-          comingSoon={false}
-        />
+        <HoursStatus hours={HoursData} timezone="America/New_York" comingSoon={false} />
       );
       await Promise.resolve();
     });
@@ -77,9 +75,9 @@ describe("HoursStatus hydration", () => {
     Settings.defaultZone = "America/New_York";
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-    const setTimeoutSpy = vi.spyOn(globalThis, "setTimeout").mockImplementation(
-      (() => 0) as unknown as typeof setTimeout
-    );
+    const setTimeoutSpy = vi
+      .spyOn(globalThis, "setTimeout")
+      .mockImplementation((() => 0) as unknown as typeof setTimeout);
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const container = document.createElement("div");
@@ -95,11 +93,7 @@ describe("HoursStatus hydration", () => {
     await act(async () => {
       root = hydrateRoot(
         container,
-        <HoursStatus
-          hours={HoursData}
-          timezone="America/New_York"
-          comingSoon
-        />
+        <HoursStatus hours={HoursData} timezone="America/New_York" comingSoon />
       );
       await Promise.resolve();
     });
@@ -127,9 +121,9 @@ describe("HoursStatus hydration", () => {
     Settings.defaultZone = "America/New_York";
     (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-    const setTimeoutSpy = vi.spyOn(globalThis, "setTimeout").mockImplementation(
-      (() => 0) as unknown as typeof setTimeout
-    );
+    const setTimeoutSpy = vi
+      .spyOn(globalThis, "setTimeout")
+      .mockImplementation((() => 0) as unknown as typeof setTimeout);
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     const container = document.createElement("div");

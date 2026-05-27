@@ -39,9 +39,7 @@ describe("HoursTable SSR", () => {
 
   it("renders nothing when coming soon is enabled", () => {
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const html = renderToString(
-      <HoursTable hours={HoursData} comingSoon startOfWeek="today" />
-    );
+    const html = renderToString(<HoursTable hours={HoursData} comingSoon startOfWeek="today" />);
 
     expect(consoleErrorSpy).not.toHaveBeenCalled();
     expect(html).toBe("");

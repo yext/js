@@ -107,7 +107,10 @@ describe("HoursTable hydration", () => {
     let root: ReturnType<typeof hydrateRoot> | undefined;
 
     await act(async () => {
-      root = hydrateRoot(container, <HoursTable hours={HoursData} comingSoon startOfWeek="today" />);
+      root = hydrateRoot(
+        container,
+        <HoursTable hours={HoursData} comingSoon startOfWeek="today" />
+      );
       await Promise.resolve();
     });
 
