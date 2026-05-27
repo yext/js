@@ -36,4 +36,14 @@ describe("HoursTable SSR", () => {
     expect(html).not.toContain("is-today");
     expect(dayLabels[0]).toBe("Sunday");
   });
+
+  it("renders nothing when coming soon is enabled", () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const html = renderToString(
+      <HoursTable hours={HoursData} comingSoon startOfWeek="today" />
+    );
+
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    expect(html).toBe("");
+  });
 });

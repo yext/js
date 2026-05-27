@@ -85,6 +85,31 @@ export const Open247: Story = {
   },
 };
 
+export const ComingSoon: Story = {
+  args: {
+    hours: HoursData,
+    comingSoon: true,
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 7, hour: 10 } // Tuesday 10 AM
+    ),
+  },
+};
+
+export const ComingSoonTranslated: Story = {
+  args: {
+    hours: HoursData,
+    comingSoon: true,
+    comingSoonTemplate: () => "Pronto",
+  },
+  parameters: {
+    mockedLuxonDateTime: DateTime.fromObject(
+      { year: 2025, month: 1, day: 7, hour: 10 } // Tuesday 10 AM
+    ),
+  },
+};
+
 export const IndefinitelyClosedActive: Story = {
   args: {
     hours: HoursTemporarilyClosed,

@@ -1,6 +1,6 @@
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { act } from "react-dom/test-utils";
+import { act } from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { DateTime, Settings } from "luxon";
 import { HoursTable, ServerSideHoursTable } from "./hoursTable.js";
@@ -70,6 +70,49 @@ describe("HoursTable hydration", () => {
     expect(todayRow?.querySelector(".HoursTable-intervals")?.textContent).toContain(
       "9:04 AM - 6:04 PM"
     );
+
+    await act(async () => {
+      root?.unmount();
+    });
+  });
+
+  it("stays empty when coming soon is enabled", async () => {
+    const mockedNow = DateTime.fromObject(
+      { year: 2025, month: 1, day: 9, hour: 12 },
+      { zone: "America/New_York" }
+    );
+
+    Settings.now = () => mockedNow.toMillis();
+    Settings.defaultZone = "America/New_York";
+    (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+
+    vi.spyOn(Intl.DateTimeFormat.prototype, "resolvedOptions").mockImplementation(
+      function (this: Intl.DateTimeFormat) {
+        return {
+          ...originalResolvedOptions.call(this),
+          timeZone: "America/New_York",
+        };
+      }
+    );
+
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const container = document.createElement("div");
+    container.innerHTML = renderToString(
+      <ServerSideHoursTable hours={HoursData} comingSoon startOfWeek="today" />
+    );
+    document.body.appendChild(container);
+
+    expect(container.innerHTML).toBe("");
+
+    let root: ReturnType<typeof hydrateRoot> | undefined;
+
+    await act(async () => {
+      root = hydrateRoot(container, <HoursTable hours={HoursData} comingSoon startOfWeek="today" />);
+      await Promise.resolve();
+    });
+
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+    expect(container.innerHTML).toBe("");
 
     await act(async () => {
       root?.unmount();
