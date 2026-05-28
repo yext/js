@@ -10,11 +10,22 @@ function isOpen24h(params: StatusParams): boolean {
   return params?.currentInterval?.is24h?.() || false;
 }
 
+function isComingSoon(params: StatusParams): boolean {
+  return !!params.comingSoon;
+}
+
 function isIndefinitelyClosed(params: StatusParams): boolean {
   return !params.futureInterval;
 }
 
+function defaultComingSoonTemplate(_: StatusParams): React.ReactNode {
+  return <span className="HoursStatus-current">Coming Soon</span>;
+}
+
 function defaultCurrentTemplate(params: StatusParams): React.ReactNode {
+  if (isComingSoon(params)) {
+    return defaultComingSoonTemplate(params);
+  }
   if (isOpen24h(params)) {
     return <span className="HoursStatus-current">Open 24 Hours</span>;
   }
@@ -25,21 +36,21 @@ function defaultCurrentTemplate(params: StatusParams): React.ReactNode {
 }
 
 function defaultSeparatorTemplate(params: StatusParams): React.ReactNode {
-  if (isOpen24h(params) || isIndefinitelyClosed(params)) {
+  if (isComingSoon(params) || isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
   return <span className="HoursStatus-separator"> • </span>;
 }
 
 function defaultFutureTemplate(params: StatusParams): React.ReactNode {
-  if (isOpen24h(params) || isIndefinitelyClosed(params)) {
+  if (isComingSoon(params) || isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
   return <span className="HoursStatus-future">{params.isOpen ? "Closes at" : "Opens at"}</span>;
 }
 
 function defaultTimeTemplate(params: StatusParams): React.ReactNode {
-  if (isOpen24h(params) || isIndefinitelyClosed(params)) {
+  if (isComingSoon(params) || isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
   let time = "";
@@ -54,7 +65,7 @@ function defaultTimeTemplate(params: StatusParams): React.ReactNode {
 }
 
 function defaultDayOfWeekTemplate(params: StatusParams): React.ReactNode {
-  if (isOpen24h(params) || isIndefinitelyClosed(params)) {
+  if (isComingSoon(params) || isOpen24h(params) || isIndefinitelyClosed(params)) {
     return null;
   }
   const dayOptions: Intl.DateTimeFormatOptions = {
@@ -78,6 +89,7 @@ function defaultStatusTemplate(
   props?: HoursStatusProps
 ): React.ReactNode {
   const currentTemplate = params.currentTemplate || defaultCurrentTemplate;
+  const comingSoonTemplate = params.comingSoonTemplate || defaultComingSoonTemplate;
   const separatorTemplate = params.separatorTemplate || defaultSeparatorTemplate;
   const futureTemplate = params.futureTemplate || defaultFutureTemplate;
   const timeTemplate = params.timeTemplate || defaultTimeTemplate;
@@ -85,7 +97,7 @@ function defaultStatusTemplate(
 
   return (
     <div className={c("HoursStatus", props?.className || "")}>
-      {currentTemplate(params)}
+      {params.comingSoon ? comingSoonTemplate(params) : currentTemplate(params)}
       {separatorTemplate(params)}
       {futureTemplate(params)}
       {timeTemplate(params)}
@@ -101,6 +113,8 @@ const emptyStyle = { minHeight: `${1.5}em` };
  *  describing the current Open/Closed status of the entity
  *
  * @param {HoursType} hours data from Yext Streams
+ * @param {Boolean} comingSoon display a coming soon state instead of the normal status
+ * @param {Function} comingSoonTemplate override rendering for the "coming soon" part of this component "[[Coming Soon]]"
  * @param {Intl.DateTimeFormatOptions} timeOptions
  * @param {Intl.DateTimeFormatOptions} dayOptions
  * @param {Function} statusTemplate completely override rendering for this component
@@ -121,26 +135,34 @@ const HoursStatus: React.FC<HoursStatusProps> = (props) => {
     setIsClient(true);
   }, []);
 
-  if (!props.hours) {
+  const statusTemplateFn = props.statusTemplate || defaultStatusTemplate;
+  const comingSoon = !!props.comingSoon;
+  let isOpen = false;
+  let currentInterval: StatusParams["currentInterval"] = null;
+  let futureInterval: StatusParams["futureInterval"] = null;
+
+  if (!props.hours && !comingSoon) {
     return <></>;
   }
 
-  const statusTemplateFn = props.statusTemplate || defaultStatusTemplate;
-  const h = new Hours(props.hours, props.timezone);
-  const isOpen = h.isOpenNow();
-  const currentInterval = h.getCurrentInterval();
-  const futureInterval = h.getNextInterval();
+  if (!comingSoon && props.hours) {
+    const h = new Hours(props.hours, props.timezone);
+    isOpen = h.isOpenNow();
+    currentInterval = h.getCurrentInterval();
+    futureInterval = h.getNextInterval();
 
-  // When the current interval ends, or the next interval starts, trigger component rerender
-  const isOpenChangeTime = currentInterval?.end || futureInterval?.start;
-  if (isOpenChangeTime && !hasStatusTimeout) {
-    setHasStatusTimeout(true);
-    const delayMS = isOpenChangeTime.toMillis() - DateTime.now().toMillis();
-    setTimeout(() => setHasStatusTimeout(false), delayMS);
+    // When the current interval ends, or the next interval starts, trigger component rerender
+    const isOpenChangeTime = currentInterval?.end || futureInterval?.start;
+    if (isOpenChangeTime && !hasStatusTimeout) {
+      setHasStatusTimeout(true);
+      const delayMS = isOpenChangeTime.toMillis() - DateTime.now().toMillis();
+      setTimeout(() => setHasStatusTimeout(false), delayMS);
+    }
   }
 
   const statusParams: StatusParams = {
     isOpen,
+    comingSoon,
     currentInterval,
     futureInterval,
     ...props,

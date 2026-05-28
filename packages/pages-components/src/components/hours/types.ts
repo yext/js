@@ -37,6 +37,8 @@ export type DayOfWeekNames = {
 export interface HoursTableProps {
   /** Hours data from Yext Streams */
   hours: HoursType;
+  /** Display an empty state instead of the table */
+  comingSoon?: boolean;
   /** Label for each day of week, ordered starting from Sunday */
   dayOfWeekNames?: DayOfWeekNames;
   /** Set the day of the first row of the table */
@@ -83,6 +85,8 @@ export enum Day {
 export interface StatusParams {
   /** Whether the entity is currently open */
   isOpen: boolean;
+  /** Whether the entity should display a coming soon state */
+  comingSoon?: boolean;
   /** The first interval that contains the current time */
   currentInterval: HoursInterval | null;
   /** The next interval that hasn't started */
@@ -96,6 +100,8 @@ export interface StatusParams {
 export interface TemplateParams {
   /** Override rendering for the "current" part of this component "[[Open Now]] - closes at 5:00PM Monday" */
   currentTemplate?: (s: StatusParams) => React.ReactNode;
+  /** Override rendering for the "coming soon" part of this component "[[Coming Soon]]" */
+  comingSoonTemplate?: (s: StatusParams) => React.ReactNode;
   /** Override rendering for the "separator" part of this component "Open Now [[-]] closes at 5:00PM Monday" */
   separatorTemplate?: (s: StatusParams) => React.ReactNode;
   /** FutureTemplate override rendering for the "future" part of this component "Open Now - [[closes at]] 5:00PM Monday" */
@@ -113,6 +119,8 @@ export interface HoursStatusProps extends TemplateParams {
   hours: HoursType;
   /** The IANA or UTC Offset timezone of the hours data from Yext Streams */
   timezone: string;
+  /** Display a coming soon state instead of the normal open/closed status */
+  comingSoon?: boolean;
   /** Formatting for the "time" part of this component "Open Now - closes at [[5:00PM]] Monday" */
   timeOptions?: Intl.DateTimeFormatOptions;
   /** Formatting for the "day" part of this component "Open Now - closes at 5:00PM [[Monday]]" */

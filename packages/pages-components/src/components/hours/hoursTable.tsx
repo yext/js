@@ -146,6 +146,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
     setIsClient(true);
   }, []);
 
+  if (props.comingSoon) {
+    return <></>;
+  }
+
   if (!props.hours) {
     return <></>;
   }
@@ -156,6 +160,10 @@ const HoursTable: React.FC<HoursTableProps> = (props) => {
 };
 
 export const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
+  if (props.comingSoon) {
+    return <></>;
+  }
+
   const h = new Hours(props.hours, Intl.DateTimeFormat().resolvedOptions().timeZone);
   const now = DateTime.now();
 
@@ -169,6 +177,10 @@ export const ClientSideHoursTable: React.FC<HoursTableProps> = (props) => {
 };
 
 export const ServerSideHoursTable: React.FC<HoursTableProps> = (props) => {
+  if (props.comingSoon) {
+    return <></>;
+  }
+
   const { hours, dayOfWeekNames, intervalTranslations } = props;
 
   const hoursTableData: HoursTableDayData[] = days.map((day) => {
