@@ -2,7 +2,7 @@
 
 ##### New Features
 
-*  add "Coming Soon" to HoursStatus and HoursTable ([#150](https://github.com/yext/js/pull/150)) ([fade807e](https://github.com/yext/js/commit/fade807eea7ddbc96c91883bd11784de8463366a))
+- add "Coming Soon" to HoursStatus and HoursTable ([#150](https://github.com/yext/js/pull/150)) ([fade807e](https://github.com/yext/js/commit/fade807eea7ddbc96c91883bd11784de8463366a))
 
 #### 2.1.2 (2026-05-06)
 
