@@ -21,6 +21,7 @@
         "meta",
         "name",
         "address",
+        "description",
         "slug",
         "hours",
         "photoGallery",
