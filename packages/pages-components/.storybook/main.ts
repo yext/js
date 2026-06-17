@@ -13,6 +13,20 @@ const config: StorybookConfig = {
     options: {},
   },
   docs: {},
+  viteFinal: async (config) => ({
+    ...config,
+    build: {
+      ...config.build,
+      target: "es2022",
+    },
+    optimizeDeps: {
+      ...config.optimizeDeps,
+      esbuildOptions: {
+        ...config.optimizeDeps?.esbuildOptions,
+        target: "es2022",
+      },
+    },
+  }),
 };
 export default config;
 
