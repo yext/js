@@ -56,6 +56,7 @@ export function AnalyticsProvider(
   useEffect(() => {
     const globalWindow = window as Window & {
       enableYextAnalytics?: () => void;
+      disableYextAnalytics?: () => void;
     };
 
     const optIn = () => {
@@ -65,9 +66,11 @@ export function AnalyticsProvider(
     };
 
     globalWindow.enableYextAnalytics = optIn;
+    globalWindow.disableYextAnalytics = () => analytics.optOut();
 
     return () => {
       delete globalWindow.enableYextAnalytics;
+      delete globalWindow.disableYextAnalytics;
     };
   }, [analytics]);
 
