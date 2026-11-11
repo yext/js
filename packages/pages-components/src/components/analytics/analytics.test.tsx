@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeAll, afterAll, afterEach, Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TemplateProps } from "./types.js";
 import { Link } from "../link/index.js";
@@ -71,6 +71,51 @@ afterEach(() => {
 });
 
 describe("Analytics", () => {
+  it("registers global consent callbacks and removes them on unmount", () => {
+    const globalWindow = window as Window & {
+      enableYextAnalytics?: () => void;
+      disableYextAnalytics?: () => void;
+    };
+    const { unmount } = render(
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={true} />
+    );
+
+    expect(globalWindow.enableYextAnalytics).toBeTypeOf("function");
+    expect(globalWindow.disableYextAnalytics).toBeTypeOf("function");
+
+    unmount();
+
+    expect(globalWindow).not.toHaveProperty("enableYextAnalytics");
+    expect(globalWindow).not.toHaveProperty("disableYextAnalytics");
+  });
+
+  it("stops tracking through the global opt-out callback and resumes through opt-in", async () => {
+    const globalWindow = window as Window & {
+      enableYextAnalytics?: () => void;
+      disableYextAnalytics?: () => void;
+    };
+    render(
+      <AnalyticsProvider apiKey="key" currency="USD" templateData={baseProps} requireOptIn={false}>
+        <Link href="#" onClick={(e) => e.preventDefault()}>
+          Click Me
+        </Link>
+      </AnalyticsProvider>
+    );
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(1));
+
+    fireEvent.click(screen.getByRole("link"));
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    globalWindow.disableYextAnalytics!();
+    fireEvent.click(screen.getByRole("link"));
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+
+    globalWindow.enableYextAnalytics!();
+    fireEvent.click(screen.getByRole("link"));
+    expect(global.fetch).toHaveBeenCalledTimes(3);
+  });
+
   it("should fire a page view once", () => {
     const App = () => {
       return (
