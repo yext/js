@@ -2,17 +2,17 @@
 
 ##### Chores
 
-*  upgrade storybook ([#155](https://github.com/yext/js/pull/155)) ([4fda901f](https://github.com/yext/js/commit/4fda901f1be12ae0756a70979707f361886947d2))
-*  set js-yaml overrides to avoid vulnerability ([#153](https://github.com/yext/js/pull/153)) ([63d8841d](https://github.com/yext/js/commit/63d8841d0a1d106590b4c7edf22cfbd9f98e491d))
-*  update esbuild ([#152](https://github.com/yext/js/pull/152)) ([071eedd0](https://github.com/yext/js/commit/071eedd00c367dcc63ffbaeccffd7b59324dbb70))
+- upgrade storybook ([#155](https://github.com/yext/js/pull/155)) ([4fda901f](https://github.com/yext/js/commit/4fda901f1be12ae0756a70979707f361886947d2))
+- set js-yaml overrides to avoid vulnerability ([#153](https://github.com/yext/js/pull/153)) ([63d8841d](https://github.com/yext/js/commit/63d8841d0a1d106590b4c7edf22cfbd9f98e491d))
+- update esbuild ([#152](https://github.com/yext/js/pull/152)) ([071eedd0](https://github.com/yext/js/commit/071eedd00c367dcc63ffbaeccffd7b59324dbb70))
 
 ##### New Features
 
-*  expose analytics opt out ([#154](https://github.com/yext/js/pull/154)) ([3a78428c](https://github.com/yext/js/commit/3a78428cc2a5a749a1f280b2b316cdbfd2a2faf2))
+- expose analytics opt out ([#154](https://github.com/yext/js/pull/154)) ([3a78428c](https://github.com/yext/js/commit/3a78428cc2a5a749a1f280b2b316cdbfd2a2faf2))
 
 ##### Bug Fixes
 
-*  force secure version of axios ([#151](https://github.com/yext/js/pull/151)) ([400392ae](https://github.com/yext/js/commit/400392aef61c5bfcdcb67dd0e50dc9e5222da899))
+- force secure version of axios ([#151](https://github.com/yext/js/pull/151)) ([400392ae](https://github.com/yext/js/commit/400392aef61c5bfcdcb67dd0e50dc9e5222da899))
 
 #### 2.2.0 (2026-05-29)
 
