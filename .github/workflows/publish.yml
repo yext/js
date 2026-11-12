@@ -48,6 +48,7 @@ jobs:
       - name: Publish
         env:
           NPM_TAG: ${{ steps.get_npm_tag.outputs.npm_tag }}
+          npm_config_git_checks: "false"
         run: |
           cd packages/pages-components
-          npm publish --access public --tag "$NPM_TAG"
+          pnpm publish --access public --tag "$NPM_TAG"
