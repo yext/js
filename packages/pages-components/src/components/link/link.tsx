@@ -53,7 +53,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(props
       // must happen before the async call
       e.preventDefault();
 
-      const encodedLink = currentTarget.href.split("/").at(-1);
+      const encodedLink = currentTarget.getAttribute("href");
       if (encodedLink) {
         decodedLink = atob(encodedLink);
       }

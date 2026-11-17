@@ -1,7 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import { Link } from "./link.js";
 import { CTA } from "./types.js";
+import type { AnalyticsMethods } from "../analytics/interfaces.js";
+
+const track = vi.hoisted(() =>
+  vi.fn<AnalyticsMethods["track"]>(() => {
+    throw new Error("Error");
+  })
+);
 
 describe("Link", () => {
   it("renders component when given href + children", () => {
@@ -38,21 +45,43 @@ describe("Link", () => {
 });
 
 vi.mock("../../components/analytics", () => {
-  const trackClick = () => {
-    return () => {
-      throw new Error("Error");
-    };
-  };
   return {
     useAnalytics: () => {
       return {
-        trackClick,
+        track,
         getDebugEnabled: () => {
           return false;
         },
       };
     },
   };
+});
+
+describe("Obfuscated Link clicks", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it.each([
+    ["an ordinary email", "mailto:test.com"],
+    ["an email with a slash in its Base64 encoding", "mailto:test@example.com?subject=Hello"],
+  ])("navigates to and tracks the complete destination for %s", async (_, href) => {
+    const location = { href: "https://example.com/contact" };
+    const testWindow = Object.create(window, { location: { value: location } });
+    vi.spyOn(window, "window", "get").mockReturnValue(testWindow);
+    track.mockResolvedValueOnce(undefined);
+    const onClick = vi.fn();
+
+    render(<Link href={href} onClick={onClick} />);
+    const link = screen.getByRole("link");
+
+    await act(async () => link.click());
+
+    expect(location.href).toEqual(href);
+    expect(track).toHaveBeenLastCalledWith(expect.objectContaining({ destinationUrl: href }));
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick.mock.calls[0][0].defaultPrevented).toBe(true);
+  });
 });
 
 describe("Link Component Handles Analytics Failures", () => {
