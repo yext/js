@@ -1,3 +1,9 @@
+#### 2.3.2 (2026-11-17)
+
+##### Bug Fixes
+
+*  link obfuscation ([#157](https://github.com/yext/js/pull/157)) ([cd174341](https://github.com/yext/js/commit/cd174341467b566c7fa694c4878b5d48108bf342))
+
 #### 2.3.0 (2026-11-11)
 
 ##### Chores
